@@ -11,7 +11,7 @@ If you believe you have discovered a security vulnerability in this project, **d
 
 To report a security issue responsibly, please go to the Security tab or visit:
 
-https://github.com/gwbischof/footbag-network/security/advisories/new
+https://github.com/gwbischof/footbag-social/security/advisories/new
 
 The following information can help us address the issue:
 

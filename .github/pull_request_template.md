@@ -1,1 +1,1 @@
-- [ ] I have read and understood the [contributing guidelines](https://github.com/gwbischof/footbag-network/blob/main/CONTRIBUTING.md).
+- [ ] I have read and understood the [contributing guidelines](https://github.com/gwbischof/footbag-social/blob/main/CONTRIBUTING.md).

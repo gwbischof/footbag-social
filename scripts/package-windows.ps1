@@ -4,8 +4,8 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 # Packages an existing `flutter build windows` output into an installer
-# (build/windows/installer/footbag-network-windows-x64-setup.exe) and a portable
-# zip archive (build/windows/installer/footbag-network-windows-x64.zip).
+# (build/windows/installer/footbag-social-windows-x64-setup.exe) and a portable
+# zip archive (build/windows/installer/footbag-social-windows-x64.zip).
 param(
     [ValidateSet("Release", "Debug")]
     [string]$BuildMode = "Release"
@@ -38,4 +38,4 @@ if ($LASTEXITCODE -ne 0) {
     throw "Inno Setup failed with exit code $LASTEXITCODE"
 }
 
-Compress-Archive -Path "$buildDir\*" -DestinationPath build\windows\installer\footbag-network-windows-x64.zip -Force
+Compress-Archive -Path "$buildDir\*" -DestinationPath build\windows\installer\footbag-social-windows-x64.zip -Force

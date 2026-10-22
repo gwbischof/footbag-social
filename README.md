@@ -36,7 +36,7 @@ See [NOTICE](NOTICE) for full attribution and a summary of modifications.
 AGPL-3.0-or-later. See [LICENSE](LICENSE).
 
 The source for this app, including all modifications, is at
-https://github.com/gwbischof/footbag-network.
+https://github.com/gwbischof/footbag-social.
 
 **Trademarks.** The names "Footbag Network" and "NYFA", and their logos, are
 trademarks of the New York Footbag Association. The AGPL grants you rights to the
@@ -62,8 +62,8 @@ Dart >= 3.11.1 and fails to resolve dependencies on older SDKs. The exact versio
 is pinned in `.fvmrc`, so the simplest setup is [fvm](https://fvm.app):
 
 ```bash
-git clone https://github.com/gwbischof/footbag-network.git
-cd footbag-network
+git clone https://github.com/gwbischof/footbag-social.git
+cd footbag-social
 fvm use            # installs the pinned Flutter, leaves your global one alone
 fvm flutter pub get
 ```
@@ -87,8 +87,8 @@ To skip the toolchain entirely, build the container instead — it installs
 everything and is what CI runs:
 
 ```bash
-docker build -t footbag-network .
-docker run --rm -p 8080:8080 footbag-network
+docker build -t footbag-social .
+docker run --rm -p 8080:8080 footbag-social
 ```
 
 Optionally configure by serving a `config.json` alongside the app — see
