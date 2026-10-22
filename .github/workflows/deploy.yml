@@ -36,7 +36,7 @@ jobs:
       # A cold build compiles the Vodozemac WASM from Rust before it even
       # reaches the Flutter web bundle, so it is slow; the GHA cache is what
       # keeps later pushes tolerable.
-      - uses: docker/build-push-action@2cdde995de11925a030ce8070c3d77a52ffcf1c0 # v5
+      - uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v5
         with:
           context: .
           push: true
