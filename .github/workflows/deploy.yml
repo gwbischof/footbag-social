@@ -23,7 +23,7 @@ jobs:
       packages: write
 
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4
 
       - uses: docker/login-action@e92390c5fb421da1463c202d546fed0ec5c39f20 # v3
         with:
@@ -57,7 +57,7 @@ jobs:
       # persist-credentials: false keeps the kube write key out of the job's
       # git config for the rest of the run; the push below supplies it for
       # exactly one command instead.
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4
         with:
           repository: gwbischof/kube
           ssh-key: ${{ secrets.KUBE_DEPLOY_KEY }}
