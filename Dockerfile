@@ -43,7 +43,7 @@ RUN flutter pub get --enforce-lockfile
 # regardless; this flag sets useLocalCanvasKit and serves the copy we already
 # ship in build/web/canvaskit/.
 RUN flutter build web --no-web-resources-cdn --release --source-maps
-RUN python3 scripts/gen-csp.py build/web/index.html /csp.conf
+RUN python3 scripts/gen-csp.py build/web/index.html build/web/auth.html /csp.conf
 
 # Unprivileged variant so the pod can run as non-root; it listens on 8080.
 FROM docker.io/nginxinc/nginx-unprivileged:alpine@sha256:b9241c6e7b8e9a862f129d8d4199ab64b10390949a78bdd5603379b32c844083

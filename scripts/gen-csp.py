@@ -86,27 +86,40 @@ def policy(script_hashes: list[str]) -> str:
 
 
 def main() -> int:
-    index = pathlib.Path(sys.argv[1])
-    out = pathlib.Path(sys.argv[2])
+    # Every HTML page that nginx serves with this policy, not just index.html.
+    # auth.html is the one that bites: it is the SSO callback, and its inline
+    # script is the whole page -- it posts the login token back to the opener
+    # and closes the window. Hash only index.html and the policy silently
+    # blocks it, the popup sits there reading "Authentication is complete",
+    # and the token is never exchanged, which looks like a broken homeserver.
+    *inputs, target = sys.argv[1:]
+    out = pathlib.Path(target)
 
-    html = index.read_text(encoding="utf-8")
-    inline = [
-        m.group(1)
-        for m in re.finditer(
-            r"<script(?![^>]*\bsrc=)[^>]*>(.*?)</script>", html, re.S | re.I
-        )
-    ]
-
-    # Fail loudly rather than emit a policy that would blank the page. If
-    # Flutter ever stops inlining its bootstrap this should be revisited, not
-    # silently papered over.
-    if not inline:
-        print(
-            "gen-csp: no inline <script> found in index.html — refusing to "
-            "emit a CSP that has not been verified against the real bundle",
-            file=sys.stderr,
-        )
-        return 1
+    inline: list[str] = []
+    for path in inputs:
+        p = pathlib.Path(path)
+        if not p.exists():
+            print(f"gen-csp: {p} does not exist", file=sys.stderr)
+            return 1
+        found = [
+            m.group(1)
+            for m in re.finditer(
+                r"<script(?![^>]*\bsrc=)[^>]*>(.*?)</script>",
+                p.read_text(encoding="utf-8"),
+                re.S | re.I,
+            )
+        ]
+        # Each input must contribute, or a page is being served under a policy
+        # that was never checked against it.
+        if not found:
+            print(
+                f"gen-csp: no inline <script> found in {p} — refusing to emit "
+                "a CSP that has not been verified against the real bundle",
+                file=sys.stderr,
+            )
+            return 1
+        print(f"gen-csp: {p.name}: {len(found)} inline script(s)")
+        inline.extend(found)
 
     hashes = [
         "'sha256-"
