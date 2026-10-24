@@ -88,7 +88,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "inviteText": "{username} mengundang kamu ke Footbag Network. \n1. Kunjungi footbag-network.korroni.com dan instal aplikasi\n2. Daftar atau masuk \n3. Buka tautan undangan: \n {link}",
+    "inviteText": "{username} mengundang kamu ke Footbag Network. \n1. Kunjungi footbagsocial.com dan instal aplikasi\n2. Daftar atau masuk \n3. Buka tautan undangan: \n {link}",
     "@inviteText": {
         "type": "String",
         "placeholders": {

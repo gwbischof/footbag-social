@@ -999,7 +999,7 @@
         "placeholders": {}
     },
     "scanQrCode": "Scan cód QR",
-    "inviteText": "Thug {username} cuireadh duit chuig Footbag Network.\n1. Tabhair cuairt ar footbag-network.korroni.com agus a shuiteáil an app\n2. Cláraigh nó sínigh isteach\n3. Oscail an nasc cuirí:\n {link}",
+    "inviteText": "Thug {username} cuireadh duit chuig Footbag Network.\n1. Tabhair cuairt ar footbagsocial.com agus a shuiteáil an app\n2. Cláraigh nó sínigh isteach\n3. Oscail an nasc cuirí:\n {link}",
     "@inviteText": {
         "type": "String",
         "placeholders": {

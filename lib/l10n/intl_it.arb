@@ -690,7 +690,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "inviteText": "{username} ti ha invitato/a a Footbag Network.\n1. Visita footbag-network.korroni.com e installa l'applicazione\n2. Iscriviti o accedi\n3. Apri il collegamento di invito: \n {link}",
+    "inviteText": "{username} ti ha invitato/a a Footbag Network.\n1. Visita footbagsocial.com e installa l'applicazione\n2. Iscriviti o accedi\n3. Apri il collegamento di invito: \n {link}",
     "@inviteText": {
         "type": "String",
         "placeholders": {

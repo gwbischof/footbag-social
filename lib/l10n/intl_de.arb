@@ -809,7 +809,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "inviteText": "{username} hat Dich zu Footbag Network eingeladen. \n1. Gehe auf footbag-network.korroni.com und installiere die App \n2. Melde Dich in der App an \n3. Öffne den Einladungslink: \n {link}",
+    "inviteText": "{username} hat Dich zu Footbag Network eingeladen. \n1. Gehe auf footbagsocial.com und installiere die App \n2. Melde Dich in der App an \n3. Öffne den Einladungslink: \n {link}",
     "@inviteText": {
         "type": "String",
         "placeholders": {

@@ -814,7 +814,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "inviteText": "{username} kutsus sind kasutama Matrix'i-põhist suhtlusrakendust Footbag Network. \n1. Ava footbag-network.korroni.com ja paigalda Footbag Network'i rakendus \n2. Liitu kasutajaks või logi sisse olemasoleva Matrix'i kasutajakontoga\n3. Ava kutse link: \n {link}",
+    "inviteText": "{username} kutsus sind kasutama Matrix'i-põhist suhtlusrakendust Footbag Network. \n1. Ava footbagsocial.com ja paigalda Footbag Network'i rakendus \n2. Liitu kasutajaks või logi sisse olemasoleva Matrix'i kasutajakontoga\n3. Ava kutse link: \n {link}",
     "@inviteText": {
         "type": "String",
         "placeholders": {

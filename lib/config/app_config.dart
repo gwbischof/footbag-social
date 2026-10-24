@@ -27,7 +27,7 @@ abstract class AppConfig {
       'https://unifiedpush.org/users/intro/';
   static const String encryptionTutorial = 'https://matrix.org/faq/#encryption';
   static const String howDoIGetStickersTutorial =
-      'https://github.com/gwbischof/footbag-network/blob/main/README.md';
+      'https://github.com/gwbischof/footbag-social/blob/main/README.md';
   static const String appId = 'com.footbagnetwork.app';
   static const String appOpenUrlScheme = 'com.footbagnetwork';
   static const String appSsoUrlScheme = 'com.footbagnetwork.auth';
@@ -36,29 +36,29 @@ abstract class AppConfig {
       'eebeef3a-be38-4f74-9449-fb68522071b5';
 
   static const String sourceCodeUrl =
-      'https://github.com/gwbischof/footbag-network';
+      'https://github.com/gwbischof/footbag-social';
   static const String supportUrl =
-      'https://github.com/gwbischof/footbag-network/issues';
+      'https://github.com/gwbischof/footbag-social/issues';
   static const String changelogUrl =
-      'https://github.com/gwbischof/footbag-network/releases';
+      'https://github.com/gwbischof/footbag-social/releases';
   static const String latestReleaseApiUrl =
-      'https://api.github.com/repos/gwbischof/footbag-network/releases/latest';
+      'https://api.github.com/repos/gwbischof/footbag-social/releases/latest';
   static const String helpUrl =
-      'https://github.com/gwbischof/footbag-network/issues';
+      'https://github.com/gwbischof/footbag-social/issues';
 
   static const Set<String> defaultReactions = {'👍', '❤️', '😂', '😮', '😢'};
 
   static final Uri newIssueUrl = Uri(
     scheme: 'https',
     host: 'github.com',
-    path: '/gwbischof/footbag-network/issues/new',
+    path: '/gwbischof/footbag-social/issues/new',
   );
 
   static final Uri homeserverList = Uri(
     scheme: 'https',
     host: 'raw.githubusercontent.com',
     path:
-        'gwbischof/footbag-network/refs/heads/main/recommended_homeservers.json',
+        'gwbischof/footbag-social/refs/heads/main/recommended_homeservers.json',
   );
 
   static const String mainIsolatePortName = 'main_isolate';

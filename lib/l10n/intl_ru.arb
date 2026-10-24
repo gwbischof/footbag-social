@@ -814,7 +814,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "inviteText": "{username} пригласил(а) вас в Footbag Network. \n1. Посетите https://footbag-network.korroni.com и установите приложение \n2. Зарегистрируйтесь или войдите \n3. Откройте ссылку приглашения: \n {link}",
+    "inviteText": "{username} пригласил(а) вас в Footbag Network. \n1. Посетите https://footbagsocial.com и установите приложение \n2. Зарегистрируйтесь или войдите \n3. Откройте ссылку приглашения: \n {link}",
     "@inviteText": {
         "type": "String",
         "placeholders": {

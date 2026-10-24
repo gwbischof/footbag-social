@@ -516,7 +516,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "inviteText": "{username} vás pozval na Footbag Network.\n1. Nainštalujte si Footbag Network: https://footbag-network.korroni.com\n2. Zaregistrujte sa alebo sa prihláste\n3. Otvorte odkaz na pozvánku: {link}",
+    "inviteText": "{username} vás pozval na Footbag Network.\n1. Nainštalujte si Footbag Network: https://footbagsocial.com\n2. Zaregistrujte sa alebo sa prihláste\n3. Otvorte odkaz na pozvánku: {link}",
     "@inviteText": {
         "type": "String",
         "placeholders": {

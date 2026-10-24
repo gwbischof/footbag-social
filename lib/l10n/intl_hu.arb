@@ -569,7 +569,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "inviteText": "{username} meghívta a Footbag Network-be.\n1. Keresse fel a footbag-network.korroni.com oldalt, és telepítse az alkalmazást \n2. Regisztráljon vagy jelentkezzen be \n3. Nyissa meg a meghívó linket: \n {link}",
+    "inviteText": "{username} meghívta a Footbag Network-be.\n1. Keresse fel a footbagsocial.com oldalt, és telepítse az alkalmazást \n2. Regisztráljon vagy jelentkezzen be \n3. Nyissa meg a meghívó linket: \n {link}",
     "@inviteText": {
         "type": "String",
         "placeholders": {

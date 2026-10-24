@@ -1456,7 +1456,7 @@
             }
         }
     },
-    "inviteText": "{username} pakvietė jus prisijungti prie Footbag Network. \n1. Įdiekite Footbag Network: https://footbag-network.korroni.com \n2. Prisiregistruokite arba prisijunkite \n3. Atidarykite pakvietimo nuorodą: {link}",
+    "inviteText": "{username} pakvietė jus prisijungti prie Footbag Network. \n1. Įdiekite Footbag Network: https://footbagsocial.com \n2. Prisiregistruokite arba prisijunkite \n3. Atidarykite pakvietimo nuorodą: {link}",
     "@inviteText": {
         "type": "String",
         "placeholders": {

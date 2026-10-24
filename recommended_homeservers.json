@@ -1,10 +1,10 @@
 {
     "public_servers": [
         {
-            "name": "chat.korroni.com",
-            "website": "https://newyorkfootbag.com",
-            "description": "The Footbag Network community homeserver.",
-            "reg_method": "password",
+            "name": "footbagsocial.com",
+            "website": "https://footbagsocial.com",
+            "description": "The Footbag Social community homeserver. Sign in with Google; new accounts are approved by a moderator.",
+            "reg_method": "sso",
             "languages": [
                 "All",
                 "English"

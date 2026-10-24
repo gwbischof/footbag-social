@@ -1133,7 +1133,7 @@
         }
     },
     "noChatDescriptionYet": "Ulac aglam n udiwenni i d-yenulfan yakan.",
-    "inviteText": "{username} yeɛreḍ-ik·m ɣer Footbag Network.\n1. Rzu ɣer footbag-network.korroni.com syin sbedd asnas \n2. Jerred neɣ kcem \n3. Ldi aseɣwen n tinubga: \n {link}",
+    "inviteText": "{username} yeɛreḍ-ik·m ɣer Footbag Network.\n1. Rzu ɣer footbagsocial.com syin sbedd asnas \n2. Jerred neɣ kcem \n3. Ldi aseɣwen n tinubga: \n {link}",
     "@inviteText": {
         "type": "String",
         "placeholders": {

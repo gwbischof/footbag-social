@@ -1,7 +1,7 @@
 {
   "applicationName": "Footbag Network",
-  "defaultHomeserver": "chat.korroni.com",
-  "presetHomeserver": "chat.korroni.com",
+  "defaultHomeserver": "footbagsocial.com",
+  "presetHomeserver": "footbagsocial.com",
   "welcomeText": "",
   "privacyUrl": "https://newyorkfootbag.com/privacy",
   "audioRecordingNumChannels": 1,

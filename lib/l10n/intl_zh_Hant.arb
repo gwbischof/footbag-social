@@ -685,7 +685,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "inviteText": "{username} 邀請您使用 Footbag Network\n1. 安裝 Footbag Network：https://footbag-network.korroni.com\n2. 登入或註冊\n3. 打開該邀請網址：\n{link}",
+    "inviteText": "{username} 邀請您使用 Footbag Network\n1. 安裝 Footbag Network：https://footbagsocial.com\n2. 登入或註冊\n3. 打開該邀請網址：\n{link}",
     "@inviteText": {
         "type": "String",
         "placeholders": {

@@ -619,7 +619,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "inviteText": "{username} הזמין אותך ל-Footbag Network.\n1. התקן את Footbag Network: https://footbag-network.korroni.com\n2. הירשם או היכנס\n3. פתח את קישור ההזמנה: {link}",
+    "inviteText": "{username} הזמין אותך ל-Footbag Network.\n1. התקן את Footbag Network: https://footbagsocial.com\n2. הירשם או היכנס\n3. פתח את קישור ההזמנה: {link}",
     "@inviteText": {
         "type": "String",
         "placeholders": {

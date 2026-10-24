@@ -697,7 +697,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "inviteText": "{username}があなたをFootbag Networkに招待しました。\n1. Footbag Networkをインストール:　footbag-network.korroni.com \n2. アカウントの作成、またはサインインを行う\n3. 招待リンクを開く\n {link}",
+    "inviteText": "{username}があなたをFootbag Networkに招待しました。\n1. Footbag Networkをインストール:　footbagsocial.com \n2. アカウントの作成、またはサインインを行う\n3. 招待リンクを開く\n {link}",
     "@inviteText": {
         "type": "String",
         "placeholders": {

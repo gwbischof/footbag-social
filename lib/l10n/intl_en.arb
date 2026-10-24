@@ -986,7 +986,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "inviteText": "{username} invited you to Footbag Network.\n1. Visit footbag-network.korroni.com and install the app \n2. Sign up or sign in \n3. Open the invite link: \n {link}",
+    "inviteText": "{username} invited you to Footbag Network.\n1. Visit footbagsocial.com and install the app \n2. Sign up or sign in \n3. Open the invite link: \n {link}",
     "@inviteText": {
         "type": "String",
         "placeholders": {
@@ -1685,6 +1685,12 @@
     "theyMatch": "They Match",
     "@theyMatch": {
         "type": "String",
+        "placeholders": {}
+    },
+    "accountAwaitingApproval": "Thanks for signing up. A moderator needs to approve your account before you can sign in — we'll be in touch.",
+    "@accountAwaitingApproval": {
+        "type": "String",
+        "description": "Shown when the homeserver rejects a login because the account has not yet been approved by an admin (MSC3866).",
         "placeholders": {}
     },
     "tooManyRequestsWarning": "Too many requests. Please try again later!",

@@ -843,7 +843,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "inviteText": "{username} sizni Footbag Network’ga taklif qildi.\n1. footbag-network.korroni.com saytiga tashrif buyuring va ilovani oʻrnating.\n2. Roʻyxatdan oʻting yoki tizimga kiring.\n3. Taklif havolasini oching:\n{link}",
+    "inviteText": "{username} sizni Footbag Network’ga taklif qildi.\n1. footbagsocial.com saytiga tashrif buyuring va ilovani oʻrnating.\n2. Roʻyxatdan oʻting yoki tizimga kiring.\n3. Taklif havolasini oching:\n{link}",
     "@inviteText": {
         "type": "String",
         "placeholders": {

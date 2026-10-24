@@ -766,7 +766,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "inviteText": "{username} вас позива у Footbag Network. \n1. Инсталирајте Footbag Network: https://footbag-network.korroni.com \n2. Региструјте се или пријавите \n3. Отворите везу позивнице: {link}",
+    "inviteText": "{username} вас позива у Footbag Network. \n1. Инсталирајте Footbag Network: https://footbagsocial.com \n2. Региструјте се или пријавите \n3. Отворите везу позивнице: {link}",
     "@inviteText": {
         "type": "String",
         "placeholders": {

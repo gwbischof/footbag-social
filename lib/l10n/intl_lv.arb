@@ -515,7 +515,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "inviteText": "{username} uzaicināja pievienoties Footbag Network.\n1. Jāapmeklē footbag-network.korroni.com un jāuzstāda lietotne \n2. Jāizveido konts vai jāpiesakās \n3. Jāatver uzaicinājuma saite: \n {link}",
+    "inviteText": "{username} uzaicināja pievienoties Footbag Network.\n1. Jāapmeklē footbagsocial.com un jāuzstāda lietotne \n2. Jāizveido konts vai jāpiesakās \n3. Jāatver uzaicinājuma saite: \n {link}",
     "@inviteText": {
         "type": "String",
         "placeholders": {

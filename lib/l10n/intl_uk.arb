@@ -534,7 +534,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "inviteText": "{username} запрошує вас у Footbag Network. \n1. Перейдіть на footbag-network.korroni.com й установіть застосунок \n2. Зареєструйтесь або ввійдіть \n3. Відкрийте запрошувальне посилання:\n {link}",
+    "inviteText": "{username} запрошує вас у Footbag Network. \n1. Перейдіть на footbagsocial.com й установіть застосунок \n2. Зареєструйтесь або ввійдіть \n3. Відкрийте запрошувальне посилання:\n {link}",
     "@inviteText": {
         "type": "String",
         "placeholders": {

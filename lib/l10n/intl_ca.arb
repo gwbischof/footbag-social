@@ -625,7 +625,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "inviteText": "{username} t'ha convidat a Footbag Network.\n1. Visita footbag-network.korroni.com i instaŀla l'app\n2. Registra't o inicia sessió\n3. Obre l'enllaç d'invitació:\n{link}",
+    "inviteText": "{username} t'ha convidat a Footbag Network.\n1. Visita footbagsocial.com i instaŀla l'app\n2. Registra't o inicia sessió\n3. Obre l'enllaç d'invitació:\n{link}",
     "@inviteText": {
         "type": "String",
         "placeholders": {

@@ -44,6 +44,15 @@ extension LocalizedExceptionExtension on Object {
       return L10n.of(context).otherPartyNotLoggedIn;
     }
     if (this is MatrixException) {
+      // Matched on the raw errcode, not MatrixError: this is a Synapse
+      // extension (MSC3866) that the SDK's enum does not know, so it arrives
+      // as M_UNKNOWN and would otherwise be shown as a raw server error.
+      // Registration is open but every new account waits for a moderator, so
+      // this is the expected path for a first sign-in, not a fault.
+      if ((this as MatrixException).errcode ==
+          'ORG.MATRIX.MSC3866_USER_AWAITING_APPROVAL') {
+        return L10n.of(context).accountAwaitingApproval;
+      }
       switch ((this as MatrixException).error) {
         case MatrixError.M_FORBIDDEN:
           if (exceptionContext == ExceptionContext.changePassword) {

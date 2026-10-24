@@ -803,7 +803,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "inviteText": "{username} invitis vin al Footbag Network. \n1. Instalu la aplikaĵon Footbag Network: https://footbag-network.korroni.com \n2. Registriĝu aŭ salutu \n3. Malfermu la invitan ligilon: {link}",
+    "inviteText": "{username} invitis vin al Footbag Network. \n1. Instalu la aplikaĵon Footbag Network: https://footbagsocial.com \n2. Registriĝu aŭ salutu \n3. Malfermu la invitan ligilon: {link}",
     "@inviteText": {
         "type": "String",
         "placeholders": {

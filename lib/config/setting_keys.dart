@@ -76,9 +76,14 @@ enum AppSettings<T> {
     'com.footbagnetwork.application_name',
     'Footbag Network',
   ),
+  // The apex, not chat.footbagsocial.com. The homeserver's server_name is the
+  // apex and Synapse runs on the chat subdomain, so the client is given the
+  // apex and finds the real host through /.well-known/matrix/client. Pointing
+  // this straight at the chat host would work but would bypass the delegation,
+  // leaving it untested until something else depended on it.
   defaultHomeserver<String>(
     'com.footbagnetwork.default_homeserver',
-    'chat.korroni.com',
+    'footbagsocial.com',
   ),
   // colorSchemeSeed stored as ARGB int
   colorSchemeSeedInt<int>('com.footbagnetwork.color_scheme_seed', 0xFF2E8B2E),
@@ -92,7 +97,7 @@ enum AppSettings<T> {
   // straight to it and the server picker is never shown.
   presetHomeserver<String>(
     'com.footbagnetwork.preset_homeserver',
-    'chat.korroni.com',
+    'footbagsocial.com',
   ),
   welcomeText<String>('com.footbagnetwork.welcome_text', ''),
   website<String>(

@@ -21,7 +21,13 @@ import pathlib
 import re
 import sys
 
-HOMESERVER = "https://chat.korroni.com"
+HOMESERVER = "https://chat.footbagsocial.com"
+
+# Derived, never written out again. The websocket origin used to be a second
+# literal further down, and the two are only ever correct together -- one
+# homeserver move leaves the app loading fine while every sync is blocked by
+# CSP, which looks like a server fault rather than a policy one.
+HOMESERVER_WS = HOMESERVER.replace("https://", "wss://", 1)
 
 # Self-hosted Plausible. It needs script-src to load the script and
 # connect-src to POST events; without both the analytics silently do nothing.
@@ -70,7 +76,7 @@ def policy(script_hashes: list[str]) -> str:
             f"font-src 'self' data: {FONTS}",
             f"img-src 'self' data: blob: {HOMESERVER}",
             f"media-src 'self' data: blob: {HOMESERVER}",
-            f"connect-src 'self' {HOMESERVER} wss://chat.korroni.com {ANALYTICS} {FONTS}",
+            f"connect-src 'self' {HOMESERVER} {HOMESERVER_WS} {ANALYTICS} {FONTS}",
             "base-uri 'self'",
             "form-action 'self'",
             "object-src 'none'",

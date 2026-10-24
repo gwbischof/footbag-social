@@ -761,7 +761,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "inviteText": "{username} convidou-te para o Footbag Network.\n1. Instala o Footbag Network: https://footbag-network.korroni.com\n2. Regista-te ou inicia sessão.\n3. Abre a ligação de convite: {link}",
+    "inviteText": "{username} convidou-te para o Footbag Network.\n1. Instala o Footbag Network: https://footbagsocial.com\n2. Regista-te ou inicia sessão.\n3. Abre a ligação de convite: {link}",
     "@inviteText": {
         "type": "String",
         "placeholders": {

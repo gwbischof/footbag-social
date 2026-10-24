@@ -714,7 +714,7 @@
             }
         }
     },
-    "inviteText": "{username} v-a invitat la Footbag Network.\n1. Instalați Footbag Network: https://footbag-network.korroni.com\n2. Înregistrați-vă sau conectați-vă\n3. Deschideți invitația: {link}",
+    "inviteText": "{username} v-a invitat la Footbag Network.\n1. Instalați Footbag Network: https://footbagsocial.com\n2. Înregistrați-vă sau conectați-vă\n3. Deschideți invitația: {link}",
     "@inviteText": {
         "type": "String",
         "placeholders": {

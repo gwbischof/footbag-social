@@ -663,7 +663,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "inviteText": "{username} har invitert deg til Footbag Network. \n1. Installer Footbag Network: https://footbag-network.korroni.com \n2. Registrer deg eller logg inn \n3. Åpne invitasjonslenken: \n {link}",
+    "inviteText": "{username} har invitert deg til Footbag Network. \n1. Installer Footbag Network: https://footbagsocial.com \n2. Registrer deg eller logg inn \n3. Åpne invitasjonslenken: \n {link}",
     "@inviteText": {
         "type": "String",
         "placeholders": {

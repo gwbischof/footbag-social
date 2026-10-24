@@ -144,7 +144,7 @@ class ErrorReporter {
         scheme: 'https',
         host: 'api.github.com',
         path: '/search/issues',
-        query: 'q=repo:gwbischof/footbag-network+is:issue+$hash',
+        query: 'q=repo:gwbischof/footbag-social+is:issue+$hash',
       ),
     );
     try {

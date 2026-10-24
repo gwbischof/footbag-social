@@ -38,12 +38,12 @@
 
   <!-- Plausible, self-hosted. Deliberately the DEFAULT script, not
        script.hash.js: this app routes on the URL hash, so room URLs look like
-       /#/rooms/!abc:chat.korroni.com. The hash-tracking variant would send
+       /#/rooms/!abc:footbagsocial.com. The hash-tracking variant would send
        every room id a visitor opens to analytics. The default script reports
        location.pathname only, which is always "/" here -- so we learn
        visitors, referrers and devices, and nothing about who is in which
        room. Do not "fix" the single-pageview view by switching scripts. -->
-  <script defer data-domain="footbag-network.korroni.com"
+  <script defer data-domain="footbagsocial.com"
           src="https://stats.korroni.com/js/script.js"></script>
 
   <!-- This script adds the flutter initialization JS code -->
