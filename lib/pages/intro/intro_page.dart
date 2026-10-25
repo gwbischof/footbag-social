@@ -169,12 +169,6 @@ class _Content extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         final short = constraints.maxHeight < 640;
-        // Bebas is a condensed face, so it can run large without crowding the
-        // gutters. Capped so it does not become absurd on a wide monitor.
-        final display = (constraints.maxWidth * 0.22).clamp(
-          48.0,
-          short ? 84.0 : 112.0,
-        );
 
         return SingleChildScrollView(
           child: ConstrainedBox(
@@ -188,7 +182,7 @@ class _Content extends StatelessWidget {
                     mainAxisAlignment: .center,
                     crossAxisAlignment: .center,
                     children: [
-                      _Wordmark(words: name, size: display),
+                      _Wordmark(words: name, compact: short),
                       SizedBox(height: short ? 20 : 28),
                       Text(
                         welcomeText ?? l10n.appDescription,
@@ -230,13 +224,20 @@ class _Content extends StatelessWidget {
 
 /// The name, stacked and lit from behind.
 ///
-/// newyorkfootbag.com sets its title in Bebas caps across several lines and
-/// puts the club green on one of them, glowing. The same treatment here, with
-/// the last word carrying the colour.
+/// newyorkfootbag.com sets its title in Bebas caps on stacked lines, each line
+/// scaled to span the full width, with the club green on one of them, glowing.
+/// Same here, with the last word carrying the colour.
+///
+/// Each line is a FittedBox rather than a chosen font size. A size computed
+/// from the viewport is wrong the moment the text sits in a narrower column --
+/// which is exactly what happened: 112pt picked from a 1512px screen inside a
+/// 440px column broke FOOTBAG across two lines as "FOOTB / AG". Scaling a
+/// single unwrappable line to the width it actually has cannot do that, and it
+/// is also what makes the lines flush like the site's.
 class _Wordmark extends StatelessWidget {
   final List<String> words;
-  final double size;
-  const _Wordmark({required this.words, required this.size});
+  final bool compact;
+  const _Wordmark({required this.words, required this.compact});
 
   @override
   Widget build(BuildContext context) {
@@ -245,47 +246,52 @@ class _Wordmark extends StatelessWidget {
     return Stack(
       alignment: Alignment.center,
       children: [
-        // The glow is a wide, very soft radial rather than a shadow on the
-        // glyphs: on the site the light comes off the letters and falls on the
-        // ground behind them.
-        IgnorePointer(
-          child: Container(
-            width: size * 4.2,
-            height: size * 2.6,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              gradient: RadialGradient(
-                colors: [
-                  _Nyfa.green.withValues(alpha: 0.16),
-                  _Nyfa.green.withValues(alpha: 0.05),
-                  Colors.transparent,
-                ],
-                stops: const [0.0, 0.4, 0.72],
+        // A wide, very soft radial rather than a shadow on the glyphs: on the
+        // site the light comes off the letters and falls on the ground behind
+        // them.
+        Positioned.fill(
+          child: IgnorePointer(
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: RadialGradient(
+                  radius: 0.85,
+                  colors: [
+                    _Nyfa.green.withValues(alpha: 0.17),
+                    _Nyfa.green.withValues(alpha: 0.05),
+                    Colors.transparent,
+                  ],
+                  stops: const [0.0, 0.42, 0.75],
+                ),
               ),
             ),
           ),
         ),
         Column(
           mainAxisSize: .min,
+          crossAxisAlignment: .stretch,
           children: [
             for (var i = 0; i < words.length; i++)
-              Text(
-                words[i],
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontFamily: _display,
-                  fontSize: size,
-                  height: 0.88,
-                  letterSpacing: size * 0.01,
-                  color: i == last ? _Nyfa.green : _Nyfa.paper,
-                  shadows: i == last
-                      ? [
-                          Shadow(
-                            color: _Nyfa.green.withValues(alpha: 0.55),
-                            blurRadius: size * 0.42,
-                          ),
-                        ]
-                      : null,
+              FittedBox(
+                fit: BoxFit.fitWidth,
+                child: Text(
+                  words[i],
+                  maxLines: 1,
+                  softWrap: false,
+                  style: TextStyle(
+                    fontFamily: _display,
+                    // Nominal only -- FittedBox rescales it to the real width.
+                    fontSize: compact ? 72 : 96,
+                    height: 0.92,
+                    color: i == last ? _Nyfa.green : _Nyfa.paper,
+                    shadows: i == last
+                        ? [
+                            Shadow(
+                              color: _Nyfa.green.withValues(alpha: 0.55),
+                              blurRadius: 34,
+                            ),
+                          ]
+                        : null,
+                  ),
                 ),
               ),
           ],
