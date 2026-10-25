@@ -128,6 +128,9 @@ class Nyfa {
     scrolledUnderElevation: 0,
     iconTheme: const IconThemeData(color: paper),
     leading: const Center(child: BackButton(color: paper)),
+    // AppBar centres its title on web, which left these screens disagreeing
+    // with Dash's left-aligned wordmark.
+    centerTitle: false,
     titleSpacing: 0,
     title: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -144,6 +147,200 @@ class Nyfa {
     bottom: const PreferredSize(
       preferredSize: Size.fromHeight(1),
       child: Divider(height: 1, thickness: 1, color: rule),
+    ),
+  );
+}
+
+/// Form furniture shared by every club-themed screen.
+///
+/// Extracted the moment a second screen needed a switch: four screens each
+/// styling their own switch is how the set stops looking like one system.
+class NyfaForm {
+  const NyfaForm._();
+
+  /// A section heading with a hairline above it.
+  static Widget section(String label) => Padding(
+    padding: const EdgeInsets.fromLTRB(20, 28, 20, 10),
+    child: Text(label.toUpperCase(), style: Nyfa.eyebrow),
+  );
+
+  /// A labelled text field.
+  static Widget field({
+    Key? key,
+    required TextEditingController controller,
+    required String label,
+    String? helper,
+    int minLines = 1,
+    int maxLines = 1,
+    int? maxLength,
+    TextCapitalization capitalization = TextCapitalization.sentences,
+    ValueChanged<String>? onChanged,
+  }) => Padding(
+    padding: const EdgeInsets.fromLTRB(20, 0, 20, 4),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        TextField(
+          key: key,
+          controller: controller,
+          minLines: minLines,
+          maxLines: maxLines,
+          maxLength: maxLength,
+          textCapitalization: capitalization,
+          onChanged: onChanged,
+          style: Nyfa.bodyText,
+          cursorColor: Nyfa.green,
+          buildCounter:
+              (_, {required currentLength, required isFocused, maxLength}) =>
+                  null,
+          decoration: Nyfa.input(label).copyWith(alignLabelWithHint: true),
+        ),
+        if (helper != null)
+          Padding(
+            padding: const EdgeInsets.only(top: 6),
+            child: Text(helper, style: Nyfa.bodyMuted.copyWith(fontSize: 12)),
+          ),
+      ],
+    ),
+  );
+
+  /// A switch row. The explanation is not optional: every switch in this app
+  /// governs something a person would reasonably want explained before
+  /// flipping it.
+  static Widget toggle({
+    Key? key,
+    required String label,
+    required String explain,
+    required bool value,
+    required ValueChanged<bool> onChanged,
+  }) => SwitchListTile(
+    key: key,
+    value: value,
+    onChanged: onChanged,
+    activeThumbColor: Nyfa.ground,
+    activeTrackColor: Nyfa.green,
+    inactiveThumbColor: Nyfa.muted,
+    inactiveTrackColor: Nyfa.raised,
+    contentPadding: const EdgeInsets.symmetric(horizontal: 20),
+    title: Text(label.toUpperCase(), style: Nyfa.heading.copyWith(fontSize: 16)),
+    subtitle: Text(explain, style: Nyfa.bodyMuted),
+  );
+
+  /// A row of selectable chips. Wraps, so a long set never clips at 360px.
+  static Widget chips({
+    required List<({String value, String label})> options,
+    required Set<String> selected,
+    required ValueChanged<String> onToggle,
+    String keyPrefix = 'Chip',
+  }) => Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 20),
+    child: Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      children: [
+        for (final o in options)
+          _Chip(
+            key: Key('$keyPrefix${o.value}'),
+            label: o.label,
+            selected: selected.contains(o.value),
+            onTap: () => onToggle(o.value),
+          ),
+      ],
+    ),
+  );
+
+  /// The one primary action a screen has.
+  static Widget action({
+    Key? key,
+    required String label,
+    required VoidCallback? onPressed,
+    bool filled = true,
+  }) => SizedBox(
+    height: 48,
+    child: filled
+        ? FilledButton(
+            key: key,
+            onPressed: onPressed,
+            style: FilledButton.styleFrom(
+              backgroundColor: Nyfa.green,
+              disabledBackgroundColor: Nyfa.rule,
+              shape: const RoundedRectangleBorder(),
+            ),
+            child: Text(
+              label.toUpperCase(),
+              style: TextStyle(
+                fontFamily: Nyfa.display,
+                fontSize: 17,
+                letterSpacing: 1.1,
+                color: onPressed == null ? Nyfa.muted : Nyfa.ground,
+              ),
+            ),
+          )
+        : OutlinedButton(
+            key: key,
+            onPressed: onPressed,
+            style: OutlinedButton.styleFrom(
+              side: const BorderSide(color: Nyfa.rule),
+              shape: const RoundedRectangleBorder(),
+            ),
+            child: Text(
+              label.toUpperCase(),
+              style: const TextStyle(
+                fontFamily: Nyfa.display,
+                fontSize: 17,
+                letterSpacing: 1.1,
+                color: Nyfa.paper,
+              ),
+            ),
+          ),
+  );
+}
+
+class _Chip extends StatelessWidget {
+  final String label;
+  final bool selected;
+  final VoidCallback onTap;
+
+  const _Chip({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) => Semantics(
+    button: true,
+    selected: selected,
+    child: InkWell(
+      onTap: onTap,
+      // No `alignment` here, deliberately. A Container with alignment set and
+      // no explicit width expands to fill its constraints -- inside a Wrap that
+      // made every chip full width and stacked them one per row, which looked
+      // like a broken list rather than a set of options. Centring comes from
+      // the symmetric padding instead.
+      child: Container(
+        height: 44,
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        decoration: BoxDecoration(
+          color: selected ? Nyfa.green : Colors.transparent,
+          border: Border.all(color: selected ? Nyfa.green : Nyfa.rule),
+        ),
+        child: Center(
+          widthFactor: 1,
+          child: Text(
+            label.toUpperCase(),
+            style: TextStyle(
+              fontFamily: Nyfa.display,
+              fontSize: 16,
+              letterSpacing: 0.8,
+              // Solid either way: dimming paper with alpha was what failed
+              // contrast the first time round.
+              color: selected ? Nyfa.ground : Nyfa.paper,
+            ),
+          ),
+        ),
+      ),
     ),
   );
 }

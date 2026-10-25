@@ -141,12 +141,26 @@ class _DashBar extends StatelessWidget implements PreferredSizeWidget {
         ],
       ),
       actions: [
+        IconButton(
+          key: const Key('DashFavouritesButton'),
+          tooltip: l10n.favourites,
+          onPressed: () => context.push('/rooms/dash/favourites'),
+          icon: const Icon(Icons.star_outline_rounded, color: Nyfa.paper),
+        ),
+        IconButton(
+          key: const Key('DashScheduleButton'),
+          tooltip: l10n.scheduleSession,
+          onPressed: () => context.push('/rooms/dash/schedule'),
+          icon: const Icon(Icons.calendar_today_outlined, color: Nyfa.paper, size: 20),
+        ),
         Padding(
           padding: const EdgeInsets.only(right: 16),
           child: IconButton(
-            key: const Key('DashSettingsButton'),
-            tooltip: l10n.settings,
-            onPressed: () => context.go('/rooms/settings'),
+            key: const Key('DashProfileButton'),
+            tooltip: l10n.editProfile,
+            // The avatar goes to the profile, which is what an avatar means
+            // everywhere else. Settings is reachable from there.
+            onPressed: () => context.push('/rooms/dash/profile'),
             icon: CircleAvatar(
               radius: 17,
               backgroundColor: Nyfa.raised,

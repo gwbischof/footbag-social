@@ -1907,6 +1907,306 @@
         "description": "Dash's standing question, which is what the app opens on rather than a feed.",
         "placeholders": {}
     },
+    "editProfile": "Edit profile",
+    "@editProfile": {
+        "type": "String",
+        "description": "Title of the screen where a player edits their own details.",
+        "placeholders": {}
+    },
+    "displayName": "Name",
+    "@displayName": {
+        "type": "String",
+        "description": "The name other players see. Short label for a form field.",
+        "placeholders": {}
+    },
+    "displayNameHelp": "How other players see you.",
+    "@displayNameHelp": {
+        "type": "String",
+        "description": "Explains what the name is used for.",
+        "placeholders": {}
+    },
+    "bio": "About you",
+    "@bio": {
+        "type": "String",
+        "description": "Free text on a player's profile.",
+        "placeholders": {}
+    },
+    "bioHelp": "How long you've played, what you're working on, where you usually are.",
+    "@bioHelp": {
+        "type": "String",
+        "description": "Prompts useful content rather than leaving the field blank and mysterious.",
+        "placeholders": {}
+    },
+    "city": "City",
+    "@city": {
+        "type": "String",
+        "description": "Optional city on a player's profile.",
+        "placeholders": {}
+    },
+    "cityHelp": "Optional. Leave empty to remove it.",
+    "@cityHelp": {
+        "type": "String",
+        "description": "Says explicitly how to clear the field, since that is not obvious.",
+        "placeholders": {}
+    },
+    "playStyles": "What you play",
+    "@playStyles": {
+        "type": "String",
+        "description": "Heading over the play-style chips.",
+        "placeholders": {}
+    },
+    "playStylesHelp": "Used to match you with the right sessions and players.",
+    "@playStylesHelp": {
+        "type": "String",
+        "description": "Explains why the app asks, which is the only reason to answer.",
+        "placeholders": {}
+    },
+    "discoverable": "Discoverable",
+    "@discoverable": {
+        "type": "String",
+        "description": "Whether a player appears in Discover.",
+        "placeholders": {}
+    },
+    "discoverableExplain": "Other players can find you and invite you to sessions. Turn this off and you can still use everything, you just won't appear in searches.",
+    "@discoverableExplain": {
+        "type": "String",
+        "description": "Makes clear that turning it off costs nothing functionally.",
+        "placeholders": {}
+    },
+    "showMySessions": "Show my sessions",
+    "@showMySessions": {
+        "type": "String",
+        "description": "Whether others can see this player's logged sessions.",
+        "placeholders": {}
+    },
+    "showMySessionsExplain": "Others can see the sessions you log and what you hit. This also controls whether you appear in rankings.",
+    "@showMySessionsExplain": {
+        "type": "String",
+        "description": "Names the second consequence, which is not obvious from the label.",
+        "placeholders": {}
+    },
+    "saveProfile": "Save profile",
+    "@saveProfile": {
+        "type": "String",
+        "description": "Primary action on the profile screen.",
+        "placeholders": {}
+    },
+    "profileSaved": "Profile saved",
+    "@profileSaved": {
+        "type": "String",
+        "description": "Confirms the save, in the past tense of the action.",
+        "placeholders": {}
+    },
+    "favourites": "Favourites",
+    "@favourites": {
+        "type": "String",
+        "description": "The player's working set of tricks.",
+        "placeholders": {}
+    },
+    "favouritesHelp": "The tricks you're working on. These are what you grade after a session, so keep the list short.",
+    "@favouritesHelp": {
+        "type": "String",
+        "description": "Explains the purpose and implicitly why a short list is better.",
+        "placeholders": {}
+    },
+    "addTrick": "Add a trick",
+    "@addTrick": {
+        "type": "String",
+        "description": "Opens the dictionary to add a favourite.",
+        "placeholders": {}
+    },
+    "removeTrick": "Remove",
+    "@removeTrick": {
+        "type": "String",
+        "description": "Removes a trick from favourites.",
+        "placeholders": {}
+    },
+    "noFavouritesHere": "Nothing picked yet",
+    "@noFavouritesHere": {
+        "type": "String",
+        "description": "Empty state on the favourites screen.",
+        "placeholders": {}
+    },
+    "noFavouritesHereBody": "Add the tricks you're working on and they'll be waiting on your next session report.",
+    "@noFavouritesHereBody": {
+        "type": "String",
+        "description": "Connects the action to the payoff.",
+        "placeholders": {}
+    },
+    "favouritesSaved": "Favourites saved",
+    "@favouritesSaved": {
+        "type": "String",
+        "description": "Confirms the save.",
+        "placeholders": {}
+    },
+    "reorderHint": "Drag to reorder",
+    "@reorderHint": {
+        "type": "String",
+        "description": "Tells the player the list is reorderable, which is otherwise invisible.",
+        "placeholders": {}
+    },
+    "trickDictionary": "Trick dictionary",
+    "@trickDictionary": {
+        "type": "String",
+        "description": "Title of the browse/search screen.",
+        "placeholders": {}
+    },
+    "searchTricks": "Search tricks",
+    "@searchTricks": {
+        "type": "String",
+        "description": "Search field label.",
+        "placeholders": {}
+    },
+    "searchTricksHelp": "Searches nicknames too.",
+    "@searchTricksHelp": {
+        "type": "String",
+        "description": "Worth saying -- the dictionary carries 94 nicknames.",
+        "placeholders": {}
+    },
+    "noTricksFound": "Nothing matches",
+    "@noTricksFound": {
+        "type": "String",
+        "description": "Empty search result.",
+        "placeholders": {}
+    },
+    "noTricksFoundBody": "Try a shorter search, or a nickname.",
+    "@noTricksFoundBody": {
+        "type": "String",
+        "description": "Gives a concrete next action rather than restating the problem.",
+        "placeholders": {}
+    },
+    "kindTrick": "Trick",
+    "@kindTrick": {
+        "type": "String",
+        "description": "A dictionary entry that is a single move.",
+        "placeholders": {}
+    },
+    "kindComposite": "Composite",
+    "@kindComposite": {
+        "type": "String",
+        "description": "A dictionary entry built from a base move plus adjectives.",
+        "placeholders": {}
+    },
+    "kindString": "String",
+    "@kindString": {
+        "type": "String",
+        "description": "A dictionary entry that is an ordered sequence of moves.",
+        "placeholders": {}
+    },
+    "alreadyAdded": "Added",
+    "@alreadyAdded": {
+        "type": "String",
+        "description": "Marks a dictionary entry already in the player's favourites.",
+        "placeholders": {}
+    },
+    "scheduleSession": "Schedule a session",
+    "@scheduleSession": {
+        "type": "String",
+        "description": "Title of the screen for planning a future session.",
+        "placeholders": {}
+    },
+    "scheduleWhen": "When",
+    "@scheduleWhen": {
+        "type": "String",
+        "description": "Heading over the date and time pickers.",
+        "placeholders": {}
+    },
+    "pickDate": "Date",
+    "@pickDate": {
+        "type": "String",
+        "description": "Opens the date picker.",
+        "placeholders": {}
+    },
+    "pickTime": "Time",
+    "@pickTime": {
+        "type": "String",
+        "description": "Opens the time picker.",
+        "placeholders": {}
+    },
+    "sessionName": "Name",
+    "@sessionName": {
+        "type": "String",
+        "description": "Optional name for a session.",
+        "placeholders": {}
+    },
+    "sessionNameHelp": "Optional. Left blank, it's named after the type and day.",
+    "@sessionNameHelp": {
+        "type": "String",
+        "description": "Says exactly what happens if you skip it, so skipping feels safe.",
+        "placeholders": {}
+    },
+    "sessionTypeLabel": "Type",
+    "@sessionTypeLabel": {
+        "type": "String",
+        "description": "Heading over the session type chips.",
+        "placeholders": {}
+    },
+    "sessionTypeHelp": "This is what people filter on when looking for a session.",
+    "@sessionTypeHelp": {
+        "type": "String",
+        "description": "Explains why the type matters -- it drives Discover.",
+        "placeholders": {}
+    },
+    "whoCanJoin": "Who can join",
+    "@whoCanJoin": {
+        "type": "String",
+        "description": "Heading over the joining control.",
+        "placeholders": {}
+    },
+    "joiningOpen": "Anyone",
+    "@joiningOpen": {
+        "type": "String",
+        "description": "Open joining.",
+        "placeholders": {}
+    },
+    "joiningInviteOnly": "Invite only",
+    "@joiningInviteOnly": {
+        "type": "String",
+        "description": "Restricted joining.",
+        "placeholders": {}
+    },
+    "showOnFeed": "Show on the feed",
+    "@showOnFeed": {
+        "type": "String",
+        "description": "Whether the session is posted to the feed.",
+        "placeholders": {}
+    },
+    "showOnFeedExplain": "Your session appears in the feed for others to see. Turning this off doesn't change who can join.",
+    "@showOnFeedExplain": {
+        "type": "String",
+        "description": "Spells out that joining and the feed are separate switches.",
+        "placeholders": {}
+    },
+    "whatToKnow": "What to know",
+    "@whatToKnow": {
+        "type": "String",
+        "description": "The host's pre-session logistics note.",
+        "placeholders": {}
+    },
+    "whatToKnowHelp": "Bring a spare bag, meet by the fountain, that sort of thing.",
+    "@whatToKnowHelp": {
+        "type": "String",
+        "description": "Concrete examples, taken from the design doc's own phrasing.",
+        "placeholders": {}
+    },
+    "createSession": "Schedule it",
+    "@createSession": {
+        "type": "String",
+        "description": "Primary action, phrased as the thing that happens.",
+        "placeholders": {}
+    },
+    "sessionScheduledToast": "Session scheduled",
+    "@sessionScheduledToast": {
+        "type": "String",
+        "description": "Confirms creation, past tense of the action.",
+        "placeholders": {}
+    },
+    "mustBeInFuture": "Pick a time in the future.",
+    "@mustBeInFuture": {
+        "type": "String",
+        "description": "Validation message for a past date.",
+        "placeholders": {}
+    },
     "dash": "Dash",
     "@dash": {
         "type": "String",

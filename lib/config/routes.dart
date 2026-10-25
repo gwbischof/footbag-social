@@ -19,11 +19,14 @@ import 'package:footbag_network/pages/chat_permissions_settings/chat_permissions
 import 'package:footbag_network/pages/chat_search/chat_search_page.dart';
 import 'package:footbag_network/pages/dash/dash.dart';
 import 'package:footbag_network/pages/device_settings/device_settings.dart';
+import 'package:footbag_network/pages/favourites/favourites.dart';
 import 'package:footbag_network/pages/intro/intro_page_presenter.dart';
 import 'package:footbag_network/pages/invitation_selection/invitation_selection.dart';
 import 'package:footbag_network/pages/login/login.dart';
 import 'package:footbag_network/pages/new_group/new_group.dart';
 import 'package:footbag_network/pages/new_private_chat/new_private_chat.dart';
+import 'package:footbag_network/pages/new_session/new_session.dart';
+import 'package:footbag_network/pages/profile/profile.dart';
 import 'package:footbag_network/pages/report/report.dart';
 import 'package:footbag_network/pages/settings/settings.dart';
 import 'package:footbag_network/pages/settings_3pid/settings_3pid.dart';
@@ -36,6 +39,7 @@ import 'package:footbag_network/pages/settings_password/settings_password.dart';
 import 'package:footbag_network/pages/settings_security/settings_security.dart';
 import 'package:footbag_network/pages/settings_style/settings_style.dart';
 import 'package:footbag_network/pages/sign_in/sign_in_page.dart';
+import 'package:footbag_network/pages/trick_picker/trick_picker.dart';
 import 'package:footbag_network/widgets/config_viewer.dart';
 import 'package:footbag_network/widgets/layouts/empty_page.dart';
 import 'package:footbag_network/widgets/layouts/two_column_layout.dart';
@@ -195,6 +199,41 @@ abstract class AppRoutes {
                   defaultPageBuilder(context, state, const Dash()),
               redirect: loggedOutRedirect,
               routes: [
+                GoRoute(
+                  path: 'profile',
+                  pageBuilder: (context, state) =>
+                      defaultPageBuilder(context, state, const ProfilePage()),
+                  redirect: loggedOutRedirect,
+                ),
+                GoRoute(
+                  path: 'schedule',
+                  pageBuilder: (context, state) =>
+                      defaultPageBuilder(context, state, const NewSession()),
+                  redirect: loggedOutRedirect,
+                ),
+                GoRoute(
+                  path: 'favourites',
+                  pageBuilder: (context, state) =>
+                      defaultPageBuilder(context, state, const Favourites()),
+                  redirect: loggedOutRedirect,
+                  routes: [
+                    GoRoute(
+                      path: 'add',
+                      pageBuilder: (context, state) => defaultPageBuilder(
+                        context,
+                        state,
+                        // The picker is told what the player already has, so an
+                        // existing favourite reads as context rather than as an
+                        // option that would silently do nothing.
+                        TrickPicker(
+                          alreadyHave:
+                              (state.extra as Set<String>?) ?? const {},
+                        ),
+                      ),
+                      redirect: loggedOutRedirect,
+                    ),
+                  ],
+                ),
                 GoRoute(
                   path: ':sessionid/report',
                   // tryParse, and redirect on null: int.parse inside the

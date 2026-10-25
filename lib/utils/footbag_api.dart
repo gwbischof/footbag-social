@@ -52,6 +52,7 @@ extension FootbagApi on Client {
     String onFeed = 'public',
     bool broadcast = true,
     String note = '',
+    DateTime? scheduledAt,
   }) async => FootbagSession.fromJson(
     await _apiPostObject('sessions', {
       'name': ?name,
@@ -60,6 +61,9 @@ extension FootbagApi on Client {
       'on_feed': onFeed,
       'broadcast': broadcast,
       'note': note,
+      // The API takes AwareDatetime and refuses a naive one, so always send
+      // UTC with an offset rather than the device's wall clock.
+      'scheduled_at': ?scheduledAt?.toUtc().toIso8601String(),
     }),
   );
 
@@ -69,6 +73,47 @@ extension FootbagApi on Client {
 
   Future<FootbagSession> stopSession(int id) async =>
       FootbagSession.fromJson(await _apiPostObject('sessions/$id/stop', null));
+
+  /// Edit your own profile.
+  ///
+  /// PATCH semantics: anything left null is untouched, so a screen that edits
+  /// one switch cannot clobber fields it never showed. [city] is the exception
+  /// — pass an empty string to clear it, since null already means "unchanged".
+  Future<FootbagPlayer> updateMe({
+    String? displayName,
+    String? bio,
+    String? city,
+    List<String>? playStyles,
+    bool? discoverable,
+    bool? showSessions,
+  }) async => FootbagPlayer.fromJson(
+    await _apiPatchObject('me', {
+      'display_name': ?displayName,
+      'bio': ?bio,
+      'city': ?city,
+      'play_styles': ?playStyles,
+      'discoverable': ?discoverable,
+      'show_sessions': ?showSessions,
+    }),
+  );
+
+  /// Browse the trick dictionary.
+  ///
+  /// [query] searches nicknames as well as names, which matters because the
+  /// dictionary carries them — someone hunting "Atom Smasher" should find
+  /// Atomic Mirage.
+  Future<List<FootbagEntry>> fetchEntries({String? query, String? kind}) async {
+    final params = <String>[
+      if (query != null && query.isNotEmpty) 'q=${Uri.encodeQueryComponent(query)}',
+      if (kind != null) 'kind=$kind',
+    ];
+    final list = await _apiGetList(
+      params.isEmpty ? 'tricks' : 'tricks?${params.join('&')}',
+    );
+    return list
+        .map((e) => FootbagEntry.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
 
   /// The tricks this player is working on, in their own order.
   Future<List<FootbagFavourite>> fetchFavourites() async {
@@ -124,6 +169,13 @@ extension FootbagApi on Client {
     Map<String, dynamic> body,
   ) async =>
       jsonDecode((await _apiSend('PUT', path, body: body)).body) as List<dynamic>;
+
+  Future<Map<String, dynamic>> _apiPatchObject(
+    String path,
+    Map<String, dynamic> body,
+  ) async =>
+      jsonDecode((await _apiSend('PATCH', path, body: body)).body)
+          as Map<String, dynamic>;
 
   Future<Map<String, dynamic>> _apiPutObject(
     String path,
@@ -506,5 +558,54 @@ class FootbagReport {
         .map((e) => FootbagReportEntry.fromJson(e as Map<String, dynamic>))
         .toList(),
     firsts: (json['firsts'] as List? ?? const []).cast<String>(),
+  );
+}
+
+/// The four play-style disciplines.
+///
+/// Deliberately the same four words as four of the five session types: the doc
+/// requires one vocabulary in both places so "freestyle players near me" and
+/// "freestyle sessions near me" hit the same enum. Casual is the fifth session
+/// type and has no chip, because it is not a discipline.
+enum FootbagDiscipline {
+  kicking,
+  freestyle,
+  net,
+  stitching;
+
+  String get wire => name;
+}
+
+/// A dictionary entry: a trick, a composite, or a string.
+class FootbagEntry {
+  final String slug;
+  final String name;
+
+  /// `trick`, `composite` or `string`.
+  final String kind;
+  final String description;
+
+  /// Nicknames. The dictionary carries 94 of them, so they are worth showing.
+  final List<String> aka;
+
+  /// The breakdown, e.g. `['dex', 'dex', 'del']`.
+  final List<String> adds;
+
+  const FootbagEntry({
+    required this.slug,
+    required this.name,
+    required this.kind,
+    required this.description,
+    required this.aka,
+    required this.adds,
+  });
+
+  factory FootbagEntry.fromJson(Map<String, dynamic> json) => FootbagEntry(
+    slug: json['slug'] as String,
+    name: json['name'] as String,
+    kind: json['kind'] as String,
+    description: json['description'] as String? ?? '',
+    aka: (json['aka'] as List? ?? const []).cast<String>(),
+    adds: (json['adds'] as List? ?? const []).cast<String>(),
   );
 }

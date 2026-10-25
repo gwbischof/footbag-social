@@ -9,6 +9,7 @@ import 'package:footbag_network/pages/report/report.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
 import 'package:footbag_network/utils/localized_exception_extension.dart';
 import 'package:footbag_network/widgets/layouts/max_width_body.dart';
+import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// Reporting a session: a scorecard, one trick per block.
@@ -135,6 +136,17 @@ class ReportView extends StatelessWidget {
                   l10n.noFavouritesYetBody,
                   textAlign: TextAlign.center,
                   style: Nyfa.bodyMuted,
+                ),
+                const SizedBox(height: 20),
+                // This screen is exactly where someone finds out they need
+                // favourites, so it is where the way to add them belongs.
+                NyfaForm.action(
+                  key: const Key('ReportAddTricksButton'),
+                  label: l10n.addTrick,
+                  onPressed: () async {
+                    await context.push('/rooms/dash/favourites');
+                    await controller.load();
+                  },
                 ),
               ],
             ),
