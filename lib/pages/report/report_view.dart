@@ -164,6 +164,39 @@ class ReportView extends StatelessWidget {
 
         const Divider(height: 36, thickness: 1, color: Nyfa.rule),
 
+        // Consecutive kicks sits apart from the ladder because it names no
+        // trick. For a kicking session it is the entire report, which is why
+        // it is not buried among the favourites.
+        Padding(
+          padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+          child: Row(
+            spacing: 14,
+            children: [
+              SizedBox(
+                width: 118,
+                child: TextField(
+                  key: const Key('KicksField'),
+                  controller: controller.kicksController,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  onChanged: (_) => controller.onKicksChanged(),
+                  style: Nyfa.bodyText,
+                  cursorColor: Nyfa.green,
+                  decoration: Nyfa.input(l10n.consecutiveKicks),
+                ),
+              ),
+              Expanded(
+                child: Text(
+                  l10n.consecutiveKicksHelp,
+                  style: Nyfa.bodyMuted.copyWith(fontSize: 12),
+                ),
+              ),
+            ],
+          ),
+        ),
+
+        const SizedBox(height: 26),
+
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: TextField(

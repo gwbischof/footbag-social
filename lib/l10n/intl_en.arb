@@ -2213,6 +2213,18 @@
         "description": "Explains a rejected token on a full-screen error state, where there is room to say more than the snackbar can.",
         "placeholders": {}
     },
+    "consecutiveKicks": "Consecutive kicks",
+    "@consecutiveKicks": {
+        "type": "String",
+        "description": "A count with no trick attached -- the whole of a kicking session. The community's own term.",
+        "placeholders": {}
+    },
+    "consecutiveKicksHelp": "Your best run this session. Leave it empty if you weren't counting.",
+    "@consecutiveKicksHelp": {
+        "type": "String",
+        "description": "Says the number is a personal best for the session and that skipping it is fine.",
+        "placeholders": {}
+    },
     "dash": "Dash",
     "@dash": {
         "type": "String",

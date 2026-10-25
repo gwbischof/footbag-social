@@ -456,27 +456,44 @@ class FootbagFavourite {
 /// carries neither and is not a first. That asymmetry is deliberate: a player
 /// who only wants to say "worked on this" should not have to invent a number.
 class FootbagReportEntryInput {
-  final String entrySlug;
+  /// `entry` names a trick; `kicks` is a bare consecutive-kick count.
+  ///
+  /// Two of the doc's three kinds point at nothing in the dictionary, which is
+  /// the whole of a kicking session — so the slug is nullable and the kind
+  /// says which shape this row is.
+  final String kind;
+  final String? entrySlug;
   final FootbagGrade? grade;
   final int? count;
   final bool isFirst;
 
   const FootbagReportEntryInput({
-    required this.entrySlug,
+    this.kind = 'entry',
+    this.entrySlug,
     this.grade,
     this.count,
     this.isFirst = false,
   });
+
+  /// A consecutive-kick count, which names no trick.
+  const FootbagReportEntryInput.kicks(this.count)
+    : kind = 'kicks',
+      entrySlug = null,
+      grade = null,
+      isFirst = false;
 
   /// Whether this entry claims anything at all.
   ///
   /// Checked client-side so an untouched trick is simply left out of the
   /// request rather than sent and refused — the server's constraint is the
   /// backstop, not the user interface.
-  bool get saysSomething => grade != null || count != null || isFirst;
+  bool get saysSomething => kind == 'kicks'
+      ? count != null
+      : (grade != null || count != null || isFirst);
 
   Map<String, dynamic> toJson() => {
-    'entry_slug': entrySlug,
+    'kind': kind,
+    'entry_slug': ?entrySlug,
     'grade': ?grade?.wire,
     'count': ?count,
     'is_first': isFirst,
@@ -489,6 +506,7 @@ class FootbagReportEntryInput {
     bool clearCount = false,
     bool? isFirst,
   }) => FootbagReportEntryInput(
+    kind: kind,
     entrySlug: entrySlug,
     grade: clearGrade ? null : (grade ?? this.grade),
     count: clearCount ? null : (count ?? this.count),
@@ -498,13 +516,15 @@ class FootbagReportEntryInput {
 
 /// One trick in a filed report.
 class FootbagReportEntry {
-  final String entrySlug;
-  final String name;
+  final String kind;
+  final String? entrySlug;
+  final String? name;
   final FootbagGrade? grade;
   final int? count;
   final bool isFirst;
 
   const FootbagReportEntry({
+    required this.kind,
     required this.entrySlug,
     required this.name,
     required this.grade,
@@ -514,14 +534,16 @@ class FootbagReportEntry {
 
   factory FootbagReportEntry.fromJson(Map<String, dynamic> json) =>
       FootbagReportEntry(
-        entrySlug: json['entry_slug'] as String,
-        name: json['name'] as String,
+        kind: json['kind'] as String? ?? 'entry',
+        entrySlug: json['entry_slug'] as String?,
+        name: json['name'] as String?,
         grade: FootbagGrade.fromWire(json['grade']),
         count: json['count'] as int?,
         isFirst: json['is_first'] as bool? ?? false,
       );
 
   FootbagReportEntryInput toInput() => FootbagReportEntryInput(
+    kind: kind,
     entrySlug: entrySlug,
     grade: grade,
     count: count,

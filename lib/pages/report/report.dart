@@ -54,6 +54,9 @@ class ReportController extends State<Report> {
   bool get hasUnsavedWork =>
       claimed.isNotEmpty || commentController.text.trim().isNotEmpty;
 
+  /// Redraw when the kicks box changes, so the unsaved-work guard sees it.
+  void onKicksChanged() => setState(() {});
+
   /// Working state, keyed by slug. A trick with no entry here is one the player
   /// has not touched, and is left out of the request entirely rather than sent
   /// as an empty claim.
@@ -69,6 +72,13 @@ class ReportController extends State<Report> {
   final Map<String, TextEditingController> _countControllers = {};
 
   final commentController = TextEditingController();
+
+  /// Consecutive kicks: a number with no trick attached.
+  ///
+  /// Separate from [_entries], which is keyed by slug, because this row has no
+  /// slug to key it by — that is exactly what the `kicks` kind is for.
+  final kicksController = TextEditingController();
+
   bool includeNumbers = true;
 
   FootbagReportEntryInput? entryFor(String slug) => _entries[slug];
@@ -76,9 +86,19 @@ class ReportController extends State<Report> {
   TextEditingController countControllerFor(String slug) =>
       _countControllers.putIfAbsent(slug, TextEditingController.new);
 
-  /// The tricks that will actually be filed.
-  List<FootbagReportEntryInput> get claimed =>
-      _entries.values.where((e) => e.saysSomething).toList();
+  int? get kicks {
+    final raw = kicksController.text.trim();
+    return raw.isEmpty ? null : int.tryParse(raw);
+  }
+
+  /// The rows that will actually be filed.
+  List<FootbagReportEntryInput> get claimed {
+    final k = kicks;
+    return [
+      if (k != null) FootbagReportEntryInput.kicks(k),
+      ..._entries.values.where((e) => e.saysSomething),
+    ];
+  }
 
   @override
   void initState() {
@@ -91,6 +111,7 @@ class ReportController extends State<Report> {
     for (final controller in _countControllers.values) {
       controller.dispose();
     }
+    kicksController.dispose();
     commentController.dispose();
     super.dispose();
   }
@@ -123,10 +144,16 @@ class ReportController extends State<Report> {
           _entries
             ..clear()
             ..addEntries(
-              existing.entries.map((e) => MapEntry(e.entrySlug, e.toInput())),
+              existing.entries
+                  .where((e) => e.entrySlug != null)
+                  .map((e) => MapEntry(e.entrySlug!, e.toInput())),
             );
           for (final e in existing.entries) {
-            countControllerFor(e.entrySlug).text = e.count?.toString() ?? '';
+            if (e.kind == 'kicks') {
+              kicksController.text = e.count?.toString() ?? '';
+            } else if (e.entrySlug != null) {
+              countControllerFor(e.entrySlug!).text = e.count?.toString() ?? '';
+            }
           }
           commentController.text = existing.comment;
           includeNumbers = existing.includeNumbers;
