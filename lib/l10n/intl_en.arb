@@ -2291,6 +2291,102 @@
         "description": "Marks a session that is live.",
         "placeholders": {}
     },
+    "rankings": "Rankings",
+    "@rankings": {
+        "type": "String",
+        "description": "Leaderboard screen title.",
+        "placeholders": {}
+    },
+    "metricPlayTime": "Play time",
+    "@metricPlayTime": {
+        "type": "String",
+        "description": "Ranked metric: total time played.",
+        "placeholders": {}
+    },
+    "metricSessions": "Sessions",
+    "@metricSessions": {
+        "type": "String",
+        "description": "Ranked metric: number of sessions.",
+        "placeholders": {}
+    },
+    "metricDays": "Days played",
+    "@metricDays": {
+        "type": "String",
+        "description": "Ranked metric: distinct days with a session. Avoids the word 'streak', which the community uses far less than 'every day'.",
+        "placeholders": {}
+    },
+    "windowWeek": "Week",
+    "@windowWeek": {
+        "type": "String",
+        "description": "Time window for rankings.",
+        "placeholders": {}
+    },
+    "windowMonth": "Month",
+    "@windowMonth": {
+        "type": "String",
+        "description": "Time window for rankings.",
+        "placeholders": {}
+    },
+    "windowYear": "Year",
+    "@windowYear": {
+        "type": "String",
+        "description": "Time window for rankings.",
+        "placeholders": {}
+    },
+    "windowAll": "All time",
+    "@windowAll": {
+        "type": "String",
+        "description": "Time window for rankings.",
+        "placeholders": {}
+    },
+    "whyNotRanked": "Why isn't everything ranked?",
+    "@whyNotRanked": {
+        "type": "String",
+        "description": "Opens the explanation of unranked metrics.",
+        "placeholders": {}
+    },
+    "whyNotRankedBody": "Only numbers someone else can vouch for are ranked: time on the clock, sessions, days played. Kick counts and tricks landed are yours alone to report, so they stay on your profile \u2014 a leaderboard built on them would just reward inflating them.",
+    "@whyNotRankedBody": {
+        "type": "String",
+        "description": "The doc's data-integrity reasoning, said plainly to players.",
+        "placeholders": {}
+    },
+    "noRankingsYet": "Nothing to rank yet",
+    "@noRankingsYet": {
+        "type": "String",
+        "description": "Empty leaderboard.",
+        "placeholders": {}
+    },
+    "noRankingsYetBody": "Log a session and you'll be on the board. With few players, that's a short climb.",
+    "@noRankingsYetBody": {
+        "type": "String",
+        "description": "Turns an empty leaderboard into an invitation rather than a dead end.",
+        "placeholders": {}
+    },
+    "yourPractice": "Your practice",
+    "@yourPractice": {
+        "type": "String",
+        "description": "Heading over the heatmap.",
+        "placeholders": {}
+    },
+    "yourPracticeBody": "Only you can see this.",
+    "@yourPracticeBody": {
+        "type": "String",
+        "description": "States the privacy position plainly, because a daily grid looks like something others might see.",
+        "placeholders": {}
+    },
+    "noPracticeYet": "No sessions logged yet",
+    "@noPracticeYet": {
+        "type": "String",
+        "description": "Empty heatmap.",
+        "placeholders": {}
+    },
+    "youLabel": "You",
+    "@youLabel": {
+        "type": "String",
+        "description": "Marks the signed-in player's own row in a ranking.",
+        "placeholders": {}
+    },
     "dash": "Dash",
     "@dash": {
         "type": "String",

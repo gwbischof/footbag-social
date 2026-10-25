@@ -80,8 +80,10 @@ class DashView extends StatelessWidget {
 
     return ListView(
       physics: const AlwaysScrollableScrollPhysics(),
-      padding: const EdgeInsets.only(bottom: 32),
+      padding: const EdgeInsets.only(top: 16, bottom: 32),
       children: [
+        const _Shortcuts(),
+
         if (running != null)
           _Scoreboard(controller: controller, session: running)
         else
@@ -148,19 +150,11 @@ class _DashBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         ],
       ),
+      // One action only. Four icons beside the wordmark overflowed at phone
+      // width and cut the avatar off the screen; the rest moved into the body
+      // as labelled chips, which are both roomier and easier to recognise than
+      // a row of glyphs.
       actions: [
-        IconButton(
-          key: const Key('DashFavouritesButton'),
-          tooltip: l10n.favourites,
-          onPressed: () => context.push('/rooms/dash/favourites'),
-          icon: const Icon(Icons.star_outline_rounded, color: Nyfa.paper),
-        ),
-        IconButton(
-          key: const Key('DashScheduleButton'),
-          tooltip: l10n.scheduleSession,
-          onPressed: () => context.push('/rooms/dash/schedule'),
-          icon: const Icon(Icons.calendar_today_outlined, color: Nyfa.paper, size: 20),
-        ),
         Padding(
           padding: const EdgeInsets.only(right: 16),
           child: IconButton(
@@ -197,6 +191,79 @@ class _DashBar extends StatelessWidget implements PreferredSizeWidget {
     // of an avatar until real ones exist.
     final local = id.startsWith('@') ? id.substring(1) : id;
     return local.isEmpty ? '?' : local.characters.first.toUpperCase();
+  }
+}
+
+/// The rest of the app, named rather than drawn as icons.
+///
+/// These were app bar actions until four of them ran off the side of a phone.
+/// Labels also solve the problem icons have here: a star, a calendar and a bar
+/// chart are not obviously favourites, scheduling and rankings until you have
+/// tapped each one once.
+class _Shortcuts extends StatelessWidget {
+  const _Shortcuts();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = L10n.of(context);
+    return SizedBox(
+      height: 44,
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+        children: [
+          for (final s in <({String key, String label, IconData icon, String path})>[
+            (
+              key: 'DashFavouritesButton',
+              label: l10n.favourites,
+              icon: Icons.star_outline_rounded,
+              path: '/rooms/dash/favourites',
+            ),
+            (
+              key: 'DashScheduleButton',
+              label: l10n.scheduleSession,
+              icon: Icons.calendar_today_outlined,
+              path: '/rooms/dash/schedule',
+            ),
+            (
+              key: 'DashRankingsButton',
+              label: l10n.rankings,
+              icon: Icons.leaderboard_outlined,
+              path: '/rooms/dash/rankings',
+            ),
+          ])
+            Padding(
+              padding: const EdgeInsets.only(right: 8),
+              child: InkWell(
+                key: Key(s.key),
+                onTap: () => context.push(s.path),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 14),
+                  decoration: BoxDecoration(border: Border.all(color: Nyfa.rule)),
+                  child: Center(
+                    widthFactor: 1,
+                    child: Row(
+                      children: [
+                        Icon(s.icon, size: 16, color: Nyfa.muted),
+                        const SizedBox(width: 7),
+                        Text(
+                          s.label.toUpperCase(),
+                          style: const TextStyle(
+                            fontFamily: Nyfa.display,
+                            fontSize: 16,
+                            letterSpacing: 0.8,
+                            color: Nyfa.paper,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
   }
 }
 

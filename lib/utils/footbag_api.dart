@@ -127,6 +127,28 @@ extension FootbagApi on Client {
         .toList();
   }
 
+  /// The leaderboard.
+  ///
+  /// Only corroborated metrics exist: play time, sessions and days played.
+  /// Consecutive kicks and tricks landed are deliberately unrankable.
+  Future<List<FootbagRanking>> fetchRankings({
+    String metric = 'play_time',
+    String window = 'month',
+  }) async {
+    final list = await _apiGetList('rankings?metric=$metric&window=$window');
+    return list
+        .map((e) => FootbagRanking.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
+  /// Your own practice calendar. Days with nothing are absent, not zero.
+  Future<List<FootbagHeatmapDay>> fetchHeatmap({int days = 147}) async {
+    final list = await _apiGetList('me/heatmap?days=$days');
+    return list
+        .map((e) => FootbagHeatmapDay.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
   /// Browse the trick dictionary.
   ///
   /// [query] searches nicknames as well as names, which matters because the
@@ -660,4 +682,57 @@ class FootbagEntry {
     aka: (json['aka'] as List? ?? const []).cast<String>(),
     adds: (json['adds'] as List? ?? const []).cast<String>(),
   );
+}
+
+/// One line of a leaderboard.
+class FootbagRanking {
+  final int position;
+  final String userId;
+  final String displayName;
+  final String? city;
+
+  /// Seconds for play time, a plain count for the others. The caller asked for
+  /// a metric, so it already knows which.
+  final int value;
+  final bool isYou;
+
+  const FootbagRanking({
+    required this.position,
+    required this.userId,
+    required this.displayName,
+    required this.city,
+    required this.value,
+    required this.isYou,
+  });
+
+  factory FootbagRanking.fromJson(Map<String, dynamic> json) => FootbagRanking(
+    position: json['position'] as int,
+    userId: json['user_id'] as String,
+    displayName: json['display_name'] as String,
+    city: json['city'] as String?,
+    value: json['value'] as int,
+    isYou: json['is_you'] as bool? ?? false,
+  );
+}
+
+/// One day of practice.
+class FootbagHeatmapDay {
+  final DateTime day;
+  final int seconds;
+  final int sessions;
+
+  const FootbagHeatmapDay({
+    required this.day,
+    required this.seconds,
+    required this.sessions,
+  });
+
+  factory FootbagHeatmapDay.fromJson(Map<String, dynamic> json) =>
+      FootbagHeatmapDay(
+        // A bare date, so no zone conversion: 2026-10-25 is that calendar day
+        // wherever you read it, and toLocal() could shift it to the 24th.
+        day: DateTime.parse(json['day'] as String),
+        seconds: json['seconds'] as int,
+        sessions: json['sessions'] as int,
+      );
 }

@@ -40,12 +40,13 @@ class _Gallery extends StatelessWidget {
     // Driven by the URL so a headless screenshot can capture each screen
     // without needing to click a tab.
     final want = Uri.base.queryParameters['screen'];
-    final index = const ['dash', 'profile', 'favourites', 'schedule', 'discover']
-        .indexOf(want ?? 'dash');
+    final index = const [
+      'dash', 'profile', 'favourites', 'schedule', 'discover', 'rankings',
+    ].indexOf(want ?? 'dash');
 
     return DefaultTabController(
       initialIndex: index < 0 ? 0 : index,
-      length: 5,
+      length: 6,
       child: Scaffold(
         backgroundColor: Nyfa.ground,
         appBar: TabBar(
@@ -59,6 +60,7 @@ class _Gallery extends StatelessWidget {
             Tab(text: 'FAVOURITES'),
             Tab(text: 'SCHEDULE'),
             Tab(text: 'DISCOVER'),
+            Tab(text: 'RANKINGS'),
           ],
         ),
         body: TabBarView(
@@ -68,6 +70,7 @@ class _Gallery extends StatelessWidget {
             _FavouritesPreview(l10n: l10n),
             _SchedulePreview(l10n: l10n),
             _DiscoverPreview(l10n: l10n),
+            _RankingsPreview(l10n: l10n),
           ],
         ),
       ),
@@ -415,6 +418,174 @@ class _DiscoverPreview extends StatelessWidget {
   );
 }
 
+class _RankingsPreview extends StatelessWidget {
+  final L10n l10n;
+  const _RankingsPreview({required this.l10n});
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+    backgroundColor: Nyfa.ground,
+    appBar: Nyfa.appBar(title: l10n.rankings),
+    body: ListView(
+      children: [
+        const SizedBox(height: 14),
+        _chipRow([
+          (l10n.metricPlayTime, true),
+          (l10n.metricSessions, false),
+          (l10n.metricDays, false),
+        ]),
+        const SizedBox(height: 10),
+        _chipRow([
+          (l10n.windowWeek, false),
+          (l10n.windowMonth, true),
+          (l10n.windowYear, false),
+          (l10n.windowAll, false),
+        ]),
+        const SizedBox(height: 18),
+        for (final r in [
+          (1, 'Maya', '12H 40M', false),
+          (2, 'Theo', '9H 05M', false),
+          (3, 'Garrett', '7H 22M', true),
+          (4, 'Lena', '4H 10M', false),
+        ])
+          DecoratedBox(
+            decoration: BoxDecoration(
+              color: r.$4 ? Nyfa.raised : Colors.transparent,
+              border: const Border(top: BorderSide(color: Nyfa.rule)),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: 34,
+                    child: Text(
+                      '${r.$1}',
+                      style: TextStyle(
+                        fontFamily: Nyfa.display,
+                        fontSize: 20,
+                        color: r.$1 <= 3 ? Nyfa.green : Nyfa.muted,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Text(
+                          r.$2.toUpperCase(),
+                          style: Nyfa.heading.copyWith(fontSize: 17),
+                        ),
+                        if (r.$4) ...[
+                          const SizedBox(width: 8),
+                          Text(
+                            l10n.youLabel.toUpperCase(),
+                            style: Nyfa.eyebrow.copyWith(
+                              color: Nyfa.green,
+                              fontSize: 13,
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                  Text(
+                    r.$3,
+                    style: const TextStyle(
+                      fontFamily: Nyfa.display,
+                      color: Nyfa.paper,
+                      fontSize: 19,
+                      letterSpacing: 0.8,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
+          child: Text(l10n.whyNotRanked.toUpperCase(), style: Nyfa.eyebrow),
+        ),
+        const Divider(height: 34, thickness: 1, color: Nyfa.rule),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(20, 0, 20, 4),
+          child: Text(l10n.yourPractice.toUpperCase(), style: Nyfa.eyebrow),
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(20, 0, 20, 12),
+          child: Text(
+            l10n.yourPracticeBody,
+            style: Nyfa.bodyMuted.copyWith(fontSize: 12),
+          ),
+        ),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              for (var w = 0; w < 21; w++)
+                Padding(
+                  padding: const EdgeInsets.only(right: 3),
+                  child: Column(
+                    children: [
+                      for (var d = 0; d < 7; d++)
+                        Container(
+                          width: 13,
+                          height: 13,
+                          margin: const EdgeInsets.only(bottom: 3),
+                          decoration: BoxDecoration(
+                            color: const [
+                              Nyfa.raised,
+                              Color(0xFF2F4A12),
+                              Color(0xFF6E9A1E),
+                              Nyfa.green,
+                            ][(w * 7 + d * 3) % 4],
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
+
+  Widget _chipRow(List<(String, bool)> options) => SizedBox(
+    height: 44,
+    child: ListView(
+      scrollDirection: Axis.horizontal,
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      children: [
+        for (final o in options)
+          Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              decoration: BoxDecoration(
+                color: o.$2 ? Nyfa.green : Colors.transparent,
+                border: Border.all(color: o.$2 ? Nyfa.green : Nyfa.rule),
+              ),
+              child: Center(
+                widthFactor: 1,
+                child: Text(
+                  o.$1.toUpperCase(),
+                  style: TextStyle(
+                    fontFamily: Nyfa.display,
+                    fontSize: 16,
+                    letterSpacing: 0.8,
+                    color: o.$2 ? Nyfa.ground : Nyfa.paper,
+                  ),
+                ),
+              ),
+            ),
+          ),
+      ],
+    ),
+  );
+}
+
 class _FakePicker extends StatelessWidget {
   final String label;
   final String value;
@@ -499,7 +670,49 @@ class _PreviewScaffold extends StatelessWidget {
       ),
       bottomNavigationBar: const FootbagNavBar(current: FootbagTab.dash),
       body: ListView(
+        padding: const EdgeInsets.only(top: 16),
         children: [
+          SizedBox(
+            height: 44,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              children: [
+                for (final s in [
+                  (l10n.favourites, Icons.star_outline_rounded),
+                  (l10n.scheduleSession, Icons.calendar_today_outlined),
+                  (l10n.rankings, Icons.leaderboard_outlined),
+                ])
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 14),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Nyfa.rule),
+                      ),
+                      child: Center(
+                        widthFactor: 1,
+                        child: Row(
+                          children: [
+                            Icon(s.$2, size: 16, color: Nyfa.muted),
+                            const SizedBox(width: 7),
+                            Text(
+                              s.$1.toUpperCase(),
+                              style: const TextStyle(
+                                fontFamily: Nyfa.display,
+                                fontSize: 16,
+                                letterSpacing: 0.8,
+                                color: Nyfa.paper,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
           // The running scoreboard.
           Container(
             margin: const EdgeInsets.fromLTRB(20, 20, 20, 4),

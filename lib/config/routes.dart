@@ -28,6 +28,7 @@ import 'package:footbag_network/pages/new_group/new_group.dart';
 import 'package:footbag_network/pages/new_private_chat/new_private_chat.dart';
 import 'package:footbag_network/pages/new_session/new_session.dart';
 import 'package:footbag_network/pages/profile/profile.dart';
+import 'package:footbag_network/pages/rankings/rankings.dart';
 import 'package:footbag_network/pages/report/report.dart';
 import 'package:footbag_network/pages/settings/settings.dart';
 import 'package:footbag_network/pages/settings_3pid/settings_3pid.dart';
@@ -214,6 +215,12 @@ abstract class AppRoutes {
                   defaultPageBuilder(context, state, const Dash()),
               redirect: loggedOutRedirect,
               routes: [
+                GoRoute(
+                  path: 'rankings',
+                  pageBuilder: (context, state) =>
+                      defaultPageBuilder(context, state, const Rankings()),
+                  redirect: loggedOutRedirect,
+                ),
                 GoRoute(
                   path: 'profile',
                   pageBuilder: (context, state) =>
