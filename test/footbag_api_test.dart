@@ -2,12 +2,12 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-/// The Footbag API client.
-///
-/// These cover the seam between the app and our own API — the one thing the
-/// fork had never exercised. The transport is faked through
-/// [prepareTestClient]'s `httpClient` parameter, so nothing here touches the
-/// network or needs an API running.
+// The Footbag API client.
+//
+// These cover the seam between the app and our own API — the one thing the
+// fork had never exercised. The transport is faked through
+// [prepareTestClient]'s `httpClient` parameter, so nothing here touches the
+// network or needs an API running.
 
 import 'dart:convert';
 
@@ -20,8 +20,8 @@ import 'package:matrix/matrix.dart';
 
 import 'utils/test_client.dart';
 
-/// Captures what the client sent, so the auth header can be asserted rather
-/// than assumed.
+// Captures what the client sent, so the auth header can be asserted rather
+// than assumed.
 class _Recorder {
   http.BaseRequest? last;
 }
