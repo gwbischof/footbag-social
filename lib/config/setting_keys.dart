@@ -99,6 +99,14 @@ enum AppSettings<T> {
     'com.footbagnetwork.preset_homeserver',
     'footbagsocial.com',
   ),
+  // The Footbag API -- sessions, reports, clubs, the trick dictionary.
+  // Separate from the homeserver on purpose: Matrix carries the chat, this
+  // carries the product, and neither can take the other down. Overridable
+  // through config.json so a local build can point at a local API.
+  footbagApiUrl<String>(
+    'com.footbagnetwork.footbag_api_url',
+    'https://api.footbagsocial.com',
+  ),
   welcomeText<String>('com.footbagnetwork.welcome_text', ''),
   website<String>(
     'com.footbagnetwork.website_url',

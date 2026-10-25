@@ -6,6 +6,7 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:http/http.dart' as http;
 import 'package:footbag_network/config/setting_keys.dart';
 import 'package:matrix/encryption/utils/key_verification.dart';
 import 'package:matrix/matrix.dart';
@@ -20,10 +21,18 @@ const pickledOlmAccount =
 
 class _FakeNotifications extends FlutterLocalNotificationsPlatform {}
 
+/// A [Client] wired for tests.
+///
+/// [httpClient] overrides the transport. The default, [FakeMatrixApi], answers
+/// Matrix endpoints from fixtures and nothing else, which is right for tests
+/// about chat. Tests about the Footbag API pass their own — the API layer is an
+/// extension on [Client] and goes through `client.httpClient`, so this one
+/// parameter is the whole seam for faking it. No live API, no network.
 Future<Client> prepareTestClient({
   bool loggedIn = false,
   Uri? homeserver,
   String id = 'Footbag Network Widget Test',
+  http.Client? httpClient,
 }) async {
   await setUpVodozemac();
   SharedPreferences.setMockInitialValues({});
@@ -33,7 +42,7 @@ Future<Client> prepareTestClient({
   homeserver ??= Uri.parse('https://fakeserver.notexisting');
   final client = Client(
     'Footbag Network Widget Tests',
-    httpClient: FakeMatrixApi(),
+    httpClient: httpClient ?? FakeMatrixApi(),
     verificationMethods: {
       KeyVerificationMethod.numbers,
       KeyVerificationMethod.emoji,
