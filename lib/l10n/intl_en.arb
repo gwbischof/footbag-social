@@ -1687,7 +1687,25 @@
         "type": "String",
         "placeholders": {}
     },
-    "accountAwaitingApproval": "Thanks for signing up. A moderator needs to approve your account before you can sign in — we'll be in touch.",
+    "continueWithGoogle": "Continue with Google",
+    "@continueWithGoogle": {
+        "type": "String",
+        "description": "Label on the Google sign-in button. 'Continue' rather than 'Sign in' because the same button both creates an account and signs an existing one in.",
+        "placeholders": {}
+    },
+    "newAccountsAreApproved": "New here? Signing in creates an account. A moderator approves new members before they can join in.",
+    "@newAccountsAreApproved": {
+        "type": "String",
+        "description": "Shown under the sign-in button, before the user clicks, so the approval step is an expectation rather than a surprise.",
+        "placeholders": {}
+    },
+    "signingIn": "Signing you in…",
+    "@signingIn": {
+        "type": "String",
+        "description": "Shown while the sign-in round trip completes.",
+        "placeholders": {}
+    },
+    "accountAwaitingApproval": "You're on the list. A moderator approves new members before they can join in — try signing in again in a little while.",
     "@accountAwaitingApproval": {
         "type": "String",
         "description": "Shown when the homeserver rejects a login because the account has not yet been approved by an admin (MSC3866).",

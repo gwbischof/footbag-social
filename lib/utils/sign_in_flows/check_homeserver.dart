@@ -41,7 +41,13 @@ Future<void> connectToHomeserverFlow(
     final regLink = homeserverData.regLink;
     final supportsSso = loginFlows.any((flow) => flow.type == 'm.login.sso');
 
-    if ((kIsWeb || PlatformInfos.isLinux) &&
+    // This dialog warns that you are about to hand credentials to a server you
+    // typed in yourself. With a preset homeserver there is nothing to warn
+    // about: the app only ever talks to ours, the picker is unreachable, and
+    // the prompt names a host the user never chose and cannot change. It stays
+    // for any build that lets you pick a server.
+    if (AppSettings.presetHomeserver.value.isEmpty &&
+        (kIsWeb || PlatformInfos.isLinux) &&
         (supportsSso || authMetadata != null || (signUp && regLink != null))) {
       if (!context.mounted) return;
       final consent = await showOkCancelAlertDialog(

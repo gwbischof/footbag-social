@@ -36,8 +36,14 @@ Future<void> ssoLoginFlow(
           )
           .toList();
 
+  // Asking someone to choose from a list of one is a dialog that can only be
+  // answered one way. Our homeserver offers Google and nothing else, so the
+  // single provider is taken without a prompt; the picker is still there for
+  // a homeserver that really does offer a choice.
   final provider = ssoProviders == null
       ? null
+      : ssoProviders.length == 1
+      ? ssoProviders.single
       : await showModalActionPopup(
           context: context,
           title: L10n.of(context).logInTo(client.homeserver!.host),

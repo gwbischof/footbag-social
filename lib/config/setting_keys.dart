@@ -74,7 +74,7 @@ enum AppSettings<T> {
   // AppConfig-mirrored settings
   applicationName<String>(
     'com.footbagnetwork.application_name',
-    'Footbag Network',
+    'Footbag Social',
   ),
   // The apex, not chat.footbagsocial.com. The homeserver's server_name is the
   // apex and Synapse runs on the chat subdomain, so the client is given the
