@@ -1687,6 +1687,66 @@
         "type": "String",
         "placeholders": {}
     },
+    "signedOutAgain": "You've been signed out. Sign in again to keep going.",
+    "@signedOutAgain": {
+        "type": "String",
+        "description": "Shown when the API rejects the session token. The only failure a user can act on, and the action is specific -- which is why it is worded as an instruction rather than an apology.",
+        "placeholders": {}
+    },
+    "sessions": "Sessions",
+    "@sessions": {
+        "type": "String",
+        "description": "Title of the sessions screen. A session is a bout of playing footbag -- the primary object in the app.",
+        "placeholders": {}
+    },
+    "startSession": "Start session",
+    "@startSession": {
+        "type": "String",
+        "description": "Starts a session immediately. One tap, no form -- the server fills in the rest.",
+        "placeholders": {}
+    },
+    "stopSession": "Stop",
+    "@stopSession": {
+        "type": "String",
+        "description": "Ends the running session.",
+        "placeholders": {}
+    },
+    "sessionRunning": "Session running",
+    "@sessionRunning": {
+        "type": "String",
+        "description": "Label above the elapsed clock on the running session card.",
+        "placeholders": {}
+    },
+    "stillHere": "Yes, still here",
+    "@stillHere": {
+        "type": "String",
+        "description": "Confirms the player is still playing, which moves the instant the duration is counted to.",
+        "placeholders": {}
+    },
+    "checkInExplainer": "Checking in keeps the clock going. Miss it and the session stops on its own, counting only up to your last check-in -- so a forgotten session can't invent hours.",
+    "@checkInExplainer": {
+        "type": "String",
+        "description": "Explains why the check-in exists, under the running session card.",
+        "placeholders": {}
+    },
+    "pastSessions": "Past sessions",
+    "@pastSessions": {
+        "type": "String",
+        "description": "Heading above the list of finished sessions.",
+        "placeholders": {}
+    },
+    "noSessionsYet": "No sessions yet",
+    "@noSessionsYet": {
+        "type": "String",
+        "description": "Empty state title on the sessions screen.",
+        "placeholders": {}
+    },
+    "noSessionsYetBody": "Start one when you next play. Your training log is just the sessions you've played.",
+    "@noSessionsYetBody": {
+        "type": "String",
+        "description": "Empty state body. An empty screen is an invitation to act, not a report that there is nothing.",
+        "placeholders": {}
+    },
     "continueWithGoogle": "Continue with Google",
     "@continueWithGoogle": {
         "type": "String",

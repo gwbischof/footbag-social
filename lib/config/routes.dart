@@ -23,6 +23,7 @@ import 'package:footbag_network/pages/invitation_selection/invitation_selection.
 import 'package:footbag_network/pages/login/login.dart';
 import 'package:footbag_network/pages/new_group/new_group.dart';
 import 'package:footbag_network/pages/new_private_chat/new_private_chat.dart';
+import 'package:footbag_network/pages/sessions/sessions.dart';
 import 'package:footbag_network/pages/settings/settings.dart';
 import 'package:footbag_network/pages/settings_3pid/settings_3pid.dart';
 import 'package:footbag_network/pages/settings_chat/settings_chat.dart';
@@ -180,6 +181,17 @@ abstract class AppRoutes {
                   ),
           ),
           routes: [
+            // Sessions sits inside the logged-in shell, so it keeps the chat
+            // list beside it on wide screens. Registered before the ':roomid'
+            // catch-all further down, matching how 'archive' and 'newgroup'
+            // are ordered -- a literal that comes after a parameter is a
+            // route that silently becomes a room id.
+            GoRoute(
+              path: 'sessions',
+              pageBuilder: (context, state) =>
+                  defaultPageBuilder(context, state, const Sessions()),
+              redirect: loggedOutRedirect,
+            ),
             GoRoute(
               path: 'archive',
               pageBuilder: (context, state) =>
