@@ -1693,6 +1693,96 @@
         "description": "Shown when the API rejects the session token. The only failure a user can act on, and the action is specific -- which is why it is worded as an instruction rather than an apology.",
         "placeholders": {}
     },
+    "reportProgress": "Report progress",
+    "@reportProgress": {
+        "type": "String",
+        "description": "Title of the screen where a player records what they worked on in a session.",
+        "placeholders": {}
+    },
+    "save": "Save",
+    "@save": {
+        "type": "String",
+        "description": "Files the report.",
+        "placeholders": {}
+    },
+    "saving": "Saving\u2026",
+    "@saving": {
+        "type": "String",
+        "description": "Shown on the save button while the report is being filed.",
+        "placeholders": {}
+    },
+    "reportSaved": "Report saved",
+    "@reportSaved": {
+        "type": "String",
+        "description": "Confirms the report was filed. Same word as the button, past tense.",
+        "placeholders": {}
+    },
+    "howDidItGo": "How did it go?",
+    "@howDidItGo": {
+        "type": "String",
+        "description": "Label for the free-text comment on a session report.",
+        "placeholders": {}
+    },
+    "howMany": "How many",
+    "@howMany": {
+        "type": "String",
+        "description": "Label for the optional repetition count on a trick. Optional on purpose -- a player should not have to invent a number.",
+        "placeholders": {}
+    },
+    "firstTime": "First time!",
+    "@firstTime": {
+        "type": "String",
+        "description": "Marks a trick landed for the first time ever. The thing people most want recorded.",
+        "placeholders": {}
+    },
+    "includeMyNumbers": "Include my numbers",
+    "@includeMyNumbers": {
+        "type": "String",
+        "description": "Whether this report's counts may appear in shared totals.",
+        "placeholders": {}
+    },
+    "includeMyNumbersBody": "Your grades stay in your own log either way. This only controls whether your counts appear in shared totals.",
+    "@includeMyNumbersBody": {
+        "type": "String",
+        "description": "Explains exactly what the numbers toggle governs, so it is not mistaken for hiding the whole session.",
+        "placeholders": {}
+    },
+    "noFavouritesYet": "No tricks picked yet",
+    "@noFavouritesYet": {
+        "type": "String",
+        "description": "Empty state when a player has no favourites to grade.",
+        "placeholders": {}
+    },
+    "noFavouritesYetBody": "Pick the tricks you're working on and they'll show up here, ready to grade.",
+    "@noFavouritesYetBody": {
+        "type": "String",
+        "description": "Empty state body -- an invitation to act.",
+        "placeholders": {}
+    },
+    "gradeTried": "Tried",
+    "@gradeTried": {
+        "type": "String",
+        "description": "First rung: attempted it.",
+        "placeholders": {}
+    },
+    "gradeFooting": "Footing",
+    "@gradeFooting": {
+        "type": "String",
+        "description": "Second rung: getting a foot to the bag. The real first milestone on most tricks.",
+        "placeholders": {}
+    },
+    "gradeHitting": "Hitting",
+    "@gradeHitting": {
+        "type": "String",
+        "description": "Third rung: landing it.",
+        "placeholders": {}
+    },
+    "gradeConsistent": "Consistent",
+    "@gradeConsistent": {
+        "type": "String",
+        "description": "Fourth rung: landing it reliably.",
+        "placeholders": {}
+    },
     "sessions": "Sessions",
     "@sessions": {
         "type": "String",

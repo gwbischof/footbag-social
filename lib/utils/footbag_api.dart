@@ -70,6 +70,68 @@ extension FootbagApi on Client {
   Future<FootbagSession> stopSession(int id) async =>
       FootbagSession.fromJson(await _apiPostObject('sessions/$id/stop', null));
 
+  /// The tricks this player is working on, in their own order.
+  Future<List<FootbagFavourite>> fetchFavourites() async {
+    final list = await _apiGetList('me/favourites');
+    return list
+        .map((e) => FootbagFavourite.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
+  /// Replace the favourites list, in order.
+  ///
+  /// The whole list, not one trick at a time — reordering is the common edit,
+  /// and positions are unique per player, so an incremental update would have
+  /// to pass through a state the server rejects.
+  Future<List<FootbagFavourite>> setFavourites(List<String> entrySlugs) async {
+    final list = await _apiPutList('me/favourites', {'entry_slugs': entrySlugs});
+    return list
+        .map((e) => FootbagFavourite.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
+  /// The report for a session, or `null` if none has been filed.
+  ///
+  /// Absence is a normal state — most sessions are unreported until they end —
+  /// so it is a return value rather than an exception.
+  Future<FootbagReport?> fetchReport(int sessionId) async {
+    try {
+      return FootbagReport.fromJson(
+        await _apiGetObject('sessions/$sessionId/report'),
+      );
+    } on FootbagApiException catch (e) {
+      if (e.statusCode == 404) return null;
+      rethrow;
+    }
+  }
+
+  /// File or replace a session's report.
+  Future<FootbagReport> fileReport(
+    int sessionId, {
+    String comment = '',
+    bool includeNumbers = true,
+    List<FootbagReportEntryInput> entries = const [],
+  }) async => FootbagReport.fromJson(
+    await _apiPutObject('sessions/$sessionId/report', {
+      'comment': comment,
+      'include_numbers': includeNumbers,
+      'entries': entries.map((e) => e.toJson()).toList(),
+    }),
+  );
+
+  Future<List<dynamic>> _apiPutList(
+    String path,
+    Map<String, dynamic> body,
+  ) async =>
+      jsonDecode((await _apiSend('PUT', path, body: body)).body) as List<dynamic>;
+
+  Future<Map<String, dynamic>> _apiPutObject(
+    String path,
+    Map<String, dynamic> body,
+  ) async =>
+      jsonDecode((await _apiSend('PUT', path, body: body)).body)
+          as Map<String, dynamic>;
+
   Future<Map<String, dynamic>> _apiGetObject(String path) async =>
       jsonDecode((await _apiSend('GET', path)).body) as Map<String, dynamic>;
 
@@ -271,4 +333,154 @@ class FootbagSession {
     if (start == null) return Duration.zero;
     return (endedAt ?? DateTime.now()).difference(start);
   }
+}
+
+/// The four rungs of the ladder, in order.
+///
+/// A progression, not a set of labels, so the order is meaningful and
+/// [index] is the rung. "Footing" sits between trying and hitting because
+/// getting a foot on the bag is the real first milestone on most tricks.
+enum FootbagGrade {
+  tried,
+  footing,
+  hitting,
+  consistent;
+
+  /// The wire value. Matches the API's `grade` strings exactly.
+  String get wire => name;
+
+  static FootbagGrade? fromWire(Object? value) => value == null
+      ? null
+      : FootbagGrade.values.firstWhere((g) => g.wire == value);
+}
+
+/// A trick a player is working on.
+class FootbagFavourite {
+  final String entrySlug;
+  final String name;
+  final int position;
+
+  const FootbagFavourite({
+    required this.entrySlug,
+    required this.name,
+    required this.position,
+  });
+
+  factory FootbagFavourite.fromJson(Map<String, dynamic> json) =>
+      FootbagFavourite(
+        entrySlug: json['entry_slug'] as String,
+        name: json['name'] as String,
+        position: json['position'] as int,
+      );
+}
+
+/// One trick being reported on, as the client builds it.
+///
+/// Both [grade] and [count] are nullable, and the API rejects an entry that
+/// carries neither and is not a first. That asymmetry is deliberate: a player
+/// who only wants to say "worked on this" should not have to invent a number.
+class FootbagReportEntryInput {
+  final String entrySlug;
+  final FootbagGrade? grade;
+  final int? count;
+  final bool isFirst;
+
+  const FootbagReportEntryInput({
+    required this.entrySlug,
+    this.grade,
+    this.count,
+    this.isFirst = false,
+  });
+
+  /// Whether this entry claims anything at all.
+  ///
+  /// Checked client-side so an untouched trick is simply left out of the
+  /// request rather than sent and refused — the server's constraint is the
+  /// backstop, not the user interface.
+  bool get saysSomething => grade != null || count != null || isFirst;
+
+  Map<String, dynamic> toJson() => {
+    'entry_slug': entrySlug,
+    'grade': ?grade?.wire,
+    'count': ?count,
+    'is_first': isFirst,
+  };
+
+  FootbagReportEntryInput copyWith({
+    FootbagGrade? grade,
+    bool clearGrade = false,
+    int? count,
+    bool clearCount = false,
+    bool? isFirst,
+  }) => FootbagReportEntryInput(
+    entrySlug: entrySlug,
+    grade: clearGrade ? null : (grade ?? this.grade),
+    count: clearCount ? null : (count ?? this.count),
+    isFirst: isFirst ?? this.isFirst,
+  );
+}
+
+/// One trick in a filed report.
+class FootbagReportEntry {
+  final String entrySlug;
+  final String name;
+  final FootbagGrade? grade;
+  final int? count;
+  final bool isFirst;
+
+  const FootbagReportEntry({
+    required this.entrySlug,
+    required this.name,
+    required this.grade,
+    required this.count,
+    required this.isFirst,
+  });
+
+  factory FootbagReportEntry.fromJson(Map<String, dynamic> json) =>
+      FootbagReportEntry(
+        entrySlug: json['entry_slug'] as String,
+        name: json['name'] as String,
+        grade: FootbagGrade.fromWire(json['grade']),
+        count: json['count'] as int?,
+        isFirst: json['is_first'] as bool? ?? false,
+      );
+
+  FootbagReportEntryInput toInput() => FootbagReportEntryInput(
+    entrySlug: entrySlug,
+    grade: grade,
+    count: count,
+    isFirst: isFirst,
+  );
+}
+
+/// A filed report.
+class FootbagReport {
+  final int id;
+  final int sessionId;
+  final String comment;
+  final bool includeNumbers;
+  final List<FootbagReportEntry> entries;
+
+  /// The tricks landed for the first time. Derived by the server.
+  final List<String> firsts;
+
+  const FootbagReport({
+    required this.id,
+    required this.sessionId,
+    required this.comment,
+    required this.includeNumbers,
+    required this.entries,
+    required this.firsts,
+  });
+
+  factory FootbagReport.fromJson(Map<String, dynamic> json) => FootbagReport(
+    id: json['id'] as int,
+    sessionId: json['session_id'] as int,
+    comment: json['comment'] as String? ?? '',
+    includeNumbers: json['include_numbers'] as bool? ?? true,
+    entries: (json['entries'] as List? ?? const [])
+        .map((e) => FootbagReportEntry.fromJson(e as Map<String, dynamic>))
+        .toList(),
+    firsts: (json['firsts'] as List? ?? const []).cast<String>(),
+  );
 }

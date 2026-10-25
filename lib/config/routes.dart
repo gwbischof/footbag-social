@@ -23,6 +23,7 @@ import 'package:footbag_network/pages/invitation_selection/invitation_selection.
 import 'package:footbag_network/pages/login/login.dart';
 import 'package:footbag_network/pages/new_group/new_group.dart';
 import 'package:footbag_network/pages/new_private_chat/new_private_chat.dart';
+import 'package:footbag_network/pages/report/report.dart';
 import 'package:footbag_network/pages/sessions/sessions.dart';
 import 'package:footbag_network/pages/settings/settings.dart';
 import 'package:footbag_network/pages/settings_3pid/settings_3pid.dart';
@@ -191,6 +192,19 @@ abstract class AppRoutes {
               pageBuilder: (context, state) =>
                   defaultPageBuilder(context, state, const Sessions()),
               redirect: loggedOutRedirect,
+              routes: [
+                GoRoute(
+                  path: ':sessionid/report',
+                  pageBuilder: (context, state) => defaultPageBuilder(
+                    context,
+                    state,
+                    Report(
+                      sessionId: int.parse(state.pathParameters['sessionid']!),
+                    ),
+                  ),
+                  redirect: loggedOutRedirect,
+                ),
+              ],
             ),
             GoRoute(
               path: 'archive',

@@ -6,6 +6,7 @@ import 'package:footbag_network/l10n/l10n.dart';
 import 'package:footbag_network/pages/sessions/sessions.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
 import 'package:footbag_network/widgets/layouts/max_width_body.dart';
+import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
 class SessionsView extends StatelessWidget {
@@ -91,7 +92,9 @@ class SessionsView extends StatelessWidget {
               ),
             ),
           ),
-        ...past.map((s) => _PastTile(session: s)),
+        ...past.map(
+          (s) => _PastTile(session: s, onReload: controller.load),
+        ),
       ],
     );
   }
@@ -211,8 +214,9 @@ class _RunningCard extends StatelessWidget {
 
 class _PastTile extends StatelessWidget {
   final FootbagSession session;
+  final Future<void> Function() onReload;
 
-  const _PastTile({required this.session});
+  const _PastTile({required this.session, required this.onReload});
 
   @override
   Widget build(BuildContext context) {
@@ -220,6 +224,17 @@ class _PastTile extends StatelessWidget {
     final when = session.startedAt ?? session.scheduledAt;
 
     return ListTile(
+      key: Key('PastSession_${session.id}'),
+      // Reporting is the point of a finished session, so the whole row opens
+      // it rather than hiding it behind an icon.
+      onTap: () async {
+        final filed = await context.push<bool>(
+          '/rooms/sessions/${session.id}/report',
+        );
+        // Only reload when something was actually filed; backing out of the
+        // screen should not cost a request.
+        if (filed == true) await onReload();
+      },
       leading: CircleAvatar(
         backgroundColor: theme.colorScheme.surfaceContainerHighest,
         child: Icon(
