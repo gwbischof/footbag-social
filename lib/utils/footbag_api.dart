@@ -320,8 +320,25 @@ class FootbagSession {
   /// The API sends UTC; everything on screen is local. Converting here rather
   /// than at each call site means a timestamp cannot reach a widget still in
   /// the wrong zone.
-  static DateTime? _parse(Object? value) =>
-      value == null ? null : DateTime.parse(value as String).toLocal();
+  static DateTime? _parse(Object? value) {
+    if (value == null) return null;
+    final parsed = DateTime.parse(value as String);
+    // A timestamp without an offset parses as *local*, so toLocal() is a no-op
+    // and every time is off by the zone -- which would start the elapsed clock
+    // at +5:00 in New York. The API sends UTC, so read a naive value as UTC
+    // rather than trusting the device's zone to be the server's.
+    return (parsed.isUtc ? parsed : DateTime.utc(
+      parsed.year, parsed.month, parsed.day,
+      parsed.hour, parsed.minute, parsed.second, parsed.millisecond,
+    )).toLocal();
+  }
+
+  /// Scheduled, and not yet begun.
+  ///
+  /// Neither running nor finished, so without this a session scheduled for
+  /// Saturday files itself under "Past sessions" and offers to report on a
+  /// thing that has not happened.
+  bool get isUpcoming => startedAt == null && scheduledAt != null;
 
   /// How long the session has run *right now*, for a ticking clock.
   ///
@@ -331,7 +348,10 @@ class FootbagSession {
   Duration get elapsedNow {
     final start = startedAt;
     if (start == null) return Duration.zero;
-    return (endedAt ?? DateTime.now()).difference(start);
+    final span = (endedAt ?? DateTime.now()).difference(start);
+    // Clamped: Dart's % is non-negative, so a skewed device clock would render
+    // -5 minutes as a plausible-looking 00:55:00 rather than as obviously wrong.
+    return span.isNegative ? Duration.zero : span;
   }
 }
 
@@ -349,9 +369,13 @@ enum FootbagGrade {
   /// The wire value. Matches the API's `grade` strings exactly.
   String get wire => name;
 
-  static FootbagGrade? fromWire(Object? value) => value == null
-      ? null
-      : FootbagGrade.values.firstWhere((g) => g.wire == value);
+  /// Unknown rungs decode to null rather than throwing.
+  ///
+  /// firstWhere without orElse would turn a fifth rung added server-side into
+  /// "Bad state: No element" on the report screen -- a client crash caused by
+  /// a backwards-compatible server change.
+  static FootbagGrade? fromWire(Object? value) =>
+      FootbagGrade.values.where((g) => g.wire == value).firstOrNull;
 }
 
 /// A trick a player is working on.

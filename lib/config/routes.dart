@@ -195,6 +195,17 @@ abstract class AppRoutes {
               routes: [
                 GoRoute(
                   path: ':sessionid/report',
+                  // tryParse, and redirect on null: int.parse inside the
+                  // pageBuilder turns a malformed deep link into a
+                  // FormatException thrown during build rather than a route
+                  // that simply does not match.
+                  redirect: (context, state) {
+                    final id = state.pathParameters['sessionid'];
+                    if (id == null || int.tryParse(id) == null) {
+                      return '/rooms/sessions';
+                    }
+                    return loggedOutRedirect(context, state);
+                  },
                   pageBuilder: (context, state) => defaultPageBuilder(
                     context,
                     state,
@@ -202,7 +213,6 @@ abstract class AppRoutes {
                       sessionId: int.parse(state.pathParameters['sessionid']!),
                     ),
                   ),
-                  redirect: loggedOutRedirect,
                 ),
               ],
             ),

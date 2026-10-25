@@ -7,6 +7,7 @@ import 'dart:async';
 import 'package:footbag_network/l10n/l10n.dart';
 import 'package:footbag_network/pages/report/report_view.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
+import 'package:footbag_network/widgets/adaptive_dialogs/show_ok_cancel_alert_dialog.dart';
 import 'package:footbag_network/widgets/matrix.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:matrix/matrix.dart';
@@ -31,15 +32,49 @@ class ReportController extends State<Report> {
   Object? error;
   bool saving = false;
 
+  /// The session being reported on.
+  ///
+  /// Fetched so the screen can say *which* session it is: you arrive here from
+  /// a list of near-identical rows, and a title of just "Report progress"
+  /// leaves no way to tell you opened the wrong one.
+  FootbagSession? session;
+
+  String? get sessionLabel {
+    final s = session;
+    if (s == null) return null;
+    final when = s.startedAt ?? s.scheduledAt;
+    return when == null ? s.name : '${s.name} · ${_day(when)}';
+  }
+
+  static String _day(DateTime when) =>
+      '${when.year}-${when.month.toString().padLeft(2, '0')}'
+      '-${when.day.toString().padLeft(2, '0')}';
+
+  /// Whether leaving now would lose work.
+  bool get hasUnsavedWork =>
+      claimed.isNotEmpty || commentController.text.trim().isNotEmpty;
+
   /// Working state, keyed by slug. A trick with no entry here is one the player
   /// has not touched, and is left out of the request entirely rather than sent
   /// as an empty claim.
   final Map<String, FootbagReportEntryInput> _entries = {};
 
+  /// One controller per trick, owned here rather than by the row widget.
+  ///
+  /// The count field used to be uncontrolled, which split the truth in two: a
+  /// count loaded from an existing report never appeared in the box, and a
+  /// typed one disappeared as soon as the row scrolled past the lazy list's
+  /// cache extent and its element was destroyed. Owning them here means the
+  /// text survives both, and there is one source of truth again.
+  final Map<String, TextEditingController> _countControllers = {};
+
   final commentController = TextEditingController();
   bool includeNumbers = true;
 
   FootbagReportEntryInput? entryFor(String slug) => _entries[slug];
+
+  TextEditingController countControllerFor(String slug) =>
+      _countControllers.putIfAbsent(slug, TextEditingController.new);
 
   /// The tricks that will actually be filed.
   List<FootbagReportEntryInput> get claimed =>
@@ -53,6 +88,9 @@ class ReportController extends State<Report> {
 
   @override
   void dispose() {
+    for (final controller in _countControllers.values) {
+      controller.dispose();
+    }
     commentController.dispose();
     super.dispose();
   }
@@ -62,17 +100,22 @@ class ReportController extends State<Report> {
       final client = Matrix.of(context).client;
       // Both at once: they are independent, and the screen cannot be drawn
       // without either.
+      // All three at once: they are independent, and the screen cannot be
+      // drawn without any of them.
       final results = await Future.wait([
         client.fetchFavourites(),
         client.fetchReport(widget.sessionId),
+        client.fetchSession(widget.sessionId),
       ]);
       if (!mounted) return;
 
       final loaded = results[0] as List<FootbagFavourite>;
       final existing = results[1] as FootbagReport?;
+      final loadedSession = results[2] as FootbagSession;
 
       setState(() {
         favourites = loaded;
+        session = loadedSession;
         error = null;
         if (existing != null) {
           // Editing an existing report, so start from what was filed rather
@@ -82,6 +125,9 @@ class ReportController extends State<Report> {
             ..addEntries(
               existing.entries.map((e) => MapEntry(e.entrySlug, e.toInput())),
             );
+          for (final e in existing.entries) {
+            countControllerFor(e.entrySlug).text = e.count?.toString() ?? '';
+          }
           commentController.text = existing.comment;
           includeNumbers = existing.includeNumbers;
         }
@@ -92,21 +138,20 @@ class ReportController extends State<Report> {
     }
   }
 
-  /// Tap a rung. Tapping the one already set clears it.
+  /// Set or clear a rung.
   ///
-  /// Without that, a mis-tap is permanent for the whole session — and the
-  /// grade is the one field with no other way to unset it.
-  void setGrade(String slug, FootbagGrade grade) {
+  /// Takes a nullable grade because that is what the widget actually reports:
+  /// tapping the selected segment of a SegmentedButton with
+  /// `emptySelectionAllowed` emits the *empty set*, and an earlier version
+  /// dropped that on the floor — so clearing a mis-tap was described in three
+  /// comments and implemented nowhere.
+  void setGrade(String slug, FootbagGrade? grade) {
     setState(() {
-      final current = _entries[slug];
-      if (current?.grade == grade) {
-        _entries[slug] = (current ?? FootbagReportEntryInput(entrySlug: slug))
-            .copyWith(clearGrade: true);
-      } else {
-        _entries[slug] =
-            (current ?? FootbagReportEntryInput(entrySlug: slug))
-                .copyWith(grade: grade);
-      }
+      final current =
+          _entries[slug] ?? FootbagReportEntryInput(entrySlug: slug);
+      _entries[slug] = grade == null
+          ? current.copyWith(clearGrade: true)
+          : current.copyWith(grade: grade);
     });
   }
 
@@ -132,6 +177,24 @@ class ReportController extends State<Report> {
 
   void toggleIncludeNumbers(bool value) =>
       setState(() => includeNumbers = value);
+
+  /// Ask before throwing away a filled-in report.
+  ///
+  /// Uses the repo's own adaptive dialog rather than a bare AlertDialog, so it
+  /// matches every other confirmation in the app.
+  Future<void> confirmDiscard() async {
+    final l10n = L10n.of(context);
+    final navigator = Navigator.of(context);
+    final result = await showOkCancelAlertDialog(
+      context: context,
+      title: l10n.discardReportTitle,
+      message: l10n.discardReportBody,
+      okLabel: l10n.discard,
+      cancelLabel: l10n.keepEditing,
+      isDestructive: true,
+    );
+    if (result == OkCancelResult.ok && mounted) navigator.pop();
+  }
 
   Future<void> saveAction() async {
     final messenger = ScaffoldMessenger.of(context);

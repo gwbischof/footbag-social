@@ -1783,6 +1783,100 @@
         "description": "Fourth rung: landing it reliably.",
         "placeholders": {}
     },
+    "sessionTypeCasual": "Casual",
+    "@sessionTypeCasual": {
+        "type": "String",
+        "description": "Session type. Not a discipline -- it's the mixed/whatever-happened type.",
+        "placeholders": {}
+    },
+    "sessionTypeKicking": "Kicking",
+    "@sessionTypeKicking": {
+        "type": "String",
+        "description": "Session type and play-style discipline: consecutive kicks.",
+        "placeholders": {}
+    },
+    "sessionTypeFreestyle": "Freestyle",
+    "@sessionTypeFreestyle": {
+        "type": "String",
+        "description": "Session type and play-style discipline: tricks and strings.",
+        "placeholders": {}
+    },
+    "sessionTypeNet": "Net",
+    "@sessionTypeNet": {
+        "type": "String",
+        "description": "Session type and play-style discipline: footbag net.",
+        "placeholders": {}
+    },
+    "sessionTypeStitching": "Stitching",
+    "@sessionTypeStitching": {
+        "type": "String",
+        "description": "Session type and play-style discipline: making footbags.",
+        "placeholders": {}
+    },
+    "upcomingSessions": "Upcoming",
+    "@upcomingSessions": {
+        "type": "String",
+        "description": "Heading above sessions scheduled but not yet started.",
+        "placeholders": {}
+    },
+    "sessionScheduled": "Scheduled",
+    "@sessionScheduled": {
+        "type": "String",
+        "description": "Marks a session that has not begun yet.",
+        "placeholders": {}
+    },
+    "retry": "Try again",
+    "@retry": {
+        "type": "String",
+        "description": "Retries a failed load. Says what happens, not 'Error'.",
+        "placeholders": {}
+    },
+    "reportFiled": "Reported",
+    "@reportFiled": {
+        "type": "String",
+        "description": "Marks a past session that already has a report -- past tense of the Report action.",
+        "placeholders": {}
+    },
+    "notReportedYet": "Not reported",
+    "@notReportedYet": {
+        "type": "String",
+        "description": "Marks a past session with no report yet, so the list can act as the nudge.",
+        "placeholders": {}
+    },
+    "checkInDueIn": "Still here? {minutes} min left",
+    "@checkInDueIn": {
+        "type": "String",
+        "description": "Shown on the check-in button with time remaining, so the deadline is visible rather than implied.",
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "discardReportTitle": "Discard this report?",
+    "@discardReportTitle": {
+        "type": "String",
+        "description": "Asked when leaving the report screen with entries filled in.",
+        "placeholders": {}
+    },
+    "discardReportBody": "You've graded some tricks but haven't saved. Leaving now loses them.",
+    "@discardReportBody": {
+        "type": "String",
+        "description": "Explains exactly what is lost.",
+        "placeholders": {}
+    },
+    "discard": "Discard",
+    "@discard": {
+        "type": "String",
+        "description": "Confirms leaving without saving.",
+        "placeholders": {}
+    },
+    "keepEditing": "Keep editing",
+    "@keepEditing": {
+        "type": "String",
+        "description": "Cancels leaving the report screen.",
+        "placeholders": {}
+    },
     "sessions": "Sessions",
     "@sessions": {
         "type": "String",
