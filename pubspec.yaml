@@ -115,6 +115,22 @@ flutter:
     - assets/sounds/
     - assets/vodozemac/0.8.1/
 
+  # Matching newyorkfootbag.com: Bebas Neue for display, DM Sans for text.
+  # Bundled rather than fetched at runtime -- the sign-in screen is the first
+  # thing anyone loads, and a webfont that has not arrived yet is a screen
+  # with no words on it.
+  fonts:
+    - family: BebasNeue
+      fonts:
+        - asset: assets/fonts/BebasNeue-Regular.ttf
+    - family: DMSans
+      fonts:
+        - asset: assets/fonts/DMSans-Regular.ttf
+        - asset: assets/fonts/DMSans-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/DMSans-Bold.ttf
+          weight: 700
+
 hooks:
   user_defines:
     sqlite3:
