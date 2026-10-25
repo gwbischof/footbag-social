@@ -8,15 +8,15 @@ import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// Which destination a screen is showing.
-enum FootbagTab { dash, chat }
+enum FootbagTab { dash, discover, chat }
 
 /// The app's bottom navigation.
 ///
-/// **Three items, not the wireframe's five.** The doc's order is
-/// Dash · Feed · [+] · Discover · Chat, but Feed and Discover do not exist, and
-/// a tab that leads nowhere is worse than a tab that is absent — it reads as
-/// broken rather than unbuilt. They slot back into their documented positions
-/// when they are real.
+/// **Four items, not the wireframe's five.** The doc's order is
+/// Dash · Feed · [+] · Discover · Chat. Feed does not exist yet and is left
+/// out rather than shown as a tab that leads nowhere — a dead tab reads as
+/// broken, an absent one as unbuilt. Discover took its documented slot the
+/// moment it became real, which is the pattern Feed will follow.
 ///
 /// The centre [+] is raised and green because the doc is explicit that it
 /// creates a *session*, not a post: "a tool for getting to a session, with a
@@ -56,6 +56,15 @@ class FootbagNavBar extends StatelessWidget {
                 ),
               ),
               _StartButton(onPressed: onStart, label: l10n.startSession),
+              Expanded(
+                child: _Tab(
+                  key: const Key('NavDiscover'),
+                  icon: Icons.explore_outlined,
+                  label: l10n.discover,
+                  selected: current == FootbagTab.discover,
+                  onTap: () => context.go('/rooms/discover'),
+                ),
+              ),
               Expanded(
                 child: _Tab(
                   key: const Key('NavChat'),

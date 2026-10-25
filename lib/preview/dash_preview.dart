@@ -40,12 +40,12 @@ class _Gallery extends StatelessWidget {
     // Driven by the URL so a headless screenshot can capture each screen
     // without needing to click a tab.
     final want = Uri.base.queryParameters['screen'];
-    final index = const ['dash', 'profile', 'favourites', 'schedule']
+    final index = const ['dash', 'profile', 'favourites', 'schedule', 'discover']
         .indexOf(want ?? 'dash');
 
     return DefaultTabController(
       initialIndex: index < 0 ? 0 : index,
-      length: 4,
+      length: 5,
       child: Scaffold(
         backgroundColor: Nyfa.ground,
         appBar: TabBar(
@@ -58,6 +58,7 @@ class _Gallery extends StatelessWidget {
             Tab(text: 'PROFILE'),
             Tab(text: 'FAVOURITES'),
             Tab(text: 'SCHEDULE'),
+            Tab(text: 'DISCOVER'),
           ],
         ),
         body: TabBarView(
@@ -66,6 +67,7 @@ class _Gallery extends StatelessWidget {
             _ProfilePreview(l10n: l10n),
             _FavouritesPreview(l10n: l10n),
             _SchedulePreview(l10n: l10n),
+            _DiscoverPreview(l10n: l10n),
           ],
         ),
       ),
@@ -290,6 +292,124 @@ class _SchedulePreview extends StatelessWidget {
           child: NyfaForm.action(label: l10n.createSession, onPressed: () {}),
         ),
         const SizedBox(height: 40),
+      ],
+    ),
+  );
+}
+
+class _DiscoverPreview extends StatelessWidget {
+  final L10n l10n;
+  const _DiscoverPreview({required this.l10n});
+
+  @override
+  Widget build(BuildContext context) => DefaultTabController(
+    length: 2,
+    child: _scaffold(context),
+  );
+
+  Widget _scaffold(BuildContext context) => Scaffold(
+    backgroundColor: Nyfa.ground,
+    appBar: AppBar(
+      backgroundColor: Nyfa.ground,
+      surfaceTintColor: Nyfa.ground,
+      elevation: 0,
+      automaticallyImplyLeading: false,
+      centerTitle: false,
+      titleSpacing: 20,
+      title: Text(l10n.discover.toUpperCase(), style: Nyfa.heading),
+      bottom: TabBar(
+        labelColor: Nyfa.green,
+        unselectedLabelColor: Nyfa.muted,
+        indicatorColor: Nyfa.green,
+        dividerColor: Nyfa.rule,
+        labelStyle: const TextStyle(
+          fontFamily: Nyfa.display,
+          fontSize: 17,
+          letterSpacing: 1.1,
+        ),
+        tabs: [
+          Tab(text: l10n.discoverSessions.toUpperCase()),
+          Tab(text: l10n.discoverPlayers.toUpperCase()),
+        ],
+      ),
+    ),
+    bottomNavigationBar: const FootbagNavBar(current: FootbagTab.discover),
+    body: Column(
+      children: [
+        const SizedBox(height: 12),
+        SizedBox(
+          height: 44,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            children: [
+              for (final o in [
+                (l10n.anyStyle, true),
+                (l10n.sessionTypeKicking, false),
+                (l10n.sessionTypeFreestyle, false),
+                (l10n.sessionTypeNet, false),
+                (l10n.sessionTypeStitching, false),
+              ])
+                Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    decoration: BoxDecoration(
+                      color: o.$2 ? Nyfa.green : Colors.transparent,
+                      border: Border.all(color: o.$2 ? Nyfa.green : Nyfa.rule),
+                    ),
+                    child: Center(
+                      widthFactor: 1,
+                      child: Text(
+                        o.$1.toUpperCase(),
+                        style: TextStyle(
+                          fontFamily: Nyfa.display,
+                          fontSize: 16,
+                          letterSpacing: 0.8,
+                          color: o.$2 ? Nyfa.ground : Nyfa.paper,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 12),
+        for (final s in [
+          ('Freestyle · Sat 25 Oct', '@maya:footbagsocial.com', true),
+          ('Washington Square Meetup', '@theo:footbagsocial.com', false),
+        ])
+          DecoratedBox(
+            decoration: const BoxDecoration(
+              border: Border(top: BorderSide(color: Nyfa.rule)),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          s.$1.toUpperCase(),
+                          style: Nyfa.heading.copyWith(fontSize: 17),
+                        ),
+                        const SizedBox(height: 3),
+                        Text(s.$2, style: Nyfa.bodyMuted.copyWith(fontSize: 12)),
+                      ],
+                    ),
+                  ),
+                  if (s.$3)
+                    Text(
+                      l10n.runningNow.toUpperCase(),
+                      style: Nyfa.eyebrow.copyWith(color: Nyfa.green),
+                    ),
+                ],
+              ),
+            ),
+          ),
       ],
     ),
   );

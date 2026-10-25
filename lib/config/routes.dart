@@ -19,6 +19,7 @@ import 'package:footbag_network/pages/chat_permissions_settings/chat_permissions
 import 'package:footbag_network/pages/chat_search/chat_search_page.dart';
 import 'package:footbag_network/pages/dash/dash.dart';
 import 'package:footbag_network/pages/device_settings/device_settings.dart';
+import 'package:footbag_network/pages/discover/discover.dart';
 import 'package:footbag_network/pages/favourites/favourites.dart';
 import 'package:footbag_network/pages/intro/intro_page_presenter.dart';
 import 'package:footbag_network/pages/invitation_selection/invitation_selection.dart';
@@ -166,7 +167,8 @@ abstract class AppRoutes {
         // list's and its own. Settings is excluded for the same reason.
         AppThemes.isColumnMode(context) &&
                 state.fullPath?.startsWith('/rooms/settings') == false &&
-                state.fullPath?.startsWith('/rooms/dash') == false
+                state.fullPath?.startsWith('/rooms/dash') == false &&
+                state.fullPath?.startsWith('/rooms/discover') == false
             ? TwoColumnLayout(
                 mainView: ChatList(
                   activeChat: state.pathParameters['roomid'],
@@ -200,6 +202,12 @@ abstract class AppRoutes {
             // Nested under /rooms so it inherits the logged-in guard, but
             // excluded from the two-column wrapper above: Dash is the home
             // screen, not a detail pane.
+            GoRoute(
+              path: 'discover',
+              pageBuilder: (context, state) =>
+                  defaultPageBuilder(context, state, const Discover()),
+              redirect: loggedOutRedirect,
+            ),
             GoRoute(
               path: 'dash',
               pageBuilder: (context, state) =>

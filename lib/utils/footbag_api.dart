@@ -97,6 +97,36 @@ extension FootbagApi on Client {
     }),
   );
 
+  /// Players who have chosen to be findable.
+  ///
+  /// Not geographic: "near me" needs a location this API does not store, so
+  /// Discover filters by discipline and city until places exist.
+  Future<List<FootbagPlayer>> discoverPlayers({
+    String? style,
+    String? city,
+  }) async {
+    final params = <String>[
+      if (style != null) 'style=$style',
+      if (city != null && city.isNotEmpty) 'city=${Uri.encodeQueryComponent(city)}',
+    ];
+    final list = await _apiGetList(
+      params.isEmpty ? 'discover/players' : 'discover/players?${params.join('&')}',
+    );
+    return list
+        .map((e) => FootbagPlayer.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
+  /// Sessions you could turn up to: running now, or scheduled ahead.
+  Future<List<FootbagSession>> discoverSessions({String? type}) async {
+    final list = await _apiGetList(
+      type == null ? 'discover/sessions' : 'discover/sessions?type=$type',
+    );
+    return list
+        .map((e) => FootbagSession.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
   /// Browse the trick dictionary.
   ///
   /// [query] searches nicknames as well as names, which matters because the

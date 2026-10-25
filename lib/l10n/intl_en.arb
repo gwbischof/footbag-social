@@ -2225,6 +2225,72 @@
         "description": "Says the number is a personal best for the session and that skipping it is fine.",
         "placeholders": {}
     },
+    "discover": "Discover",
+    "@discover": {
+        "type": "String",
+        "description": "Nav label for finding other players and sessions.",
+        "placeholders": {}
+    },
+    "discoverPlayers": "Players",
+    "@discoverPlayers": {
+        "type": "String",
+        "description": "Tab showing findable players.",
+        "placeholders": {}
+    },
+    "discoverSessions": "Sessions",
+    "@discoverSessions": {
+        "type": "String",
+        "description": "Tab showing sessions you could turn up to.",
+        "placeholders": {}
+    },
+    "anyStyle": "All",
+    "@anyStyle": {
+        "type": "String",
+        "description": "Filter chip meaning no discipline filter.",
+        "placeholders": {}
+    },
+    "filterByCity": "City",
+    "@filterByCity": {
+        "type": "String",
+        "description": "Free-text city filter on Discover.",
+        "placeholders": {}
+    },
+    "noPlayersYet": "Nobody to show yet",
+    "@noPlayersYet": {
+        "type": "String",
+        "description": "Empty state for the players tab.",
+        "placeholders": {}
+    },
+    "noPlayersYetBody": "Players appear here once they turn on Discoverable. Early on, that's nobody \u2014 it isn't broken.",
+    "@noPlayersYetBody": {
+        "type": "String",
+        "description": "Names the real cause so an empty screen does not read as a bug.",
+        "placeholders": {}
+    },
+    "noSessionsToJoin": "Nothing running right now",
+    "@noSessionsToJoin": {
+        "type": "String",
+        "description": "Empty state for the sessions tab.",
+        "placeholders": {}
+    },
+    "noSessionsToJoinBody": "Sessions show up here while they're running or scheduled. Start one and you'll be the first.",
+    "@noSessionsToJoinBody": {
+        "type": "String",
+        "description": "Turns an empty list into an invitation.",
+        "placeholders": {}
+    },
+    "playsNothingYet": "No styles set",
+    "@playsNothingYet": {
+        "type": "String",
+        "description": "Shown for a player who has not picked disciplines.",
+        "placeholders": {}
+    },
+    "runningNow": "Running now",
+    "@runningNow": {
+        "type": "String",
+        "description": "Marks a session that is live.",
+        "placeholders": {}
+    },
     "dash": "Dash",
     "@dash": {
         "type": "String",
