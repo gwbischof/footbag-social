@@ -52,12 +52,20 @@ class DashView extends StatelessWidget {
     final l10n = L10n.of(context);
 
     if (controller.error != null) {
+      // A rejected token is the one failure a person can act on, and the
+      // action is specific. Reporting it as "no connection to the server" --
+      // which is what the generic localizer does with an unknown exception --
+      // sends someone to check their wifi over an expired session.
+      final e = controller.error;
+      final signedOut = e is FootbagApiException && e.isNotSignedIn;
       return _Centred(
-        icon: Icons.cloud_off_rounded,
-        title: l10n.oopsSomethingWentWrong,
-        body: controller.error!.toLocalizedString(context),
-        actionLabel: l10n.retry,
-        onAction: controller.load,
+        icon: signedOut ? Icons.lock_outline_rounded : Icons.cloud_off_rounded,
+        title: signedOut ? l10n.signedOutAgain : l10n.oopsSomethingWentWrong,
+        body: signedOut
+            ? l10n.signedOutAgainBody
+            : controller.error!.toLocalizedString(context),
+        actionLabel: signedOut ? l10n.signIn : l10n.retry,
+        onAction: signedOut ? controller.signOutAction : controller.load,
       );
     }
     if (controller.sessions == null) {

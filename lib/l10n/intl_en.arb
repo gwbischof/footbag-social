@@ -2207,6 +2207,12 @@
         "description": "Validation message for a past date.",
         "placeholders": {}
     },
+    "signedOutAgainBody": "Your session is no longer valid. Sign in again to pick up where you left off.",
+    "@signedOutAgainBody": {
+        "type": "String",
+        "description": "Explains a rejected token on a full-screen error state, where there is room to say more than the snackbar can.",
+        "placeholders": {}
+    },
     "dash": "Dash",
     "@dash": {
         "type": "String",

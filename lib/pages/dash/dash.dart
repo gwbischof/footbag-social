@@ -115,6 +115,23 @@ class DashController extends State<Dash> with WidgetsBindingObserver {
     _syncTicker();
   }
 
+  /// Sign out, so a stale session can be replaced.
+  ///
+  /// The API rejecting the token usually means the Matrix session is no longer
+  /// good either, and there is nothing a reload will fix. Logging out is the
+  /// only move that actually resolves it, so the error state offers that
+  /// rather than a retry that will fail the same way.
+  Future<void> signOutAction() async {
+    final client = Matrix.of(context).client;
+    try {
+      await client.logout();
+    } catch (e, s) {
+      // Already invalid server-side is the expected case here, so a failure to
+      // log out cleanly must not block the local wipe.
+      Logs().v('Logout failed, clearing locally anyway', e, s);
+    }
+  }
+
   /// Start a session. Deliberately takes no arguments — the doc's whole point
   /// is that this is one tap, not a form.
   Future<void> startAction() async {

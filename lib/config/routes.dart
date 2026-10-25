@@ -160,8 +160,13 @@ abstract class AppRoutes {
       pageBuilder: (context, state, child) => noTransitionPageBuilder(
         context,
         state,
+        // Dash and its children are full screens, not the side pane of a chat
+        // shell. Without this exclusion the home screen renders beside the
+        // chat list with two navigation bars on screen at once -- the chat
+        // list's and its own. Settings is excluded for the same reason.
         AppThemes.isColumnMode(context) &&
-                state.fullPath?.startsWith('/rooms/settings') == false
+                state.fullPath?.startsWith('/rooms/settings') == false &&
+                state.fullPath?.startsWith('/rooms/dash') == false
             ? TwoColumnLayout(
                 mainView: ChatList(
                   activeChat: state.pathParameters['roomid'],
@@ -188,11 +193,13 @@ abstract class AppRoutes {
                   ),
           ),
           routes: [
-            // Sessions sits inside the logged-in shell, so it keeps the chat
-            // list beside it on wide screens. Registered before the ':roomid'
-            // catch-all further down, matching how 'archive' and 'newgroup'
-            // are ordered -- a literal that comes after a parameter is a
-            // route that silently becomes a room id.
+            // Registered before the ':roomid' catch-all further down, matching
+            // how 'archive' and 'newgroup' are ordered -- a literal that comes
+            // after a parameter is a route that silently becomes a room id.
+            //
+            // Nested under /rooms so it inherits the logged-in guard, but
+            // excluded from the two-column wrapper above: Dash is the home
+            // screen, not a detail pane.
             GoRoute(
               path: 'dash',
               pageBuilder: (context, state) =>
