@@ -23,6 +23,41 @@ import sys
 
 HOMESERVER = "https://chat.footbagsocial.com"
 
+
+def _api_origin() -> str:
+    """Read the API origin out of the Dart settings rather than repeat it.
+
+    This directive was missed entirely when the API was added: connect-src
+    listed the homeserver and nothing else, so every call to our own API was
+    blocked by the browser before it left. Nothing showed up in the API's logs
+    -- there was no request to log -- and the client surfaced it as
+    ClientException, which localises to "No connection to the server". It looked
+    for all the world like the API was down.
+
+    So the origin is derived from the one place that already defines it. A
+    second literal here is exactly how the websocket origin went wrong before,
+    and the same fix applies: one source, no drift.
+    """
+    source = (
+        pathlib.Path(__file__).resolve().parent.parent
+        / "lib"
+        / "config"
+        / "setting_keys.dart"
+    ).read_text()
+    match = re.search(
+        r"footbagApiUrl<String>\(\s*'[^']*',\s*'(https://[^']+)'", source
+    )
+    if match is None:
+        raise SystemExit(
+            "gen-csp: could not find footbagApiUrl's default in "
+            "setting_keys.dart -- refusing to emit a policy that would block "
+            "the API"
+        )
+    return match.group(1).rstrip("/")
+
+
+API = _api_origin()
+
 # Derived, never written out again. The websocket origin used to be a second
 # literal further down, and the two are only ever correct together -- one
 # homeserver move leaves the app loading fine while every sync is blocked by
@@ -44,8 +79,9 @@ ANALYTICS = "https://stats.korroni.com"
 # cold cache showed a textless page. Verify font changes in a cold context.
 FONTS = "https://fonts.gstatic.com"
 
-# Everything is same-origin except the homeserver: media and avatars are
-# fetched from it, and it is the only host the app may talk to. connect-src is
+# Everything is same-origin except the homeserver and our own API: media and
+# avatars come from the first, sessions and reports from the second, and those
+# two are the only hosts the app may talk to. connect-src is
 # the directive that matters here -- the access token and E2EE keys live in
 # IndexedDB, and the build pulls third-party JS (native_imaging) into this
 # origin, so this is what stops either being posted elsewhere.
@@ -76,7 +112,8 @@ def policy(script_hashes: list[str]) -> str:
             f"font-src 'self' data: {FONTS}",
             f"img-src 'self' data: blob: {HOMESERVER}",
             f"media-src 'self' data: blob: {HOMESERVER}",
-            f"connect-src 'self' {HOMESERVER} {HOMESERVER_WS} {ANALYTICS} {FONTS}",
+            f"connect-src 'self' {HOMESERVER} {HOMESERVER_WS} {API} "
+            f"{ANALYTICS} {FONTS}",
             "base-uri 'self'",
             "form-action 'self'",
             "object-src 'none'",
