@@ -1877,6 +1877,42 @@
         "description": "Cancels leaving the report screen.",
         "placeholders": {}
     },
+    "dashNobodyPlaying": "Nobody is playing near you right now. That's normal early on.",
+    "@dashNobodyPlaying": {
+        "type": "String",
+        "description": "First-run Dash copy, taken from the design doc. Names the emptiness honestly instead of showing an empty map and hoping nobody notices.",
+        "placeholders": {}
+    },
+    "dashStartYourOwn": "Log your own practice",
+    "@dashStartYourOwn": {
+        "type": "String",
+        "description": "Primary action on an empty Dash. Framed as recording your own session first, putting a pin on the map second -- one person can use this app.",
+        "placeholders": {}
+    },
+    "dashStartYourOwnBody": "Start a session to time your practice and record what you hit. You don't need anyone else.",
+    "@dashStartYourOwnBody": {
+        "type": "String",
+        "description": "Explains that the core loop works solo, which is the common case at launch.",
+        "placeholders": {}
+    },
+    "yourSessions": "Your sessions",
+    "@yourSessions": {
+        "type": "String",
+        "description": "Heading over the player's own session history -- the training log is just this list.",
+        "placeholders": {}
+    },
+    "dashGreeting": "Is anyone playing?",
+    "@dashGreeting": {
+        "type": "String",
+        "description": "Dash's standing question, which is what the app opens on rather than a feed.",
+        "placeholders": {}
+    },
+    "dash": "Dash",
+    "@dash": {
+        "type": "String",
+        "description": "The home tab -- answers 'is anyone playing?'. Short because it is a nav label.",
+        "placeholders": {}
+    },
     "sessions": "Sessions",
     "@sessions": {
         "type": "String",
@@ -1907,7 +1943,7 @@
         "description": "Confirms the player is still playing, which moves the instant the duration is counted to.",
         "placeholders": {}
     },
-    "checkInExplainer": "Checking in keeps the clock going. Miss it and the session stops on its own, counting only up to your last check-in -- so a forgotten session can't invent hours.",
+    "checkInExplainer": "Checking in keeps the clock going. Miss it and the session stops on its own, counting only up to your last check-in \u2014 so a forgotten session can't invent hours.",
     "@checkInExplainer": {
         "type": "String",
         "description": "Explains why the check-in exists, under the running session card.",

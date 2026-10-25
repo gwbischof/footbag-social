@@ -9,7 +9,6 @@ import 'package:footbag_network/l10n/l10n.dart';
 import 'package:footbag_network/pages/chat_list/chat_list.dart';
 import 'package:footbag_network/pages/chat_list/client_chooser_button.dart';
 import 'package:footbag_network/utils/sync_status_localization.dart';
-import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:matrix/matrix.dart';
 
@@ -34,25 +33,6 @@ class ChatListHeader extends StatelessWidget implements PreferredSizeWidget {
     return SliverAppBar(
       floating: true,
       toolbarHeight: 72,
-      // The way into the rest of the app.
-      //
-      // This was first added to ClientChooserButton's popup menu, which turns
-      // out to be mounted inside a SizedBox(width: 0) as the search field's
-      // suffix — invisible and untappable, so the entry could never be reached
-      // and the whole feature looked absent. An app bar action is visible in
-      // every state.
-      //
-      // Still a stopgap: the design doc puts sessions on a Dash home screen
-      // with chat as one tab of a nav bar, not behind an icon on the chat list.
-      actions: [
-        IconButton(
-          key: const Key('SessionsNavButton'),
-          tooltip: L10n.of(context).sessions,
-          icon: const Icon(Icons.sports_handball_outlined),
-          onPressed: () => context.go('/rooms/sessions'),
-        ),
-        const SizedBox(width: 4),
-      ],
       pinned: isColumnMode,
       scrolledUnderElevation: 0,
       shape: isColumnMode

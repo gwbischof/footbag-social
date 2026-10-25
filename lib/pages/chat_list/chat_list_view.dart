@@ -9,6 +9,7 @@ import 'package:footbag_network/config/themes.dart';
 import 'package:footbag_network/pages/chat_list/chat_list.dart';
 import 'package:footbag_network/pages/chat_list/navigation_rail.dart';
 import 'package:footbag_network/pages/chat_list/start_chat_fab.dart';
+import 'package:footbag_network/widgets/footbag_nav_bar.dart';
 import 'package:material_ui/material_ui.dart';
 
 import 'chat_list_body.dart';
@@ -71,6 +72,12 @@ class ChatListView extends StatelessWidget {
                 backgroundColor: oneColumnSpacesMode
                     ? Theme.of(context).colorScheme.surfaceContainer
                     : null,
+                // Chat is one destination of the app, not the app. The bar is
+                // how you get back to Dash -- without it this screen is a
+                // dead end, which is exactly how the app came across before.
+                bottomNavigationBar: const FootbagNavBar(
+                  current: FootbagTab.chat,
+                ),
                 body: SafeArea(
                   top: oneColumnSpacesMode,
                   bottom: false,

@@ -4,64 +4,38 @@
 
 import 'package:footbag_network/config/nyfa_theme.dart';
 import 'package:footbag_network/l10n/l10n.dart';
-import 'package:footbag_network/pages/sessions/sessions.dart';
+import 'package:footbag_network/pages/dash/dash.dart';
 import 'package:footbag_network/utils/date_time_extension.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
 import 'package:footbag_network/utils/localized_exception_extension.dart';
+import 'package:footbag_network/widgets/footbag_nav_bar.dart';
 import 'package:footbag_network/widgets/layouts/max_width_body.dart';
+import 'package:footbag_network/widgets/matrix.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
-/// Sessions, set like a scoreboard.
-///
-/// The running session is the hero and everything else is deliberately quiet:
-/// hairline rules and dense rows rather than cards, so the only thing that
-/// draws the eye is the clock. "Not everything is a card" is the whole layout
-/// decision here.
-class SessionsView extends StatelessWidget {
-  final SessionsController controller;
+/// Dash, set like a club scoreboard.
+class DashView extends StatelessWidget {
+  final DashController controller;
 
-  const SessionsView(this.controller, {super.key});
+  const DashView(this.controller, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    final l10n = L10n.of(context);
-    final running = controller.running;
-
     return Scaffold(
-      key: const Key('SessionsScaffold'),
+      key: const Key('DashScaffold'),
       backgroundColor: Nyfa.ground,
-      appBar: Nyfa.appBar(title: l10n.sessions),
-      // One action, swapped by state rather than sitting beside its
-      // alternative: you cannot start a session while one is running, so
-      // offering both would be offering a dead button.
-      floatingActionButton: running != null
-          ? null
-          : FloatingActionButton.extended(
-              key: const Key('StartSessionButton'),
-              onPressed: controller.busy ? null : controller.startAction,
-              backgroundColor: Nyfa.green,
-              foregroundColor: Nyfa.ground,
-              shape: const RoundedRectangleBorder(),
-              icon: controller.busy
-                  ? const SizedBox(
-                      width: 18,
-                      height: 18,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        color: Nyfa.ground,
-                      ),
-                    )
-                  : const Icon(Icons.play_arrow_rounded),
-              label: Text(
-                l10n.startSession.toUpperCase(),
-                style: const TextStyle(
-                  fontFamily: Nyfa.display,
-                  fontSize: 17,
-                  letterSpacing: 1.1,
-                ),
-              ),
-            ),
+      // Dash carries the wordmark and the avatar, since it is the entry point.
+      // Other screens get a plain title.
+      appBar: _DashBar(controller: controller),
+      bottomNavigationBar: FootbagNavBar(
+        current: FootbagTab.dash,
+        // Nothing to start while one is running, so the centre action goes
+        // quiet rather than offering a tap that would be refused.
+        onStart: controller.running == null && !controller.busy
+            ? controller.startAction
+            : null,
+      ),
       body: MaxWidthBody(
         withScrolling: false,
         child: RefreshIndicator(
@@ -78,11 +52,9 @@ class SessionsView extends StatelessWidget {
     final l10n = L10n.of(context);
 
     if (controller.error != null) {
-      return _Message(
+      return _Centred(
         icon: Icons.cloud_off_rounded,
         title: l10n.oopsSomethingWentWrong,
-        // Localised, not '$error': the raw form shows people
-        // "ClientException with SocketException: Failed host lookup".
         body: controller.error!.toLocalizedString(context),
         actionLabel: l10n.retry,
         onAction: controller.load,
@@ -98,39 +70,26 @@ class SessionsView extends StatelessWidget {
     final upcoming = controller.upcoming;
     final past = controller.past;
 
-    if (running == null && upcoming.isEmpty && past.isEmpty) {
-      return _Message(
-        icon: Icons.sports_handball_rounded,
-        title: l10n.noSessionsYet,
-        body: l10n.noSessionsYetBody,
-      );
-    }
-
     return ListView(
-      // Always scrollable, so pull-to-refresh works even when one card is the
-      // whole list.
       physics: const AlwaysScrollableScrollPhysics(),
-      padding: const EdgeInsets.only(bottom: 96),
+      padding: const EdgeInsets.only(bottom: 32),
       children: [
         if (running != null)
-          _Scoreboard(controller: controller, session: running),
+          _Scoreboard(controller: controller, session: running)
+        else
+          _EmptyInvitation(controller: controller),
+
         if (upcoming.isNotEmpty) _SectionLabel(l10n.upcomingSessions),
         ...upcoming.map(
           (s) => _SessionRow(key: ValueKey('up_${s.id}'), session: s),
         ),
-        if (past.isNotEmpty) _SectionLabel(l10n.pastSessions),
+
+        if (past.isNotEmpty) _SectionLabel(l10n.yourSessions),
         ...past.map(
           (s) => _SessionRow(
             key: ValueKey('past_${s.id}'),
             session: s,
-            onTap: () async {
-              final filed = await context.push<bool>(
-                '/rooms/sessions/${s.id}/report',
-              );
-              // Only reload when something was filed; backing out should not
-              // cost a request.
-              if (filed == true) await controller.load();
-            },
+            onTap: () => controller.openReport(s.id),
           ),
         ),
       ],
@@ -138,9 +97,155 @@ class SessionsView extends StatelessWidget {
   }
 }
 
+/// The wordmark and the avatar.
+class _DashBar extends StatelessWidget implements PreferredSizeWidget {
+  final DashController controller;
+
+  const _DashBar({required this.controller});
+
+  @override
+  Size get preferredSize => const Size.fromHeight(72);
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = L10n.of(context);
+    return AppBar(
+      backgroundColor: Nyfa.ground,
+      surfaceTintColor: Nyfa.ground,
+      elevation: 0,
+      scrolledUnderElevation: 0,
+      toolbarHeight: 72,
+      automaticallyImplyLeading: false,
+      // AppBar centres its title on web by default, which fights a wordmark
+      // that is meant to sit at the top-left like a masthead.
+      centerTitle: false,
+      titleSpacing: 20,
+      title: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text(
+            'FOOTBAG SOCIAL',
+            style: TextStyle(
+              fontFamily: Nyfa.display,
+              color: Nyfa.paper,
+              fontSize: 24,
+              letterSpacing: 1.6,
+              height: 1.05,
+            ),
+          ),
+          Text(
+            l10n.dashGreeting,
+            style: Nyfa.bodyMuted.copyWith(fontSize: 12),
+          ),
+        ],
+      ),
+      actions: [
+        Padding(
+          padding: const EdgeInsets.only(right: 16),
+          child: IconButton(
+            key: const Key('DashSettingsButton'),
+            tooltip: l10n.settings,
+            onPressed: () => context.go('/rooms/settings'),
+            icon: CircleAvatar(
+              radius: 17,
+              backgroundColor: Nyfa.raised,
+              child: Text(
+                _initial(context),
+                style: const TextStyle(
+                  fontFamily: Nyfa.display,
+                  color: Nyfa.green,
+                  fontSize: 17,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+      bottom: const PreferredSize(
+        preferredSize: Size.fromHeight(1),
+        child: Divider(height: 1, thickness: 1, color: Nyfa.rule),
+      ),
+    );
+  }
+
+  String _initial(BuildContext context) {
+    final id = Matrix.of(context).client.userID ?? '';
+    // Strip the leading @ of the MXID; the localpart's first letter is enough
+    // of an avatar until real ones exist.
+    final local = id.startsWith('@') ? id.substring(1) : id;
+    return local.isEmpty ? '?' : local.characters.first.toUpperCase();
+  }
+}
+
+/// What a new player sees, and most players most of the time.
+///
+/// Copy straight from the doc's first-run design: name the emptiness honestly,
+/// then lead with the action that works with nobody else on the platform.
+class _EmptyInvitation extends StatelessWidget {
+  final DashController controller;
+
+  const _EmptyInvitation({required this.controller});
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = L10n.of(context);
+    final nothingEver = controller.past.isEmpty && controller.upcoming.isEmpty;
+
+    return Container(
+      margin: const EdgeInsets.fromLTRB(20, 20, 20, 4),
+      padding: const EdgeInsets.all(20),
+      decoration: const BoxDecoration(
+        color: Nyfa.raised,
+        border: Border(left: BorderSide(color: Nyfa.green, width: 3)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Only said to someone with no history. An established player in a
+          // quiet week does not need to be told the map is empty.
+          if (nothingEver) ...[
+            Text(l10n.dashNobodyPlaying, style: Nyfa.bodyMuted),
+            const SizedBox(height: 16),
+          ],
+          Text(l10n.dashStartYourOwn.toUpperCase(), style: Nyfa.heading),
+          const SizedBox(height: 6),
+          Text(l10n.dashStartYourOwnBody, style: Nyfa.bodyMuted),
+          const SizedBox(height: 16),
+          SizedBox(
+            height: 48,
+            child: FilledButton.icon(
+              key: const Key('DashStartButton'),
+              onPressed: controller.busy ? null : controller.startAction,
+              style: FilledButton.styleFrom(
+                backgroundColor: Nyfa.green,
+                disabledBackgroundColor: Nyfa.rule,
+                shape: const RoundedRectangleBorder(),
+              ),
+              icon: Icon(
+                Icons.play_arrow_rounded,
+                color: controller.busy ? Nyfa.muted : Nyfa.ground,
+              ),
+              label: Text(
+                l10n.startSession.toUpperCase(),
+                style: TextStyle(
+                  fontFamily: Nyfa.display,
+                  fontSize: 17,
+                  letterSpacing: 1.1,
+                  color: controller.busy ? Nyfa.muted : Nyfa.ground,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 /// The running session: the one loud thing on the screen.
 class _Scoreboard extends StatelessWidget {
-  final SessionsController controller;
+  final DashController controller;
   final FootbagSession session;
 
   const _Scoreboard({required this.controller, required this.session});
@@ -152,14 +257,10 @@ class _Scoreboard extends StatelessWidget {
 
     return Container(
       key: const Key('RunningSessionCard'),
+      margin: const EdgeInsets.fromLTRB(20, 20, 20, 4),
       decoration: const BoxDecoration(
         color: Nyfa.raised,
-        border: Border(
-          // A single green edge rather than a filled green panel: the accent
-          // marks the live session without competing with the clock.
-          left: BorderSide(color: Nyfa.green, width: 3),
-          bottom: BorderSide(color: Nyfa.rule),
-        ),
+        border: Border(left: BorderSide(color: Nyfa.green, width: 3)),
       ),
       padding: const EdgeInsets.fromLTRB(17, 18, 20, 20),
       child: Column(
@@ -173,11 +274,10 @@ class _Scoreboard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 10),
-          // Semantics, because to a screen reader the clock is otherwise a
-          // string of bare digits.
           Semantics(
             label: l10n.sessionRunning,
-            value: _spoken(l10n, session.elapsedNow),
+            value: '${session.elapsedNow.inHours} h '
+                '${session.elapsedNow.inMinutes % 60} min',
             child: ExcludeSemantics(
               child: FittedBox(
                 fit: BoxFit.scaleDown,
@@ -187,22 +287,15 @@ class _Scoreboard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 6),
-          Text(
-            '${session.name}  ·  ${_typeLabel(l10n, session.type)}',
-            style: Nyfa.bodyMuted,
-          ),
+          Text(_subtitle(l10n, session), style: Nyfa.bodyMuted),
           const SizedBox(height: 16),
-          // Wrap, not Row: at 360px with a large text scale these two would
-          // otherwise overflow side by side.
           Wrap(
             spacing: 10,
             runSpacing: 10,
             children: [
               _Action(
                 key: const Key('CheckInButton'),
-                label: left == null
-                    ? l10n.stillHere
-                    : l10n.checkInDueIn(left),
+                label: left == null ? l10n.stillHere : l10n.checkInDueIn(left),
                 filled: true,
                 busy: controller.busy,
                 onPressed: () => controller.checkInAction(session.id),
@@ -222,32 +315,25 @@ class _Scoreboard extends StatelessWidget {
       ),
     );
   }
-
-  String _spoken(L10n l10n, Duration d) =>
-      '${d.inHours} h ${d.inMinutes % 60} min';
 }
 
-/// A one-second pulse on the live marker.
-///
-/// The only motion on either screen. The card already repaints every second
-/// for the clock, so this costs nothing, and it is the thing that makes
-/// "running" read as a state rather than a label.
+/// A one-second pulse on the live marker. The card already repaints every
+/// second for the clock, so this costs nothing.
 class _LiveDot extends StatelessWidget {
   const _LiveDot();
 
   @override
-  Widget build(BuildContext context) {
-    final onBeat = DateTime.now().second.isEven;
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 900),
-      width: 8,
-      height: 8,
-      decoration: BoxDecoration(
-        color: Nyfa.green.withValues(alpha: onBeat ? 1 : 0.35),
-        shape: BoxShape.circle,
+  Widget build(BuildContext context) => AnimatedContainer(
+    duration: const Duration(milliseconds: 900),
+    width: 8,
+    height: 8,
+    decoration: BoxDecoration(
+      color: Nyfa.green.withValues(
+        alpha: DateTime.now().second.isEven ? 1 : 0.35,
       ),
-    );
-  }
+      shape: BoxShape.circle,
+    ),
+  );
 }
 
 class _Action extends StatelessWidget {
@@ -273,13 +359,13 @@ class _Action extends StatelessWidget {
       color: filled ? Nyfa.ground : Nyfa.paper,
     );
     return SizedBox(
-      height: 48, // A real tap target.
+      height: 48,
       child: filled
           ? FilledButton(
               onPressed: busy ? null : onPressed,
               style: FilledButton.styleFrom(
                 backgroundColor: Nyfa.green,
-                disabledBackgroundColor: Nyfa.green.withValues(alpha: 0.4),
+                disabledBackgroundColor: Nyfa.rule,
                 shape: const RoundedRectangleBorder(),
               ),
               child: Text(label.toUpperCase(), style: style),
@@ -303,12 +389,11 @@ class _SectionLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.fromLTRB(20, 28, 20, 10),
+    padding: const EdgeInsets.fromLTRB(20, 26, 20, 10),
     child: Text(text.toUpperCase(), style: Nyfa.eyebrow),
   );
 }
 
-/// A session as a dense row. Hairline-separated, no card.
 class _SessionRow extends StatelessWidget {
   final FootbagSession session;
   final VoidCallback? onTap;
@@ -343,7 +428,8 @@ class _SessionRow extends StatelessWidget {
                     const SizedBox(height: 3),
                     Text(
                       [
-                        _typeLabel(l10n, session.type),
+                        if (!_nameCarriesType(l10n, session))
+                          _typeLabel(l10n, session.type),
                         if (when != null) when.localizedTime(context),
                         if (session.isUpcoming) l10n.sessionScheduled,
                       ].join('  ·  '),
@@ -379,16 +465,14 @@ class _SessionRow extends StatelessWidget {
   }
 }
 
-/// Empty and error states. An empty screen is an invitation, not a report of
-/// nothing — so it gets the same care as the loaded one.
-class _Message extends StatelessWidget {
+class _Centred extends StatelessWidget {
   final IconData icon;
   final String title;
   final String body;
   final String? actionLabel;
   final Future<void> Function()? onAction;
 
-  const _Message({
+  const _Centred({
     required this.icon,
     required this.title,
     required this.body,
@@ -401,7 +485,7 @@ class _Message extends StatelessWidget {
     physics: const AlwaysScrollableScrollPhysics(),
     padding: const EdgeInsets.symmetric(horizontal: 32),
     children: [
-      const SizedBox(height: 88),
+      const SizedBox(height: 72),
       Icon(icon, size: 44, color: Nyfa.muted),
       const SizedBox(height: 18),
       Text(title.toUpperCase(), textAlign: TextAlign.center, style: Nyfa.heading),
@@ -422,14 +506,26 @@ class _Message extends StatelessWidget {
   );
 }
 
+/// Whether the session's name already opens with its type.
+///
+/// A session nobody named is called "Freestyle · Sat 25 Oct", so printing the
+/// type beside it gives "Freestyle · Sat 25 Oct · Freestyle". The type still
+/// earns its place on a session someone named themselves.
+bool _nameCarriesType(L10n l10n, FootbagSession session) => session.name
+    .toLowerCase()
+    .startsWith(_typeLabel(l10n, session.type).toLowerCase());
+
+String _subtitle(L10n l10n, FootbagSession session) =>
+    _nameCarriesType(l10n, session)
+    ? session.name
+    : '${session.name}  ·  ${_typeLabel(l10n, session.type)}';
+
 String _typeLabel(L10n l10n, String type) => switch (type) {
   'casual' => l10n.sessionTypeCasual,
   'kicking' => l10n.sessionTypeKicking,
   'freestyle' => l10n.sessionTypeFreestyle,
   'net' => l10n.sessionTypeNet,
   'stitching' => l10n.sessionTypeStitching,
-  // A type this build does not know about is still worth showing as itself
-  // rather than as a blank.
   _ => type,
 };
 
@@ -438,7 +534,5 @@ String _two(int n) => n.toString().padLeft(2, '0');
 String _hms(Duration d) =>
     '${_two(d.inHours)}:${_two(d.inMinutes % 60)}:${_two(d.inSeconds % 60)}';
 
-/// Minutes below an hour, hours above. "47 MIN" and "1H 12M" both read faster
-/// than a zero-padded clock in a list.
 String _short(Duration d) =>
     d.inHours > 0 ? '${d.inHours}H ${d.inMinutes % 60}M' : '${d.inMinutes} MIN';

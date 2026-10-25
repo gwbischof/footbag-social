@@ -63,16 +63,6 @@ class ClientChooserButton extends StatelessWidget {
         ),
       ),
       PopupMenuItem(
-        value: SettingsAction.sessions,
-        child: Row(
-          children: [
-            const Icon(Icons.sports_handball_outlined),
-            const SizedBox(width: 18),
-            Text(L10n.of(context).sessions),
-          ],
-        ),
-      ),
-      PopupMenuItem(
         value: SettingsAction.archive,
         child: Row(
           children: [
@@ -231,9 +221,6 @@ class ClientChooserButton extends StatelessWidget {
         case SettingsAction.archive:
           context.go('/rooms/archive');
           break;
-        case SettingsAction.sessions:
-          context.go('/rooms/sessions');
-          break;
         case SettingsAction.setStatus:
           controller.setStatus();
           break;
@@ -250,5 +237,4 @@ enum SettingsAction {
   support,
   settings,
   archive,
-  sessions,
 }

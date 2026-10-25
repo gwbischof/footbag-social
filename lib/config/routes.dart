@@ -17,6 +17,7 @@ import 'package:footbag_network/pages/chat_list/chat_list.dart';
 import 'package:footbag_network/pages/chat_members/chat_members.dart';
 import 'package:footbag_network/pages/chat_permissions_settings/chat_permissions_settings.dart';
 import 'package:footbag_network/pages/chat_search/chat_search_page.dart';
+import 'package:footbag_network/pages/dash/dash.dart';
 import 'package:footbag_network/pages/device_settings/device_settings.dart';
 import 'package:footbag_network/pages/intro/intro_page_presenter.dart';
 import 'package:footbag_network/pages/invitation_selection/invitation_selection.dart';
@@ -24,7 +25,6 @@ import 'package:footbag_network/pages/login/login.dart';
 import 'package:footbag_network/pages/new_group/new_group.dart';
 import 'package:footbag_network/pages/new_private_chat/new_private_chat.dart';
 import 'package:footbag_network/pages/report/report.dart';
-import 'package:footbag_network/pages/sessions/sessions.dart';
 import 'package:footbag_network/pages/settings/settings.dart';
 import 'package:footbag_network/pages/settings_3pid/settings_3pid.dart';
 import 'package:footbag_network/pages/settings_chat/settings_chat.dart';
@@ -51,7 +51,7 @@ abstract class AppRoutes {
     BuildContext context,
     GoRouterState state,
   ) => Matrix.of(context).widget.clients.any((client) => client.isLogged())
-      ? '/rooms'
+      ? '/rooms/dash'
       : null;
 
   static FutureOr<String?> loggedOutRedirect(
@@ -96,7 +96,9 @@ abstract class AppRoutes {
       path: '/',
       redirect: (context, state) =>
           Matrix.of(context).widget.clients.any((client) => client.isLogged())
-          ? '/rooms'
+          // Dash, not the chat list: the app opens on "is anyone playing?"
+          // rather than on a conversation list.
+          ? '/rooms/dash'
           : '/home',
     ),
     GoRoute(
@@ -188,9 +190,9 @@ abstract class AppRoutes {
             // are ordered -- a literal that comes after a parameter is a
             // route that silently becomes a room id.
             GoRoute(
-              path: 'sessions',
+              path: 'dash',
               pageBuilder: (context, state) =>
-                  defaultPageBuilder(context, state, const Sessions()),
+                  defaultPageBuilder(context, state, const Dash()),
               redirect: loggedOutRedirect,
               routes: [
                 GoRoute(
@@ -215,6 +217,12 @@ abstract class AppRoutes {
                   ),
                 ),
               ],
+            ),
+            // The sessions screen folded into Dash; keep the old path alive
+            // rather than 404 anything that linked to it.
+            GoRoute(
+              path: 'sessions',
+              redirect: (context, state) => '/rooms/dash',
             ),
             GoRoute(
               path: 'archive',
