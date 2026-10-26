@@ -5,7 +5,7 @@
 
 # Pinned by digest: this image compiles the E2EE crypto, so "whatever
 # ubuntu:26.04 points at today" is not a good enough description of it.
-FROM ubuntu:26.04@sha256:f144425ff09be612d6d9ad965196e9cdc23dae1f42110a8a11a3e9a8198759f7 AS builder
+FROM ubuntu:26.04@sha256:c098726dd9b9733f3e885f8de0ef375206a311b0a317eadc40d347b1115fb944 AS builder
 RUN apt-get update && apt-get install -y curl wget git unzip xz-utils jq build-essential pkg-config libssl-dev ca-certificates python3
 
 ARG TARGETARCH
