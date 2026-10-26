@@ -46,7 +46,7 @@ RUN flutter build web --no-web-resources-cdn --release --source-maps
 RUN python3 scripts/gen-csp.py build/web/index.html build/web/auth.html /csp.conf
 
 # Unprivileged variant so the pod can run as non-root; it listens on 8080.
-FROM docker.io/nginxinc/nginx-unprivileged:alpine@sha256:b9241c6e7b8e9a862f129d8d4199ab64b10390949a78bdd5603379b32c844083
+FROM docker.io/nginxinc/nginx-unprivileged:alpine@sha256:b5047b9b76845eac124358373c6852377c52e4b05834a47647e955dd91cb8f1e
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=builder /csp.conf /etc/nginx/csp.conf
 COPY --from=builder /app/build/web /usr/share/nginx/html
