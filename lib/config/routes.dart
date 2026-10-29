@@ -21,6 +21,11 @@ import 'package:footbag_network/pages/dash/dash.dart';
 import 'package:footbag_network/pages/device_settings/device_settings.dart';
 import 'package:footbag_network/pages/discover/discover.dart';
 import 'package:footbag_network/pages/favourites/favourites.dart';
+import 'package:footbag_network/pages/feed/compose.dart';
+import 'package:footbag_network/pages/feed/feed.dart';
+import 'package:footbag_network/pages/feed/mod_queue.dart';
+import 'package:footbag_network/pages/feed/player_page.dart';
+import 'package:footbag_network/pages/feed/post_page.dart';
 import 'package:footbag_network/pages/intro/intro_page_presenter.dart';
 import 'package:footbag_network/pages/invitation_selection/invitation_selection.dart';
 import 'package:footbag_network/pages/login/login.dart';
@@ -42,6 +47,7 @@ import 'package:footbag_network/pages/settings_security/settings_security.dart';
 import 'package:footbag_network/pages/settings_style/settings_style.dart';
 import 'package:footbag_network/pages/sign_in/sign_in_page.dart';
 import 'package:footbag_network/pages/trick_picker/trick_picker.dart';
+import 'package:footbag_network/utils/footbag_api.dart';
 import 'package:footbag_network/widgets/config_viewer.dart';
 import 'package:footbag_network/widgets/layouts/empty_page.dart';
 import 'package:footbag_network/widgets/layouts/two_column_layout.dart';
@@ -169,7 +175,8 @@ abstract class AppRoutes {
         AppThemes.isColumnMode(context) &&
                 state.fullPath?.startsWith('/rooms/settings') == false &&
                 state.fullPath?.startsWith('/rooms/dash') == false &&
-                state.fullPath?.startsWith('/rooms/discover') == false
+                state.fullPath?.startsWith('/rooms/discover') == false &&
+                state.fullPath?.startsWith('/rooms/feed') == false
             ? TwoColumnLayout(
                 mainView: ChatList(
                   activeChat: state.pathParameters['roomid'],
@@ -204,6 +211,88 @@ abstract class AppRoutes {
             // excluded from the two-column wrapper above: Dash is the home
             // screen, not a detail pane.
             GoRoute(
+              path: 'feed',
+              pageBuilder: (context, state) =>
+                  defaultPageBuilder(context, state, const Feed()),
+              redirect: loggedOutRedirect,
+              routes: [
+                GoRoute(
+                  path: 'new',
+                  pageBuilder: (context, state) => defaultPageBuilder(
+                    context,
+                    state,
+                    Compose(sessionId: state.extra as int?),
+                  ),
+                  redirect: loggedOutRedirect,
+                  routes: [
+                    GoRoute(
+                      path: 'tag',
+                      pageBuilder: (context, state) => defaultPageBuilder(
+                        context,
+                        state,
+                        TrickPicker(
+                          alreadyHave:
+                              (state.extra as Set<String>?) ?? const {},
+                        ),
+                      ),
+                      redirect: loggedOutRedirect,
+                    ),
+                  ],
+                ),
+                GoRoute(
+                  path: 'post/:postid',
+                  // tryParse and redirect, as for reports: a malformed link
+                  // should not match rather than throw during build.
+                  redirect: (context, state) {
+                    final id = state.pathParameters['postid'];
+                    if (id == null || int.tryParse(id) == null) {
+                      return '/rooms/feed';
+                    }
+                    return loggedOutRedirect(context, state);
+                  },
+                  pageBuilder: (context, state) => defaultPageBuilder(
+                    context,
+                    state,
+                    PostPage(
+                      postId: int.parse(state.pathParameters['postid']!),
+                      initial: state.extra is FootbagPost
+                          ? state.extra as FootbagPost
+                          : null,
+                    ),
+                  ),
+                ),
+                GoRoute(
+                  path: 'player/:userid',
+                  pageBuilder: (context, state) => defaultPageBuilder(
+                    context,
+                    state,
+                    PlayerPage(
+                      userId: state.pathParameters['userid']!,
+                      name: state.extra is String
+                          ? state.extra as String
+                          : null,
+                    ),
+                  ),
+                  redirect: loggedOutRedirect,
+                ),
+                GoRoute(
+                  path: 'trick/:slug',
+                  pageBuilder: (context, state) => defaultPageBuilder(
+                    context,
+                    state,
+                    Feed(
+                      key: ValueKey(state.pathParameters['slug']),
+                      entrySlug: state.pathParameters['slug'],
+                      entryName: state.extra is String
+                          ? state.extra as String
+                          : state.pathParameters['slug'],
+                    ),
+                  ),
+                  redirect: loggedOutRedirect,
+                ),
+              ],
+            ),
+            GoRoute(
               path: 'discover',
               pageBuilder: (context, state) =>
                   defaultPageBuilder(context, state, const Discover()),
@@ -211,10 +300,24 @@ abstract class AppRoutes {
             ),
             GoRoute(
               path: 'dash',
-              pageBuilder: (context, state) =>
-                  defaultPageBuilder(context, state, const Dash()),
+              pageBuilder: (context, state) => defaultPageBuilder(
+                context,
+                state,
+                Dash(
+                  // A new key per request, or go_router reuses the State and
+                  // a second [+] from another tab would start nothing.
+                  key: state.extra == 'start' ? UniqueKey() : null,
+                  startNow: state.extra == 'start',
+                ),
+              ),
               redirect: loggedOutRedirect,
               routes: [
+                GoRoute(
+                  path: 'mod',
+                  pageBuilder: (context, state) =>
+                      defaultPageBuilder(context, state, const ModQueue()),
+                  redirect: loggedOutRedirect,
+                ),
                 GoRoute(
                   path: 'rankings',
                   pageBuilder: (context, state) =>

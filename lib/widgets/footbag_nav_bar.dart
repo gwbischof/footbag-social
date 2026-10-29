@@ -8,25 +8,27 @@ import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// Which destination a screen is showing.
-enum FootbagTab { dash, discover, chat }
+enum FootbagTab { dash, feed, discover, chat }
 
-/// The app's bottom navigation.
+/// The app's bottom navigation: Dash · Feed · [+] · Discover · Chat.
 ///
-/// **Four items, not the wireframe's five.** The doc's order is
-/// Dash · Feed · [+] · Discover · Chat. Feed does not exist yet and is left
-/// out rather than shown as a tab that leads nowhere — a dead tab reads as
-/// broken, an absent one as unbuilt. Discover took its documented slot the
-/// moment it became real, which is the pattern Feed will follow.
+/// The doc's five items, in the doc's order. Feed sits next to Dash rather
+/// than first: the app opens on "is anyone playing?", not on what people
+/// posted.
 ///
 /// The centre [+] is raised and green because the doc is explicit that it
 /// creates a *session*, not a post: "a tool for getting to a session, with a
 /// feed attached — not a content app with meetups bolted on". Making it the
-/// loudest thing on the bar is that sentence, expressed as a control.
+/// loudest thing on the bar is that sentence, expressed as a control. Posting
+/// lives in the Feed's own header.
 class FootbagNavBar extends StatelessWidget {
   final FootbagTab current;
 
-  /// Starting a session is the centre action. Null disables it — while one is
-  /// already running, there is nothing to start.
+  /// Starting a session is the centre action. On Dash, null disables it —
+  /// while one is already running, there is nothing to start. Everywhere
+  /// else it takes you to Dash and starts one there, where the running
+  /// session is shown; a [+] that only worked on one tab was a [+] that
+  /// looked broken on the other three.
   final VoidCallback? onStart;
 
   const FootbagNavBar({required this.current, this.onStart, super.key});
@@ -55,7 +57,21 @@ class FootbagNavBar extends StatelessWidget {
                   onTap: () => context.go('/rooms/dash'),
                 ),
               ),
-              _StartButton(onPressed: onStart, label: l10n.startSession),
+              Expanded(
+                child: _Tab(
+                  key: const Key('NavFeed'),
+                  icon: Icons.dynamic_feed_outlined,
+                  label: l10n.feed,
+                  selected: current == FootbagTab.feed,
+                  onTap: () => context.go('/rooms/feed'),
+                ),
+              ),
+              _StartButton(
+                onPressed: current == FootbagTab.dash
+                    ? onStart
+                    : () => context.go('/rooms/dash', extra: 'start'),
+                label: l10n.startSession,
+              ),
               Expanded(
                 child: _Tab(
                   key: const Key('NavDiscover'),

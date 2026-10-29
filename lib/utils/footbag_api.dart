@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:footbag_network/config/setting_keys.dart';
@@ -69,7 +70,9 @@ extension FootbagApi on Client {
 
   /// "Yes, still here." Moves the instant duration is counted to.
   Future<FootbagSession> checkInToSession(int id) async =>
-      FootbagSession.fromJson(await _apiPostObject('sessions/$id/checkin', null));
+      FootbagSession.fromJson(
+        await _apiPostObject('sessions/$id/checkin', null),
+      );
 
   Future<FootbagSession> stopSession(int id) async =>
       FootbagSession.fromJson(await _apiPostObject('sessions/$id/stop', null));
@@ -107,10 +110,13 @@ extension FootbagApi on Client {
   }) async {
     final params = <String>[
       if (style != null) 'style=$style',
-      if (city != null && city.isNotEmpty) 'city=${Uri.encodeQueryComponent(city)}',
+      if (city != null && city.isNotEmpty)
+        'city=${Uri.encodeQueryComponent(city)}',
     ];
     final list = await _apiGetList(
-      params.isEmpty ? 'discover/players' : 'discover/players?${params.join('&')}',
+      params.isEmpty
+          ? 'discover/players'
+          : 'discover/players?${params.join('&')}',
     );
     return list
         .map((e) => FootbagPlayer.fromJson(e as Map<String, dynamic>))
@@ -156,7 +162,8 @@ extension FootbagApi on Client {
   /// Atomic Mirage.
   Future<List<FootbagEntry>> fetchEntries({String? query, String? kind}) async {
     final params = <String>[
-      if (query != null && query.isNotEmpty) 'q=${Uri.encodeQueryComponent(query)}',
+      if (query != null && query.isNotEmpty)
+        'q=${Uri.encodeQueryComponent(query)}',
       if (kind != null) 'kind=$kind',
     ];
     final list = await _apiGetList(
@@ -181,7 +188,9 @@ extension FootbagApi on Client {
   /// and positions are unique per player, so an incremental update would have
   /// to pass through a state the server rejects.
   Future<List<FootbagFavourite>> setFavourites(List<String> entrySlugs) async {
-    final list = await _apiPutList('me/favourites', {'entry_slugs': entrySlugs});
+    final list = await _apiPutList('me/favourites', {
+      'entry_slugs': entrySlugs,
+    });
     return list
         .map((e) => FootbagFavourite.fromJson(e as Map<String, dynamic>))
         .toList();
@@ -216,11 +225,213 @@ extension FootbagApi on Client {
     }),
   );
 
+  // -- The feed --------------------------------------------------------------
+
+  /// Resolve a media path from the API (relative and signed) to a URL.
+  ///
+  /// Media URLs carry their own permission, because a `<video>` element or an
+  /// image cache cannot send a bearer token. So these load with no headers.
+  Uri footbagMediaUri(String path) =>
+      Uri.parse('${AppSettings.footbagApiUrl.value}/$path');
+
+  /// One page of the community feed.
+  ///
+  /// One feed with filters, not several feeds: [author] is a profile, [entry]
+  /// is a trick's clips, [lat]/[lng] is "near me". Pass [FootbagFeedPage.next]
+  /// back as [cursor] for the following page.
+  Future<FootbagFeedPage> fetchFeed({
+    String sort = 'recent',
+    String window = 'week',
+    String? author,
+    String? entry,
+    bool tutorial = false,
+    double? lat,
+    double? lng,
+    double radiusKm = 25,
+    String? cursor,
+    int limit = 10,
+  }) async {
+    final params = <String>[
+      'sort=$sort',
+      if (sort == 'top') 'window=$window',
+      if (author != null) 'author=${Uri.encodeQueryComponent(author)}',
+      if (entry != null) 'entry=${Uri.encodeQueryComponent(entry)}',
+      if (tutorial) 'tutorial=true',
+      if (lat != null && lng != null) ...[
+        'lat=$lat',
+        'lng=$lng',
+        'radius_km=$radiusKm',
+      ],
+      if (cursor != null) 'cursor=$cursor',
+      'limit=$limit',
+    ];
+    return FootbagFeedPage.fromJson(
+      await _apiGetObject('feed?${params.join('&')}'),
+    );
+  }
+
+  Future<FootbagPost> fetchPost(int id) async =>
+      FootbagPost.fromJson(await _apiGetObject('posts/$id'));
+
+  /// Upload one photo or clip, ahead of the post it will go in.
+  ///
+  /// Streamed rather than read into memory, so a long clip does not sit in
+  /// the app's heap twice. [onProgress] reports bytes sent where the platform
+  /// can say; on web the browser buffers the body and progress jumps to done.
+  Future<FootbagMedia> uploadMedia({
+    required Stream<List<int>> bytes,
+    required int length,
+    required String contentType,
+    void Function(int sent, int total)? onProgress,
+  }) async {
+    final token = accessToken;
+    if (token == null) throw const FootbagApiException.notSignedIn();
+    final request =
+        http.StreamedRequest(
+            'POST',
+            Uri.parse('${AppSettings.footbagApiUrl.value}/media'),
+          )
+          ..headers['authorization'] = 'Bearer $token'
+          ..headers['accept'] = 'application/json'
+          ..headers['content-type'] = contentType
+          ..contentLength = length;
+
+    var sent = 0;
+    unawaited(
+      bytes
+          .map((chunk) {
+            sent += chunk.length;
+            onProgress?.call(sent, length);
+            return chunk;
+          })
+          .pipe(request.sink),
+    );
+    final response = await http.Response.fromStream(
+      await httpClient.send(request),
+    );
+    if (response.statusCode == 401) {
+      throw const FootbagApiException.notSignedIn();
+    }
+    if (response.statusCode >= 400) {
+      throw FootbagApiException(response.statusCode, _detailOf(response));
+    }
+    return FootbagMedia.fromJson(
+      jsonDecode(response.body) as Map<String, dynamic>,
+    );
+  }
+
+  Future<FootbagPost> createPost({
+    String caption = '',
+    List<int> mediaIds = const [],
+    List<String> tags = const [],
+    bool isTutorial = false,
+    int? sessionId,
+    String? placeName,
+    double? lat,
+    double? lng,
+  }) async => FootbagPost.fromJson(
+    await _apiPostObject('posts', {
+      'caption': caption,
+      'media_ids': mediaIds,
+      'tags': tags,
+      'is_tutorial': isTutorial,
+      'session_id': ?sessionId,
+      'place_name': ?placeName,
+      'lat': ?lat,
+      'lng': ?lng,
+    }),
+  );
+
+  Future<FootbagPost> editPost(
+    int id, {
+    String? caption,
+    List<String>? tags,
+    bool? isTutorial,
+  }) async => FootbagPost.fromJson(
+    await _apiPatchObject('posts/$id', {
+      'caption': ?caption,
+      'tags': ?tags,
+      'is_tutorial': ?isTutorial,
+    }),
+  );
+
+  Future<void> deletePost(int id) => _apiSend('DELETE', 'posts/$id');
+
+  /// Give or take back a ♦. Returns the server's count, so a card shows the
+  /// truth after an optimistic tap rather than its own guess.
+  Future<({int count, bool reacted})> setReaction(int postId, bool on) async {
+    final response = await _apiSend(
+      on ? 'PUT' : 'DELETE',
+      'posts/$postId/reaction',
+    );
+    final json = jsonDecode(response.body) as Map<String, dynamic>;
+    return (
+      count: json['reaction_count'] as int,
+      reacted: json['reacted'] as bool,
+    );
+  }
+
+  Future<List<FootbagComment>> fetchComments(int postId, {int? after}) async {
+    final list = await _apiGetList(
+      after == null
+          ? 'posts/$postId/comments'
+          : 'posts/$postId/comments?after=$after',
+    );
+    return list
+        .map((e) => FootbagComment.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
+  Future<FootbagComment> addComment(int postId, String body) async =>
+      FootbagComment.fromJson(
+        await _apiPostObject('posts/$postId/comments', {'body': body}),
+      );
+
+  Future<void> deleteComment(int id) => _apiSend('DELETE', 'comments/$id');
+
+  /// Flag a post or comment for the moderators. Exactly one of the two ids.
+  Future<void> reportContent({
+    int? postId,
+    int? commentId,
+    required String reason,
+    String note = '',
+  }) => _apiSend(
+    'POST',
+    postId != null ? 'posts/$postId/report' : 'comments/$commentId/report',
+    body: {'reason': reason, 'note': note},
+  );
+
+  /// Someone's profile header: who they are and how much they have posted.
+  Future<FootbagPlayerProfile> fetchPlayer(String userId) async =>
+      FootbagPlayerProfile.fromJson(
+        await _apiGetObject('players/${Uri.encodeComponent(userId)}'),
+      );
+
+  // -- Moderation --------------------------------------------------------------
+
+  Future<List<FootbagQueueItem>> fetchModQueue({String state = 'open'}) async {
+    final list = await _apiGetList('mod/queue?state=$state');
+    return list
+        .map((e) => FootbagQueueItem.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
+  /// Remove or keep. Closes every open report on the same post or comment.
+  Future<void> resolveContentReport(int reportId, {required bool remove}) =>
+      _apiSend(
+        'POST',
+        'mod/reports/$reportId/resolve',
+        body: {'action': remove ? 'remove' : 'keep'},
+      );
+
+  Future<void> restorePost(int id) => _apiSend('POST', 'mod/posts/$id/restore');
+
   Future<List<dynamic>> _apiPutList(
     String path,
     Map<String, dynamic> body,
   ) async =>
-      jsonDecode((await _apiSend('PUT', path, body: body)).body) as List<dynamic>;
+      jsonDecode((await _apiSend('PUT', path, body: body)).body)
+          as List<dynamic>;
 
   Future<Map<String, dynamic>> _apiPatchObject(
     String path,
@@ -303,7 +514,9 @@ extension FootbagApi on Client {
     } catch (_) {
       // Not JSON. Fall through to the body.
     }
-    return response.body.isEmpty ? 'HTTP ${response.statusCode}' : response.body;
+    return response.body.isEmpty
+        ? 'HTTP ${response.statusCode}'
+        : response.body;
   }
 }
 
@@ -320,6 +533,12 @@ class FootbagPlayer {
   final bool discoverable;
   final bool showSessions;
 
+  /// `moderator` or `admin` on your own profile; null for everyone else, and
+  /// for you if you are neither.
+  final String? role;
+
+  bool get canModerate => role != null;
+
   const FootbagPlayer({
     required this.userId,
     required this.displayName,
@@ -328,6 +547,7 @@ class FootbagPlayer {
     required this.playStyles,
     required this.discoverable,
     required this.showSessions,
+    this.role,
   });
 
   factory FootbagPlayer.fromJson(Map<String, dynamic> json) => FootbagPlayer(
@@ -339,6 +559,7 @@ class FootbagPlayer {
         (json['play_styles'] as List?)?.cast<String>() ?? const <String>[],
     discoverable: json['discoverable'] as bool? ?? true,
     showSessions: json['show_sessions'] as bool? ?? true,
+    role: json['role'] as String?,
   );
 }
 
@@ -431,10 +652,18 @@ class FootbagSession {
     // and every time is off by the zone -- which would start the elapsed clock
     // at +5:00 in New York. The API sends UTC, so read a naive value as UTC
     // rather than trusting the device's zone to be the server's.
-    return (parsed.isUtc ? parsed : DateTime.utc(
-      parsed.year, parsed.month, parsed.day,
-      parsed.hour, parsed.minute, parsed.second, parsed.millisecond,
-    )).toLocal();
+    return (parsed.isUtc
+            ? parsed
+            : DateTime.utc(
+                parsed.year,
+                parsed.month,
+                parsed.day,
+                parsed.hour,
+                parsed.minute,
+                parsed.second,
+                parsed.millisecond,
+              ))
+        .toLocal();
   }
 
   /// Scheduled, and not yet begun.
@@ -734,5 +963,311 @@ class FootbagHeatmapDay {
         day: DateTime.parse(json['day'] as String),
         seconds: json['seconds'] as int,
         sessions: json['sessions'] as int,
+      );
+}
+
+// ---------------------------------------------------------------------------
+// The feed
+// ---------------------------------------------------------------------------
+
+DateTime _time(Object? value) => DateTime.parse(value as String).toLocal();
+
+/// Someone else's profile, as the header above their posts.
+class FootbagPlayerProfile {
+  final FootbagPlayer player;
+  final int postCount;
+
+  const FootbagPlayerProfile({required this.player, required this.postCount});
+
+  factory FootbagPlayerProfile.fromJson(Map<String, dynamic> json) =>
+      FootbagPlayerProfile(
+        player: FootbagPlayer.fromJson(json),
+        postCount: json['post_count'] as int? ?? 0,
+      );
+}
+
+/// An image or clip in a post.
+///
+/// The size arrives with it so a card can reserve the right box before a byte
+/// loads — a feed that jumps as images arrive is the most obvious sign of an
+/// unfinished app — and the blurhash fills that box meanwhile.
+class FootbagMedia {
+  final int id;
+  final bool isVideo;
+  final int width;
+  final int height;
+  final String? blurhash;
+
+  /// Relative and signed; resolve with [FootbagApi.footbagMediaUri].
+  final String url;
+  final String thumbUrl;
+
+  /// Full-width still: the photo, or a clip's first frame before it plays.
+  final String posterUrl;
+
+  const FootbagMedia({
+    required this.id,
+    required this.isVideo,
+    required this.width,
+    required this.height,
+    required this.blurhash,
+    required this.url,
+    required this.thumbUrl,
+    required this.posterUrl,
+  });
+
+  double get aspectRatio => width / height;
+
+  factory FootbagMedia.fromJson(Map<String, dynamic> json) => FootbagMedia(
+    id: json['id'] as int,
+    isVideo: json['kind'] == 'video',
+    width: json['width'] as int,
+    height: json['height'] as int,
+    blurhash: json['blurhash'] as String?,
+    url: json['url'] as String,
+    thumbUrl: json['thumb_url'] as String,
+    posterUrl: json['poster_url'] as String? ?? json['thumb_url'] as String,
+  );
+}
+
+class FootbagTag {
+  final String slug;
+  final String name;
+
+  const FootbagTag({required this.slug, required this.name});
+
+  factory FootbagTag.fromJson(Map<String, dynamic> json) =>
+      FootbagTag(slug: json['slug'] as String, name: json['name'] as String);
+}
+
+/// One trick on a shared session, and how it went.
+class FootbagSessionLine {
+  final String name;
+  final String? grade;
+
+  /// Absent unless the player chose to share numbers on their report.
+  final int? count;
+  final bool isFirst;
+
+  const FootbagSessionLine({
+    required this.name,
+    required this.grade,
+    required this.count,
+    required this.isFirst,
+  });
+
+  factory FootbagSessionLine.fromJson(Map<String, dynamic> json) =>
+      FootbagSessionLine(
+        name: json['name'] as String,
+        grade: json['grade'] as String?,
+        count: json['count'] as int?,
+        isFirst: json['is_first'] as bool? ?? false,
+      );
+}
+
+/// The session a post came from: the post carries the media, this the results.
+class FootbagSessionSummary {
+  final int id;
+  final String name;
+  final String type;
+  final Duration? duration;
+  final int? kicks;
+  final List<FootbagSessionLine> lines;
+
+  const FootbagSessionSummary({
+    required this.id,
+    required this.name,
+    required this.type,
+    required this.duration,
+    required this.kicks,
+    required this.lines,
+  });
+
+  factory FootbagSessionSummary.fromJson(Map<String, dynamic> json) =>
+      FootbagSessionSummary(
+        id: json['id'] as int,
+        name: json['name'] as String,
+        type: json['type'] as String,
+        duration: json['duration_seconds'] == null
+            ? null
+            : Duration(seconds: json['duration_seconds'] as int),
+        kicks: json['kicks'] as int?,
+        lines: [
+          for (final l in (json['lines'] as List? ?? const []))
+            FootbagSessionLine.fromJson(l as Map<String, dynamic>),
+        ],
+      );
+}
+
+class FootbagComment {
+  final int id;
+  final int postId;
+  final String authorId;
+  final String authorName;
+  final String body;
+  final DateTime createdAt;
+  final bool isMine;
+
+  const FootbagComment({
+    required this.id,
+    required this.postId,
+    required this.authorId,
+    required this.authorName,
+    required this.body,
+    required this.createdAt,
+    required this.isMine,
+  });
+
+  factory FootbagComment.fromJson(Map<String, dynamic> json) {
+    final author = json['author'] as Map<String, dynamic>;
+    return FootbagComment(
+      id: json['id'] as int,
+      postId: json['post_id'] as int,
+      authorId: author['user_id'] as String,
+      authorName: author['display_name'] as String,
+      body: json['body'] as String,
+      createdAt: _time(json['created_at']),
+      isMine: json['is_mine'] as bool? ?? false,
+    );
+  }
+}
+
+/// A feed post: everything one card needs to draw, in one object.
+///
+/// [reactionCount] and [reacted] are mutable on purpose: a ♦ is applied to the
+/// card the instant it is tapped and corrected from the server's answer, and
+/// rebuilding an immutable post for one integer would be ceremony.
+class FootbagPost {
+  final int id;
+  final String authorId;
+  final String authorName;
+  final String caption;
+  final bool isTutorial;
+  final DateTime createdAt;
+  final DateTime? editedAt;
+  final List<FootbagMedia> media;
+  final List<FootbagTag> tags;
+  final String? placeName;
+  final FootbagSessionSummary? session;
+  int reactionCount;
+  bool reacted;
+  int commentCount;
+  final List<FootbagComment> commentsPreview;
+  final bool isMine;
+  final bool removed;
+
+  FootbagPost({
+    required this.id,
+    required this.authorId,
+    required this.authorName,
+    required this.caption,
+    required this.isTutorial,
+    required this.createdAt,
+    required this.editedAt,
+    required this.media,
+    required this.tags,
+    required this.placeName,
+    required this.session,
+    required this.reactionCount,
+    required this.reacted,
+    required this.commentCount,
+    required this.commentsPreview,
+    required this.isMine,
+    required this.removed,
+  });
+
+  factory FootbagPost.fromJson(Map<String, dynamic> json) {
+    final author = json['author'] as Map<String, dynamic>;
+    return FootbagPost(
+      id: json['id'] as int,
+      authorId: author['user_id'] as String,
+      authorName: author['display_name'] as String,
+      caption: json['caption'] as String? ?? '',
+      isTutorial: json['is_tutorial'] as bool? ?? false,
+      createdAt: _time(json['created_at']),
+      editedAt: json['edited_at'] == null ? null : _time(json['edited_at']),
+      media: [
+        for (final m in (json['media'] as List? ?? const []))
+          FootbagMedia.fromJson(m as Map<String, dynamic>),
+      ],
+      tags: [
+        for (final t in (json['tags'] as List? ?? const []))
+          FootbagTag.fromJson(t as Map<String, dynamic>),
+      ],
+      placeName: json['place_name'] as String?,
+      session: json['session'] == null
+          ? null
+          : FootbagSessionSummary.fromJson(
+              json['session'] as Map<String, dynamic>,
+            ),
+      reactionCount: json['reaction_count'] as int? ?? 0,
+      reacted: json['reacted'] as bool? ?? false,
+      commentCount: json['comment_count'] as int? ?? 0,
+      commentsPreview: [
+        for (final c in (json['comments_preview'] as List? ?? const []))
+          FootbagComment.fromJson(c as Map<String, dynamic>),
+      ],
+      isMine: json['is_mine'] as bool? ?? false,
+      removed: json['removed'] as bool? ?? false,
+    );
+  }
+}
+
+class FootbagFeedPage {
+  final List<FootbagPost> posts;
+
+  /// Pass back as the cursor for the next page; null at the end.
+  final String? next;
+
+  const FootbagFeedPage({required this.posts, required this.next});
+
+  factory FootbagFeedPage.fromJson(Map<String, dynamic> json) =>
+      FootbagFeedPage(
+        posts: [
+          for (final p in (json['posts'] as List? ?? const []))
+            FootbagPost.fromJson(p as Map<String, dynamic>),
+        ],
+        next: json['next'] as String?,
+      );
+}
+
+/// One reported thing in the mod queue, with every report against it.
+class FootbagQueueItem {
+  final List<int> reportIds;
+  final List<String> reasons;
+  final List<String> notes;
+  final String state;
+  final FootbagPost? post;
+  final FootbagComment? comment;
+  final DateTime firstReportedAt;
+  final String? actionedBy;
+
+  const FootbagQueueItem({
+    required this.reportIds,
+    required this.reasons,
+    required this.notes,
+    required this.state,
+    required this.post,
+    required this.comment,
+    required this.firstReportedAt,
+    required this.actionedBy,
+  });
+
+  bool get isUrgent => reasons.contains('illegal');
+
+  factory FootbagQueueItem.fromJson(Map<String, dynamic> json) =>
+      FootbagQueueItem(
+        reportIds: (json['report_ids'] as List).cast<int>(),
+        reasons: (json['reasons'] as List).cast<String>(),
+        notes: (json['notes'] as List? ?? const []).cast<String>(),
+        state: json['state'] as String,
+        post: json['post'] == null
+            ? null
+            : FootbagPost.fromJson(json['post'] as Map<String, dynamic>),
+        comment: json['comment'] == null
+            ? null
+            : FootbagComment.fromJson(json['comment'] as Map<String, dynamic>),
+        firstReportedAt: _time(json['first_reported_at']),
+        actionedBy: json['actioned_by'] as String?,
       );
 }

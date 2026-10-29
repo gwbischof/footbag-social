@@ -23,7 +23,12 @@ import 'package:matrix/matrix.dart';
 /// That is what makes this screen worth opening on day one, and why the empty
 /// state leads with the action that works alone rather than an empty map.
 class Dash extends StatefulWidget {
-  const Dash({super.key});
+  /// Start a session as soon as the list has loaded -- the nav bar's [+],
+  /// tapped from another tab. Passed as route `extra` rather than a query
+  /// parameter, so reloading the page cannot start a second one.
+  final bool startNow;
+
+  const Dash({this.startNow = false, super.key});
 
   @override
   DashController createState() => DashController();
@@ -34,6 +39,11 @@ class DashController extends State<Dash> with WidgetsBindingObserver {
   /// from "nothing at all" — an empty list is a real answer.
   List<FootbagSession>? sessions;
   Object? error;
+
+  /// Whether to show the mod queue shortcut. Asked of /me rather than
+  /// assumed, and false until it answers -- a shortcut that appears and then
+  /// vanishes would be worse than one that appears a moment late.
+  bool canModerate = false;
   bool busy = false;
 
   /// Redrawn once a second while something is running, so the clock moves.
@@ -53,7 +63,8 @@ class DashController extends State<Dash> with WidgetsBindingObserver {
       sessions?.where((s) => s.isUpcoming).toList() ?? const [];
 
   List<FootbagSession> get past =>
-      sessions?.where((s) => !s.isRunning && !s.isUpcoming).toList() ?? const [];
+      sessions?.where((s) => !s.isRunning && !s.isUpcoming).toList() ??
+      const [];
 
   /// Minutes until the check-in lapses, or null when it is not worth saying.
   ///
@@ -71,7 +82,16 @@ class DashController extends State<Dash> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    unawaited(load());
+    unawaited(_loadThenMaybeStart());
+  }
+
+  Future<void> _loadThenMaybeStart() async {
+    await load();
+    // Only once the list is in: starting while one is already running would
+    // be refused, and the screen should say so by showing the running one.
+    if (widget.startNow && mounted && sessions != null && running == null) {
+      await startAction();
+    }
   }
 
   @override
@@ -101,8 +121,16 @@ class DashController extends State<Dash> with WidgetsBindingObserver {
   }
 
   Future<void> load() async {
+    final client = Matrix.of(context).client;
+    unawaited(
+      client.fetchMe().then((me) {
+        if (mounted && me.canModerate != canModerate) {
+          setState(() => canModerate = me.canModerate);
+        }
+      }, onError: (_) {}),
+    );
     try {
-      final loaded = await Matrix.of(context).client.fetchSessions();
+      final loaded = await client.fetchSessions();
       if (!mounted) return;
       setState(() {
         sessions = loaded;

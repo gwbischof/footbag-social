@@ -9,6 +9,7 @@ import 'package:footbag_network/pages/report/report_view.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
 import 'package:footbag_network/widgets/adaptive_dialogs/show_ok_cancel_alert_dialog.dart';
 import 'package:footbag_network/widgets/matrix.dart';
+import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:matrix/matrix.dart';
 
@@ -256,7 +257,24 @@ class ReportController extends State<Report> {
     }
     if (!mounted) return;
     setState(() => saving = false);
-    messenger.showSnackBar(SnackBar(content: Text(l10n.reportSaved)));
+    // A public session is a feed post, per the doc -- but posting is the
+    // player's choice, so it is offered rather than done. The router is
+    // captured now because this screen is gone by the time anyone taps.
+    final router = GoRouter.of(context);
+    final shareable = session?.onFeed == 'public';
+    messenger.showSnackBar(
+      SnackBar(
+        content: Text(l10n.reportSaved),
+        duration: Duration(seconds: shareable ? 8 : 4),
+        action: shareable
+            ? SnackBarAction(
+                label: l10n.shareToFeed.toUpperCase(),
+                onPressed: () =>
+                    router.push('/rooms/feed/new', extra: widget.sessionId),
+              )
+            : null,
+      ),
+    );
     navigator.pop(true);
   }
 

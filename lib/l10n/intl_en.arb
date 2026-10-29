@@ -3636,5 +3636,519 @@
                 "type": "String"
             }
         }
+    },
+    "feed": "Feed",
+    "@feed": {
+        "type": "String",
+        "description": "Nav tab and screen title for the community feed of clips, photos and sessions.",
+        "placeholders": {}
+    },
+    "newPost": "Post",
+    "@newPost": {
+        "type": "String",
+        "description": "The Feed header control that opens the composer. A verb, short because it sits in an app bar.",
+        "placeholders": {}
+    },
+    "newPostTitle": "New post",
+    "@newPostTitle": {
+        "type": "String",
+        "description": "Title of the composer screen.",
+        "placeholders": {}
+    },
+    "publishPost": "Share",
+    "@publishPost": {
+        "type": "String",
+        "description": "Publishes the post being composed.",
+        "placeholders": {}
+    },
+    "feedRecent": "Recent",
+    "@feedRecent": {
+        "type": "String",
+        "description": "Feed sort: newest first.",
+        "placeholders": {}
+    },
+    "feedTop": "Top",
+    "@feedTop": {
+        "type": "String",
+        "description": "Feed sort: most diamonds inside a time window.",
+        "placeholders": {}
+    },
+    "windowDay": "24 hours",
+    "@windowDay": {
+        "type": "String",
+        "description": "Top window: the last day.",
+        "placeholders": {}
+    },
+    "feedTutorials": "Tutorials",
+    "@feedTutorials": {
+        "type": "String",
+        "description": "Feed filter: only posts that teach a trick.",
+        "placeholders": {}
+    },
+    "feedNearMe": "Near me",
+    "@feedNearMe": {
+        "type": "String",
+        "description": "Feed filter: posts made within 25 km of the viewer.",
+        "placeholders": {}
+    },
+    "diamonds": "{count, plural, =0{No diamonds yet} =1{1 diamond} other{{count} diamonds}}",
+    "@diamonds": {
+        "type": "String",
+        "description": "Reaction count under a post. A diamond is the app's single reaction, drawn as ♦.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "giveDiamond": "Give a diamond",
+    "@giveDiamond": {
+        "type": "String",
+        "description": "Accessibility label for the reaction button.",
+        "placeholders": {}
+    },
+    "takeDiamond": "Take back your diamond",
+    "@takeDiamond": {
+        "type": "String",
+        "description": "Accessibility label for the reaction button when already given.",
+        "placeholders": {}
+    },
+    "viewAllComments": "{count, plural, =1{View 1 comment} other{View all {count} comments}}",
+    "@viewAllComments": {
+        "type": "String",
+        "description": "Link under a post's comment preview to the full thread.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "comments": "Comments",
+    "@comments": {
+        "type": "String",
+        "description": "Title of a post's comment thread.",
+        "placeholders": {}
+    },
+    "addComment": "Add a comment…",
+    "@addComment": {
+        "type": "String",
+        "description": "Placeholder in the comment box.",
+        "placeholders": {}
+    },
+    "postComment": "Post",
+    "@postComment": {
+        "type": "String",
+        "description": "Sends a comment.",
+        "placeholders": {}
+    },
+    "noCommentsYet": "No comments yet. Say something about the clip.",
+    "@noCommentsYet": {
+        "type": "String",
+        "description": "Empty comment thread.",
+        "placeholders": {}
+    },
+    "feedEmptyTitle": "Nothing posted yet",
+    "@feedEmptyTitle": {
+        "type": "String",
+        "description": "The feed has no posts at all.",
+        "placeholders": {}
+    },
+    "feedEmptyBody": "Clips, photos and sessions from players everywhere land here. Yours can be the first.",
+    "@feedEmptyBody": {
+        "type": "String",
+        "description": "Body of the empty feed.",
+        "placeholders": {}
+    },
+    "feedFilteredEmpty": "Nothing matches these filters yet.",
+    "@feedFilteredEmpty": {
+        "type": "String",
+        "description": "The feed is empty only because of filters.",
+        "placeholders": {}
+    },
+    "clearFilters": "Clear filters",
+    "@clearFilters": {
+        "type": "String",
+        "description": "Removes every feed filter.",
+        "placeholders": {}
+    },
+    "postSomething": "Post something",
+    "@postSomething": {
+        "type": "String",
+        "description": "Empty-feed action that opens the composer.",
+        "placeholders": {}
+    },
+    "tutorial": "Tutorial",
+    "@tutorial": {
+        "type": "String",
+        "description": "Badge on a post that teaches a trick rather than just showing it landed.",
+        "placeholders": {}
+    },
+    "postEdited": "Edited",
+    "@postEdited": {
+        "type": "String",
+        "description": "Marks a post whose caption or tags changed after posting.",
+        "placeholders": {}
+    },
+    "justNow": "Now",
+    "@justNow": {
+        "type": "String",
+        "description": "Relative time for something under a minute old. Very short: sits beside a name.",
+        "placeholders": {}
+    },
+    "minutesAgoShort": "{count}m",
+    "@minutesAgoShort": {
+        "type": "String",
+        "description": "Relative time in minutes, abbreviated.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "hoursAgoShort": "{count}h",
+    "@hoursAgoShort": {
+        "type": "String",
+        "description": "Relative time in hours, abbreviated.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "daysAgoShort": "{count}d",
+    "@daysAgoShort": {
+        "type": "String",
+        "description": "Relative time in days, abbreviated.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "weeksAgoShort": "{count}w",
+    "@weeksAgoShort": {
+        "type": "String",
+        "description": "Relative time in weeks, abbreviated.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "captionMore": "more",
+    "@captionMore": {
+        "type": "String",
+        "description": "Expands a truncated caption.",
+        "placeholders": {}
+    },
+    "tagTrick": "Tag a trick",
+    "@tagTrick": {
+        "type": "String",
+        "description": "Opens the dictionary to tag what a clip is about.",
+        "placeholders": {}
+    },
+    "tagTrickExplain": "Tagged clips appear on the trick's page, so anyone looking it up finds yours.",
+    "@tagTrickExplain": {
+        "type": "String",
+        "description": "Why tagging a post matters.",
+        "placeholders": {}
+    },
+    "markTutorial": "Tutorial",
+    "@markTutorial": {
+        "type": "String",
+        "description": "Switch label in the composer.",
+        "placeholders": {}
+    },
+    "markTutorialExplain": "It teaches the trick rather than just showing it landed. Tutorials lead a trick's page.",
+    "@markTutorialExplain": {
+        "type": "String",
+        "description": "Explains the tutorial switch.",
+        "placeholders": {}
+    },
+    "fromSession": "From a session",
+    "@fromSession": {
+        "type": "String",
+        "description": "Composer section: link the post to one of your sessions.",
+        "placeholders": {}
+    },
+    "fromSessionExplain": "Its results go on the post: what you worked on, and any firsts.",
+    "@fromSessionExplain": {
+        "type": "String",
+        "description": "Explains linking a session to a post.",
+        "placeholders": {}
+    },
+    "noSession": "None",
+    "@noSession": {
+        "type": "String",
+        "description": "Composer: the post is not from a session.",
+        "placeholders": {}
+    },
+    "addArea": "Add my area",
+    "@addArea": {
+        "type": "String",
+        "description": "Composer switch: attach a coarse location.",
+        "placeholders": {}
+    },
+    "addAreaExplain": "Rounded to about a kilometre, so it shows the neighbourhood and never the spot. Lets players nearby find this.",
+    "@addAreaExplain": {
+        "type": "String",
+        "description": "Explains what location is stored and why.",
+        "placeholders": {}
+    },
+    "placeName": "Place, e.g. Washington Square Park",
+    "@placeName": {
+        "type": "String",
+        "description": "Optional place name on a post.",
+        "placeholders": {}
+    },
+    "captionHint": "Write a caption…",
+    "@captionHint": {
+        "type": "String",
+        "description": "Placeholder for a post's caption.",
+        "placeholders": {}
+    },
+    "addMedia": "Add",
+    "@addMedia": {
+        "type": "String",
+        "description": "Tile in the composer that adds photos or clips.",
+        "placeholders": {}
+    },
+    "uploadFailed": "Didn't upload. Tap to retry.",
+    "@uploadFailed": {
+        "type": "String",
+        "description": "A photo or clip failed to upload.",
+        "placeholders": {}
+    },
+    "waitingForUploads": "Finishing uploads…",
+    "@waitingForUploads": {
+        "type": "String",
+        "description": "Shown on the share button while media is still uploading.",
+        "placeholders": {}
+    },
+    "posted": "Posted",
+    "@posted": {
+        "type": "String",
+        "description": "Confirmation after publishing a post.",
+        "placeholders": {}
+    },
+    "discardPostTitle": "Discard this post?",
+    "@discardPostTitle": {
+        "type": "String",
+        "description": "Leaving the composer with work in it.",
+        "placeholders": {}
+    },
+    "deletePost": "Delete post",
+    "@deletePost": {
+        "type": "String",
+        "description": "Post menu action for its author.",
+        "placeholders": {}
+    },
+    "deletePostConfirm": "It disappears from the feed for everyone.",
+    "@deletePostConfirm": {
+        "type": "String",
+        "description": "Confirmation body before deleting a post.",
+        "placeholders": {}
+    },
+    "postDeleted": "Post deleted",
+    "@postDeleted": {
+        "type": "String",
+        "description": "Confirmation after deleting a post.",
+        "placeholders": {}
+    },
+    "editPost": "Edit",
+    "@editPost": {
+        "type": "String",
+        "description": "Post menu action: edit caption and tags.",
+        "placeholders": {}
+    },
+    "reportThis": "Report",
+    "@reportThis": {
+        "type": "String",
+        "description": "Menu action that reports a post or comment to moderators.",
+        "placeholders": {}
+    },
+    "reportWhy": "Why are you reporting this?",
+    "@reportWhy": {
+        "type": "String",
+        "description": "Title of the report sheet.",
+        "placeholders": {}
+    },
+    "reasonSpam": "Spam or selling",
+    "@reasonSpam": {
+        "type": "String",
+        "description": "Report reason.",
+        "placeholders": {}
+    },
+    "reasonHarassment": "Harassment or bullying",
+    "@reasonHarassment": {
+        "type": "String",
+        "description": "Report reason.",
+        "placeholders": {}
+    },
+    "reasonNotFootbag": "Not footbag",
+    "@reasonNotFootbag": {
+        "type": "String",
+        "description": "Report reason.",
+        "placeholders": {}
+    },
+    "reasonNotTheirs": "Someone else's clip",
+    "@reasonNotTheirs": {
+        "type": "String",
+        "description": "Report reason: reposted without credit or permission.",
+        "placeholders": {}
+    },
+    "reasonIllegal": "Illegal, or someone at risk",
+    "@reasonIllegal": {
+        "type": "String",
+        "description": "Report reason. Sorts first in the moderators' queue.",
+        "placeholders": {}
+    },
+    "reportNote": "Anything the moderators should know (optional)",
+    "@reportNote": {
+        "type": "String",
+        "description": "Free-text note on a report.",
+        "placeholders": {}
+    },
+    "sendReport": "Send report",
+    "@sendReport": {
+        "type": "String",
+        "description": "Submits a report.",
+        "placeholders": {}
+    },
+    "reportSent": "Reported. A moderator will take a look.",
+    "@reportSent": {
+        "type": "String",
+        "description": "Confirmation after reporting.",
+        "placeholders": {}
+    },
+    "modQueue": "Mod queue",
+    "@modQueue": {
+        "type": "String",
+        "description": "Moderators' list of reported posts and comments.",
+        "placeholders": {}
+    },
+    "queueOpen": "Open",
+    "@queueOpen": {
+        "type": "String",
+        "description": "Mod queue tab: undecided reports.",
+        "placeholders": {}
+    },
+    "queueActioned": "Decided",
+    "@queueActioned": {
+        "type": "String",
+        "description": "Mod queue tab: reports already removed or kept.",
+        "placeholders": {}
+    },
+    "removeContent": "Remove",
+    "@removeContent": {
+        "type": "String",
+        "description": "Moderator action: hide the post or comment. Reversible.",
+        "placeholders": {}
+    },
+    "keepContent": "Keep",
+    "@keepContent": {
+        "type": "String",
+        "description": "Moderator action: dismiss the reports and leave it up.",
+        "placeholders": {}
+    },
+    "restoreContent": "Restore",
+    "@restoreContent": {
+        "type": "String",
+        "description": "Moderator action: undo a removal.",
+        "placeholders": {}
+    },
+    "queueEmpty": "Nothing waiting. Reports from players land here.",
+    "@queueEmpty": {
+        "type": "String",
+        "description": "Empty mod queue.",
+        "placeholders": {}
+    },
+    "reportCount": "{count, plural, =1{1 report} other{{count} reports}}",
+    "@reportCount": {
+        "type": "String",
+        "description": "How many people reported this.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "removedNotice": "Removed. Only you and the moderators can see it.",
+    "@removedNotice": {
+        "type": "String",
+        "description": "Banner on a removed post.",
+        "placeholders": {}
+    },
+    "decidedBy": "Decided by {name}",
+    "@decidedBy": {
+        "type": "String",
+        "description": "Who actioned a report.",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "postCount": "{count, plural, =1{1 post} other{{count} posts}}",
+    "@postCount": {
+        "type": "String",
+        "description": "Number of posts on a profile.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "noPostsYet": "No posts yet.",
+    "@noPostsYet": {
+        "type": "String",
+        "description": "A profile with no posts.",
+        "placeholders": {}
+    },
+    "shareToFeed": "Share to feed",
+    "@shareToFeed": {
+        "type": "String",
+        "description": "After saving a report: open the composer with this session attached.",
+        "placeholders": {}
+    },
+    "firstLanded": "First",
+    "@firstLanded": {
+        "type": "String",
+        "description": "Badge on a trick landed for the first time.",
+        "placeholders": {}
+    },
+    "unmuteClip": "Unmute",
+    "@unmuteClip": {
+        "type": "String",
+        "description": "Unmutes a clip.",
+        "placeholders": {}
+    },
+    "locationUnavailable": "Location is off for this app, so Near me can't work. Turn it on in your settings.",
+    "@locationUnavailable": {
+        "type": "String",
+        "description": "Near me was chosen but location is denied.",
+        "placeholders": {}
+    },
+    "loadMoreFailed": "Couldn't load more. Tap to try again.",
+    "@loadMoreFailed": {
+        "type": "String",
+        "description": "The next page of the feed failed.",
+        "placeholders": {}
+    },
+    "photoOrClip": "Photo or clip",
+    "@photoOrClip": {
+        "type": "String",
+        "description": "Accessibility label for a post's media.",
+        "placeholders": {}
+    },
+    "postsTagged": "{name}",
+    "@postsTagged": {
+        "type": "String",
+        "description": "Feed filter chip naming the trick the feed is filtered to.",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
     }
 }

@@ -110,8 +110,12 @@ def policy(script_hashes: list[str]) -> str:
             "worker-src 'self' blob:",
             "style-src 'self' 'unsafe-inline'",
             f"font-src 'self' data: {FONTS}",
-            f"img-src 'self' data: blob: {HOMESERVER}",
-            f"media-src 'self' data: blob: {HOMESERVER}",
+            # The API serves the feed's photos and clips on signed URLs. A
+            # <video> element is governed by media-src, not connect-src, so
+            # without the API here every clip is blocked before it is asked
+            # for -- the same silent failure connect-src once had.
+            f"img-src 'self' data: blob: {HOMESERVER} {API}",
+            f"media-src 'self' data: blob: {HOMESERVER} {API}",
             f"connect-src 'self' {HOMESERVER} {HOMESERVER_WS} {API} "
             f"{ANALYTICS} {FONTS}",
             "base-uri 'self'",

@@ -82,7 +82,7 @@ class DashView extends StatelessWidget {
       physics: const AlwaysScrollableScrollPhysics(),
       padding: const EdgeInsets.only(top: 16, bottom: 32),
       children: [
-        const _Shortcuts(),
+        _Shortcuts(canModerate: controller.canModerate),
 
         if (running != null)
           _Scoreboard(controller: controller, session: running)
@@ -144,10 +144,7 @@ class _DashBar extends StatelessWidget implements PreferredSizeWidget {
               height: 1.05,
             ),
           ),
-          Text(
-            l10n.dashGreeting,
-            style: Nyfa.bodyMuted.copyWith(fontSize: 12),
-          ),
+          Text(l10n.dashGreeting, style: Nyfa.bodyMuted.copyWith(fontSize: 12)),
         ],
       ),
       // One action only. Four icons beside the wordmark overflowed at phone
@@ -201,7 +198,9 @@ class _DashBar extends StatelessWidget implements PreferredSizeWidget {
 /// chart are not obviously favourites, scheduling and rankings until you have
 /// tapped each one once.
 class _Shortcuts extends StatelessWidget {
-  const _Shortcuts();
+  final bool canModerate;
+
+  const _Shortcuts({required this.canModerate});
 
   @override
   Widget build(BuildContext context) {
@@ -212,26 +211,34 @@ class _Shortcuts extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
         children: [
-          for (final s in <({String key, String label, IconData icon, String path})>[
-            (
-              key: 'DashFavouritesButton',
-              label: l10n.favourites,
-              icon: Icons.star_outline_rounded,
-              path: '/rooms/dash/favourites',
-            ),
-            (
-              key: 'DashScheduleButton',
-              label: l10n.scheduleSession,
-              icon: Icons.calendar_today_outlined,
-              path: '/rooms/dash/schedule',
-            ),
-            (
-              key: 'DashRankingsButton',
-              label: l10n.rankings,
-              icon: Icons.leaderboard_outlined,
-              path: '/rooms/dash/rankings',
-            ),
-          ])
+          for (final s
+              in <({String key, String label, IconData icon, String path})>[
+                (
+                  key: 'DashFavouritesButton',
+                  label: l10n.favourites,
+                  icon: Icons.star_outline_rounded,
+                  path: '/rooms/dash/favourites',
+                ),
+                (
+                  key: 'DashScheduleButton',
+                  label: l10n.scheduleSession,
+                  icon: Icons.calendar_today_outlined,
+                  path: '/rooms/dash/schedule',
+                ),
+                (
+                  key: 'DashRankingsButton',
+                  label: l10n.rankings,
+                  icon: Icons.leaderboard_outlined,
+                  path: '/rooms/dash/rankings',
+                ),
+                if (canModerate)
+                  (
+                    key: 'DashModQueueButton',
+                    label: l10n.modQueue,
+                    icon: Icons.shield_outlined,
+                    path: '/rooms/dash/mod',
+                  ),
+              ])
             Padding(
               padding: const EdgeInsets.only(right: 8),
               child: InkWell(
@@ -239,7 +246,9 @@ class _Shortcuts extends StatelessWidget {
                 onTap: () => context.push(s.path),
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 14),
-                  decoration: BoxDecoration(border: Border.all(color: Nyfa.rule)),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Nyfa.rule),
+                  ),
                   child: Center(
                     widthFactor: 1,
                     child: Row(
@@ -365,7 +374,8 @@ class _Scoreboard extends StatelessWidget {
           const SizedBox(height: 10),
           Semantics(
             label: l10n.sessionRunning,
-            value: '${session.elapsedNow.inHours} h '
+            value:
+                '${session.elapsedNow.inHours} h '
                 '${session.elapsedNow.inMinutes % 60} min',
             child: ExcludeSemantics(
               child: FittedBox(
@@ -577,7 +587,11 @@ class _Centred extends StatelessWidget {
       const SizedBox(height: 72),
       Icon(icon, size: 44, color: Nyfa.muted),
       const SizedBox(height: 18),
-      Text(title.toUpperCase(), textAlign: TextAlign.center, style: Nyfa.heading),
+      Text(
+        title.toUpperCase(),
+        textAlign: TextAlign.center,
+        style: Nyfa.heading,
+      ),
       const SizedBox(height: 8),
       Text(body, textAlign: TextAlign.center, style: Nyfa.bodyMuted),
       if (actionLabel != null && onAction != null) ...[
