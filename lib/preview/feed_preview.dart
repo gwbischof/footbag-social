@@ -16,7 +16,9 @@ import 'package:footbag_network/config/nyfa_theme.dart';
 import 'package:footbag_network/l10n/l10n.dart';
 import 'package:footbag_network/pages/feed/compose.dart';
 import 'package:footbag_network/pages/feed/feed.dart';
+import 'package:footbag_network/pages/feed/feed_actions.dart';
 import 'package:footbag_network/pages/feed/widgets/post_card.dart';
+import 'package:footbag_network/pages/session/session_page.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:material_ui/material_ui.dart';
@@ -55,6 +57,10 @@ Widget previewBody(BuildContext context) =>
       'loading' => const _PreviewFeed(mode: 'loading'),
       'trick' => const _PreviewFeed(mode: 'trick'),
       'compose' => const _PreviewCompose(),
+      'session-host' => const _PreviewSession(role: 'host'),
+      'session-stranger' => const _PreviewSession(role: null),
+      'session-requested' => const _PreviewSession(role: 'requested'),
+      'session-going' => const _PreviewSession(role: 'approved'),
       _ => const _PreviewFeed(mode: 'recent'),
     };
 
@@ -182,4 +188,56 @@ class PreviewActions implements PostActions {
 
   @override
   void openMenu(FootbagPost post) {}
+}
+
+/// The real session page with a canned session, one per standing.
+class _PreviewSession extends SessionPage {
+  final String? role;
+
+  const _PreviewSession({required this.role}) : super(sessionId: 8);
+
+  @override
+  SessionPageState createState() => _PreviewSessionState();
+}
+
+class _PreviewSessionState extends SessionPageState {
+  @override
+  Future<void> load() async {
+    PlayerAvatar.previewBuilder = PreviewActions().avatar;
+    final role = (widget as _PreviewSession).role;
+    final host = role == 'host';
+    final named = host || role == 'approved';
+    adopt(
+      FootbagSession.fromJson({
+        'id': 8,
+        'name': 'Tompkins Square — evening',
+        'type': 'freestyle',
+        'host_id': '@landes:x',
+        'host_name': 'Landes',
+        'joining': 'open',
+        'on_feed': 'public',
+        'note': 'Bring a spare bag. Meeting by the basketball courts.',
+        'scheduled_at': DateTime.now()
+            .add(const Duration(days: 1, hours: 3))
+            .toUtc()
+            .toIso8601String(),
+        'is_running': false,
+        'attendee_count': 3,
+        'my_state': role,
+        'attendees': named
+            ? [
+                {'user_id': '@g:x', 'display_name': 'Garrett'},
+                {'user_id': '@m:x', 'display_name': 'Marco'},
+                {'user_id': '@k:x', 'display_name': 'Kenji'},
+              ]
+            : null,
+        'requests': host
+            ? [
+                {'user_id': '@l:x', 'display_name': 'Lamous'},
+                {'user_id': '@j:x', 'display_name': 'Jake'},
+              ]
+            : null,
+      }),
+    );
+  }
 }

@@ -9,6 +9,7 @@ import 'package:footbag_network/utils/footbag_api.dart';
 import 'package:footbag_network/utils/localized_exception_extension.dart';
 import 'package:footbag_network/widgets/footbag_nav_bar.dart';
 import 'package:footbag_network/widgets/layouts/max_width_body.dart';
+import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
 class DiscoverView extends StatelessWidget {
@@ -191,38 +192,57 @@ class _SessionsTab extends StatelessWidget {
             decoration: const BoxDecoration(
               border: Border(top: BorderSide(color: Nyfa.rule)),
             ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          s.name.toUpperCase(),
-                          style: Nyfa.heading.copyWith(fontSize: 17),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        const SizedBox(height: 3),
-                        Text(
-                          s.hostId,
-                          style: Nyfa.bodyMuted.copyWith(fontSize: 12),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
+            child: InkWell(
+              key: Key('DiscoverSession_${s.id}'),
+              onTap: () async {
+                await context.push('/rooms/session/${s.id}');
+                await controller.load();
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 15,
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            s.name.toUpperCase(),
+                            style: Nyfa.heading.copyWith(fontSize: 17),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          const SizedBox(height: 3),
+                          Text(
+                            // The host's name and how many are going -- not the
+                            // MXID, which is how the first version read.
+                            [
+                              l10n.hostedBy(s.hostName ?? s.hostId),
+                              l10n.goingCount(s.attendeeCount),
+                              if (s.myState == 'requested') l10n.requestSent,
+                              if (s.myState == 'approved') l10n.youreGoing,
+                            ].join('  ·  '),
+                            style: Nyfa.bodyMuted.copyWith(fontSize: 12),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  if (s.isRunning) ...[
-                    const SizedBox(width: 10),
-                    Text(
-                      l10n.runningNow.toUpperCase(),
-                      style: Nyfa.eyebrow.copyWith(color: Nyfa.green),
-                    ),
+                    if (s.isRunning) ...[
+                      const SizedBox(width: 10),
+                      Text(
+                        l10n.runningNow.toUpperCase(),
+                        style: Nyfa.eyebrow.copyWith(color: Nyfa.green),
+                      ),
+                    ],
+                    const SizedBox(width: 6),
+                    const Icon(Icons.chevron_right_rounded, color: Nyfa.muted),
                   ],
-                ],
+                ),
               ),
             ),
           );
@@ -276,7 +296,8 @@ class _PlayersTab extends StatelessWidget {
               body: l10n.noPlayersYetBody,
             )
           else
-            for (final p in rows) _PlayerRow(key: ValueKey(p.userId), player: p),
+            for (final p in rows)
+              _PlayerRow(key: ValueKey(p.userId), player: p),
         ],
       ),
     );
@@ -380,7 +401,11 @@ class _Empty extends StatelessWidget {
       children: [
         Icon(icon, size: 44, color: Nyfa.muted),
         const SizedBox(height: 18),
-        Text(title.toUpperCase(), textAlign: TextAlign.center, style: Nyfa.heading),
+        Text(
+          title.toUpperCase(),
+          textAlign: TextAlign.center,
+          style: Nyfa.heading,
+        ),
         const SizedBox(height: 8),
         Text(body, textAlign: TextAlign.center, style: Nyfa.bodyMuted),
       ],
@@ -388,24 +413,31 @@ class _Empty extends StatelessWidget {
   );
 }
 
-Widget _problem(BuildContext context, DiscoverController c, L10n l10n) => ListView(
-  padding: const EdgeInsets.symmetric(horizontal: 32),
-  children: [
-    const SizedBox(height: 48),
-    const Icon(Icons.cloud_off_rounded, size: 44, color: Nyfa.muted),
-    const SizedBox(height: 18),
-    Text(
-      l10n.oopsSomethingWentWrong.toUpperCase(),
-      textAlign: TextAlign.center,
-      style: Nyfa.heading,
-    ),
-    const SizedBox(height: 8),
-    Text(
-      c.error!.toLocalizedString(context),
-      textAlign: TextAlign.center,
-      style: Nyfa.bodyMuted,
-    ),
-    const SizedBox(height: 20),
-    Center(child: NyfaForm.action(label: l10n.retry, filled: false, onPressed: c.load)),
-  ],
-);
+Widget _problem(BuildContext context, DiscoverController c, L10n l10n) =>
+    ListView(
+      padding: const EdgeInsets.symmetric(horizontal: 32),
+      children: [
+        const SizedBox(height: 48),
+        const Icon(Icons.cloud_off_rounded, size: 44, color: Nyfa.muted),
+        const SizedBox(height: 18),
+        Text(
+          l10n.oopsSomethingWentWrong.toUpperCase(),
+          textAlign: TextAlign.center,
+          style: Nyfa.heading,
+        ),
+        const SizedBox(height: 8),
+        Text(
+          c.error!.toLocalizedString(context),
+          textAlign: TextAlign.center,
+          style: Nyfa.bodyMuted,
+        ),
+        const SizedBox(height: 20),
+        Center(
+          child: NyfaForm.action(
+            label: l10n.retry,
+            filled: false,
+            onPressed: c.load,
+          ),
+        ),
+      ],
+    );

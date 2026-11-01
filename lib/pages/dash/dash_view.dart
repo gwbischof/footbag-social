@@ -91,7 +91,11 @@ class DashView extends StatelessWidget {
 
         if (upcoming.isNotEmpty) _SectionLabel(l10n.upcomingSessions),
         ...upcoming.map(
-          (s) => _SessionRow(key: ValueKey('up_${s.id}'), session: s),
+          (s) => _SessionRow(
+            key: ValueKey('up_${s.id}'),
+            session: s,
+            onTap: () => controller.openSession(s.id),
+          ),
         ),
 
         if (past.isNotEmpty) _SectionLabel(l10n.yourSessions),
@@ -99,7 +103,7 @@ class DashView extends StatelessWidget {
           (s) => _SessionRow(
             key: ValueKey('past_${s.id}'),
             session: s,
-            onTap: () => controller.openReport(s.id),
+            onTap: () => controller.openSession(s.id),
           ),
         ),
       ],
@@ -531,6 +535,11 @@ class _SessionRow extends StatelessWidget {
                           _typeLabel(l10n, session.type),
                         if (when != null) when.localizedTime(context),
                         if (session.isUpcoming) l10n.sessionScheduled,
+                        if (session.isRunning && !session.isHost)
+                          l10n.sessionLive,
+                        if (!session.isHost && session.hostName != null)
+                          l10n.hostedBy(session.hostName!),
+                        if (session.myState == 'requested') l10n.requestSent,
                       ].join('  ·  '),
                       style: Nyfa.bodyMuted.copyWith(fontSize: 12),
                       maxLines: 1,
@@ -539,6 +548,24 @@ class _SessionRow extends StatelessWidget {
                   ],
                 ),
               ),
+              if (session.isHost && (session.requests?.isNotEmpty ?? false)) ...[
+                const SizedBox(width: 12),
+                // Requests waiting on the host. There is no notification
+                // inbox yet, so this badge is how a host finds out.
+                Container(
+                  padding: const EdgeInsets.fromLTRB(7, 3, 7, 1),
+                  color: Nyfa.green,
+                  child: Text(
+                    l10n.sessionRequestsBadge(session.requests!.length).toUpperCase(),
+                    style: const TextStyle(
+                      fontFamily: Nyfa.display,
+                      fontSize: 13,
+                      letterSpacing: 1,
+                      color: Nyfa.ground,
+                    ),
+                  ),
+                ),
+              ],
               if (session.duration != null) ...[
                 const SizedBox(width: 12),
                 Text(

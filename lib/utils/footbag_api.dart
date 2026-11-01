@@ -107,8 +107,10 @@ extension FootbagApi on Client {
   Future<List<FootbagPlayer>> discoverPlayers({
     String? style,
     String? city,
+    String? query,
   }) async {
     final params = <String>[
+      if (query != null && query.isNotEmpty) 'q=${Uri.encodeQueryComponent(query)}',
       if (style != null) 'style=$style',
       if (city != null && city.isNotEmpty)
         'city=${Uri.encodeQueryComponent(city)}',
@@ -224,6 +226,51 @@ extension FootbagApi on Client {
       'entries': entries.map((e) => e.toJson()).toList(),
     }),
   );
+
+
+  // -- Joining sessions --------------------------------------------------------
+
+  /// Ask to join an open session. The host approves or declines.
+  Future<FootbagSession> requestToJoin(int id) async =>
+      FootbagSession.fromJson(await _apiPostObject('sessions/$id/join', null));
+
+  /// Withdraw a request, or stop going.
+  Future<FootbagSession> leaveSession(int id) async => FootbagSession.fromJson(
+    jsonDecode((await _apiSend('DELETE', 'sessions/$id/join')).body)
+        as Map<String, dynamic>,
+  );
+
+  Future<FootbagSession> approveAttendee(int id, String userId) async =>
+      FootbagSession.fromJson(
+        await _apiPostObject(
+          'sessions/$id/attendees/${Uri.encodeComponent(userId)}/approve',
+          null,
+        ),
+      );
+
+  Future<FootbagSession> declineAttendee(int id, String userId) async =>
+      FootbagSession.fromJson(
+        await _apiPostObject(
+          'sessions/$id/attendees/${Uri.encodeComponent(userId)}/decline',
+          null,
+        ),
+      );
+
+  /// Add someone directly -- an invite is an approval made first.
+  Future<FootbagSession> inviteToSession(int id, String userId) async =>
+      FootbagSession.fromJson(
+        jsonDecode(
+              (await _apiSend(
+                'PUT',
+                'sessions/$id/attendees/${Uri.encodeComponent(userId)}',
+              )).body,
+            )
+            as Map<String, dynamic>,
+      );
+
+  /// Begin a session that was scheduled for later.
+  Future<FootbagSession> startScheduledSession(int id) async =>
+      FootbagSession.fromJson(await _apiPostObject('sessions/$id/start', null));
 
   // -- The feed --------------------------------------------------------------
 
@@ -606,6 +653,24 @@ class FootbagSession {
   /// overnight reports the play that was confirmed, not the hours that passed.
   final Duration? duration;
 
+  final String? hostName;
+
+  /// Approved players. Visible to anyone who can see the session.
+  final int attendeeCount;
+
+  /// `host`, `requested`, `approved`, `declined`, or null for a stranger.
+  final String? myState;
+
+  /// Who is going. Null unless you host it or were approved -- the server
+  /// leaves the names out for everyone else, which is the point of approval.
+  final List<({String userId, String name})>? attendees;
+
+  /// Pending requests. Only ever sent to the host.
+  final List<({String userId, String name})>? requests;
+
+  bool get isHost => myState == 'host';
+  bool get isGoing => myState == 'approved';
+
   const FootbagSession({
     required this.id,
     required this.name,
@@ -621,7 +686,23 @@ class FootbagSession {
     required this.lastCheckinAt,
     required this.isRunning,
     required this.duration,
+    this.hostName,
+    this.attendeeCount = 0,
+    this.myState,
+    this.attendees,
+    this.requests,
   });
+
+  static List<({String userId, String name})>? _people(Object? list) =>
+      list == null
+      ? null
+      : [
+          for (final p in list as List)
+            (
+              userId: (p as Map<String, dynamic>)['user_id'] as String,
+              name: p['display_name'] as String,
+            ),
+        ];
 
   factory FootbagSession.fromJson(Map<String, dynamic> json) => FootbagSession(
     id: json['id'] as int,
@@ -640,6 +721,11 @@ class FootbagSession {
     duration: json['duration_seconds'] == null
         ? null
         : Duration(seconds: json['duration_seconds'] as int),
+    hostName: json['host_name'] as String?,
+    attendeeCount: json['attendee_count'] as int? ?? 0,
+    myState: json['my_state'] as String?,
+    attendees: _people(json['attendees']),
+    requests: _people(json['requests']),
   );
 
   /// The API sends UTC; everything on screen is local. Converting here rather

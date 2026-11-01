@@ -364,8 +364,14 @@ class PlayerAvatar extends StatelessWidget {
     super.key,
   });
 
+  /// Replaces the Matrix lookup in the preview harness, which has no
+  /// client. Never set in the app.
+  static Widget Function(String userId, String name, double size)? previewBuilder;
+
   @override
   Widget build(BuildContext context) {
+    final preview = previewBuilder;
+    if (preview != null) return preview(userId, name, size);
     final client = Matrix.of(context).client;
     return FutureBuilder<Profile>(
       future: client

@@ -35,6 +35,7 @@ import 'package:footbag_network/pages/new_session/new_session.dart';
 import 'package:footbag_network/pages/profile/profile.dart';
 import 'package:footbag_network/pages/rankings/rankings.dart';
 import 'package:footbag_network/pages/report/report.dart';
+import 'package:footbag_network/pages/session/session_page.dart';
 import 'package:footbag_network/pages/settings/settings.dart';
 import 'package:footbag_network/pages/settings_3pid/settings_3pid.dart';
 import 'package:footbag_network/pages/settings_chat/settings_chat.dart';
@@ -176,7 +177,8 @@ abstract class AppRoutes {
                 state.fullPath?.startsWith('/rooms/settings') == false &&
                 state.fullPath?.startsWith('/rooms/dash') == false &&
                 state.fullPath?.startsWith('/rooms/discover') == false &&
-                state.fullPath?.startsWith('/rooms/feed') == false
+                state.fullPath?.startsWith('/rooms/feed') == false &&
+                state.fullPath?.startsWith('/rooms/session') == false
             ? TwoColumnLayout(
                 mainView: ChatList(
                   activeChat: state.pathParameters['roomid'],
@@ -210,6 +212,24 @@ abstract class AppRoutes {
             // Nested under /rooms so it inherits the logged-in guard, but
             // excluded from the two-column wrapper above: Dash is the home
             // screen, not a detail pane.
+            GoRoute(
+              path: 'session/:sessionid',
+              redirect: (context, state) {
+                final id = state.pathParameters['sessionid'];
+                if (id == null || int.tryParse(id) == null) {
+                  return '/rooms/dash';
+                }
+                return loggedOutRedirect(context, state);
+              },
+              pageBuilder: (context, state) => defaultPageBuilder(
+                context,
+                state,
+                SessionPage(
+                  key: ValueKey(state.pathParameters['sessionid']),
+                  sessionId: int.parse(state.pathParameters['sessionid']!),
+                ),
+              ),
+            ),
             GoRoute(
               path: 'feed',
               pageBuilder: (context, state) =>

@@ -4150,5 +4150,185 @@
                 "type": "String"
             }
         }
+    },
+    "requestToJoin": "Ask to join",
+    "@requestToJoin": {
+        "type": "String",
+        "description": "Asks the host to let you into their session.",
+        "placeholders": {}
+    },
+    "requestSent": "Request sent",
+    "@requestSent": {
+        "type": "String",
+        "description": "Shown after asking to join, while the host decides.",
+        "placeholders": {}
+    },
+    "withdrawRequest": "Withdraw request",
+    "@withdrawRequest": {
+        "type": "String",
+        "description": "Takes back a request to join.",
+        "placeholders": {}
+    },
+    "youreGoing": "You're going",
+    "@youreGoing": {
+        "type": "String",
+        "description": "You were approved for this session.",
+        "placeholders": {}
+    },
+    "leaveSession": "Leave",
+    "@leaveSession": {
+        "type": "String",
+        "description": "Stop going to a session you were approved for.",
+        "placeholders": {}
+    },
+    "requestDeclined": "The host turned this one down.",
+    "@requestDeclined": {
+        "type": "String",
+        "description": "Your request to join was declined.",
+        "placeholders": {}
+    },
+    "inviteOnlyNote": "Invite only — the host adds players.",
+    "@inviteOnlyNote": {
+        "type": "String",
+        "description": "An invite-only session takes no requests.",
+        "placeholders": {}
+    },
+    "sessionEnded": "Ended",
+    "@sessionEnded": {
+        "type": "String",
+        "description": "Status of a finished session.",
+        "placeholders": {}
+    },
+    "sessionLive": "Live",
+    "@sessionLive": {
+        "type": "String",
+        "description": "Status of a running session.",
+        "placeholders": {}
+    },
+    "hostedBy": "Hosted by {name}",
+    "@hostedBy": {
+        "type": "String",
+        "description": "Who is running the session.",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "youAreHosting": "You're hosting",
+    "@youAreHosting": {
+        "type": "String",
+        "description": "Shown to the host on their own session.",
+        "placeholders": {}
+    },
+    "messageHost": "Message host",
+    "@messageHost": {
+        "type": "String",
+        "description": "Opens a direct message with the session's host.",
+        "placeholders": {}
+    },
+    "goingCount": "{count, plural, =0{Nobody going yet} =1{1 going} other{{count} going}}",
+    "@goingCount": {
+        "type": "String",
+        "description": "How many approved players a session has.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "namesAfterApproval": "Names show once the host lets you in.",
+    "@namesAfterApproval": {
+        "type": "String",
+        "description": "Why a stranger sees a count but not names.",
+        "placeholders": {}
+    },
+    "exactSpotNote": "The exact spot comes from the host. Message them once you're in.",
+    "@exactSpotNote": {
+        "type": "String",
+        "description": "Where the session's precise location comes from; it is never stored in the app.",
+        "placeholders": {}
+    },
+    "joinRequests": "Requests",
+    "@joinRequests": {
+        "type": "String",
+        "description": "Host's list of people asking to join.",
+        "placeholders": {}
+    },
+    "sessionApprove": "Let in",
+    "@sessionApprove": {
+        "type": "String",
+        "description": "Host approves a join request.",
+        "placeholders": {}
+    },
+    "sessionDecline": "Decline",
+    "@sessionDecline": {
+        "type": "String",
+        "description": "Host declines a join request.",
+        "placeholders": {}
+    },
+    "removeAttendee": "Remove",
+    "@removeAttendee": {
+        "type": "String",
+        "description": "Host removes an approved player.",
+        "placeholders": {}
+    },
+    "invitePlayers": "Invite players",
+    "@invitePlayers": {
+        "type": "String",
+        "description": "Host adds players directly.",
+        "placeholders": {}
+    },
+    "invitePlayersHint": "Search by name",
+    "@invitePlayersHint": {
+        "type": "String",
+        "description": "Placeholder for the player search when inviting.",
+        "placeholders": {}
+    },
+    "invitePlayersEmpty": "Nobody by that name is findable. Players who hide themselves from Discover can't be invited this way.",
+    "@invitePlayersEmpty": {
+        "type": "String",
+        "description": "No results when searching for someone to invite.",
+        "placeholders": {}
+    },
+    "addToSession": "Add",
+    "@addToSession": {
+        "type": "String",
+        "description": "Adds a player to the session.",
+        "placeholders": {}
+    },
+    "sessionAdded": "Added",
+    "@sessionAdded": {
+        "type": "String",
+        "description": "A player was just added to the session.",
+        "placeholders": {}
+    },
+    "startNow": "Start now",
+    "@startNow": {
+        "type": "String",
+        "description": "Starts a scheduled session.",
+        "placeholders": {}
+    },
+    "sessionRequestsBadge": "{count, plural, =1{1 request} other{{count} requests}}",
+    "@sessionRequestsBadge": {
+        "type": "String",
+        "description": "Join requests waiting on a session row in Dash.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "sessionGoing": "Going",
+    "@sessionGoing": {
+        "type": "String",
+        "description": "Section heading for approved players.",
+        "placeholders": {}
+    },
+    "exactSpotGoing": "You are in. Message the host for the exact spot.",
+    "@exactSpotGoing": {
+        "type": "String",
+        "description": "Approved players get the precise location from the host by DM; the app never stores it.",
+        "placeholders": {}
     }
 }

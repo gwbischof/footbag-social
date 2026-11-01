@@ -56,15 +56,27 @@ class DashController extends State<Dash> with WidgetsBindingObserver {
   static const checkInInterval = Duration(minutes: 30);
   static const checkInWarning = Duration(minutes: 10);
 
+  /// The session this player is running. Hosted only: the list also holds
+  /// sessions they joined, and the scoreboard's Check in and Stop are the
+  /// host's controls -- on someone else's session they would be refused.
   FootbagSession? get running =>
-      sessions?.where((s) => s.isRunning).firstOrNull;
+      sessions?.where((s) => s.isRunning && s.isHost).firstOrNull;
 
   List<FootbagSession> get upcoming =>
       sessions?.where((s) => s.isUpcoming).toList() ?? const [];
 
+  /// Everything else, newest first -- including a session someone else is
+  /// running that this player joined, which would otherwise vanish from Dash
+  /// while it is happening.
   List<FootbagSession> get past =>
-      sessions?.where((s) => !s.isRunning && !s.isUpcoming).toList() ??
+      sessions?.where((s) => !s.isUpcoming && s != running).toList() ??
       const [];
+
+  /// Open a session's page: joining, attendees, reporting.
+  Future<void> openSession(int id) async {
+    await context.push('/rooms/session/$id');
+    if (mounted) await load();
+  }
 
   /// Minutes until the check-in lapses, or null when it is not worth saying.
   ///
@@ -177,11 +189,6 @@ class DashController extends State<Dash> with WidgetsBindingObserver {
     if (!mounted) return;
     await context.push<bool>('/rooms/dash/$id/report');
     if (mounted) await load();
-  }
-
-  Future<void> openReport(int id) async {
-    final filed = await context.push<bool>('/rooms/dash/$id/report');
-    if (filed == true && mounted) await load();
   }
 
   /// Run an action, then reload. Returns whether it succeeded.
