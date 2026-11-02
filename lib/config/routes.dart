@@ -51,6 +51,7 @@ import 'package:footbag_network/pages/sign_in/sign_in_page.dart';
 import 'package:footbag_network/pages/trick_picker/trick_picker.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
 import 'package:footbag_network/widgets/config_viewer.dart';
+import 'package:footbag_network/widgets/footbag_nav_bar.dart';
 import 'package:footbag_network/widgets/layouts/empty_page.dart';
 import 'package:footbag_network/widgets/layouts/two_column_layout.dart';
 import 'package:footbag_network/widgets/log_view.dart';
@@ -181,6 +182,7 @@ abstract class AppRoutes {
                 state.fullPath?.startsWith('/rooms/feed') == false &&
                 state.fullPath?.startsWith('/rooms/session') == false
             ? TwoColumnLayout(
+                bottomBar: const FootbagNavBar(current: FootbagTab.chat),
                 mainView: ChatList(
                   activeChat: state.pathParameters['roomid'],
                   activeSpace: state.uri.queryParameters['spaceId'],

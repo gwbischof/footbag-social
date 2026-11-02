@@ -11,11 +11,17 @@ class TwoColumnLayout extends StatelessWidget {
   final Widget sideView;
   final bool hasNavigationRail;
 
+  /// Spans both columns. The app's nav bar goes here on wide screens, so it
+  /// sits along the bottom of the window as it does on every other page,
+  /// rather than under the chat list's column alone.
+  final Widget? bottomBar;
+
   const TwoColumnLayout({
     super.key,
     required this.mainView,
     required this.sideView,
     this.hasNavigationRail = true,
+    this.bottomBar,
   });
   @override
   Widget build(BuildContext context) {
@@ -23,6 +29,7 @@ class TwoColumnLayout extends StatelessWidget {
 
     return ScaffoldMessenger(
       child: Scaffold(
+        bottomNavigationBar: bottomBar,
         body: Row(
           children: [
             Container(

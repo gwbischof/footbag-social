@@ -45,62 +45,68 @@ class FootbagNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = L10n.of(context);
 
-    return Container(
-      decoration: const BoxDecoration(
-        color: Nyfa.ground,
-        border: Border(top: BorderSide(color: Nyfa.rule)),
-      ),
-      child: SafeArea(
-        top: false,
-        child: SizedBox(
-          height: 64,
-          child: Row(
-            children: [
-              Expanded(
-                child: _Tab(
-                  key: const Key('NavDash'),
-                  icon: Icons.sports_handball_outlined,
-                  label: l10n.dash,
-                  selected: current == FootbagTab.dash,
-                  onTap: () => context.go('/rooms/dash'),
+    // Its own Material, so the tabs' ink works wherever the bar is placed --
+    // under a Scaffold on Dash, or at the bottom of the chat screen's column,
+    // where nothing above it provides one.
+    return Material(
+      color: Nyfa.ground,
+      child: Container(
+        decoration: const BoxDecoration(
+          color: Nyfa.ground,
+          border: Border(top: BorderSide(color: Nyfa.rule)),
+        ),
+        child: SafeArea(
+          top: false,
+          child: SizedBox(
+            height: 64,
+            child: Row(
+              children: [
+                Expanded(
+                  child: _Tab(
+                    key: const Key('NavDash'),
+                    icon: Icons.sports_handball_outlined,
+                    label: l10n.dash,
+                    selected: current == FootbagTab.dash,
+                    onTap: () => context.go('/rooms/dash'),
+                  ),
                 ),
-              ),
-              Expanded(
-                child: _Tab(
-                  key: const Key('NavFeed'),
-                  icon: Icons.dynamic_feed_outlined,
-                  label: l10n.feed,
-                  selected: current == FootbagTab.feed,
-                  onTap: current == FootbagTab.feed && onReselect != null
-                      ? onReselect!
-                      : () => context.go('/rooms/feed'),
+                Expanded(
+                  child: _Tab(
+                    key: const Key('NavFeed'),
+                    icon: Icons.dynamic_feed_outlined,
+                    label: l10n.feed,
+                    selected: current == FootbagTab.feed,
+                    onTap: current == FootbagTab.feed && onReselect != null
+                        ? onReselect!
+                        : () => context.go('/rooms/feed'),
+                  ),
                 ),
-              ),
-              _StartButton(
-                onPressed: current == FootbagTab.dash
-                    ? onStart
-                    : () => context.go('/rooms/dash', extra: 'start'),
-                label: l10n.startSession,
-              ),
-              Expanded(
-                child: _Tab(
-                  key: const Key('NavDiscover'),
-                  icon: Icons.explore_outlined,
-                  label: l10n.discover,
-                  selected: current == FootbagTab.discover,
-                  onTap: () => context.go('/rooms/discover'),
+                _StartButton(
+                  onPressed: current == FootbagTab.dash
+                      ? onStart
+                      : () => context.go('/rooms/dash', extra: 'start'),
+                  label: l10n.startSession,
                 ),
-              ),
-              Expanded(
-                child: _Tab(
-                  key: const Key('NavChat'),
-                  icon: Icons.forum_outlined,
-                  label: l10n.chats,
-                  selected: current == FootbagTab.chat,
-                  onTap: () => context.go('/rooms'),
+                Expanded(
+                  child: _Tab(
+                    key: const Key('NavDiscover'),
+                    icon: Icons.explore_outlined,
+                    label: l10n.discover,
+                    selected: current == FootbagTab.discover,
+                    onTap: () => context.go('/rooms/discover'),
+                  ),
                 ),
-              ),
-            ],
+                Expanded(
+                  child: _Tab(
+                    key: const Key('NavChat'),
+                    icon: Icons.forum_outlined,
+                    label: l10n.chats,
+                    selected: current == FootbagTab.chat,
+                    onTap: () => context.go('/rooms'),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
