@@ -56,9 +56,9 @@ class TrickPickerController extends State<TrickPicker> {
 
   Future<void> load() async {
     try {
-      final loaded = await Matrix.of(context).client.fetchEntries(
-        query: searchController.text.trim(),
-      );
+      final loaded = await Matrix.of(
+        context,
+      ).client.fetchEntries(query: searchController.text.trim());
       if (!mounted) return;
       setState(() {
         entries = loaded;

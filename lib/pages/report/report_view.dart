@@ -124,7 +124,11 @@ class ReportView extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(20, 40, 20, 8),
             child: Column(
               children: [
-                const Icon(Icons.star_outline_rounded, size: 40, color: Nyfa.muted),
+                const Icon(
+                  Icons.star_outline_rounded,
+                  size: 40,
+                  color: Nyfa.muted,
+                ),
                 const SizedBox(height: 16),
                 Text(
                   l10n.noFavouritesYet.toUpperCase(),
@@ -207,9 +211,9 @@ class ReportView extends StatelessWidget {
             textCapitalization: TextCapitalization.sentences,
             style: Nyfa.bodyText,
             cursorColor: Nyfa.green,
-            decoration: Nyfa.input(l10n.howDidItGo).copyWith(
-              alignLabelWithHint: true,
-            ),
+            decoration: Nyfa.input(
+              l10n.howDidItGo,
+            ).copyWith(alignLabelWithHint: true),
           ),
         ),
 
@@ -286,7 +290,9 @@ class _TrickBlock extends StatelessWidget {
                 width: 108,
                 child: TextField(
                   key: Key('Count_${favourite.entrySlug}'),
-                  controller: controller.countControllerFor(favourite.entrySlug),
+                  controller: controller.countControllerFor(
+                    favourite.entrySlug,
+                  ),
                   keyboardType: TextInputType.number,
                   // keyboardType is a hint, not a restriction — hardware
                   // keyboards, some IMEs and paste all get past it, and a
@@ -334,9 +340,9 @@ class _Ladder extends StatelessWidget {
     final l10n = L10n.of(context);
 
     return DecoratedBox(
-      decoration: const BoxDecoration(border: Border.fromBorderSide(
-        BorderSide(color: Nyfa.rule),
-      )),
+      decoration: const BoxDecoration(
+        border: Border.fromBorderSide(BorderSide(color: Nyfa.rule)),
+      ),
       child: Row(
         children: [
           for (final grade in FootbagGrade.values)

@@ -5,14 +5,11 @@
 import 'package:footbag_network/config/nyfa_theme.dart';
 import 'package:footbag_network/l10n/l10n.dart';
 import 'package:footbag_network/pages/dash/dash.dart';
-import 'package:footbag_network/pages/feed/feed_actions.dart';
-import 'package:footbag_network/pages/inbox/inbox_page.dart';
 import 'package:footbag_network/utils/date_time_extension.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
 import 'package:footbag_network/utils/localized_exception_extension.dart';
 import 'package:footbag_network/widgets/footbag_nav_bar.dart';
 import 'package:footbag_network/widgets/layouts/max_width_body.dart';
-import 'package:footbag_network/widgets/matrix.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -125,6 +122,8 @@ class _DashBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = L10n.of(context);
+    // A plain section title, like every tab but the front door. The Feed is
+    // home now, so the masthead, the bell and the avatar live there.
     return AppBar(
       backgroundColor: Nyfa.ground,
       surfaceTintColor: Nyfa.ground,
@@ -132,64 +131,24 @@ class _DashBar extends StatelessWidget implements PreferredSizeWidget {
       scrolledUnderElevation: 0,
       toolbarHeight: 72,
       automaticallyImplyLeading: false,
-      // AppBar centres its title on web by default, which fights a wordmark
-      // that is meant to sit at the top-left like a masthead.
       centerTitle: false,
       titleSpacing: 20,
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text(
-            'FOOTBAG SOCIAL',
-            style: TextStyle(
-              fontFamily: Nyfa.display,
-              color: Nyfa.paper,
-              fontSize: 24,
-              letterSpacing: 1.6,
-              height: 1.05,
-            ),
+          Text(
+            l10n.dash.toUpperCase(),
+            style: Nyfa.heading.copyWith(fontSize: 26),
           ),
           Text(l10n.dashGreeting, style: Nyfa.bodyMuted.copyWith(fontSize: 12)),
         ],
       ),
-      // Two actions: the bell and the avatar. Four icons beside the wordmark
-      // overflowed at phone width and cut the avatar off the screen; the rest
-      // live in the body as labelled chips. The bell earns its place because
-      // its badge is information, not just a door.
-      actions: [
-        _Bell(controller: controller),
-        Padding(
-          padding: const EdgeInsets.only(right: 16),
-          child: IconButton(
-            key: const Key('DashProfileButton'),
-            tooltip: l10n.editProfile,
-            // The avatar goes to the profile, which is what an avatar means
-            // everywhere else. Settings is reachable from there.
-            onPressed: () => context.push('/rooms/dash/profile'),
-            // The same picture chat shows, rather than a letter: it is the
-            // same person.
-            icon: PlayerAvatar(
-              userId: Matrix.of(context).client.userID ?? '',
-              name: _initial(context),
-              size: 34,
-            ),
-          ),
-        ),
-      ],
       bottom: const PreferredSize(
         preferredSize: Size.fromHeight(1),
         child: Divider(height: 1, thickness: 1, color: Nyfa.rule),
       ),
     );
-  }
-
-  String _initial(BuildContext context) {
-    final id = Matrix.of(context).client.userID ?? '';
-    // Strip the leading @ of the MXID; the localpart's first letter is enough
-    // of an avatar until real ones exist.
-    final local = id.startsWith('@') ? id.substring(1) : id;
-    return local.isEmpty ? '?' : local.characters.first.toUpperCase();
   }
 }
 
@@ -667,46 +626,3 @@ String _hms(Duration d) =>
 
 String _short(Duration d) =>
     d.inHours > 0 ? '${d.inHours}H ${d.inMinutes % 60}M' : '${d.inMinutes} MIN';
-
-/// The inbox, with everything unread counted: inbox lines plus unread chats.
-///
-/// Chat's half is read live from Matrix on every sync, so a new message
-/// lights the bell without anyone asking the API.
-class _Bell extends StatelessWidget {
-  final DashController controller;
-
-  const _Bell({required this.controller});
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = L10n.of(context);
-    final client = Matrix.of(context).client;
-    return StreamBuilder<Object?>(
-      stream: client.onSync.stream,
-      builder: (context, _) {
-        final count = controller.unreadInbox + unreadChatCount(client);
-        return IconButton(
-          key: const Key('DashBell'),
-          tooltip: l10n.inbox,
-          onPressed: controller.openInbox,
-          icon: Badge(
-            isLabelVisible: count > 0,
-            label: Text(count > 99 ? '99+' : '$count'),
-            backgroundColor: Nyfa.green,
-            textColor: Nyfa.ground,
-            textStyle: const TextStyle(
-              fontFamily: Nyfa.display,
-              fontSize: 12,
-              letterSpacing: 0.5,
-            ),
-            child: const Icon(
-              Icons.notifications_none_rounded,
-              color: Nyfa.paper,
-              size: 26,
-            ),
-          ),
-        );
-      },
-    );
-  }
-}

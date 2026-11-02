@@ -66,7 +66,7 @@ abstract class AppRoutes {
     BuildContext context,
     GoRouterState state,
   ) => Matrix.of(context).widget.clients.any((client) => client.isLogged())
-      ? '/rooms/dash'
+      ? '/rooms/feed'
       : null;
 
   static FutureOr<String?> loggedOutRedirect(
@@ -111,9 +111,9 @@ abstract class AppRoutes {
       path: '/',
       redirect: (context, state) =>
           Matrix.of(context).widget.clients.any((client) => client.isLogged())
-          // Dash, not the chat list: the app opens on "is anyone playing?"
-          // rather than on a conversation list.
-          ? '/rooms/dash'
+          // The Feed is home (decided Nov 2026, reversing "Dash first"):
+          // the app opens on what people are playing and posting.
+          ? '/rooms/feed'
           : '/home',
     ),
     GoRoute(

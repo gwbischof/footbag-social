@@ -7,9 +7,12 @@ import 'dart:async';
 import 'package:footbag_network/config/nyfa_theme.dart';
 import 'package:footbag_network/l10n/l10n.dart';
 import 'package:footbag_network/pages/feed/feed.dart';
+import 'package:footbag_network/pages/feed/feed_actions.dart';
 import 'package:footbag_network/pages/feed/widgets/feed_states.dart';
 import 'package:footbag_network/pages/feed/widgets/post_card.dart';
+import 'package:footbag_network/pages/inbox/inbox_bell.dart';
 import 'package:footbag_network/widgets/footbag_nav_bar.dart';
+import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// The widest a post is drawn. A phone's width on a phone; on a desktop, a
@@ -69,21 +72,55 @@ class FeedView extends StatelessWidget {
                         : null,
                     centerTitle: false,
                     titleSpacing: trick ? 0 : 20,
+                    // Home carries the masthead, as the front door; a trick's
+                    // page carries the trick's name.
                     title: Text(
-                      (trick ? controller.widget.entryName ?? '' : l10n.feed)
-                          .toUpperCase(),
-                      style: Nyfa.heading.copyWith(fontSize: trick ? 20 : 26),
+                      trick
+                          ? (controller.widget.entryName ?? '').toUpperCase()
+                          : 'FOOTBAG SOCIAL',
+                      style: trick
+                          ? Nyfa.heading.copyWith(fontSize: 20)
+                          : const TextStyle(
+                              fontFamily: Nyfa.display,
+                              color: Nyfa.paper,
+                              fontSize: 24,
+                              letterSpacing: 1.6,
+                            ),
                       overflow: TextOverflow.ellipsis,
                     ),
+                    // Post, the bell, you: three icons, the way a feed's
+                    // home screen is read. A labelled POST button beside the
+                    // masthead, bell and avatar did not fit at phone width.
                     actions: [
-                      if (!trick)
-                        Padding(
-                          padding: const EdgeInsets.only(right: 16),
-                          child: _PostButton(
-                            label: l10n.newPost,
-                            onPressed: controller.compose,
+                      if (!trick) ...[
+                        IconButton(
+                          key: const Key('FeedPost'),
+                          tooltip: l10n.newPost,
+                          onPressed: controller.compose,
+                          icon: const Icon(
+                            Icons.add_box_outlined,
+                            color: Nyfa.paper,
+                            size: 26,
                           ),
                         ),
+                        const InboxBell(),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 12),
+                          child: IconButton(
+                            key: const Key('FeedProfile'),
+                            tooltip: l10n.editProfile,
+                            onPressed: () =>
+                                context.push('/rooms/dash/profile'),
+                            icon: PlayerAvatar(
+                              userId: controller.myUserId,
+                              name: controller.myUserId.length > 1
+                                  ? controller.myUserId.substring(1)
+                                  : '?',
+                              size: 30,
+                            ),
+                          ),
+                        ),
+                      ],
                     ],
                     bottom: PreferredSize(
                       preferredSize: const Size.fromHeight(57),
@@ -153,43 +190,6 @@ class FeedView extends StatelessWidget {
       ),
     );
   }
-}
-
-class _PostButton extends StatelessWidget {
-  final String label;
-  final VoidCallback onPressed;
-
-  const _PostButton({required this.label, required this.onPressed});
-
-  @override
-  Widget build(BuildContext context) => SizedBox(
-    height: 36,
-    // Outlined, not filled: the green [+] in the nav bar is the loudest
-    // control in the app on purpose -- it starts a session -- and a second
-    // filled green block above it made posting look like the main thing.
-    child: OutlinedButton.icon(
-      key: const Key('FeedPost'),
-      onPressed: onPressed,
-      style: OutlinedButton.styleFrom(
-        foregroundColor: Nyfa.green,
-        side: const BorderSide(color: Nyfa.green),
-        padding: const EdgeInsets.fromLTRB(10, 0, 14, 0),
-        shape: const RoundedRectangleBorder(),
-        // 36 drawn, 48 to the finger.
-        tapTargetSize: MaterialTapTargetSize.padded,
-      ),
-      icon: const Icon(Icons.add, size: 20),
-      label: Text(
-        label.toUpperCase(),
-        style: const TextStyle(
-          fontFamily: Nyfa.display,
-          fontSize: 17,
-          letterSpacing: 1.1,
-          height: 1.2,
-        ),
-      ),
-    ),
-  );
 }
 
 class _Filters extends StatelessWidget {

@@ -19,6 +19,7 @@ import 'package:footbag_network/pages/feed/feed.dart';
 import 'package:footbag_network/pages/feed/feed_actions.dart';
 import 'package:footbag_network/pages/feed/widgets/comments.dart';
 import 'package:footbag_network/pages/feed/widgets/post_card.dart';
+import 'package:footbag_network/pages/inbox/inbox_bell.dart';
 import 'package:footbag_network/pages/inbox/inbox_page.dart';
 import 'package:footbag_network/pages/session/session_page.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
@@ -92,6 +93,13 @@ class _PreviewFeedController extends FeedController {
 
   @override
   String get memoryKey => 'preview|$mode';
+
+  @override
+  String get myUserId {
+    PlayerAvatar.previewBuilder = PreviewActions().avatar;
+    InboxBell.previewCount = 3;
+    return '@g:x';
+  }
 
   @override
   Future<void> refresh() async {

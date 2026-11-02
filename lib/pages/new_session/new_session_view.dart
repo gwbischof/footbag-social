@@ -172,15 +172,15 @@ class _Picker extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(label.toUpperCase(), style: Nyfa.eyebrow.copyWith(fontSize: 12)),
+            Text(
+              label.toUpperCase(),
+              style: Nyfa.eyebrow.copyWith(fontSize: 12),
+            ),
             const SizedBox(height: 2),
             FittedBox(
               fit: BoxFit.scaleDown,
               alignment: Alignment.centerLeft,
-              child: Text(
-                value,
-                style: Nyfa.heading.copyWith(fontSize: 19),
-              ),
+              child: Text(value, style: Nyfa.heading.copyWith(fontSize: 19)),
             ),
           ],
         ),

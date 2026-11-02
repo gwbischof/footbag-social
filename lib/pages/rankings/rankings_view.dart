@@ -141,10 +141,7 @@ class RankingsView extends StatelessWidget {
               tilePadding: EdgeInsets.zero,
               iconColor: Nyfa.muted,
               collapsedIconColor: Nyfa.muted,
-              title: Text(
-                l10n.whyNotRanked.toUpperCase(),
-                style: Nyfa.eyebrow,
-              ),
+              title: Text(l10n.whyNotRanked.toUpperCase(), style: Nyfa.eyebrow),
               children: [
                 Padding(
                   padding: const EdgeInsets.only(bottom: 14),
@@ -194,7 +191,9 @@ class _Chips extends StatelessWidget {
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   decoration: BoxDecoration(
-                    color: selected == o.value ? Nyfa.green : Colors.transparent,
+                    color: selected == o.value
+                        ? Nyfa.green
+                        : Colors.transparent,
                     border: Border.all(
                       color: selected == o.value ? Nyfa.green : Nyfa.rule,
                     ),
@@ -268,10 +267,13 @@ class _Row extends StatelessWidget {
                 ),
                 if (row.isYou) ...[
                   const SizedBox(width: 8),
-                  Text(youLabel.toUpperCase(), style: Nyfa.eyebrow.copyWith(
-                    color: Nyfa.green,
-                    fontSize: 13,
-                  )),
+                  Text(
+                    youLabel.toUpperCase(),
+                    style: Nyfa.eyebrow.copyWith(
+                      color: Nyfa.green,
+                      fontSize: 13,
+                    ),
+                  ),
                 ],
               ],
             ),
@@ -317,8 +319,7 @@ class _Heatmap extends StatelessWidget {
     final days = controller.heatmap ?? const <FootbagHeatmapDay>[];
 
     final byDay = {
-      for (final d in days)
-        DateTime(d.day.year, d.day.month, d.day.day): d,
+      for (final d in days) DateTime(d.day.year, d.day.month, d.day.day): d,
     };
     final busiest = days.isEmpty
         ? 1
@@ -326,8 +327,11 @@ class _Heatmap extends StatelessWidget {
 
     // 21 weeks back, ending on today's week.
     final today = DateTime.now();
-    final start = DateTime(today.year, today.month, today.day)
-        .subtract(Duration(days: today.weekday - 1 + 7 * 20));
+    final start = DateTime(
+      today.year,
+      today.month,
+      today.day,
+    ).subtract(Duration(days: today.weekday - 1 + 7 * 20));
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -363,9 +367,10 @@ class _Heatmap extends StatelessWidget {
                       children: [
                         for (var weekday = 0; weekday < 7; weekday++)
                           _Cell(
-                            day: byDay[start.add(
-                              Duration(days: week * 7 + weekday),
-                            )],
+                            day:
+                                byDay[start.add(
+                                  Duration(days: week * 7 + weekday),
+                                )],
                             busiest: busiest,
                           ),
                       ],
@@ -394,7 +399,12 @@ class _Cell extends StatelessWidget {
     final step = d == null || d.seconds == 0
         ? 0
         : (3 * d.seconds / busiest).ceil().clamp(1, 3);
-    const fills = [Nyfa.raised, Color(0xFF2F4A12), Color(0xFF6E9A1E), Nyfa.green];
+    const fills = [
+      Nyfa.raised,
+      Color(0xFF2F4A12),
+      Color(0xFF6E9A1E),
+      Nyfa.green,
+    ];
 
     return Tooltip(
       message: d == null

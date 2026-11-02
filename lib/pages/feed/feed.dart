@@ -70,6 +70,9 @@ class FeedController extends State<Feed> {
 
   late final ScrollController scroll;
 
+  /// Whose avatar the header shows. Overridden by the preview harness.
+  String get myUserId => Matrix.of(context).client.userID ?? '';
+
   /// Which snapshot this screen resumes. Overridden by the preview harness,
   /// which has no Matrix client.
   String get memoryKey =>

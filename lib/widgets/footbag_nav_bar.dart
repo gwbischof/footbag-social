@@ -10,17 +10,15 @@ import 'package:material_ui/material_ui.dart';
 /// Which destination a screen is showing.
 enum FootbagTab { dash, feed, discover, chat }
 
-/// The app's bottom navigation: Dash · Feed · [+] · Discover · Chat.
+/// The app's bottom navigation: Feed · Dash · [+] · Discover · Chat.
 ///
-/// The doc's five items, in the doc's order. Feed sits next to Dash rather
-/// than first: the app opens on "is anyone playing?", not on what people
-/// posted.
+/// Feed first, because it is home: decided Nov 2026, reversing the earlier
+/// "Dash is what you land on". Dash -- your sessions, favourites, rankings --
+/// is one tap away beside it.
 ///
-/// The centre [+] is raised and green because the doc is explicit that it
-/// creates a *session*, not a post: "a tool for getting to a session, with a
-/// feed attached — not a content app with meetups bolted on". Making it the
-/// loudest thing on the bar is that sentence, expressed as a control. Posting
-/// lives in the Feed's own header.
+/// The centre [+] is raised and green because it creates a *session*, not a
+/// post: getting people to play is still the point, and posting has its own
+/// control in the Feed header.
 class FootbagNavBar extends StatelessWidget {
   final FootbagTab current;
 
@@ -63,15 +61,6 @@ class FootbagNavBar extends StatelessWidget {
               children: [
                 Expanded(
                   child: _Tab(
-                    key: const Key('NavDash'),
-                    icon: Icons.sports_handball_outlined,
-                    label: l10n.dash,
-                    selected: current == FootbagTab.dash,
-                    onTap: () => context.go('/rooms/dash'),
-                  ),
-                ),
-                Expanded(
-                  child: _Tab(
                     key: const Key('NavFeed'),
                     icon: Icons.dynamic_feed_outlined,
                     label: l10n.feed,
@@ -79,6 +68,15 @@ class FootbagNavBar extends StatelessWidget {
                     onTap: current == FootbagTab.feed && onReselect != null
                         ? onReselect!
                         : () => context.go('/rooms/feed'),
+                  ),
+                ),
+                Expanded(
+                  child: _Tab(
+                    key: const Key('NavDash'),
+                    icon: Icons.sports_handball_outlined,
+                    label: l10n.dash,
+                    selected: current == FootbagTab.dash,
+                    onTap: () => context.go('/rooms/dash'),
                   ),
                 ),
                 _StartButton(

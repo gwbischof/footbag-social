@@ -136,10 +136,8 @@ class FavouritesView extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 32),
             itemCount: controller.working.length,
             onReorderItem: controller.reorder,
-            proxyDecorator: (child, index, animation) => Material(
-              color: Nyfa.raised,
-              child: child,
-            ),
+            proxyDecorator: (child, index, animation) =>
+                Material(color: Nyfa.raised, child: child),
             itemBuilder: (context, i) {
               final f = controller.working[i];
               return DecoratedBox(
