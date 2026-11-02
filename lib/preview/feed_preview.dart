@@ -17,6 +17,7 @@ import 'package:footbag_network/l10n/l10n.dart';
 import 'package:footbag_network/pages/feed/compose.dart';
 import 'package:footbag_network/pages/feed/feed.dart';
 import 'package:footbag_network/pages/feed/feed_actions.dart';
+import 'package:footbag_network/pages/feed/widgets/comments.dart';
 import 'package:footbag_network/pages/feed/widgets/post_card.dart';
 import 'package:footbag_network/pages/session/session_page.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
@@ -57,6 +58,7 @@ Widget previewBody(BuildContext context) =>
       'loading' => const _PreviewFeed(mode: 'loading'),
       'trick' => const _PreviewFeed(mode: 'trick'),
       'compose' => const _PreviewCompose(),
+      'tabs' => const _TabSwap(),
       'session-host' => const _PreviewSession(role: 'host'),
       'session-stranger' => const _PreviewSession(role: null),
       'session-requested' => const _PreviewSession(role: 'requested'),
@@ -81,8 +83,13 @@ class _PreviewFeed extends Feed {
 class _PreviewFeedController extends FeedController {
   String get mode => (widget as _PreviewFeed).mode;
 
+  late final PreviewActions _actions = PreviewActions()..context = context;
+
   @override
-  PostActions get actions => PreviewActions();
+  PostActions get actions => _actions;
+
+  @override
+  String get memoryKey => 'preview|$mode';
 
   @override
   Future<void> refresh() async {
@@ -177,8 +184,17 @@ class PreviewActions implements PostActions {
     bool on,
   ) async => (count: post.reactionCount, reacted: on);
 
+  BuildContext? context;
+
   @override
-  void openComments(FootbagPost post) {}
+  Future<void> openComments(FootbagPost post, {required bool typing}) =>
+      showCommentsSheet(
+        context!,
+        this,
+        thread: _PreviewThread(post),
+        me: '@g:x',
+        typing: typing,
+      );
 
   @override
   void openAuthor(String userId, String name) {}
@@ -240,4 +256,66 @@ class _PreviewSessionState extends SessionPageState {
       }),
     );
   }
+}
+
+/// Comments with no server: the preview's thread answers from memory.
+class _PreviewThread extends CommentThread {
+  _PreviewThread(FootbagPost post) : super(null, post);
+
+  @override
+  Future<void> load() async {
+    comments = [
+      for (final (i, (who, text)) in [
+        ('Garrett', 'Next week I\'m bringing the 32-panel'),
+        ('Marco', 'that grass was perfect'),
+        ('Kenji', 'the late body turn on the second one is clean'),
+        ('Lamous', 'who stitched the orange one?'),
+        ('Landes', 'G did, it\'s LX'),
+      ].indexed)
+        FootbagComment(
+          id: i,
+          postId: post.id,
+          authorId: '@$who:x',
+          authorName: who,
+          body: text,
+          createdAt: DateTime.now().subtract(Duration(minutes: 50 - i * 9)),
+          isMine: who == 'Garrett',
+        ),
+    ];
+    notifyListeners();
+  }
+}
+
+/// Feed and an empty "other tab", swapped by a button -- the Feed is torn
+/// down and rebuilt exactly as switching tabs in the app does, so its
+/// snapshot can be seen working.
+class _TabSwap extends StatefulWidget {
+  const _TabSwap();
+
+  @override
+  State<_TabSwap> createState() => _TabSwapState();
+}
+
+class _TabSwapState extends State<_TabSwap> {
+  bool feed = true;
+  int loads = 0;
+
+  @override
+  Widget build(BuildContext context) => Stack(
+    children: [
+      if (feed)
+        const _PreviewFeed(mode: 'recent')
+      else
+        const ColoredBox(color: Nyfa.ground, child: SizedBox.expand()),
+      Positioned(
+        right: 8,
+        bottom: 90,
+        child: FilledButton(
+          key: const Key('SwapTab'),
+          onPressed: () => setState(() => feed = !feed),
+          child: Text(feed ? 'OTHER TAB' : 'BACK TO FEED'),
+        ),
+      ),
+    ],
+  );
 }

@@ -6,6 +6,7 @@ import 'dart:async';
 
 import 'package:footbag_network/config/nyfa_theme.dart';
 import 'package:footbag_network/l10n/l10n.dart';
+import 'package:footbag_network/pages/feed/widgets/comments.dart';
 import 'package:footbag_network/pages/feed/widgets/post_card.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
 import 'package:footbag_network/widgets/adaptive_dialogs/show_ok_cancel_alert_dialog.dart';
@@ -46,8 +47,14 @@ class AppPostActions implements PostActions {
       _client.setReaction(post.id, on);
 
   @override
-  void openComments(FootbagPost post) =>
-      unawaited(context.push('/rooms/feed/post/${post.id}', extra: post));
+  Future<void> openComments(FootbagPost post, {required bool typing}) =>
+      showCommentsSheet(
+        context,
+        this,
+        thread: CommentThread(_client, post),
+        me: _client.userID ?? '',
+        typing: typing,
+      );
 
   @override
   void openAuthor(String userId, String name) => unawaited(
@@ -366,7 +373,8 @@ class PlayerAvatar extends StatelessWidget {
 
   /// Replaces the Matrix lookup in the preview harness, which has no
   /// client. Never set in the app.
-  static Widget Function(String userId, String name, double size)? previewBuilder;
+  static Widget Function(String userId, String name, double size)?
+  previewBuilder;
 
   @override
   Widget build(BuildContext context) {

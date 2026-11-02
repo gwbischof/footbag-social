@@ -31,7 +31,15 @@ class FootbagNavBar extends StatelessWidget {
   /// looked broken on the other three.
   final VoidCallback? onStart;
 
-  const FootbagNavBar({required this.current, this.onStart, super.key});
+  /// The current tab, tapped again. The feed scrolls to the top.
+  final VoidCallback? onReselect;
+
+  const FootbagNavBar({
+    required this.current,
+    this.onStart,
+    this.onReselect,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +71,9 @@ class FootbagNavBar extends StatelessWidget {
                   icon: Icons.dynamic_feed_outlined,
                   label: l10n.feed,
                   selected: current == FootbagTab.feed,
-                  onTap: () => context.go('/rooms/feed'),
+                  onTap: current == FootbagTab.feed && onReselect != null
+                      ? onReselect!
+                      : () => context.go('/rooms/feed'),
                 ),
               ),
               _StartButton(

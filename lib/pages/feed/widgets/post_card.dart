@@ -4,6 +4,7 @@
 
 import 'dart:async';
 
+import 'package:flutter/services.dart';
 import 'package:footbag_network/config/nyfa_theme.dart';
 import 'package:footbag_network/l10n/l10n.dart';
 import 'package:footbag_network/pages/feed/widgets/feed_media.dart';
@@ -26,7 +27,10 @@ abstract class PostActions {
   /// truth, which the card then adopts.
   Future<({int count, bool reacted})> setReaction(FootbagPost post, bool on);
 
-  void openComments(FootbagPost post);
+  /// Comments over the feed. [typing] opens the keyboard too -- the bubble
+  /// means "say something", "View all" means "read". Completes when closed,
+  /// so the card can redraw its count.
+  Future<void> openComments(FootbagPost post, {required bool typing});
 
   void openAuthor(String userId, String name);
 
@@ -71,6 +75,9 @@ class _PostCardState extends State<PostCard> {
 
   Future<void> _react(bool on) async {
     if (post.reacted == on) return;
+    // A light tap you can feel, on giving one only -- taking a ♦ back is
+    // not an event worth announcing. A no-op on the web.
+    if (on) unawaited(HapticFeedback.lightImpact());
     // Applied before the request: a tap that waits on the network to light up
     // feels broken, and the server's answer corrects it either way.
     setState(() {
@@ -91,6 +98,11 @@ class _PostCardState extends State<PostCard> {
         post.reactionCount += on ? -1 : 1;
       });
     }
+  }
+
+  Future<void> _comments({required bool typing}) async {
+    await widget.actions.openComments(post, typing: typing);
+    if (mounted) setState(() {});
   }
 
   void _doubleTap() {
@@ -146,7 +158,7 @@ class _PostCardState extends State<PostCard> {
             post: post,
             page: _page,
             onReact: () => _react(!post.reacted),
-            onComment: () => widget.actions.openComments(post),
+            onComment: () => _comments(typing: true),
           ),
           _Counts(post: post),
           if (hasMedia && post.caption.isNotEmpty)
@@ -162,7 +174,7 @@ class _PostCardState extends State<PostCard> {
           if (hasMedia && post.session != null)
             SessionResults(summary: post.session!),
           if (!widget.expanded)
-            _CommentPreview(post: post, actions: widget.actions),
+            _CommentPreview(post: post, onOpen: () => _comments(typing: false)),
           const SizedBox(height: 16),
         ],
       ),
@@ -517,53 +529,122 @@ class _Caption extends StatelessWidget {
     required this.onAuthor,
   });
 
+  static const _bold = TextStyle(fontWeight: FontWeight.w700);
+
+  /// How much of the caption fits in two lines with "… more" after it.
+  ///
+  /// Measured, not guessed: a binary search over the cut point, so "… more"
+  /// lands exactly at the end of the second line the way people expect,
+  /// instead of on a line of its own.
+  static int _fit(
+    String name,
+    String caption,
+    String more,
+    double width,
+    TextDirection dir,
+    TextStyle style,
+    TextScaler scaler,
+  ) {
+    bool fits(int n) {
+      final painter = TextPainter(
+        textScaler: scaler,
+        text: TextSpan(
+          style: style,
+          children: [
+            TextSpan(text: '$name  ', style: _bold),
+            TextSpan(text: '${caption.substring(0, n).trimRight()}… $more'),
+          ],
+        ),
+        maxLines: 2,
+        textDirection: dir,
+      )..layout(maxWidth: width);
+      return !painter.didExceedMaxLines;
+    }
+
+    var lo = 0, hi = caption.length;
+    while (lo < hi) {
+      final mid = (lo + hi + 1) ~/ 2;
+      if (fits(mid)) {
+        lo = mid;
+      } else {
+        hi = mid - 1;
+      }
+    }
+    return lo;
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = L10n.of(context);
-    final text = Text.rich(
-      TextSpan(
-        children: [
-          TextSpan(
-            text: '${post.authorName}  ',
-            style: const TextStyle(fontWeight: FontWeight.w700),
-          ),
-          TextSpan(text: post.caption),
-        ],
-      ),
-      style: Nyfa.bodyText,
-      maxLines: open ? null : 2,
-      overflow: open ? null : TextOverflow.ellipsis,
-    );
+    final dir = Directionality.of(context);
+    // Measured in exactly the style it is drawn in. The first version used
+    // Nyfa.bodyText alone, but Text merges it over the theme's default --
+    // which adds letter spacing -- and applies the system text scale, so the
+    // measured cut was a few pixels short and "more" fell onto a clipped
+    // third line.
+    final style = DefaultTextStyle.of(context).style.merge(Nyfa.bodyText);
+    final scaler = MediaQuery.textScalerOf(context);
+    final name = TextSpan(text: '${post.authorName}  ', style: _bold);
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 0, 20, 6),
-      child: open
-          ? text
-          : LayoutBuilder(
-              builder: (context, constraints) {
-                // Only offer "more" when there is more: a caption that fits
-                // in two lines gets no link, rather than one that does nothing.
-                final painter = TextPainter(
-                  text: TextSpan(
-                    text: '${post.authorName}  ${post.caption}',
-                    style: Nyfa.bodyText,
-                  ),
-                  maxLines: 2,
-                  textDirection: Directionality.of(context),
-                )..layout(maxWidth: constraints.maxWidth);
-                if (!painter.didExceedMaxLines) return text;
-                return GestureDetector(
-                  onTap: onOpen,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      text,
-                      Text(l10n.captionMore, style: Nyfa.bodyMuted),
-                    ],
-                  ),
-                );
-              },
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final whole = TextPainter(
+            textScaler: scaler,
+            text: TextSpan(
+              style: style,
+              children: [
+                name,
+                TextSpan(text: post.caption),
+              ],
             ),
+            maxLines: 2,
+            textDirection: dir,
+          )..layout(maxWidth: constraints.maxWidth);
+
+          if (open || !whole.didExceedMaxLines) {
+            return Text.rich(
+              TextSpan(
+                children: [
+                  name,
+                  TextSpan(text: post.caption),
+                ],
+              ),
+              style: Nyfa.bodyText,
+            );
+          }
+          final more = l10n.captionMore;
+          final n = _fit(
+            post.authorName,
+            post.caption,
+            more,
+            constraints.maxWidth,
+            dir,
+            style,
+            scaler,
+          );
+          return GestureDetector(
+            onTap: onOpen,
+            child: Text.rich(
+              TextSpan(
+                children: [
+                  name,
+                  TextSpan(
+                    text: '${post.caption.substring(0, n).trimRight()}… ',
+                  ),
+                  TextSpan(
+                    text: more,
+                    style: const TextStyle(color: Nyfa.muted),
+                  ),
+                ],
+              ),
+              style: Nyfa.bodyText,
+              maxLines: 2,
+            ),
+          );
+        },
+      ),
     );
   }
 }
@@ -736,16 +817,16 @@ class SessionResults extends StatelessWidget {
 
 class _CommentPreview extends StatelessWidget {
   final FootbagPost post;
-  final PostActions actions;
+  final VoidCallback onOpen;
 
-  const _CommentPreview({required this.post, required this.actions});
+  const _CommentPreview({required this.post, required this.onOpen});
 
   @override
   Widget build(BuildContext context) {
     final l10n = L10n.of(context);
     if (post.commentCount == 0) return const SizedBox.shrink();
     return InkWell(
-      onTap: () => actions.openComments(post),
+      onTap: onOpen,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(20, 2, 20, 0),
         child: Column(

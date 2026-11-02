@@ -26,14 +26,16 @@ class FeedView extends StatelessWidget {
     final l10n = L10n.of(context);
     final trick = controller.widget.isTrickPage;
     final posts = controller.posts;
-    final topRow = controller.sort == 'top';
 
     return Scaffold(
       key: const Key('FeedScaffold'),
       backgroundColor: Nyfa.ground,
       bottomNavigationBar: trick
           ? null
-          : const FootbagNavBar(current: FootbagTab.feed),
+          : FootbagNavBar(
+              current: FootbagTab.feed,
+              onReselect: controller.scrollToTop,
+            ),
       body: SafeArea(
         bottom: false,
         child: Center(
@@ -44,9 +46,10 @@ class FeedView extends StatelessWidget {
               backgroundColor: Nyfa.raised,
               color: Nyfa.green,
               // Below the floating header, not behind it.
-              edgeOffset: topRow ? 152 : 112,
+              edgeOffset: 112,
               child: CustomScrollView(
                 key: const Key('FeedList'),
+                controller: controller.scroll,
                 physics: const AlwaysScrollableScrollPhysics(),
                 slivers: [
                   SliverAppBar(
@@ -83,7 +86,7 @@ class FeedView extends StatelessWidget {
                         ),
                     ],
                     bottom: PreferredSize(
-                      preferredSize: Size.fromHeight(topRow ? 97 : 57),
+                      preferredSize: const Size.fromHeight(57),
                       child: _Filters(controller: controller),
                     ),
                   ),
@@ -219,12 +222,7 @@ class _Filters extends StatelessWidget {
                   selected: c.sort == 'recent',
                   onTap: () => c.setSort('recent'),
                 ),
-                FeedChip(
-                  key: const Key('SortTop'),
-                  label: l10n.feedTop,
-                  selected: c.sort == 'top',
-                  onTap: () => c.setSort('top'),
-                ),
+                _TopChip(controller: c),
                 // A gap rather than a divider: sort is one choice, filters
                 // are independent switches, and the space says so.
                 const SizedBox(width: 12),
@@ -247,29 +245,6 @@ class _Filters extends StatelessWidget {
               ],
             ),
           ),
-          if (c.sort == 'top')
-            SizedBox(
-              height: 40,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 14),
-                children: [
-                  for (final w in <({String value, String label})>[
-                    (value: 'day', label: l10n.windowDay),
-                    (value: 'week', label: l10n.windowWeek),
-                    (value: 'month', label: l10n.windowMonth),
-                    (value: 'year', label: l10n.windowYear),
-                    (value: 'all', label: l10n.windowAll),
-                  ])
-                    _WindowTab(
-                      key: Key('Window_${w.value}'),
-                      label: w.label,
-                      selected: c.window == w.value,
-                      onTap: () => c.setWindow(w.value),
-                    ),
-                ],
-              ),
-            ),
         ],
       ),
     );
@@ -286,6 +261,7 @@ class FeedChip extends StatelessWidget {
   final bool selected;
   final VoidCallback onTap;
   final IconData? icon;
+  final IconData? trailing;
   final bool outlinedWhenOn;
   final bool busy;
 
@@ -294,6 +270,7 @@ class FeedChip extends StatelessWidget {
     required this.selected,
     required this.onTap,
     this.icon,
+    this.trailing,
     this.outlinedWhenOn = false,
     this.busy = false,
     super.key,
@@ -349,6 +326,11 @@ class FeedChip extends StatelessWidget {
                     height: 1.2,
                   ),
                 ),
+                if (trailing != null)
+                  Padding(
+                    padding: const EdgeInsets.only(left: 4),
+                    child: Icon(trailing, size: 18, color: fg),
+                  ),
               ],
             ),
           ),
@@ -358,52 +340,76 @@ class FeedChip extends StatelessWidget {
   }
 }
 
-/// Top's time window: lighter than the chips above it, because it refines a
-/// choice rather than being one.
-class _WindowTab extends StatelessWidget {
-  final String label;
-  final bool selected;
-  final VoidCallback onTap;
+/// Top, and how far back it counts, in one chip.
+///
+/// The window used to be a second row that appeared under the filters when
+/// Top was chosen, so the header grew by 40px exactly when you wanted to look
+/// at posts. Now the chip says which window it is using -- "Top · Week" --
+/// and tapping it again offers the others.
+class _TopChip extends StatefulWidget {
+  final FeedController controller;
 
-  const _WindowTab({
-    required this.label,
-    required this.selected,
-    required this.onTap,
-    super.key,
-  });
+  const _TopChip({required this.controller});
 
   @override
-  Widget build(BuildContext context) => Semantics(
-    button: true,
-    selected: selected,
-    child: InkWell(
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 6),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Spacer(),
-            Text(
-              label.toUpperCase(),
+  State<_TopChip> createState() => _TopChipState();
+}
+
+class _TopChipState extends State<_TopChip> {
+  final _menu = MenuController();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = L10n.of(context);
+    final c = widget.controller;
+    final windows = <({String value, String label})>[
+      (value: 'day', label: l10n.windowDay),
+      (value: 'week', label: l10n.windowWeek),
+      (value: 'month', label: l10n.windowMonth),
+      (value: 'year', label: l10n.windowYear),
+      (value: 'all', label: l10n.windowAll),
+    ];
+    final on = c.sort == 'top';
+    final current = windows.firstWhere((w) => w.value == c.window).label;
+
+    return MenuAnchor(
+      controller: _menu,
+      style: const MenuStyle(
+        backgroundColor: WidgetStatePropertyAll(Nyfa.raised),
+        shape: WidgetStatePropertyAll(
+          RoundedRectangleBorder(side: BorderSide(color: Nyfa.rule)),
+        ),
+        padding: WidgetStatePropertyAll(EdgeInsets.zero),
+      ),
+      menuChildren: [
+        for (final w in windows)
+          MenuItemButton(
+            key: Key('Window_${w.value}'),
+            onPressed: () => c.setWindow(w.value),
+            style: const ButtonStyle(
+              minimumSize: WidgetStatePropertyAll(Size(160, 48)),
+            ),
+            trailingIcon: w.value == c.window
+                ? const Icon(Icons.check, size: 18, color: Nyfa.green)
+                : null,
+            child: Text(
+              w.label.toUpperCase(),
               style: TextStyle(
                 fontFamily: Nyfa.display,
-                fontSize: 15,
+                fontSize: 16,
                 letterSpacing: 1,
-                color: selected ? Nyfa.green : Nyfa.muted,
+                color: w.value == c.window ? Nyfa.green : Nyfa.paper,
               ),
             ),
-            const SizedBox(height: 6),
-            AnimatedContainer(
-              duration: const Duration(milliseconds: 160),
-              height: 2,
-              width: selected ? 24 : 0,
-              color: Nyfa.green,
-            ),
-            const SizedBox(height: 6),
-          ],
-        ),
+          ),
+      ],
+      child: FeedChip(
+        key: const Key('SortTop'),
+        label: on ? '${l10n.feedTop} · $current' : l10n.feedTop,
+        trailing: on ? Icons.expand_more : null,
+        selected: on,
+        onTap: () => on ? _menu.open() : c.setSort('top'),
       ),
-    ),
-  );
+    );
+  }
 }

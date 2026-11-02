@@ -260,6 +260,13 @@ class FeedImage extends StatelessWidget {
         Image.network(
           resolve(thumb ? media.thumbUrl : media.posterUrl).toString(),
           fit: BoxFit.cover,
+          // Decoded at the size it is drawn, not the size it was sent. A
+          // 1080px photo in a 120px grid tile is otherwise nine times the
+          // memory, and a scrolling feed of them is where jank comes from.
+          cacheWidth: constraints.maxWidth.isFinite
+              ? (constraints.maxWidth * MediaQuery.devicePixelRatioOf(context))
+                    .round()
+              : null,
           gaplessPlayback: true,
           frameBuilder: (context, child, frame, sync) => sync
               ? child

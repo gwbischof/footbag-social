@@ -41,7 +41,12 @@ class _Gallery extends StatelessWidget {
     // without needing to click a tab.
     final want = Uri.base.queryParameters['screen'];
     final index = const [
-      'dash', 'profile', 'favourites', 'schedule', 'discover', 'rankings',
+      'dash',
+      'profile',
+      'favourites',
+      'schedule',
+      'discover',
+      'rankings',
     ].indexOf(want ?? 'dash');
 
     return DefaultTabController(
@@ -246,8 +251,15 @@ class _SchedulePreview extends StatelessWidget {
           child: Row(
             spacing: 12,
             children: [
-              Expanded(child: _FakePicker(label: l10n.pickDate, value: 'Sat 26 Oct 2026')),
-              Expanded(child: _FakePicker(label: l10n.pickTime, value: '6:00 PM')),
+              Expanded(
+                child: _FakePicker(
+                  label: l10n.pickDate,
+                  value: 'Sat 26 Oct 2026',
+                ),
+              ),
+              Expanded(
+                child: _FakePicker(label: l10n.pickTime, value: '6:00 PM'),
+              ),
             ],
           ),
         ),
@@ -305,10 +317,8 @@ class _DiscoverPreview extends StatelessWidget {
   const _DiscoverPreview({required this.l10n});
 
   @override
-  Widget build(BuildContext context) => DefaultTabController(
-    length: 2,
-    child: _scaffold(context),
-  );
+  Widget build(BuildContext context) =>
+      DefaultTabController(length: 2, child: _scaffold(context));
 
   Widget _scaffold(BuildContext context) => Scaffold(
     backgroundColor: Nyfa.ground,
@@ -400,7 +410,10 @@ class _DiscoverPreview extends StatelessWidget {
                           style: Nyfa.heading.copyWith(fontSize: 17),
                         ),
                         const SizedBox(height: 3),
-                        Text(s.$2, style: Nyfa.bodyMuted.copyWith(fontSize: 12)),
+                        Text(
+                          s.$2,
+                          style: Nyfa.bodyMuted.copyWith(fontSize: 12),
+                        ),
                       ],
                     ),
                   ),
@@ -643,7 +656,10 @@ class _PreviewScaffold extends StatelessWidget {
                 height: 1.05,
               ),
             ),
-            Text(l10n.dashGreeting, style: Nyfa.bodyMuted.copyWith(fontSize: 12)),
+            Text(
+              l10n.dashGreeting,
+              style: Nyfa.bodyMuted.copyWith(fontSize: 12),
+            ),
           ],
         ),
         actions: [
@@ -735,7 +751,10 @@ class _PreviewScaffold extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 8),
-                    Text(l10n.sessionRunning.toUpperCase(), style: Nyfa.eyebrow),
+                    Text(
+                      l10n.sessionRunning.toUpperCase(),
+                      style: Nyfa.eyebrow,
+                    ),
                   ],
                 ),
                 const SizedBox(height: 10),
@@ -809,7 +828,10 @@ class _PreviewScaffold extends StatelessWidget {
                 border: Border(top: BorderSide(color: Nyfa.rule)),
               ),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 15,
+                ),
                 child: Row(
                   children: [
                     Expanded(
@@ -821,7 +843,10 @@ class _PreviewScaffold extends StatelessWidget {
                             style: Nyfa.heading.copyWith(fontSize: 17),
                           ),
                           const SizedBox(height: 3),
-                          Text(row.$2, style: Nyfa.bodyMuted.copyWith(fontSize: 12)),
+                          Text(
+                            row.$2,
+                            style: Nyfa.bodyMuted.copyWith(fontSize: 12),
+                          ),
                         ],
                       ),
                     ),

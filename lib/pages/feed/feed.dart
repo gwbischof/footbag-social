@@ -34,7 +34,47 @@ class Feed extends StatefulWidget {
   FeedController createState() => FeedController();
 }
 
+/// The feed as it was when you left it.
+///
+/// Kept in memory, not on disk: its job is that switching to Chat and back
+/// shows the same posts at the same place, instantly, as every feed app
+/// does. Keyed by account as well as by trick, so a different person signing
+/// in on the same browser never sees the last one's feed.
+class _Snapshot {
+  final List<FootbagPost> posts;
+  final String? next;
+  final String sort;
+  final String window;
+  final bool tutorialsOnly;
+  final ({double lat, double lng})? near;
+  final double offset;
+  final DateTime at;
+
+  _Snapshot({
+    required this.posts,
+    required this.next,
+    required this.sort,
+    required this.window,
+    required this.tutorialsOnly,
+    required this.near,
+    required this.offset,
+  }) : at = DateTime.now();
+}
+
 class FeedController extends State<Feed> {
+  static final _memory = <String, _Snapshot>{};
+
+  /// Older than this and the feed reloads on return rather than resuming --
+  /// coming back after lunch should show what is new.
+  static const _stale = Duration(minutes: 15);
+
+  late final ScrollController scroll;
+
+  /// Which snapshot this screen resumes. Overridden by the preview harness,
+  /// which has no Matrix client.
+  String get memoryKey =>
+      '${Matrix.of(context).client.userID}|${widget.entrySlug ?? ''}';
+
   /// `null` until the first page arrives, so the view can tell "loading" from
   /// "nothing here".
   List<FootbagPost>? posts;
@@ -72,7 +112,58 @@ class FeedController extends State<Feed> {
   @override
   void initState() {
     super.initState();
-    unawaited(refresh());
+    final snap = _memory[memoryKey];
+    if (snap != null && DateTime.now().difference(snap.at) < _stale) {
+      posts = snap.posts;
+      _next = snap.next;
+      sort = snap.sort;
+      window = snap.window;
+      tutorialsOnly = snap.tutorialsOnly;
+      near = snap.near;
+      scroll = ScrollController(initialScrollOffset: snap.offset);
+    } else {
+      scroll = ScrollController();
+      unawaited(refresh());
+    }
+    // Tracked as it moves, not read at dispose: by the time this State is
+    // disposed the scroll view below it is already gone, and the offset
+    // reads as zero -- which brought you back to the top every time.
+    _offset = scroll.initialScrollOffset;
+    scroll.addListener(() => _offset = scroll.offset);
+  }
+
+  double _offset = 0;
+
+  @override
+  void dispose() {
+    final list = posts;
+    if (list != null) {
+      _memory[memoryKey] = _Snapshot(
+        posts: list,
+        next: _next,
+        sort: sort,
+        window: window,
+        tutorialsOnly: tutorialsOnly,
+        near: near,
+        offset: _offset,
+      );
+    }
+    scroll.dispose();
+    super.dispose();
+  }
+
+  /// The Feed tab, tapped while already on the feed: back to the top, or --
+  /// already there -- check for anything new. What every feed app does.
+  Future<void> scrollToTop() async {
+    if (scroll.hasClients && scroll.offset > 0) {
+      await scroll.animateTo(
+        0,
+        duration: const Duration(milliseconds: 400),
+        curve: Curves.easeOutCubic,
+      );
+    } else {
+      await refresh();
+    }
   }
 
   Future<FootbagFeedPage> _fetch({String? cursor}) =>
