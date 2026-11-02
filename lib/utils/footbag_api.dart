@@ -91,6 +91,7 @@ extension FootbagApi on Client {
     List<String>? playStyles,
     bool? discoverable,
     bool? showSessions,
+    bool? onboarded,
   }) async => FootbagPlayer.fromJson(
     await _apiPatchObject('me', {
       'display_name': ?displayName,
@@ -99,6 +100,7 @@ extension FootbagApi on Client {
       'play_styles': ?playStyles,
       'discoverable': ?discoverable,
       'show_sessions': ?showSessions,
+      'onboarded': ?onboarded,
     }),
   );
 
@@ -145,8 +147,11 @@ extension FootbagApi on Client {
   Future<List<FootbagRanking>> fetchRankings({
     String metric = 'play_time',
     String window = 'month',
+    int? club,
   }) async {
-    final list = await _apiGetList('rankings?metric=$metric&window=$window');
+    final list = await _apiGetList(
+      'rankings?metric=$metric&window=$window${club == null ? '' : '&club=$club'}',
+    );
     return list
         .map((e) => FootbagRanking.fromJson(e as Map<String, dynamic>))
         .toList();
@@ -229,6 +234,27 @@ extension FootbagApi on Client {
       'entries': entries.map((e) => e.toJson()).toList(),
     }),
   );
+
+  /// Who the moderators are. Public to everyone signed in, per the doc:
+  /// people should know who can remove their posts.
+  Future<List<FootbagModerator>> fetchModerators() async {
+    final list = await _apiGetList('moderators');
+    return list
+        .map((e) => FootbagModerator.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
+  /// Admins only.
+  Future<void> appointModerator(String userId, {String role = 'moderator'}) =>
+      _apiSend(
+        'PUT',
+        'moderators/${Uri.encodeComponent(userId)}',
+        body: {'role': role},
+      );
+
+  /// Admins only. An admin cannot stand themselves down.
+  Future<void> dismissModerator(String userId) =>
+      _apiSend('DELETE', 'moderators/${Uri.encodeComponent(userId)}');
 
   // -- Clubs -------------------------------------------------------------------
 
@@ -708,6 +734,9 @@ class FootbagPlayer {
 
   bool get canModerate => role != null;
 
+  /// Has seen the first-run welcome. Only meaningful on your own profile.
+  final bool onboarded;
+
   const FootbagPlayer({
     required this.userId,
     required this.displayName,
@@ -717,6 +746,7 @@ class FootbagPlayer {
     required this.discoverable,
     required this.showSessions,
     this.role,
+    this.onboarded = true,
   });
 
   factory FootbagPlayer.fromJson(Map<String, dynamic> json) => FootbagPlayer(
@@ -729,6 +759,7 @@ class FootbagPlayer {
     discoverable: json['discoverable'] as bool? ?? true,
     showSessions: json['show_sessions'] as bool? ?? true,
     role: json['role'] as String?,
+    onboarded: json['onboarded'] as bool? ?? true,
   );
 }
 
@@ -1640,4 +1671,28 @@ class FootbagClub {
               ),
           ],
   );
+}
+
+class FootbagModerator {
+  final String userId;
+  final String name;
+  final bool isAdmin;
+
+  /// Reports this moderator has decided.
+  final int actions;
+
+  const FootbagModerator({
+    required this.userId,
+    required this.name,
+    required this.isAdmin,
+    required this.actions,
+  });
+
+  factory FootbagModerator.fromJson(Map<String, dynamic> json) =>
+      FootbagModerator(
+        userId: json['user_id'] as String,
+        name: json['display_name'] as String,
+        isAdmin: json['role'] == 'admin',
+        actions: json['actions'] as int? ?? 0,
+      );
 }

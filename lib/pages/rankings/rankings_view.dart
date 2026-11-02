@@ -77,6 +77,19 @@ class RankingsView extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 40),
       children: [
         const SizedBox(height: 14),
+        if (controller.clubs.isNotEmpty) ...[
+          _Chips(
+            keyPrefix: 'Scope',
+            options: [
+              for (final c in controller.clubs)
+                (value: '${c.id}', label: c.name),
+              (value: 'all', label: l10n.rankingsEveryone),
+            ],
+            selected: controller.club?.toString() ?? 'all',
+            onTap: controller.setClub,
+          ),
+          const SizedBox(height: 10),
+        ],
         _Chips(
           keyPrefix: 'Metric',
           options: [

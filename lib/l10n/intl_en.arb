@@ -4652,5 +4652,69 @@
         "type": "String",
         "description": "Error when the name is in use.",
         "placeholders": {}
+    },
+    "rankingsEveryone": "Everyone",
+    "@rankingsEveryone": {
+        "type": "String",
+        "description": "Rankings scope: every player who shares their sessions.",
+        "placeholders": {}
+    },
+    "moderators": "Moderators",
+    "@moderators": {
+        "type": "String",
+        "description": "Admin screen listing the app's moderators.",
+        "placeholders": {}
+    },
+    "appointModerator": "Appoint a moderator",
+    "@appointModerator": {
+        "type": "String",
+        "description": "Admin action: make someone a moderator.",
+        "placeholders": {}
+    },
+    "moderatorActions": "{count, plural, =0{No decisions yet} =1{1 decision} other{{count} decisions}}",
+    "@moderatorActions": {
+        "type": "String",
+        "description": "How many reports a moderator has acted on.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "standDown": "Stand down",
+    "@standDown": {
+        "type": "String",
+        "description": "Admin action: remove someone's moderator role.",
+        "placeholders": {}
+    },
+    "adminRole": "Admin",
+    "@adminRole": {
+        "type": "String",
+        "description": "Badge: can appoint moderators.",
+        "placeholders": {}
+    },
+    "moderatorsExplain": "Moderators can remove posts and comments on the feed, and nothing else: no access to anyone's sessions. Admins can also appoint moderators.",
+    "@moderatorsExplain": {
+        "type": "String",
+        "description": "Explains what the role gives, from the design doc.",
+        "placeholders": {}
+    },
+    "welcomeTitle": "Welcome",
+    "@welcomeTitle": {
+        "type": "String",
+        "description": "First-run screen heading.",
+        "placeholders": {}
+    },
+    "welcomeBody": "Tell other players who you are. All of it can be changed later from your profile.",
+    "@welcomeBody": {
+        "type": "String",
+        "description": "First-run screen intro.",
+        "placeholders": {}
+    },
+    "welcomeContinue": "Continue",
+    "@welcomeContinue": {
+        "type": "String",
+        "description": "Finishes the first-run screen.",
+        "placeholders": {}
     }
 }

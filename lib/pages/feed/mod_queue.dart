@@ -12,6 +12,7 @@ import 'package:footbag_network/pages/feed/widgets/feed_states.dart';
 import 'package:footbag_network/pages/feed/widgets/post_card.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
 import 'package:footbag_network/widgets/matrix.dart';
+import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:matrix/matrix.dart';
 
@@ -48,10 +49,16 @@ class _ModQueueState extends State<ModQueue> {
     onReplaced: (_) => unawaited(load()),
   );
 
+  /// Admins also manage who moderates; asked of /me, not assumed.
+  bool isAdmin = false;
+
   @override
   void initState() {
     super.initState();
     unawaited(load());
+    _client.fetchMe().then((me) {
+      if (mounted && me.role == 'admin') setState(() => isAdmin = true);
+    }, onError: (_) {});
   }
 
   Future<void> load() async {
@@ -118,7 +125,22 @@ class _ModQueueState extends State<ModQueue> {
     return Scaffold(
       key: const Key('ModQueueScaffold'),
       backgroundColor: Nyfa.ground,
-      appBar: Nyfa.appBar(title: l10n.modQueue),
+      appBar: Nyfa.appBar(
+        title: l10n.modQueue,
+        actions: [
+          if (isAdmin)
+            IconButton(
+              key: const Key('ManageModerators'),
+              tooltip: l10n.moderators,
+              onPressed: () => context.push('/rooms/dash/mod/moderators'),
+              icon: const Icon(
+                Icons.manage_accounts_outlined,
+                color: Nyfa.paper,
+              ),
+            ),
+          const SizedBox(width: 8),
+        ],
+      ),
       body: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: feedMaxWidth),

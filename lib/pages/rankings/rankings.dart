@@ -29,9 +29,32 @@ class RankingsController extends State<Rankings> {
   String metric = 'play_time';
   String window = 'month';
 
+  /// Your clubs, and which board is showing: a club's id, or null for
+  /// everyone. The doc wants local scopes to lead -- a club table is the one
+  /// a player cares about -- so a member opens on their club, not the world.
+  List<FootbagClub> clubs = const [];
+  int? club;
+
   @override
   void initState() {
     super.initState();
+    unawaited(_start());
+  }
+
+  Future<void> _start() async {
+    try {
+      final mine = await Matrix.of(context).client.fetchClubs(mine: true);
+      if (!mounted) return;
+      clubs = mine.where((c) => c.isMember).toList();
+      club = clubs.firstOrNull?.id;
+    } catch (_) {
+      // No clubs to offer is the same screen as having none.
+    }
+    await load();
+  }
+
+  void setClub(String value) {
+    setState(() => club = value == 'all' ? null : int.parse(value));
     unawaited(load());
   }
 
@@ -49,7 +72,7 @@ class RankingsController extends State<Rankings> {
     try {
       final client = Matrix.of(context).client;
       final results = await Future.wait([
-        client.fetchRankings(metric: metric, window: window),
+        client.fetchRankings(metric: metric, window: window, club: club),
         client.fetchHeatmap(),
       ]);
       if (!mounted) return;

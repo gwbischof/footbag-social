@@ -112,9 +112,28 @@ class FeedController extends State<Feed> {
     }),
   );
 
+  /// Asked once per app run, not on every visit to the feed.
+  static bool _welcomeChecked = false;
+
+  /// The first run: if this account has not seen the welcome, show it over
+  /// the feed. The feed loads underneath, so finishing lands on content.
+  Future<void> checkWelcome() async {
+    if (_welcomeChecked || widget.isTrickPage) return;
+    _welcomeChecked = true;
+    try {
+      final me = await Matrix.of(context).client.fetchMe();
+      if (mounted && !me.onboarded) {
+        await context.push('/rooms/welcome', extra: me);
+      }
+    } catch (_) {
+      // No welcome is better than a feed that will not open.
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    unawaited(checkWelcome());
     final snap = _memory[memoryKey];
     if (snap != null && DateTime.now().difference(snap.at) < _stale) {
       posts = snap.posts;

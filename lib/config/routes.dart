@@ -32,6 +32,7 @@ import 'package:footbag_network/pages/inbox/inbox_page.dart';
 import 'package:footbag_network/pages/intro/intro_page_presenter.dart';
 import 'package:footbag_network/pages/invitation_selection/invitation_selection.dart';
 import 'package:footbag_network/pages/login/login.dart';
+import 'package:footbag_network/pages/moderators/moderators_page.dart';
 import 'package:footbag_network/pages/new_group/new_group.dart';
 import 'package:footbag_network/pages/new_private_chat/new_private_chat.dart';
 import 'package:footbag_network/pages/new_session/new_session.dart';
@@ -51,6 +52,7 @@ import 'package:footbag_network/pages/settings_security/settings_security.dart';
 import 'package:footbag_network/pages/settings_style/settings_style.dart';
 import 'package:footbag_network/pages/sign_in/sign_in_page.dart';
 import 'package:footbag_network/pages/trick_picker/trick_picker.dart';
+import 'package:footbag_network/pages/welcome/welcome_page.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
 import 'package:footbag_network/widgets/config_viewer.dart';
 import 'package:footbag_network/widgets/footbag_nav_bar.dart';
@@ -183,7 +185,8 @@ abstract class AppRoutes {
                 state.fullPath?.startsWith('/rooms/discover') == false &&
                 state.fullPath?.startsWith('/rooms/feed') == false &&
                 state.fullPath?.startsWith('/rooms/session') == false &&
-                state.fullPath?.startsWith('/rooms/club') == false
+                state.fullPath?.startsWith('/rooms/club') == false &&
+                state.fullPath?.startsWith('/rooms/welcome') == false
             ? TwoColumnLayout(
                 bottomBar: const FootbagNavBar(current: FootbagTab.chat),
                 mainView: ChatList(
@@ -218,6 +221,19 @@ abstract class AppRoutes {
             // Nested under /rooms so it inherits the logged-in guard, but
             // excluded from the two-column wrapper above: Dash is the home
             // screen, not a detail pane.
+            GoRoute(
+              path: 'welcome',
+              redirect: (context, state) => state.extra is FootbagPlayer
+                  ? loggedOutRedirect(context, state)
+                  // Reached without a profile in hand (a reload, a typed
+                  // URL): there is nothing to welcome, so go home.
+                  : '/rooms/feed',
+              pageBuilder: (context, state) => defaultPageBuilder(
+                context,
+                state,
+                WelcomePage(me: state.extra! as FootbagPlayer),
+              ),
+            ),
             GoRoute(
               path: 'club/new',
               pageBuilder: (context, state) =>
@@ -388,6 +404,17 @@ abstract class AppRoutes {
                   pageBuilder: (context, state) =>
                       defaultPageBuilder(context, state, const ModQueue()),
                   redirect: loggedOutRedirect,
+                  routes: [
+                    GoRoute(
+                      path: 'moderators',
+                      pageBuilder: (context, state) => defaultPageBuilder(
+                        context,
+                        state,
+                        const ModeratorsPage(),
+                      ),
+                      redirect: loggedOutRedirect,
+                    ),
+                  ],
                 ),
                 GoRoute(
                   path: 'rankings',

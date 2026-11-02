@@ -24,6 +24,7 @@ import 'package:footbag_network/pages/feed/widgets/post_card.dart';
 import 'package:footbag_network/pages/inbox/inbox_bell.dart';
 import 'package:footbag_network/pages/inbox/inbox_page.dart';
 import 'package:footbag_network/pages/session/session_page.dart';
+import 'package:footbag_network/pages/welcome/welcome_page.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:material_ui/material_ui.dart';
@@ -72,6 +73,15 @@ Widget previewBody(BuildContext context) =>
       'club-stranger' => const _PreviewClub(role: null),
       'club-requested' => const _PreviewClub(role: 'requested'),
       'club-form' => const ClubForm(),
+      'welcome' => WelcomePage(
+        me: FootbagPlayer.fromJson({
+          'user_id': '@kenji:x',
+          'display_name': 'kenji',
+          'discoverable': true,
+          'show_sessions': true,
+          'onboarded': false,
+        }),
+      ),
       'session-host' => const _PreviewSession(role: 'host'),
       'session-stranger' => const _PreviewSession(role: null),
       'session-requested' => const _PreviewSession(role: 'requested'),
@@ -103,6 +113,9 @@ class _PreviewFeedController extends FeedController {
 
   @override
   String get memoryKey => 'preview|$mode';
+
+  @override
+  Future<void> checkWelcome() async {}
 
   @override
   String get myUserId {
