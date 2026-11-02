@@ -49,10 +49,10 @@ class MapBubble extends StatelessWidget {
                 TileLayer(
                   maxZoom: 20,
                   minZoom: 0,
-                  urlTemplate:
-                      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                  // One host: OSM retired the a/b/c subdomains, and the
+                  // CSP allows only this one.
+                  urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                   userAgentPackageName: AppConfig.appId,
-                  subdomains: const ['a', 'b', 'c'],
                 ),
                 MarkerLayer(
                   rotate: true,

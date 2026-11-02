@@ -4716,5 +4716,199 @@
         "type": "String",
         "description": "Finishes the first-run screen.",
         "placeholders": {}
+    },
+    "where": "Where",
+    "@where": {
+        "type": "String",
+        "description": "Section heading for a session's location.",
+        "placeholders": {}
+    },
+    "setLocation": "Set location",
+    "@setLocation": {
+        "type": "String",
+        "description": "Host action: choose where a session is.",
+        "placeholders": {}
+    },
+    "changeLocation": "Change",
+    "@changeLocation": {
+        "type": "String",
+        "description": "Host action: change where a session is.",
+        "placeholders": {}
+    },
+    "noLocation": "No location set",
+    "@noLocation": {
+        "type": "String",
+        "description": "A session without a place or area.",
+        "placeholders": {}
+    },
+    "nearbyPlaces": "Places near you",
+    "@nearbyPlaces": {
+        "type": "String",
+        "description": "Heading over the nearest known places.",
+        "placeholders": {}
+    },
+    "searchPlaces": "Search places",
+    "@searchPlaces": {
+        "type": "String",
+        "description": "Field for searching places by name.",
+        "placeholders": {}
+    },
+    "somewhereElse": "Somewhere else",
+    "@somewhereElse": {
+        "type": "String",
+        "description": "Use your area rather than a known place.",
+        "placeholders": {}
+    },
+    "somewhereElseExplain": "Shown as an area only. Message the people you let in with the exact spot.",
+    "@somewhereElseExplain": {
+        "type": "String",
+        "description": "Explains 'somewhere else'.",
+        "placeholders": {}
+    },
+    "suggestPlace": "Suggest a place where you are",
+    "@suggestPlace": {
+        "type": "String",
+        "description": "Suggest the spot you are standing at as a known place; a moderator approves it.",
+        "placeholders": {}
+    },
+    "suggestPlaceName": "Name of the place, e.g. Tompkins Square Park",
+    "@suggestPlaceName": {
+        "type": "String",
+        "description": "Field for a suggested place's name.",
+        "placeholders": {}
+    },
+    "suggestPlaceSent": "Suggested. You can use it now; others will see it once a moderator approves it.",
+    "@suggestPlaceSent": {
+        "type": "String",
+        "description": "After suggesting a place.",
+        "placeholders": {}
+    },
+    "pendingPlace": "Pending",
+    "@pendingPlace": {
+        "type": "String",
+        "description": "Badge on a place still waiting for a moderator.",
+        "placeholders": {}
+    },
+    "radiusLabel": "How findable",
+    "@radiusLabel": {
+        "type": "String",
+        "description": "Heading over the radius choice.",
+        "placeholders": {}
+    },
+    "radiusExplain": "Strangers see a circle this size, never the spot. Smaller is easier to find, larger is more private.",
+    "@radiusExplain": {
+        "type": "String",
+        "description": "Explains the radius choice, from the design doc.",
+        "placeholders": {}
+    },
+    "radiusMiles": "{count} mi",
+    "@radiusMiles": {
+        "type": "String",
+        "description": "A radius in miles.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "usingYourArea": "Using your area",
+    "@usingYourArea": {
+        "type": "String",
+        "description": "Label for a location from the device, not a known place.",
+        "placeholders": {}
+    },
+    "areaOnly": "Somewhere in this area",
+    "@areaOnly": {
+        "type": "String",
+        "description": "What a stranger sees about a session's location.",
+        "placeholders": {}
+    },
+    "locationNeeded": "Allow location to see what's near you.",
+    "@locationNeeded": {
+        "type": "String",
+        "description": "Prompt before asking for location permission.",
+        "placeholders": {}
+    },
+    "showNearMe": "Show what's near me",
+    "@showNearMe": {
+        "type": "String",
+        "description": "Button that asks for location once.",
+        "placeholders": {}
+    },
+    "playingNearYou": "Playing near you",
+    "@playingNearYou": {
+        "type": "String",
+        "description": "Dash map heading: sessions running now nearby.",
+        "placeholders": {}
+    },
+    "nobodyPlayingNear": "Nobody is playing near you right now. That's normal early on: start a session and yours will be the first circle on the map.",
+    "@nobodyPlayingNear": {
+        "type": "String",
+        "description": "Empty map state; honest, from the design doc's first-run section.",
+        "placeholders": {}
+    },
+    "places": "Places",
+    "@places": {
+        "type": "String",
+        "description": "Moderator screen: suggested places waiting for approval.",
+        "placeholders": {}
+    },
+    "placesPendingEmpty": "No suggestions waiting.",
+    "@placesPendingEmpty": {
+        "type": "String",
+        "description": "Empty pending places.",
+        "placeholders": {}
+    },
+    "approvePlace": "Approve",
+    "@approvePlace": {
+        "type": "String",
+        "description": "Moderator approves a suggested place.",
+        "placeholders": {}
+    },
+    "rejectPlace": "Reject",
+    "@rejectPlace": {
+        "type": "String",
+        "description": "Moderator turns down a suggested place.",
+        "placeholders": {}
+    },
+    "mapAttribution": "© OpenStreetMap contributors",
+    "@mapAttribution": {
+        "type": "String",
+        "description": "Required credit on every map.",
+        "placeholders": {}
+    },
+    "nearMe": "Near me",
+    "@nearMe": {
+        "type": "String",
+        "description": "Discover filter: sessions whose area is near you.",
+        "placeholders": {}
+    },
+    "noSessionsNearBody": "Nothing coming up near you yet. That's normal early on: schedule one and people nearby will find it here.",
+    "@noSessionsNearBody": {
+        "type": "String",
+        "description": "Discover near-me empty state.",
+        "placeholders": {}
+    },
+    "nearbySessionsExplain": "Circles are areas, not spots. The host shares the exact place with people they let in.",
+    "@nearbySessionsExplain": {
+        "type": "String",
+        "description": "Caption under the near-me map.",
+        "placeholders": {}
+    },
+    "areaMiles": "{count} mi area",
+    "@areaMiles": {
+        "type": "String",
+        "description": "Size of the circle strangers see.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "suggest": "Suggest",
+    "@suggest": {
+        "type": "String",
+        "description": "Button: send a suggestion to the moderators.",
+        "placeholders": {}
     }
 }

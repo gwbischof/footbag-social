@@ -8,8 +8,10 @@ import 'package:footbag_network/l10n/l10n.dart';
 import 'package:footbag_network/pages/dash/dash_view.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
 import 'package:footbag_network/utils/localized_exception_extension.dart';
+import 'package:footbag_network/utils/near_me.dart';
 import 'package:footbag_network/widgets/matrix.dart';
 import 'package:go_router/go_router.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:matrix/matrix.dart';
 
@@ -46,6 +48,12 @@ class DashController extends State<Dash> with WidgetsBindingObserver {
   bool canModerate = false;
 
   bool busy = false;
+
+  /// Where this player is, roughly, if they have let the app know before;
+  /// and who is playing near there right now. Dash never prompts for
+  /// location on open -- only the "Show what's near me" tap does.
+  LatLng? here;
+  List<FootbagSession>? nearby;
 
   /// Redrawn once a second while something is running, so the clock moves.
   /// Cancelled the moment nothing is: a timer that outlives its reason is a
@@ -142,6 +150,7 @@ class DashController extends State<Dash> with WidgetsBindingObserver {
         }
       }, onError: (_) {}),
     );
+    unawaited(loadNearby());
     try {
       final loaded = await client.fetchSessions();
       if (!mounted) return;
@@ -154,6 +163,26 @@ class DashController extends State<Dash> with WidgetsBindingObserver {
       setState(() => error = e);
     }
     _syncTicker();
+  }
+
+  /// Sessions running now near here, other than this player's own.
+  Future<void> loadNearby({bool ask = false}) async {
+    final fix = await NearMe.fix(ask: ask);
+    if (!mounted || fix == null) return;
+    try {
+      final found = await Matrix.of(context).client.discoverSessions(
+        lat: fix.latitude,
+        lng: fix.longitude,
+        running: true,
+      );
+      if (!mounted) return;
+      setState(() {
+        here = fix;
+        nearby = found.where((s) => !s.isHost).toList();
+      });
+    } catch (e) {
+      Logs().w('Loading nearby sessions failed', e);
+    }
   }
 
   /// Sign out, so a stale session can be replaced.

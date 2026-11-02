@@ -8,6 +8,7 @@ import 'package:footbag_network/pages/dash/dash.dart';
 import 'package:footbag_network/utils/date_time_extension.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
 import 'package:footbag_network/utils/localized_exception_extension.dart';
+import 'package:footbag_network/widgets/footbag_map.dart';
 import 'package:footbag_network/widgets/footbag_nav_bar.dart';
 import 'package:footbag_network/widgets/layouts/max_width_body.dart';
 import 'package:go_router/go_router.dart';
@@ -87,6 +88,8 @@ class DashView extends StatelessWidget {
           _Scoreboard(controller: controller, session: running)
         else
           _EmptyInvitation(controller: controller),
+
+        _Nearby(controller: controller),
 
         if (upcoming.isNotEmpty) _SectionLabel(l10n.upcomingSessions),
         ...upcoming.map(
@@ -626,3 +629,84 @@ String _hms(Duration d) =>
 
 String _short(Duration d) =>
     d.inHours > 0 ? '${d.inHours}H ${d.inMinutes % 60}M' : '${d.inMinutes} MIN';
+
+/// Playing near you: sessions running now, as circles on a map.
+///
+/// Before the player has shared a location, a single quiet button rather
+/// than a permission prompt on open. Afterwards the map, honest when empty:
+/// early on, nobody nearby is the common case and saying so beats hiding it.
+class _Nearby extends StatelessWidget {
+  final DashController controller;
+
+  const _Nearby({required this.controller});
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = L10n.of(context);
+    final here = controller.here;
+    final nearby = controller.nearby;
+
+    if (here == null || nearby == null) {
+      return Padding(
+        padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: TextButton.icon(
+            key: const Key('ShowNearMe'),
+            onPressed: () => controller.loadNearby(ask: true),
+            style: TextButton.styleFrom(
+              foregroundColor: Nyfa.green,
+              minimumSize: const Size(0, 48),
+              padding: EdgeInsets.zero,
+            ),
+            icon: const Icon(Icons.near_me_outlined, size: 18),
+            label: Text(
+              l10n.showNearMe,
+              style: Nyfa.bodyText.copyWith(color: Nyfa.green),
+            ),
+          ),
+        ),
+      );
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        _SectionLabel(l10n.playingNearYou),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: SizedBox(
+            height: 180,
+            child: DecoratedBox(
+              position: DecorationPosition.foreground,
+              decoration: BoxDecoration(border: Border.all(color: Nyfa.rule)),
+              child: FootbagMap(
+                key: const Key('DashNearbyMap'),
+                areas: [for (final s in nearby) s.area!],
+                you: here,
+                interactive: true,
+                onAreaTap: (i) => controller.openSession(nearby[i].id),
+              ),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+          child: Text(
+            nearby.isEmpty
+                ? l10n.nobodyPlayingNear
+                : l10n.nearbySessionsExplain,
+            style: Nyfa.bodyMuted.copyWith(fontSize: 13),
+          ),
+        ),
+        ...nearby.map(
+          (s) => _SessionRow(
+            key: ValueKey('near_${s.id}'),
+            session: s,
+            onTap: () => controller.openSession(s.id),
+          ),
+        ),
+      ],
+    );
+  }
+}

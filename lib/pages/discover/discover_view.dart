@@ -7,6 +7,7 @@ import 'package:footbag_network/l10n/l10n.dart';
 import 'package:footbag_network/pages/discover/discover.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
 import 'package:footbag_network/utils/localized_exception_extension.dart';
+import 'package:footbag_network/widgets/footbag_map.dart';
 import 'package:footbag_network/widgets/footbag_nav_bar.dart';
 import 'package:footbag_network/widgets/layouts/max_width_body.dart';
 import 'package:go_router/go_router.dart';
@@ -61,7 +62,7 @@ class DiscoverView extends StatelessWidget {
             children: [
               Column(
                 children: [
-                  _Filters(controller: controller),
+                  _Filters(controller: controller, nearMe: true),
                   Expanded(child: _SessionsTab(controller: controller)),
                 ],
               ),
@@ -83,7 +84,10 @@ class DiscoverView extends StatelessWidget {
 class _Filters extends StatelessWidget {
   final DiscoverController controller;
 
-  const _Filters({required this.controller});
+  /// The near-me chip: sessions have an area, players do not.
+  final bool nearMe;
+
+  const _Filters({required this.controller, this.nearMe = false});
 
   @override
   Widget build(BuildContext context) {
@@ -99,6 +103,17 @@ class _Filters extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 20),
             children: [
+              if (nearMe)
+                Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: _FilterChip(
+                    key: const Key('Filter_near'),
+                    label: l10n.nearMe,
+                    icon: Icons.near_me_outlined,
+                    selected: controller.near != null,
+                    onTap: controller.locating ? null : controller.toggleNear,
+                  ),
+                ),
               for (final o in <({String? value, String label})>[
                 (value: null, label: l10n.anyStyle),
                 (value: 'kicking', label: l10n.sessionTypeKicking),
@@ -126,13 +141,15 @@ class _Filters extends StatelessWidget {
 
 class _FilterChip extends StatelessWidget {
   final String label;
+  final IconData? icon;
   final bool selected;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   const _FilterChip({
     required this.label,
     required this.selected,
     required this.onTap,
+    this.icon,
     super.key,
   });
 
@@ -150,14 +167,27 @@ class _FilterChip extends StatelessWidget {
         ),
         child: Center(
           widthFactor: 1,
-          child: Text(
-            label.toUpperCase(),
-            style: TextStyle(
-              fontFamily: Nyfa.display,
-              fontSize: 16,
-              letterSpacing: 0.8,
-              color: selected ? Nyfa.ground : Nyfa.paper,
-            ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (icon != null) ...[
+                Icon(
+                  icon,
+                  size: 16,
+                  color: selected ? Nyfa.ground : Nyfa.paper,
+                ),
+                const SizedBox(width: 6),
+              ],
+              Text(
+                label.toUpperCase(),
+                style: TextStyle(
+                  fontFamily: Nyfa.display,
+                  fontSize: 16,
+                  letterSpacing: 0.8,
+                  color: selected ? Nyfa.ground : Nyfa.paper,
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -177,7 +207,35 @@ class _SessionsTab extends StatelessWidget {
     if (controller.sessions == null) return const _Spinner();
 
     final rows = controller.sessions!;
+    final near = controller.near;
+    // Near me shows where, before what: the circles say more at a glance
+    // than a list of names. Sessions without an area are already filtered
+    // out by the server when near is on.
+    final map = near == null
+        ? null
+        : SizedBox(
+            height: 200,
+            child: FootbagMap(
+              key: const Key('DiscoverMap'),
+              areas: [for (final s in rows) s.area!],
+              you: near,
+              interactive: true,
+              onAreaTap: (i) => context.push('/rooms/session/${rows[i].id}'),
+            ),
+          );
     if (rows.isEmpty) {
+      if (map != null) {
+        return ListView(
+          children: [
+            map,
+            _Empty(
+              icon: Icons.near_me_outlined,
+              title: l10n.noSessionsToJoin,
+              body: l10n.noSessionsNearBody,
+            ),
+          ],
+        );
+      }
       return _Empty(
         icon: Icons.sports_handball_rounded,
         title: l10n.noSessionsToJoin,
@@ -192,9 +250,10 @@ class _SessionsTab extends StatelessWidget {
       child: ListView.builder(
         key: const Key('DiscoverSessionsList'),
         physics: const AlwaysScrollableScrollPhysics(),
-        itemCount: rows.length,
-        itemBuilder: (context, i) {
-          final s = rows[i];
+        itemCount: rows.length + (map == null ? 0 : 1),
+        itemBuilder: (context, index) {
+          if (map != null && index == 0) return map;
+          final s = rows[index - (map == null ? 0 : 1)];
           return DecoratedBox(
             decoration: const BoxDecoration(
               border: Border(top: BorderSide(color: Nyfa.rule)),

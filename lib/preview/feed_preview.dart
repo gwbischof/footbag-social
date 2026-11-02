@@ -23,11 +23,16 @@ import 'package:footbag_network/pages/feed/widgets/comments.dart';
 import 'package:footbag_network/pages/feed/widgets/post_card.dart';
 import 'package:footbag_network/pages/inbox/inbox_bell.dart';
 import 'package:footbag_network/pages/inbox/inbox_page.dart';
+import 'package:footbag_network/pages/places/pending_places_page.dart';
 import 'package:footbag_network/pages/session/session_page.dart';
+import 'package:footbag_network/pages/session/where_sheet.dart';
 import 'package:footbag_network/pages/welcome/welcome_page.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
+import 'package:footbag_network/widgets/footbag_map.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:matrix/matrix.dart' show Client;
 
 void main() => runApp(const FeedPreviewApp());
 
@@ -86,6 +91,28 @@ Widget previewBody(BuildContext context) =>
       'session-stranger' => const _PreviewSession(role: null),
       'session-requested' => const _PreviewSession(role: 'requested'),
       'session-going' => const _PreviewSession(role: 'approved'),
+      'near' => Scaffold(
+        backgroundColor: Nyfa.ground,
+        appBar: Nyfa.appBar(title: 'Near'),
+        body: Padding(
+          padding: const EdgeInsets.all(20),
+          child: SizedBox(
+            height: 260,
+            child: FootbagMap(
+              areas: const [
+                FootbagArea(lat: 40.732, lng: -73.975, radiusM: 1609),
+                FootbagArea(lat: 40.745, lng: -73.99, radiusM: 4828),
+                FootbagArea(lat: 40.70, lng: -73.95, radiusM: 1609),
+              ],
+              you: const LatLng(40.728, -73.99),
+              interactive: true,
+              onAreaTap: (_) {},
+            ),
+          ),
+        ),
+      ),
+      'places' => const _PreviewPlaces(),
+      'where' => const _PreviewWhere(),
       _ => const _PreviewFeed(mode: 'recent'),
     };
 
@@ -276,6 +303,16 @@ class _PreviewSessionState extends SessionPageState {
         'is_running': false,
         'attendee_count': 3,
         'my_state': role,
+        'area': {'lat': 40.732, 'lng': -73.975, 'radius_m': 1609},
+        'place': named
+            ? {
+                'id': 1,
+                'name': 'Tompkins Square Park',
+                'lat': 40.7265,
+                'lng': -73.9815,
+                'approved': true,
+              }
+            : null,
         'attendees': named
             ? [
                 {'user_id': '@g:x', 'display_name': 'Garrett'},
@@ -514,4 +551,98 @@ class _PreviewClubState extends ClubPageState {
       sessions = [];
     });
   }
+}
+
+/// Suggestions waiting, with no server.
+class _PreviewPlaces extends PendingPlacesPage {
+  const _PreviewPlaces();
+
+  @override
+  PendingPlacesPageState createState() => _PreviewPlacesState();
+}
+
+class _PreviewPlacesState extends PendingPlacesPageState {
+  @override
+  Future<void> load() async => setState(
+    () => places = const [
+      FootbagPlace(
+        id: 3,
+        name: 'Union Square, south steps',
+        lat: 40.7347,
+        lng: -73.9907,
+        approved: false,
+      ),
+      FootbagPlace(
+        id: 4,
+        name: 'Pier 45',
+        lat: 40.7334,
+        lng: -74.0114,
+        approved: false,
+      ),
+    ],
+  );
+}
+
+/// The place picker, opened over a blank page as it opens over the form.
+class _PreviewWhere extends StatefulWidget {
+  const _PreviewWhere();
+
+  @override
+  State<_PreviewWhere> createState() => _PreviewWhereState();
+}
+
+class _PreviewWhereState extends State<_PreviewWhere> {
+  @override
+  void initState() {
+    super.initState();
+    WhereSheetPreview.fix = (lat: 40.728, lng: -73.99);
+    WhereSheetPreview.places = const [
+      FootbagPlace(
+        id: 1,
+        name: 'Tompkins Square Park',
+        lat: 40.7265,
+        lng: -73.9815,
+        approved: true,
+        distanceKm: 0.8,
+      ),
+      FootbagPlace(
+        id: 2,
+        name: 'Washington Square Park',
+        lat: 40.7308,
+        lng: -73.9973,
+        approved: true,
+        distanceKm: 1.1,
+      ),
+      FootbagPlace(
+        id: 3,
+        name: 'Union Square, south steps',
+        lat: 40.7347,
+        lng: -73.9907,
+        approved: false,
+        distanceKm: 1.4,
+      ),
+      FootbagPlace(
+        id: 5,
+        name: 'McCarren Park',
+        lat: 40.7203,
+        lng: -73.9516,
+        approved: true,
+        distanceKm: 3.4,
+      ),
+    ];
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => showWhereSheet(context, client: _NoClient()),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) =>
+      const Scaffold(backgroundColor: Nyfa.ground);
+}
+
+/// A client the preview never calls: its seams answer first.
+class _NoClient implements Client {
+  @override
+  dynamic noSuchMethod(Invocation invocation) =>
+      throw UnsupportedError('No server in the preview');
 }

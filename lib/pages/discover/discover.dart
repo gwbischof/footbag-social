@@ -4,9 +4,12 @@
 
 import 'dart:async';
 
+import 'package:footbag_network/l10n/l10n.dart';
 import 'package:footbag_network/pages/discover/discover_view.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
+import 'package:footbag_network/utils/near_me.dart';
 import 'package:footbag_network/widgets/matrix.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// Finding other players, and sessions worth turning up to.
@@ -30,6 +33,10 @@ class DiscoverController extends State<Discover> {
 
   /// null means "all disciplines".
   String? style;
+
+  /// Where "near me" searches from, while it is on. In memory only.
+  LatLng? near;
+  bool locating = false;
   final cityController = TextEditingController();
   Timer? _debounce;
 
@@ -51,6 +58,29 @@ class DiscoverController extends State<Discover> {
     unawaited(load());
   }
 
+  /// Turn near-me on -- one fix, asking for permission only now, on the
+  /// tap that wants it -- or off.
+  Future<void> toggleNear() async {
+    if (near != null) {
+      setState(() => near = null);
+      return load();
+    }
+    final messenger = ScaffoldMessenger.of(context);
+    final l10n = L10n.of(context);
+    setState(() => locating = true);
+    final here = await NearMe.fix(ask: true);
+    if (!mounted) return;
+    setState(() {
+      locating = false;
+      near = here;
+    });
+    if (here == null) {
+      messenger.showSnackBar(SnackBar(content: Text(l10n.locationNeeded)));
+      return;
+    }
+    await load();
+  }
+
   void onCityChanged(String _) {
     _debounce?.cancel();
     _debounce = Timer(const Duration(milliseconds: 300), () {
@@ -66,7 +96,11 @@ class DiscoverController extends State<Discover> {
       // for no reason.
       final results = await Future.wait([
         client.discoverPlayers(style: style, city: cityController.text.trim()),
-        client.discoverSessions(type: style),
+        client.discoverSessions(
+          type: style,
+          lat: near?.latitude,
+          lng: near?.longitude,
+        ),
         client.fetchClubs(),
       ]);
       if (!mounted) return;

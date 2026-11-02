@@ -4,6 +4,7 @@
 
 import 'package:footbag_network/l10n/l10n.dart';
 import 'package:footbag_network/pages/new_session/new_session_view.dart';
+import 'package:footbag_network/pages/session/where_sheet.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
 import 'package:footbag_network/utils/localized_exception_extension.dart';
 import 'package:footbag_network/widgets/matrix.dart';
@@ -42,6 +43,10 @@ class NewSessionController extends State<NewSession> {
   /// a field with one possible value is not a question.
   List<FootbagClub> clubs = const [];
   int? clubId;
+
+  /// Optional, like everything here but the date: a session with no
+  /// location is still a session, and still in Discover by type.
+  FootbagWhere? where;
 
   @override
   void initState() {
@@ -89,6 +94,15 @@ class NewSessionController extends State<NewSession> {
     if (picked != null && mounted) setState(() => time = picked);
   }
 
+  Future<void> pickWhere() async {
+    final picked = await showWhereSheet(
+      context,
+      client: Matrix.of(context).client,
+      current: where,
+    );
+    if (picked != null && mounted) setState(() => where = picked);
+  }
+
   Future<void> createAction() async {
     final messenger = ScaffoldMessenger.of(context);
     final l10n = L10n.of(context);
@@ -108,6 +122,7 @@ class NewSessionController extends State<NewSession> {
         // one without an offset would otherwise mean an hour nobody chose.
         scheduledAt: when.toUtc(),
         clubId: clubId,
+        where: where,
       );
     } on FootbagApiException catch (e) {
       if (!mounted) return;

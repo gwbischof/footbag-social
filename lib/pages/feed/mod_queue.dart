@@ -128,6 +128,17 @@ class _ModQueueState extends State<ModQueue> {
       appBar: Nyfa.appBar(
         title: l10n.modQueue,
         actions: [
+          // Any moderator: places are part of keeping the app safe, the
+          // same job as this queue.
+          IconButton(
+            key: const Key('PendingPlaces'),
+            tooltip: l10n.places,
+            onPressed: () => context.push('/rooms/dash/mod/places'),
+            icon: const Icon(
+              Icons.add_location_alt_outlined,
+              color: Nyfa.paper,
+            ),
+          ),
           if (isAdmin)
             IconButton(
               key: const Key('ManageModerators'),

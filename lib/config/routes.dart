@@ -36,6 +36,7 @@ import 'package:footbag_network/pages/moderators/moderators_page.dart';
 import 'package:footbag_network/pages/new_group/new_group.dart';
 import 'package:footbag_network/pages/new_private_chat/new_private_chat.dart';
 import 'package:footbag_network/pages/new_session/new_session.dart';
+import 'package:footbag_network/pages/places/pending_places_page.dart';
 import 'package:footbag_network/pages/profile/profile.dart';
 import 'package:footbag_network/pages/rankings/rankings.dart';
 import 'package:footbag_network/pages/report/report.dart';
@@ -411,6 +412,15 @@ abstract class AppRoutes {
                         context,
                         state,
                         const ModeratorsPage(),
+                      ),
+                      redirect: loggedOutRedirect,
+                    ),
+                    GoRoute(
+                      path: 'places',
+                      pageBuilder: (context, state) => defaultPageBuilder(
+                        context,
+                        state,
+                        const PendingPlacesPage(),
                       ),
                       redirect: loggedOutRedirect,
                     ),

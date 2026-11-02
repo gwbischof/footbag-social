@@ -65,6 +65,19 @@ class NewSessionView extends StatelessWidget {
                 ),
               ),
 
+            NyfaForm.section(l10n.where),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: _Picker(
+                key: const Key('PickWhereButton'),
+                label: controller.where == null
+                    ? l10n.setLocation
+                    : l10n.radiusMiles(controller.where!.radiusMiles),
+                value: controller.where?.label ?? l10n.noLocation,
+                onTap: controller.pickWhere,
+              ),
+            ),
+
             NyfaForm.section(l10n.sessionTypeLabel),
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 0, 20, 12),

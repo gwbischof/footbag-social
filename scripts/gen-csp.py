@@ -79,9 +79,17 @@ ANALYTICS = "https://stats.korroni.com"
 # cold cache showed a textless page. Verify font changes in a cold context.
 FONTS = "https://fonts.gstatic.com"
 
+# OpenStreetMap's tile server, for the session maps. Images, but CanvasKit
+# fetches them over fetch(), so it needs connect-src as well as img-src --
+# with only img-src the map draws its circles over a blank grey square. One
+# host, no a/b/c subdomains: OSM retired those and asks clients not to use
+# them. Its usage policy (attribution, an identifying user agent, light use)
+# is met by FootbagMap; heavier use would mean a paid or self-hosted tiler.
+TILES = "https://tile.openstreetmap.org"
+
 # Everything is same-origin except the homeserver and our own API: media and
 # avatars come from the first, sessions and reports from the second, and those
-# two are the only hosts the app may talk to. connect-src is
+# two are the only hosts the app may talk to, besides the map tiles and fonts. connect-src is
 # the directive that matters here -- the access token and E2EE keys live in
 # IndexedDB, and the build pulls third-party JS (native_imaging) into this
 # origin, so this is what stops either being posted elsewhere.
@@ -114,10 +122,10 @@ def policy(script_hashes: list[str]) -> str:
             # <video> element is governed by media-src, not connect-src, so
             # without the API here every clip is blocked before it is asked
             # for -- the same silent failure connect-src once had.
-            f"img-src 'self' data: blob: {HOMESERVER} {API}",
+            f"img-src 'self' data: blob: {HOMESERVER} {API} {TILES}",
             f"media-src 'self' data: blob: {HOMESERVER} {API}",
             f"connect-src 'self' {HOMESERVER} {HOMESERVER_WS} {API} "
-            f"{ANALYTICS} {FONTS}",
+            f"{ANALYTICS} {FONTS} {TILES}",
             "base-uri 'self'",
             "form-action 'self'",
             "object-src 'none'",

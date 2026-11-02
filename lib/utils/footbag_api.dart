@@ -55,6 +55,7 @@ extension FootbagApi on Client {
     String note = '',
     DateTime? scheduledAt,
     int? clubId,
+    FootbagWhere? where,
   }) async => FootbagSession.fromJson(
     await _apiPostObject('sessions', {
       'name': ?name,
@@ -67,6 +68,7 @@ extension FootbagApi on Client {
       // UTC with an offset rather than the device's wall clock.
       'scheduled_at': ?scheduledAt?.toUtc().toIso8601String(),
       'club_id': ?clubId,
+      ...?where?.toJson(),
     }),
   );
 
@@ -131,9 +133,26 @@ extension FootbagApi on Client {
   }
 
   /// Sessions you could turn up to: running now, or scheduled ahead.
-  Future<List<FootbagSession>> discoverSessions({String? type}) async {
+  Future<List<FootbagSession>> discoverSessions({
+    String? type,
+    double? lat,
+    double? lng,
+    double radiusKm = 25,
+    bool running = false,
+  }) async {
+    final params = <String>[
+      if (type != null) 'type=$type',
+      if (lat != null && lng != null) ...[
+        'lat=$lat',
+        'lng=$lng',
+        'radius_km=$radiusKm',
+      ],
+      if (running) 'running=true',
+    ];
     final list = await _apiGetList(
-      type == null ? 'discover/sessions' : 'discover/sessions?type=$type',
+      params.isEmpty
+          ? 'discover/sessions'
+          : 'discover/sessions?${params.join('&')}',
     );
     return list
         .map((e) => FootbagSession.fromJson(e as Map<String, dynamic>))
@@ -255,6 +274,64 @@ extension FootbagApi on Client {
   /// Admins only. An admin cannot stand themselves down.
   Future<void> dismissModerator(String userId) =>
       _apiSend('DELETE', 'moderators/${Uri.encodeComponent(userId)}');
+
+  // -- Places ------------------------------------------------------------------
+
+  /// Places you can pick -- approved ones and your own suggestions --
+  /// nearest first when given a point.
+  Future<List<FootbagPlace>> fetchPlaces({
+    double? lat,
+    double? lng,
+    String? query,
+  }) async {
+    final params = <String>[
+      if (lat != null && lng != null) ...['lat=$lat', 'lng=$lng'],
+      if (query != null && query.isNotEmpty)
+        'q=${Uri.encodeQueryComponent(query)}',
+    ];
+    final list = await _apiGetList(
+      params.isEmpty ? 'places' : 'places?${params.join('&')}',
+    );
+    return list
+        .map((e) => FootbagPlace.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
+  /// Suggest a place. A moderator's is approved at once.
+  Future<FootbagPlace> suggestPlace(
+    String name,
+    double lat,
+    double lng,
+  ) async => FootbagPlace.fromJson(
+    await _apiPostObject('places', {'name': name, 'lat': lat, 'lng': lng}),
+  );
+
+  /// Set, change or clear where a session is. Host only.
+  Future<FootbagSession> setSessionLocation(
+    int id,
+    FootbagWhere? where,
+  ) async => FootbagSession.fromJson(
+    jsonDecode(
+          (await _apiSend(
+            'PUT',
+            'sessions/$id/location',
+            body: where?.toJson() ?? {},
+          )).body,
+        )
+        as Map<String, dynamic>,
+  );
+
+  Future<List<FootbagPlace>> fetchPendingPlaces() async {
+    final list = await _apiGetList('mod/places');
+    return list
+        .map((e) => FootbagPlace.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
+  Future<void> approvePlace(int id) =>
+      _apiSend('POST', 'mod/places/$id/approve');
+
+  Future<void> rejectPlace(int id) => _apiSend('DELETE', 'mod/places/$id');
 
   // -- Clubs -------------------------------------------------------------------
 
@@ -811,6 +888,14 @@ class FootbagSession {
   /// The club running it, if any. Its members are let in without asking.
   final FootbagClubRef? club;
 
+  /// The circle anyone who can see the session sees. Centred near the spot,
+  /// never on it.
+  final FootbagArea? area;
+
+  /// The exact spot. Only sent to the host, to people let in, and to the
+  /// club's members for a club session.
+  final FootbagPlace? place;
+
   /// Approved players. Visible to anyone who can see the session.
   final int attendeeCount;
 
@@ -844,6 +929,8 @@ class FootbagSession {
     required this.duration,
     this.hostName,
     this.club,
+    this.area,
+    this.place,
     this.attendeeCount = 0,
     this.myState,
     this.attendees,
@@ -880,6 +967,12 @@ class FootbagSession {
         : Duration(seconds: json['duration_seconds'] as int),
     hostName: json['host_name'] as String?,
     club: FootbagClubRef.maybe(json['club']),
+    area: json['area'] == null
+        ? null
+        : FootbagArea.fromJson(json['area'] as Map<String, dynamic>),
+    place: json['place'] == null
+        ? null
+        : FootbagPlace.fromJson(json['place'] as Map<String, dynamic>),
     attendeeCount: json['attendee_count'] as int? ?? 0,
     myState: json['my_state'] as String?,
     attendees: _people(json['attendees']),
@@ -1695,4 +1788,86 @@ class FootbagModerator {
         isAdmin: json['role'] == 'admin',
         actions: json['actions'] as int? ?? 0,
       );
+}
+
+/// A known place to play.
+class FootbagPlace {
+  final int id;
+  final String name;
+  final double lat;
+  final double lng;
+  final bool approved;
+  final double? distanceKm;
+
+  const FootbagPlace({
+    required this.id,
+    required this.name,
+    required this.lat,
+    required this.lng,
+    required this.approved,
+    this.distanceKm,
+  });
+
+  factory FootbagPlace.fromJson(Map<String, dynamic> json) => FootbagPlace(
+    id: json['id'] as int,
+    name: json['name'] as String,
+    lat: (json['lat'] as num).toDouble(),
+    lng: (json['lng'] as num).toDouble(),
+    approved: json['approved'] as bool? ?? true,
+    distanceKm: (json['distance_km'] as num?)?.toDouble(),
+  );
+}
+
+/// The circle a session shows.
+class FootbagArea {
+  final double lat;
+  final double lng;
+  final int radiusM;
+
+  const FootbagArea({
+    required this.lat,
+    required this.lng,
+    required this.radiusM,
+  });
+
+  factory FootbagArea.fromJson(Map<String, dynamic> json) => FootbagArea(
+    lat: (json['lat'] as num).toDouble(),
+    lng: (json['lng'] as num).toDouble(),
+    radiusM: json['radius_m'] as int,
+  );
+}
+
+/// Where a session is, as chosen: a known place, or "somewhere else" from a
+/// device fix the server uses once to draw the circle and does not keep.
+class FootbagWhere {
+  final int? placeId;
+  final double? lat;
+  final double? lng;
+  final int radiusMiles;
+
+  /// What to show back to the person choosing, e.g. the place's name.
+  final String label;
+
+  const FootbagWhere.place(int id, {required this.label, this.radiusMiles = 3})
+    : placeId = id,
+      lat = null,
+      lng = null;
+
+  const FootbagWhere.spot(
+    double this.lat,
+    double this.lng, {
+    required this.label,
+    this.radiusMiles = 3,
+  }) : placeId = null;
+
+  FootbagWhere withRadius(int miles) => placeId != null
+      ? FootbagWhere.place(placeId!, label: label, radiusMiles: miles)
+      : FootbagWhere.spot(lat!, lng!, label: label, radiusMiles: miles);
+
+  Map<String, dynamic> toJson() => {
+    'place_id': ?placeId,
+    'lat': ?lat,
+    'lng': ?lng,
+    'radius_miles': radiusMiles,
+  };
 }

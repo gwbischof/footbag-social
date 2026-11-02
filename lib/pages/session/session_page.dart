@@ -8,14 +8,18 @@ import 'package:footbag_network/config/nyfa_theme.dart';
 import 'package:footbag_network/l10n/l10n.dart';
 import 'package:footbag_network/pages/feed/feed_actions.dart';
 import 'package:footbag_network/pages/feed/widgets/feed_states.dart';
+import 'package:footbag_network/pages/session/where_sheet.dart';
 import 'package:footbag_network/utils/date_time_extension.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
+import 'package:footbag_network/widgets/footbag_map.dart';
 import 'package:footbag_network/widgets/future_loading_dialog.dart';
 import 'package:footbag_network/widgets/matrix.dart';
 import 'package:footbag_network/widgets/people.dart';
 import 'package:go_router/go_router.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:matrix/matrix.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 /// One session, from wherever you are standing: host, invitee, requester or
 /// stranger.
@@ -127,6 +131,30 @@ class SessionPageState extends State<SessionPage> {
     await context.push<bool>('/rooms/dash/${widget.sessionId}/report');
   }
 
+  Future<void> setWhere() async {
+    final s = session;
+    if (s == null) return;
+    final picked = await showWhereSheet(
+      context,
+      client: _client,
+      current: s.place == null
+          ? null
+          : FootbagWhere.place(
+              s.place!.id,
+              label: s.place!.name,
+              radiusMiles: _milesOf(s.area),
+            ),
+    );
+    if (picked != null) {
+      await act(() => _client.setSessionLocation(s.id, picked));
+    }
+  }
+
+  void openInMaps(FootbagPlace p) => launchUrlString(
+    'https://www.openstreetmap.org/?mlat=${p.lat}&mlon=${p.lng}#map=17/${p.lat}/${p.lng}',
+    mode: LaunchMode.externalApplication,
+  );
+
   Future<void> invite() async {
     final s = session;
     if (s == null) return;
@@ -207,6 +235,7 @@ class SessionPageState extends State<SessionPage> {
                             ),
                           ),
                         ),
+                      _Where(state: this),
                       if (s.note.isNotEmpty)
                         Padding(
                           padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
@@ -633,6 +662,123 @@ class _ActionBar extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+/// The radius a host picked, back in the miles they picked it in.
+int _milesOf(FootbagArea? area) {
+  if (area == null) return 3;
+  const choices = [1, 3, 10, 25];
+  return choices.reduce(
+    (a, b) =>
+        (area.radiusM - a * 1609.344).abs() <=
+            (area.radiusM - b * 1609.344).abs()
+        ? a
+        : b,
+  );
+}
+
+/// Where: the circle for everyone who can see the session, the place itself
+/// for those let in. Hidden entirely when there is nothing to show and the
+/// viewer cannot add anything.
+class _Where extends StatelessWidget {
+  final SessionPageState state;
+
+  const _Where({required this.state});
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = L10n.of(context);
+    final s = state.session!;
+    final area = s.area;
+    final place = s.place;
+    if (area == null && !s.isHost) return const SizedBox.shrink();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(20, 18, 8, 0),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(l10n.where.toUpperCase(), style: Nyfa.eyebrow),
+              ),
+              if (s.isHost)
+                TextButton(
+                  key: const Key('SetWhere'),
+                  onPressed: state.busy ? null : state.setWhere,
+                  style: TextButton.styleFrom(
+                    foregroundColor: Nyfa.green,
+                    minimumSize: const Size(48, 48),
+                  ),
+                  child: Text(
+                    (area == null ? l10n.setLocation : l10n.changeLocation)
+                        .toUpperCase(),
+                    style: Nyfa.eyebrow.copyWith(color: Nyfa.green),
+                  ),
+                ),
+            ],
+          ),
+        ),
+        if (area != null)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: SizedBox(
+              height: 180,
+              child: DecoratedBox(
+                position: DecorationPosition.foreground,
+                decoration: BoxDecoration(border: Border.all(color: Nyfa.rule)),
+                child: FootbagMap(
+                  key: const Key('SessionMap'),
+                  areas: [area],
+                  pin: place == null ? null : LatLng(place.lat, place.lng),
+                ),
+              ),
+            ),
+          ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(20, 12, 20, 16),
+          child: Row(
+            children: [
+              Icon(
+                place != null
+                    ? Icons.place_outlined
+                    : Icons.blur_circular_outlined,
+                size: 18,
+                color: place != null ? Nyfa.green : Nyfa.muted,
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      place?.name ??
+                          (area == null ? l10n.noLocation : l10n.areaOnly),
+                      style: Nyfa.bodyText.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    if (area != null)
+                      Text(
+                        l10n.areaMiles(_milesOf(area)),
+                        style: Nyfa.bodyMuted.copyWith(fontSize: 12),
+                      ),
+                  ],
+                ),
+              ),
+              if (place != null)
+                SmallButton(
+                  key: const Key('OpenInMaps'),
+                  label: l10n.openInMaps,
+                  onPressed: () => state.openInMaps(place),
+                ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
