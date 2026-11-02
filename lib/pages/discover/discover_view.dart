@@ -22,7 +22,7 @@ class DiscoverView extends StatelessWidget {
     final l10n = L10n.of(context);
 
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Scaffold(
         key: const Key('DiscoverScaffold'),
         backgroundColor: Nyfa.ground,
@@ -48,23 +48,30 @@ class DiscoverView extends StatelessWidget {
             tabs: [
               Tab(text: l10n.discoverSessions.toUpperCase()),
               Tab(text: l10n.discoverPlayers.toUpperCase()),
+              Tab(text: l10n.discoverClubs.toUpperCase()),
             ],
           ),
         ),
         bottomNavigationBar: const FootbagNavBar(current: FootbagTab.discover),
         body: MaxWidthBody(
           withScrolling: false,
-          child: Column(
+          // The discipline filter belongs to the two tabs it filters; a club
+          // is not a discipline, so the Clubs tab goes without it.
+          child: TabBarView(
             children: [
-              _Filters(controller: controller),
-              Expanded(
-                child: TabBarView(
-                  children: [
-                    _SessionsTab(controller: controller),
-                    _PlayersTab(controller: controller),
-                  ],
-                ),
+              Column(
+                children: [
+                  _Filters(controller: controller),
+                  Expanded(child: _SessionsTab(controller: controller)),
+                ],
               ),
+              Column(
+                children: [
+                  _Filters(controller: controller),
+                  Expanded(child: _PlayersTab(controller: controller)),
+                ],
+              ),
+              _ClubsTab(controller: controller),
             ],
           ),
         ),
@@ -441,3 +448,124 @@ Widget _problem(BuildContext context, DiscoverController c, L10n l10n) =>
         ),
       ],
     );
+
+/// Clubs, biggest first, with starting one a tap away.
+class _ClubsTab extends StatelessWidget {
+  final DiscoverController controller;
+
+  const _ClubsTab({required this.controller});
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = L10n.of(context);
+    final list = controller.clubs;
+    return RefreshIndicator(
+      onRefresh: controller.load,
+      backgroundColor: Nyfa.raised,
+      color: Nyfa.green,
+      child: ListView(
+        key: const Key('DiscoverClubsList'),
+        physics: const AlwaysScrollableScrollPhysics(),
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
+            child: NyfaForm.action(
+              key: const Key('StartAClub'),
+              label: l10n.startAClub,
+              filled: false,
+              onPressed: () async {
+                await context.push('/rooms/club/new');
+                await controller.load();
+              },
+            ),
+          ),
+          if (list == null)
+            const Padding(
+              padding: EdgeInsets.all(32),
+              child: Center(
+                child: CircularProgressIndicator(
+                  color: Nyfa.green,
+                  strokeWidth: 2,
+                ),
+              ),
+            )
+          else if (list.isEmpty)
+            Padding(
+              padding: const EdgeInsets.all(32),
+              child: Text(
+                l10n.clubsEmpty,
+                textAlign: TextAlign.center,
+                style: Nyfa.bodyMuted,
+              ),
+            )
+          else
+            for (final c in list)
+              InkWell(
+                key: Key('DiscoverClub_${c.id}'),
+                onTap: () async {
+                  await context.push('/rooms/club/${c.id}');
+                  await controller.load();
+                },
+                child: Container(
+                  padding: const EdgeInsets.fromLTRB(20, 14, 12, 14),
+                  decoration: const BoxDecoration(
+                    border: Border(top: BorderSide(color: Nyfa.rule)),
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              c.name.toUpperCase(),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: Nyfa.heading.copyWith(fontSize: 17),
+                            ),
+                            const SizedBox(height: 3),
+                            Text(
+                              [
+                                if (c.location.isNotEmpty) c.location,
+                                l10n.clubMemberCount(c.memberCount),
+                              ].join('  ·  '),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: Nyfa.bodyMuted.copyWith(fontSize: 12),
+                            ),
+                          ],
+                        ),
+                      ),
+                      if (c.isMember)
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8),
+                          child: Text(
+                            (c.isOrganiser ? l10n.organiser : l10n.youAreMember)
+                                .toUpperCase(),
+                            style: Nyfa.eyebrow.copyWith(
+                              fontSize: 13,
+                              color: Nyfa.green,
+                            ),
+                          ),
+                        )
+                      else if (c.myState == 'requested')
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8),
+                          child: Text(
+                            l10n.clubRequestSent.toUpperCase(),
+                            style: Nyfa.eyebrow.copyWith(fontSize: 13),
+                          ),
+                        ),
+                      const Icon(
+                        Icons.chevron_right_rounded,
+                        color: Nyfa.muted,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+        ],
+      ),
+    );
+  }
+}

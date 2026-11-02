@@ -17,7 +17,10 @@ import 'package:matrix/matrix.dart';
 /// here still has a default, so the form can be submitted without touching
 /// anything but the date.
 class NewSession extends StatefulWidget {
-  const NewSession({super.key});
+  /// Preselect a club -- arriving from that club's page.
+  final int? clubId;
+
+  const NewSession({this.clubId, super.key});
 
   @override
   NewSessionController createState() => NewSessionController();
@@ -34,6 +37,24 @@ class NewSessionController extends State<NewSession> {
   String joining = 'open';
   bool onFeed = true;
   bool saving = false;
+
+  /// Clubs this player belongs to. The picker is hidden while this is empty:
+  /// a field with one possible value is not a question.
+  List<FootbagClub> clubs = const [];
+  int? clubId;
+
+  @override
+  void initState() {
+    super.initState();
+    clubId = widget.clubId;
+    Matrix.of(context).client.fetchClubs(mine: true).then((all) {
+      if (!mounted) return;
+      setState(() => clubs = all.where((c) => c.isMember).toList());
+    }, onError: (_) {});
+  }
+
+  void setClub(String value) =>
+      setState(() => clubId = value == 'none' ? null : int.parse(value));
 
   @override
   void dispose() {
@@ -86,6 +107,7 @@ class NewSessionController extends State<NewSession> {
         // .toUtc(): the API rejects a naive timestamp outright, and a local
         // one without an offset would otherwise mean an hour nobody chose.
         scheduledAt: when.toUtc(),
+        clubId: clubId,
       );
     } on FootbagApiException catch (e) {
       if (!mounted) return;

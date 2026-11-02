@@ -63,6 +63,10 @@ class ComposeController extends State<Compose> {
   bool tutorial = false;
   int? sessionId;
 
+  /// Clubs you can post to; the picker is hidden when there are none.
+  List<FootbagClub> clubs = const [];
+  int? clubId;
+
   /// Sessions this post could come from: yours, public, started.
   List<FootbagSession>? sessions;
 
@@ -90,6 +94,7 @@ class ComposeController extends State<Compose> {
     sessionId = widget.sessionId;
     caption.addListener(() => setState(() {}));
     unawaited(loadSessions());
+    unawaited(loadClubs());
   }
 
   @override
@@ -170,6 +175,18 @@ class ComposeController extends State<Compose> {
       if (mounted) setState(() => d.error = e);
     }
   }
+
+  Future<void> loadClubs() async {
+    try {
+      final all = await _client.fetchClubs(mine: true);
+      if (!mounted) return;
+      setState(() => clubs = all.where((c) => c.isMember).toList());
+    } catch (e) {
+      Logs().w('Could not list clubs for the composer', e);
+    }
+  }
+
+  void setClub(int? id) => setState(() => clubId = id);
 
   Uri resolveMedia(String path) => _client.footbagMediaUri(path);
 
@@ -266,6 +283,7 @@ class ComposeController extends State<Compose> {
         tags: tags,
         isTutorial: tutorial,
         sessionId: sessionId,
+        clubId: clubId,
         placeName: addArea && place.text.trim().isNotEmpty
             ? place.text.trim()
             : null,

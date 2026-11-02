@@ -12,6 +12,7 @@ import 'package:footbag_network/utils/date_time_extension.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
 import 'package:footbag_network/widgets/future_loading_dialog.dart';
 import 'package:footbag_network/widgets/matrix.dart';
+import 'package:footbag_network/widgets/people.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:matrix/matrix.dart';
@@ -129,23 +130,15 @@ class SessionPageState extends State<SessionPage> {
   Future<void> invite() async {
     final s = session;
     if (s == null) return;
-    final updated = await showModalBottomSheet<FootbagSession>(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Nyfa.ground,
-      shape: const RoundedRectangleBorder(),
-      builder: (_) => _InviteSheet(
-        session: s,
-        // Passed in rather than looked up: the sheet's own context sits above
-        // the page, and the client is the page's.
-        client: _client,
-      ),
+    await showInviteSheet(
+      context,
+      // Passed in rather than looked up: the sheet's own context sits above
+      // the page, and the client is the page's.
+      client: _client,
+      already: {...?s.attendees?.map((a) => a.userId), s.hostId},
+      add: (id) => _client.inviteToSession(s.id, id),
     );
-    if (updated != null && mounted) {
-      _adopt(updated);
-    } else if (mounted) {
-      unawaited(load());
-    }
+    if (mounted) unawaited(load());
   }
 
   @override
@@ -183,6 +176,37 @@ class SessionPageState extends State<SessionPage> {
                     children: [
                       _Status(session: s),
                       _Host(session: s, onMessage: messageHost),
+                      if (s.club != null)
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
+                          child: InkWell(
+                            key: const Key('SessionClub'),
+                            onTap: () =>
+                                context.push('/rooms/club/${s.club!.id}'),
+                            child: Row(
+                              children: [
+                                const Icon(
+                                  Icons.groups_outlined,
+                                  size: 18,
+                                  color: Nyfa.green,
+                                ),
+                                const SizedBox(width: 8),
+                                Expanded(
+                                  child: Text(
+                                    s.club!.name,
+                                    style: Nyfa.bodyText.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                                const Icon(
+                                  Icons.chevron_right_rounded,
+                                  color: Nyfa.muted,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                       if (s.note.isNotEmpty)
                         Padding(
                           padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
@@ -373,12 +397,12 @@ class _People extends StatelessWidget {
         if (s.isHost && requests.isNotEmpty) ...[
           NyfaForm.section('${l10n.joinRequests}  ${requests.length}'),
           for (final r in requests)
-            _PersonRow(
+            PersonRow(
               key: Key('Request_${r.userId}'),
               userId: r.userId,
               name: r.name,
               trailing: [
-                _SmallButton(
+                SmallButton(
                   key: Key('Approve_${r.userId}'),
                   label: l10n.sessionApprove,
                   // Outlined green, not filled: a host may have several
@@ -392,7 +416,7 @@ class _People extends StatelessWidget {
                         ),
                 ),
                 const SizedBox(width: 8),
-                _SmallButton(
+                SmallButton(
                   key: Key('Decline_${r.userId}'),
                   label: l10n.sessionDecline,
                   onPressed: state.busy
@@ -419,7 +443,7 @@ class _People extends StatelessWidget {
           )
         else
           for (final p in going)
-            _PersonRow(
+            PersonRow(
               key: Key('Going_${p.userId}'),
               userId: p.userId,
               name: p.name,
@@ -468,105 +492,6 @@ class _People extends StatelessWidget {
   }
 }
 
-class _PersonRow extends StatelessWidget {
-  final String userId;
-  final String name;
-  final List<Widget> trailing;
-
-  const _PersonRow({
-    required this.userId,
-    required this.name,
-    this.trailing = const [],
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) => InkWell(
-    onTap: () => context.push(
-      '/rooms/feed/player/${Uri.encodeComponent(userId)}',
-      extra: name,
-    ),
-    child: Container(
-      constraints: const BoxConstraints(minHeight: 56),
-      padding: const EdgeInsets.fromLTRB(20, 6, 12, 6),
-      decoration: const BoxDecoration(
-        border: Border(top: BorderSide(color: Nyfa.rule)),
-      ),
-      child: Row(
-        children: [
-          PlayerAvatar(userId: userId, name: name, size: 32),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              name,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: Nyfa.bodyText.copyWith(fontWeight: FontWeight.w600),
-            ),
-          ),
-          ...trailing,
-        ],
-      ),
-    ),
-  );
-}
-
-class _SmallButton extends StatelessWidget {
-  final String label;
-  final VoidCallback? onPressed;
-  final bool filled;
-  final bool accent;
-
-  const _SmallButton({
-    required this.label,
-    required this.onPressed,
-    this.filled = false,
-    this.accent = false,
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final style = TextStyle(
-      fontFamily: Nyfa.display,
-      fontSize: 15,
-      letterSpacing: 1,
-      color: filled
-          ? Nyfa.ground
-          : accent
-          ? Nyfa.green
-          : Nyfa.paper,
-    );
-    const shape = RoundedRectangleBorder();
-    return SizedBox(
-      height: 36,
-      child: filled
-          ? FilledButton(
-              onPressed: onPressed,
-              style: FilledButton.styleFrom(
-                backgroundColor: Nyfa.green,
-                disabledBackgroundColor: Nyfa.rule,
-                shape: shape,
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                tapTargetSize: MaterialTapTargetSize.padded,
-              ),
-              child: Text(label.toUpperCase(), style: style),
-            )
-          : OutlinedButton(
-              onPressed: onPressed,
-              style: OutlinedButton.styleFrom(
-                side: BorderSide(color: accent ? Nyfa.green : Nyfa.rule),
-                shape: shape,
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                tapTargetSize: MaterialTapTargetSize.padded,
-              ),
-              child: Text(label.toUpperCase(), style: style),
-            ),
-    );
-  }
-}
-
-/// The one thing you can do next, pinned to the bottom.
 class _ActionBar extends StatelessWidget {
   final SessionPageState state;
 
@@ -705,157 +630,6 @@ class _ActionBar extends StatelessWidget {
               if (secondary != null)
                 note != null ? secondary : Expanded(child: secondary),
             ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// Find a player by name and add them. An invite is an approval made first.
-class _InviteSheet extends StatefulWidget {
-  final FootbagSession session;
-  final Client client;
-
-  const _InviteSheet({required this.session, required this.client});
-
-  @override
-  State<_InviteSheet> createState() => _InviteSheetState();
-}
-
-class _InviteSheetState extends State<_InviteSheet> {
-  final query = TextEditingController();
-  Timer? _debounce;
-  List<FootbagPlayer>? results;
-  final added = <String>{};
-  FootbagSession? latest;
-
-  Set<String> get _already => {
-    ...?widget.session.attendees?.map((a) => a.userId),
-    widget.session.hostId,
-  };
-
-  @override
-  void dispose() {
-    _debounce?.cancel();
-    query.dispose();
-    super.dispose();
-  }
-
-  void _search(String text) {
-    _debounce?.cancel();
-    _debounce = Timer(const Duration(milliseconds: 250), () async {
-      if (text.trim().isEmpty) {
-        if (mounted) setState(() => results = null);
-        return;
-      }
-      try {
-        final found = await widget.client.discoverPlayers(query: text.trim());
-        if (mounted) setState(() => results = found);
-      } catch (e) {
-        Logs().w('Player search failed', e);
-      }
-    });
-  }
-
-  Future<void> _add(FootbagPlayer p) async {
-    try {
-      latest = await widget.client.inviteToSession(widget.session.id, p.userId);
-      if (mounted) setState(() => added.add(p.userId));
-    } catch (e) {
-      Logs().w('Invite failed', e);
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = L10n.of(context);
-    final found = results;
-    return PopScope(
-      canPop: false,
-      onPopInvokedWithResult: (didPop, _) {
-        if (!didPop) Navigator.of(context).pop(latest);
-      },
-      child: Padding(
-        padding: EdgeInsets.only(
-          bottom: MediaQuery.viewInsetsOf(context).bottom,
-        ),
-        child: SafeArea(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              maxHeight: MediaQuery.sizeOf(context).height * 0.75,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                NyfaForm.section(l10n.invitePlayers),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 12),
-                  child: TextField(
-                    key: const Key('InviteSearch'),
-                    controller: query,
-                    autofocus: true,
-                    onChanged: _search,
-                    style: Nyfa.bodyText,
-                    cursorColor: Nyfa.green,
-                    decoration: Nyfa.input(l10n.invitePlayersHint).copyWith(
-                      prefixIcon: const Icon(Icons.search, color: Nyfa.muted),
-                    ),
-                  ),
-                ),
-                Flexible(
-                  child: found == null
-                      ? const SizedBox(height: 24)
-                      : found.isEmpty
-                      ? Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 4, 20, 24),
-                          child: Text(
-                            l10n.invitePlayersEmpty,
-                            style: Nyfa.bodyMuted,
-                          ),
-                        )
-                      : ListView(
-                          shrinkWrap: true,
-                          children: [
-                            for (final p in found)
-                              _PersonRow(
-                                userId: p.userId,
-                                name: p.displayName,
-                                trailing: [
-                                  if (_already.contains(p.userId) ||
-                                      added.contains(p.userId))
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 8),
-                                      child: Text(
-                                        l10n.sessionAdded.toUpperCase(),
-                                        style: Nyfa.eyebrow.copyWith(
-                                          color: Nyfa.green,
-                                        ),
-                                      ),
-                                    )
-                                  else
-                                    _SmallButton(
-                                      key: Key('Invite_${p.userId}'),
-                                      label: l10n.addToSession,
-                                      filled: true,
-                                      onPressed: () => _add(p),
-                                    ),
-                                ],
-                              ),
-                          ],
-                        ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 12, 20, 16),
-                  child: NyfaForm.action(
-                    label: MaterialLocalizations.of(context).closeButtonLabel,
-                    filled: false,
-                    onPressed: () => Navigator.of(context).pop(latest),
-                  ),
-                ),
-              ],
-            ),
           ),
         ),
       ),

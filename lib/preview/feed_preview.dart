@@ -14,6 +14,8 @@ import 'dart:typed_data';
 
 import 'package:footbag_network/config/nyfa_theme.dart';
 import 'package:footbag_network/l10n/l10n.dart';
+import 'package:footbag_network/pages/club/club_form.dart';
+import 'package:footbag_network/pages/club/club_page.dart';
 import 'package:footbag_network/pages/feed/compose.dart';
 import 'package:footbag_network/pages/feed/feed.dart';
 import 'package:footbag_network/pages/feed/feed_actions.dart';
@@ -62,6 +64,14 @@ Widget previewBody(BuildContext context) =>
       'compose' => const _PreviewCompose(),
       'tabs' => const _TabSwap(),
       'inbox' => const _PreviewInbox(),
+      'club-organiser' => const _PreviewClub(role: 'organiser'),
+      'club-members' => const _PreviewClub(
+        role: 'organiser',
+        section: 'members',
+      ),
+      'club-stranger' => const _PreviewClub(role: null),
+      'club-requested' => const _PreviewClub(role: 'requested'),
+      'club-form' => const ClubForm(),
       'session-host' => const _PreviewSession(role: 'host'),
       'session-stranger' => const _PreviewSession(role: null),
       'session-requested' => const _PreviewSession(role: 'requested'),
@@ -214,6 +224,9 @@ class PreviewActions implements PostActions {
 
   @override
   void openMenu(FootbagPost post) {}
+
+  @override
+  void openClub(FootbagClubRef club) {}
 }
 
 /// The real session page with a canned session, one per standing.
@@ -426,5 +439,66 @@ class _PreviewInboxState extends InboxPageState {
           FootbagInboxItem.fromJson(j),
       ],
     );
+  }
+}
+
+class _PreviewClub extends ClubPage {
+  final String? role;
+  final String section;
+
+  const _PreviewClub({required this.role, this.section = 'posts'})
+    : super(clubId: 3);
+
+  @override
+  ClubPageState createState() => _PreviewClubState();
+}
+
+class _PreviewClubState extends ClubPageState {
+  @override
+  String get me => '@Garrett:x';
+
+  @override
+  Uri resolveMedia(String path) => Uri.parse('$_api/$path');
+
+  @override
+  Future<void> load() async {
+    PlayerAvatar.previewBuilder = PreviewActions().avatar;
+    final w = widget as _PreviewClub;
+    final organiser = w.role == 'organiser';
+    Map<String, dynamic> m(String n, String role, {bool creator = false}) => {
+      'user_id': '@$n:x',
+      'display_name': n,
+      'role': role,
+      'is_creator': creator,
+    };
+    setState(() {
+      section = w.section == 'members'
+          ? ClubSection.members
+          : ClubSection.posts;
+      club = FootbagClub.fromJson({
+        'id': 3,
+        'name': 'Tompkins Footbag',
+        'location': 'Tompkins Square Park, by the chess tables',
+        'description':
+            'Freestyle most Tuesday and Thursday evenings from 6. '
+            'All levels; bring a bag if you have one, we have spares.',
+        'member_count': 4,
+        'my_state': organiser ? 'approved' : w.role,
+        'my_role': organiser ? 'organiser' : null,
+        'members': [
+          m('Landes', 'organiser', creator: true),
+          m('Garrett', 'organiser'),
+          m('Marco', 'member'),
+          m('Kenji', 'member'),
+        ],
+        'requests': organiser
+            ? [
+                {'user_id': '@Lamous:x', 'display_name': 'Lamous'},
+              ]
+            : null,
+      });
+      posts = [..._posts];
+      sessions = [];
+    });
   }
 }

@@ -222,7 +222,10 @@ class NyfaForm {
     inactiveThumbColor: Nyfa.muted,
     inactiveTrackColor: Nyfa.raised,
     contentPadding: const EdgeInsets.symmetric(horizontal: 20),
-    title: Text(label.toUpperCase(), style: Nyfa.heading.copyWith(fontSize: 16)),
+    title: Text(
+      label.toUpperCase(),
+      style: Nyfa.heading.copyWith(fontSize: 16),
+    ),
     subtitle: Text(explain, style: Nyfa.bodyMuted),
   );
 

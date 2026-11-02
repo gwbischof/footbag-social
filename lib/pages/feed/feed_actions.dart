@@ -69,6 +69,10 @@ class AppPostActions implements PostActions {
       unawaited(context.push('/rooms/feed/trick/${tag.slug}', extra: tag.name));
 
   @override
+  void openClub(FootbagClubRef club) =>
+      unawaited(context.push('/rooms/club/${club.id}'));
+
+  @override
   void openMenu(FootbagPost post) => unawaited(_menu(post));
 
   Future<void> _menu(FootbagPost post) async {

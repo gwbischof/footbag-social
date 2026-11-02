@@ -25,6 +25,7 @@ class Discover extends StatefulWidget {
 class DiscoverController extends State<Discover> {
   List<FootbagPlayer>? players;
   List<FootbagSession>? sessions;
+  List<FootbagClub>? clubs;
   Object? error;
 
   /// null means "all disciplines".
@@ -66,11 +67,13 @@ class DiscoverController extends State<Discover> {
       final results = await Future.wait([
         client.discoverPlayers(style: style, city: cityController.text.trim()),
         client.discoverSessions(type: style),
+        client.fetchClubs(),
       ]);
       if (!mounted) return;
       setState(() {
         players = results[0] as List<FootbagPlayer>;
         sessions = results[1] as List<FootbagSession>;
+        clubs = results[2] as List<FootbagClub>;
         error = null;
       });
     } catch (e) {

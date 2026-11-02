@@ -8,9 +8,8 @@ import 'package:footbag_network/config/nyfa_theme.dart';
 import 'package:footbag_network/l10n/l10n.dart';
 import 'package:footbag_network/pages/feed/feed_actions.dart';
 import 'package:footbag_network/pages/feed/feed_view.dart';
-import 'package:footbag_network/pages/feed/widgets/feed_media.dart';
 import 'package:footbag_network/pages/feed/widgets/feed_states.dart';
-import 'package:footbag_network/pages/feed/widgets/post_card.dart';
+import 'package:footbag_network/pages/feed/widgets/post_grid.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
 import 'package:footbag_network/widgets/future_loading_dialog.dart';
 import 'package:footbag_network/widgets/matrix.dart';
@@ -274,8 +273,9 @@ class _PlayerPageState extends State<PlayerPage> {
                                   childAspectRatio: 4 / 5,
                                 ),
                             itemCount: list.length,
-                            itemBuilder: (context, i) => _GridTile(
+                            itemBuilder: (context, i) => PostGridTile(
                               post: list[i],
+                              resolve: _client.footbagMediaUri,
                               onTap: () => open(list[i]),
                             ),
                           ),
@@ -295,75 +295,4 @@ class _PlayerPageState extends State<PlayerPage> {
     'stitching' => l10n.sessionTypeStitching,
     _ => l10n.sessionTypeFreestyle,
   };
-}
-
-/// One post in a profile grid.
-///
-/// A post with no picture still gets a tile -- its words, or its session --
-/// because a grid that silently skipped text posts would misstate how much
-/// someone has posted, right under the count that says otherwise.
-class _GridTile extends StatelessWidget {
-  final FootbagPost post;
-  final VoidCallback onTap;
-
-  const _GridTile({required this.post, required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    final client = Matrix.of(context).client;
-    final first = post.media.firstOrNull;
-    Widget body;
-    if (first != null) {
-      body = FeedImage(
-        media: first,
-        resolve: client.footbagMediaUri,
-        thumb: true,
-      );
-    } else {
-      body = Container(
-        color: Nyfa.raised,
-        padding: const EdgeInsets.all(10),
-        alignment: Alignment.topLeft,
-        child: Text(
-          post.caption.isNotEmpty
-              ? post.caption
-              : (post.session?.name ?? '').toUpperCase(),
-          maxLines: 6,
-          overflow: TextOverflow.fade,
-          style: post.caption.isNotEmpty
-              ? Nyfa.bodyText.copyWith(fontSize: 12, height: 1.35)
-              : Nyfa.heading.copyWith(fontSize: 16),
-        ),
-      );
-    }
-    return InkWell(
-      key: Key('Grid_${post.id}'),
-      onTap: onTap,
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          body,
-          if (post.media.length > 1 || (first?.isVideo ?? false))
-            Positioned(
-              top: 6,
-              right: 6,
-              child: Icon(
-                first!.isVideo
-                    ? Icons.play_arrow_rounded
-                    : Icons.collections_outlined,
-                size: 18,
-                color: Nyfa.paper,
-                shadows: const [Shadow(color: Nyfa.ground, blurRadius: 6)],
-              ),
-            ),
-          if (post.isTutorial)
-            const Positioned(
-              left: 6,
-              bottom: 6,
-              child: Diamond(size: 12, color: Nyfa.green),
-            ),
-        ],
-      ),
-    );
-  }
 }

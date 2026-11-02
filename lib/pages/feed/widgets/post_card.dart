@@ -36,6 +36,8 @@ abstract class PostActions {
 
   void openTag(FootbagTag tag);
 
+  void openClub(FootbagClubRef club);
+
   /// The ⋯ menu: edit and delete for the author, report for everyone else.
   void openMenu(FootbagPost post);
 }
@@ -169,8 +171,13 @@ class _PostCardState extends State<PostCard> {
               onAuthor: () =>
                   widget.actions.openAuthor(post.authorId, post.authorName),
             ),
-          if (post.tags.isNotEmpty)
-            _Tags(tags: post.tags, onTap: widget.actions.openTag),
+          if (post.tags.isNotEmpty || post.club != null)
+            _Tags(
+              tags: post.tags,
+              club: post.club,
+              onTap: widget.actions.openTag,
+              onClub: widget.actions.openClub,
+            ),
           if (hasMedia && post.session != null)
             SessionResults(summary: post.session!),
           if (!widget.expanded)
@@ -651,9 +658,16 @@ class _Caption extends StatelessWidget {
 
 class _Tags extends StatelessWidget {
   final List<FootbagTag> tags;
+  final FootbagClubRef? club;
   final ValueChanged<FootbagTag> onTap;
+  final ValueChanged<FootbagClubRef> onClub;
 
-  const _Tags({required this.tags, required this.onTap});
+  const _Tags({
+    required this.tags,
+    required this.club,
+    required this.onTap,
+    required this.onClub,
+  });
 
   @override
   Widget build(BuildContext context) => Padding(
@@ -662,6 +676,38 @@ class _Tags extends StatelessWidget {
       spacing: 8,
       runSpacing: 8,
       children: [
+        // The club first, as where the post belongs; then what it is about.
+        if (club != null)
+          InkWell(
+            key: Key('ClubTag_${club!.id}'),
+            onTap: () => onClub(club!),
+            child: Container(
+              constraints: const BoxConstraints(minHeight: 32),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              decoration: BoxDecoration(border: Border.all(color: Nyfa.green)),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(
+                    Icons.groups_outlined,
+                    size: 15,
+                    color: Nyfa.green,
+                  ),
+                  const SizedBox(width: 7),
+                  Text(
+                    club!.name.toUpperCase(),
+                    style: const TextStyle(
+                      fontFamily: Nyfa.display,
+                      fontSize: 15,
+                      letterSpacing: 0.9,
+                      color: Nyfa.paper,
+                      height: 1.6,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
         for (final t in tags)
           InkWell(
             key: Key('Tag_${t.slug}'),

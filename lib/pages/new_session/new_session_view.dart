@@ -94,6 +94,24 @@ class NewSessionView extends StatelessWidget {
               capitalization: TextCapitalization.words,
             ),
 
+            if (controller.clubs.isNotEmpty) ...[
+              NyfaForm.section(l10n.postToClub),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 12),
+                child: Text(l10n.clubSessionExplain, style: Nyfa.bodyMuted),
+              ),
+              NyfaForm.chips(
+                keyPrefix: 'SessionClub',
+                options: [
+                  (value: 'none', label: l10n.noClub),
+                  for (final c in controller.clubs)
+                    (value: '${c.id}', label: c.name),
+                ],
+                selected: {controller.clubId?.toString() ?? 'none'},
+                onToggle: controller.setClub,
+              ),
+            ],
+
             NyfaForm.section(l10n.whoCanJoin),
             NyfaForm.chips(
               keyPrefix: 'Joining',

@@ -69,6 +69,8 @@ class InboxPageState extends State<InboxPage> {
     switch (item.kind) {
       case 'join_request' || 'join_approved' when item.sessionId != null:
         context.push('/rooms/session/${item.sessionId}');
+      case 'club_request' || 'club_approved' when item.club != null:
+        context.push('/rooms/club/${item.club!.id}');
       case _ when item.postId != null && item.outcome != 'removed':
         context.push('/rooms/feed/post/${item.postId}');
     }
@@ -245,6 +247,8 @@ class _InboxRow extends StatelessWidget {
       'comment' => l10n.inboxComment(names),
       'join_request' => l10n.inboxJoinRequest(names, session),
       'join_approved' => l10n.inboxJoinApproved(names, session),
+      'club_request' => l10n.inboxClubRequest(names, item.club?.name ?? ''),
+      'club_approved' => l10n.inboxClubApproved(names, item.club?.name ?? ''),
       'post_removed' => l10n.inboxPostRemoved,
       'report_resolved' =>
         item.outcome == 'removed'
@@ -297,7 +301,7 @@ class _InboxRow extends StatelessWidget {
         color: Nyfa.raised,
         child: const Icon(Icons.notes_rounded, size: 20, color: Nyfa.muted),
       );
-    } else if (item.sessionId != null) {
+    } else if (item.sessionId != null || item.club != null) {
       trail = const Icon(Icons.chevron_right_rounded, color: Nyfa.muted);
     }
 

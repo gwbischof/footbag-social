@@ -17,6 +17,8 @@ import 'package:footbag_network/pages/chat_list/chat_list.dart';
 import 'package:footbag_network/pages/chat_members/chat_members.dart';
 import 'package:footbag_network/pages/chat_permissions_settings/chat_permissions_settings.dart';
 import 'package:footbag_network/pages/chat_search/chat_search_page.dart';
+import 'package:footbag_network/pages/club/club_form.dart';
+import 'package:footbag_network/pages/club/club_page.dart';
 import 'package:footbag_network/pages/dash/dash.dart';
 import 'package:footbag_network/pages/device_settings/device_settings.dart';
 import 'package:footbag_network/pages/discover/discover.dart';
@@ -180,7 +182,8 @@ abstract class AppRoutes {
                 state.fullPath?.startsWith('/rooms/dash') == false &&
                 state.fullPath?.startsWith('/rooms/discover') == false &&
                 state.fullPath?.startsWith('/rooms/feed') == false &&
-                state.fullPath?.startsWith('/rooms/session') == false
+                state.fullPath?.startsWith('/rooms/session') == false &&
+                state.fullPath?.startsWith('/rooms/club') == false
             ? TwoColumnLayout(
                 bottomBar: const FootbagNavBar(current: FootbagTab.chat),
                 mainView: ChatList(
@@ -215,6 +218,45 @@ abstract class AppRoutes {
             // Nested under /rooms so it inherits the logged-in guard, but
             // excluded from the two-column wrapper above: Dash is the home
             // screen, not a detail pane.
+            GoRoute(
+              path: 'club/new',
+              pageBuilder: (context, state) =>
+                  defaultPageBuilder(context, state, const ClubForm()),
+              redirect: loggedOutRedirect,
+            ),
+            GoRoute(
+              path: 'club/:clubid',
+              redirect: (context, state) {
+                final id = state.pathParameters['clubid'];
+                if (id == null || int.tryParse(id) == null) {
+                  return '/rooms/discover';
+                }
+                return loggedOutRedirect(context, state);
+              },
+              pageBuilder: (context, state) => defaultPageBuilder(
+                context,
+                state,
+                ClubPage(
+                  key: ValueKey(state.pathParameters['clubid']),
+                  clubId: int.parse(state.pathParameters['clubid']!),
+                ),
+              ),
+              routes: [
+                GoRoute(
+                  path: 'edit',
+                  pageBuilder: (context, state) => defaultPageBuilder(
+                    context,
+                    state,
+                    ClubForm(
+                      club: state.extra is FootbagClub
+                          ? state.extra as FootbagClub
+                          : null,
+                    ),
+                  ),
+                  redirect: loggedOutRedirect,
+                ),
+              ],
+            ),
             GoRoute(
               path: 'session/:sessionid',
               redirect: (context, state) {
@@ -361,8 +403,13 @@ abstract class AppRoutes {
                 ),
                 GoRoute(
                   path: 'schedule',
-                  pageBuilder: (context, state) =>
-                      defaultPageBuilder(context, state, const NewSession()),
+                  pageBuilder: (context, state) => defaultPageBuilder(
+                    context,
+                    state,
+                    NewSession(
+                      clubId: state.extra is int ? state.extra as int : null,
+                    ),
+                  ),
                   redirect: loggedOutRedirect,
                 ),
                 GoRoute(

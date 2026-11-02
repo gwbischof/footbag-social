@@ -54,6 +54,7 @@ extension FootbagApi on Client {
     bool broadcast = true,
     String note = '',
     DateTime? scheduledAt,
+    int? clubId,
   }) async => FootbagSession.fromJson(
     await _apiPostObject('sessions', {
       'name': ?name,
@@ -65,6 +66,7 @@ extension FootbagApi on Client {
       // The API takes AwareDatetime and refuses a naive one, so always send
       // UTC with an offset rather than the device's wall clock.
       'scheduled_at': ?scheduledAt?.toUtc().toIso8601String(),
+      'club_id': ?clubId,
     }),
   );
 
@@ -110,7 +112,8 @@ extension FootbagApi on Client {
     String? query,
   }) async {
     final params = <String>[
-      if (query != null && query.isNotEmpty) 'q=${Uri.encodeQueryComponent(query)}',
+      if (query != null && query.isNotEmpty)
+        'q=${Uri.encodeQueryComponent(query)}',
       if (style != null) 'style=$style',
       if (city != null && city.isNotEmpty)
         'city=${Uri.encodeQueryComponent(city)}',
@@ -227,7 +230,106 @@ extension FootbagApi on Client {
     }),
   );
 
+  // -- Clubs -------------------------------------------------------------------
 
+  /// Clubs, biggest first. [mine] limits to clubs you are in or have asked
+  /// to join.
+  Future<List<FootbagClub>> fetchClubs({
+    String? query,
+    bool mine = false,
+  }) async {
+    final params = <String>[
+      if (query != null && query.isNotEmpty)
+        'q=${Uri.encodeQueryComponent(query)}',
+      if (mine) 'mine=true',
+    ];
+    final list = await _apiGetList(
+      params.isEmpty ? 'clubs' : 'clubs?${params.join('&')}',
+    );
+    return list
+        .map((e) => FootbagClub.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
+  Future<FootbagClub> fetchClub(int id) async =>
+      FootbagClub.fromJson(await _apiGetObject('clubs/$id'));
+
+  Future<FootbagClub> createClub({
+    required String name,
+    String description = '',
+    String location = '',
+  }) async => FootbagClub.fromJson(
+    await _apiPostObject('clubs', {
+      'name': name,
+      'description': description,
+      'location': location,
+    }),
+  );
+
+  Future<FootbagClub> editClub(
+    int id, {
+    String? name,
+    String? description,
+    String? location,
+  }) async => FootbagClub.fromJson(
+    await _apiPatchObject('clubs/$id', {
+      'name': ?name,
+      'description': ?description,
+      'location': ?location,
+    }),
+  );
+
+  Future<FootbagClub> askToJoinClub(int id) async =>
+      FootbagClub.fromJson(await _apiPostObject('clubs/$id/join', null));
+
+  Future<FootbagClub> leaveClub(int id) async => FootbagClub.fromJson(
+    jsonDecode((await _apiSend('DELETE', 'clubs/$id/join')).body)
+        as Map<String, dynamic>,
+  );
+
+  Future<FootbagClub> approveClubMember(int id, String userId) async =>
+      FootbagClub.fromJson(
+        await _apiPostObject(
+          'clubs/$id/members/${Uri.encodeComponent(userId)}/approve',
+          null,
+        ),
+      );
+
+  /// Turn down a request, or remove a member.
+  Future<FootbagClub> declineClubMember(int id, String userId) async =>
+      FootbagClub.fromJson(
+        await _apiPostObject(
+          'clubs/$id/members/${Uri.encodeComponent(userId)}/decline',
+          null,
+        ),
+      );
+
+  Future<FootbagClub> inviteToClub(int id, String userId) async =>
+      FootbagClub.fromJson(
+        jsonDecode(
+              (await _apiSend(
+                'PUT',
+                'clubs/$id/members/${Uri.encodeComponent(userId)}',
+              )).body,
+            )
+            as Map<String, dynamic>,
+      );
+
+  Future<FootbagClub> setClubRole(int id, String userId, String role) async =>
+      FootbagClub.fromJson(
+        await _apiPostObject(
+          'clubs/$id/members/${Uri.encodeComponent(userId)}/role',
+          {'role': role},
+        ),
+      );
+
+  /// What the club has on: running now, or scheduled.
+  Future<List<FootbagSession>> fetchClubSessions(int id) async {
+    final list = await _apiGetList('clubs/$id/sessions');
+    return list
+        .map((e) => FootbagSession.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
 
   // -- Notifications ---------------------------------------------------------
 
@@ -306,6 +408,7 @@ extension FootbagApi on Client {
     String sort = 'recent',
     String window = 'week',
     String? author,
+    int? club,
     String? entry,
     bool tutorial = false,
     double? lat,
@@ -318,6 +421,7 @@ extension FootbagApi on Client {
       'sort=$sort',
       if (sort == 'top') 'window=$window',
       if (author != null) 'author=${Uri.encodeQueryComponent(author)}',
+      if (club != null) 'club=$club',
       if (entry != null) 'entry=${Uri.encodeQueryComponent(entry)}',
       if (tutorial) 'tutorial=true',
       if (lat != null && lng != null) ...[
@@ -389,6 +493,7 @@ extension FootbagApi on Client {
     List<String> tags = const [],
     bool isTutorial = false,
     int? sessionId,
+    int? clubId,
     String? placeName,
     double? lat,
     double? lng,
@@ -399,6 +504,7 @@ extension FootbagApi on Client {
       'tags': tags,
       'is_tutorial': isTutorial,
       'session_id': ?sessionId,
+      'club_id': ?clubId,
       'place_name': ?placeName,
       'lat': ?lat,
       'lng': ?lng,
@@ -671,6 +777,9 @@ class FootbagSession {
 
   final String? hostName;
 
+  /// The club running it, if any. Its members are let in without asking.
+  final FootbagClubRef? club;
+
   /// Approved players. Visible to anyone who can see the session.
   final int attendeeCount;
 
@@ -703,6 +812,7 @@ class FootbagSession {
     required this.isRunning,
     required this.duration,
     this.hostName,
+    this.club,
     this.attendeeCount = 0,
     this.myState,
     this.attendees,
@@ -738,6 +848,7 @@ class FootbagSession {
         ? null
         : Duration(seconds: json['duration_seconds'] as int),
     hostName: json['host_name'] as String?,
+    club: FootbagClubRef.maybe(json['club']),
     attendeeCount: json['attendee_count'] as int? ?? 0,
     myState: json['my_state'] as String?,
     attendees: _people(json['attendees']),
@@ -1251,6 +1362,7 @@ class FootbagPost {
   final List<FootbagTag> tags;
   final String? placeName;
   final FootbagSessionSummary? session;
+  final FootbagClubRef? club;
   int reactionCount;
   bool reacted;
   int commentCount;
@@ -1270,6 +1382,7 @@ class FootbagPost {
     required this.tags,
     required this.placeName,
     required this.session,
+    this.club,
     required this.reactionCount,
     required this.reacted,
     required this.commentCount,
@@ -1297,6 +1410,7 @@ class FootbagPost {
           FootbagTag.fromJson(t as Map<String, dynamic>),
       ],
       placeName: json['place_name'] as String?,
+      club: FootbagClubRef.maybe(json['club']),
       session: json['session'] == null
           ? null
           : FootbagSessionSummary.fromJson(
@@ -1388,6 +1502,7 @@ class FootbagInboxItem {
   final String postCaption;
   final int? sessionId;
   final String? sessionName;
+  final FootbagClubRef? club;
   final String? outcome;
   final DateTime at;
   final bool unread;
@@ -1402,6 +1517,7 @@ class FootbagInboxItem {
     required this.postCaption,
     required this.sessionId,
     required this.sessionName,
+    this.club,
     required this.outcome,
     required this.at,
     required this.unread,
@@ -1426,9 +1542,102 @@ class FootbagInboxItem {
       postCaption: post?['caption'] as String? ?? '',
       sessionId: session?['id'] as int?,
       sessionName: session?['name'] as String?,
+      club: FootbagClubRef.maybe(json['club']),
       outcome: json['outcome'] as String?,
       at: _time(json['at']),
       unread: json['unread'] as bool? ?? false,
     );
   }
+}
+
+/// A club, named where something belongs to one.
+class FootbagClubRef {
+  final int id;
+  final String name;
+
+  const FootbagClubRef({required this.id, required this.name});
+
+  static FootbagClubRef? maybe(Object? json) => json is Map<String, dynamic>
+      ? FootbagClubRef(id: json['id'] as int, name: json['name'] as String)
+      : null;
+}
+
+class FootbagClubMember {
+  final String userId;
+  final String name;
+  final bool isOrganiser;
+  final bool isCreator;
+
+  const FootbagClubMember({
+    required this.userId,
+    required this.name,
+    required this.isOrganiser,
+    required this.isCreator,
+  });
+}
+
+/// A club. All clubs are public, roster included.
+class FootbagClub {
+  final int id;
+  final String name;
+  final String description;
+  final String location;
+  final int memberCount;
+
+  /// `requested`, `approved`, `declined`, or null.
+  final String? myState;
+
+  /// `member` or `organiser` once approved.
+  final String? myRole;
+
+  /// Only on a single club, not in lists.
+  final List<FootbagClubMember>? members;
+
+  /// Pending requests. Only ever sent to organisers.
+  final List<({String userId, String name})>? requests;
+
+  const FootbagClub({
+    required this.id,
+    required this.name,
+    required this.description,
+    required this.location,
+    required this.memberCount,
+    required this.myState,
+    required this.myRole,
+    required this.members,
+    required this.requests,
+  });
+
+  bool get isMember => myState == 'approved';
+  bool get isOrganiser => myRole == 'organiser';
+
+  factory FootbagClub.fromJson(Map<String, dynamic> json) => FootbagClub(
+    id: json['id'] as int,
+    name: json['name'] as String,
+    description: json['description'] as String? ?? '',
+    location: json['location'] as String? ?? '',
+    memberCount: json['member_count'] as int? ?? 0,
+    myState: json['my_state'] as String?,
+    myRole: json['my_role'] as String?,
+    members: json['members'] == null
+        ? null
+        : [
+            for (final m in json['members'] as List)
+              FootbagClubMember(
+                userId: (m as Map<String, dynamic>)['user_id'] as String,
+                name: m['display_name'] as String,
+                isOrganiser: m['role'] == 'organiser',
+                isCreator: m['is_creator'] as bool? ?? false,
+              ),
+          ],
+    requests: json['requests'] == null
+        ? null
+        : [
+            for (final r in json['requests'] as List)
+              (
+                userId: (r as Map<String, dynamic>)['user_id'] as String,
+                name: r['display_name'] as String,
+              ),
+          ],
+  );
 }

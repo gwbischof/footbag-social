@@ -4448,5 +4448,209 @@
         "type": "String",
         "description": "Fallback when a notification's person is no longer known.",
         "placeholders": {}
+    },
+    "discoverClubs": "Clubs",
+    "@discoverClubs": {
+        "type": "String",
+        "description": "Discover tab listing clubs.",
+        "placeholders": {}
+    },
+    "startAClub": "Start a club",
+    "@startAClub": {
+        "type": "String",
+        "description": "Creates a new club. A name is enough.",
+        "placeholders": {}
+    },
+    "startAClubExplain": "A club is two people who play. Start one for the people you already kick with.",
+    "@startAClubExplain": {
+        "type": "String",
+        "description": "Encouragement under the start-a-club button; from the design doc.",
+        "placeholders": {}
+    },
+    "clubName": "Club name",
+    "@clubName": {
+        "type": "String",
+        "description": "Field label.",
+        "placeholders": {}
+    },
+    "clubLocation": "Where you play, e.g. Tompkins Square Park",
+    "@clubLocation": {
+        "type": "String",
+        "description": "Field label for the club's usual spot.",
+        "placeholders": {}
+    },
+    "clubDescription": "What the club is about (optional)",
+    "@clubDescription": {
+        "type": "String",
+        "description": "Field label.",
+        "placeholders": {}
+    },
+    "editClub": "Edit club",
+    "@editClub": {
+        "type": "String",
+        "description": "Organiser action.",
+        "placeholders": {}
+    },
+    "clubMemberCount": "{count, plural, =1{1 member} other{{count} members}}",
+    "@clubMemberCount": {
+        "type": "String",
+        "description": "How many members a club has.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "askToJoinClub": "Ask to join",
+    "@askToJoinClub": {
+        "type": "String",
+        "description": "Asks the club's organisers to let you in.",
+        "placeholders": {}
+    },
+    "clubRequestSent": "Request sent",
+    "@clubRequestSent": {
+        "type": "String",
+        "description": "Waiting for an organiser.",
+        "placeholders": {}
+    },
+    "clubDeclined": "The organisers turned this one down.",
+    "@clubDeclined": {
+        "type": "String",
+        "description": "Your request to join was declined.",
+        "placeholders": {}
+    },
+    "youAreMember": "You're a member",
+    "@youAreMember": {
+        "type": "String",
+        "description": "Shown to members on the club page.",
+        "placeholders": {}
+    },
+    "leaveClub": "Leave club",
+    "@leaveClub": {
+        "type": "String",
+        "description": "Leave a club you are in.",
+        "placeholders": {}
+    },
+    "clubPosts": "Posts",
+    "@clubPosts": {
+        "type": "String",
+        "description": "Club page section: posts tagged with the club.",
+        "placeholders": {}
+    },
+    "clubSessions": "Sessions",
+    "@clubSessions": {
+        "type": "String",
+        "description": "Club page section: what the club has on.",
+        "placeholders": {}
+    },
+    "clubMembers": "Members",
+    "@clubMembers": {
+        "type": "String",
+        "description": "Club page section: the roster.",
+        "placeholders": {}
+    },
+    "organiser": "Organiser",
+    "@organiser": {
+        "type": "String",
+        "description": "Badge on a club organiser.",
+        "placeholders": {}
+    },
+    "founder": "Founder",
+    "@founder": {
+        "type": "String",
+        "description": "Badge on the club's creator, who is always an organiser.",
+        "placeholders": {}
+    },
+    "makeOrganiser": "Make organiser",
+    "@makeOrganiser": {
+        "type": "String",
+        "description": "Promote a member.",
+        "placeholders": {}
+    },
+    "makeMember": "Make a member",
+    "@makeMember": {
+        "type": "String",
+        "description": "Demote an organiser back to member.",
+        "placeholders": {}
+    },
+    "removeFromClub": "Remove from club",
+    "@removeFromClub": {
+        "type": "String",
+        "description": "Organiser removes a member.",
+        "placeholders": {}
+    },
+    "clubNoPosts": "Nothing posted to this club yet.",
+    "@clubNoPosts": {
+        "type": "String",
+        "description": "Empty club posts.",
+        "placeholders": {}
+    },
+    "clubNoSessions": "Nothing on right now.",
+    "@clubNoSessions": {
+        "type": "String",
+        "description": "Empty club sessions.",
+        "placeholders": {}
+    },
+    "scheduleClubSession": "Schedule a club session",
+    "@scheduleClubSession": {
+        "type": "String",
+        "description": "Members schedule a session for the club; members are let in without asking.",
+        "placeholders": {}
+    },
+    "clubsEmpty": "No clubs yet. Start the first one.",
+    "@clubsEmpty": {
+        "type": "String",
+        "description": "Empty clubs list.",
+        "placeholders": {}
+    },
+    "postToClub": "Club",
+    "@postToClub": {
+        "type": "String",
+        "description": "Composer section: post to one of your clubs.",
+        "placeholders": {}
+    },
+    "noClub": "None",
+    "@noClub": {
+        "type": "String",
+        "description": "Composer/session: not for a club.",
+        "placeholders": {}
+    },
+    "clubSessionExplain": "Club members are let in without asking.",
+    "@clubSessionExplain": {
+        "type": "String",
+        "description": "Explains a club session in the scheduling form.",
+        "placeholders": {}
+    },
+    "inboxClubRequest": "{names} asked to join {club}",
+    "@inboxClubRequest": {
+        "type": "String",
+        "description": "Inbox: someone asked to join a club you organise.",
+        "placeholders": {
+            "names": {
+                "type": "String"
+            },
+            "club": {
+                "type": "String"
+            }
+        }
+    },
+    "inboxClubApproved": "{names} let you into {club}",
+    "@inboxClubApproved": {
+        "type": "String",
+        "description": "Inbox: you were let into a club.",
+        "placeholders": {
+            "names": {
+                "type": "String"
+            },
+            "club": {
+                "type": "String"
+            }
+        }
+    },
+    "clubNameTaken": "There is already a club with that name.",
+    "@clubNameTaken": {
+        "type": "String",
+        "description": "Error when the name is in use.",
+        "placeholders": {}
     }
 }

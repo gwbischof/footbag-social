@@ -117,6 +117,20 @@ class ComposeView extends StatelessWidget {
                         c.setSession(v == 'none' ? null : int.parse(v)),
                   ),
                 ],
+                if (c.clubs.isNotEmpty) ...[
+                  NyfaForm.section(l10n.postToClub),
+                  NyfaForm.chips(
+                    keyPrefix: 'ComposeClub',
+                    options: [
+                      (value: 'none', label: l10n.noClub),
+                      for (final club in c.clubs)
+                        (value: '${club.id}', label: club.name),
+                    ],
+                    selected: {c.clubId?.toString() ?? 'none'},
+                    onToggle: (v) =>
+                        c.setClub(v == 'none' ? null : int.parse(v)),
+                  ),
+                ],
                 const SizedBox(height: 16),
                 NyfaForm.toggle(
                   key: const Key('ComposeArea'),
