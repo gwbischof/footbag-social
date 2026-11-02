@@ -228,6 +228,22 @@ extension FootbagApi on Client {
   );
 
 
+
+  // -- Notifications ---------------------------------------------------------
+
+  /// The inbox, grouped. Reading it marks it read on the server; each line
+  /// still says whether it was unread, so the screen can show what is new.
+  Future<List<FootbagInboxItem>> fetchInbox() async {
+    final list = await _apiGetList('notifications');
+    return list
+        .map((e) => FootbagInboxItem.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
+  /// Unread inbox lines, for the bell. Chat counts its own.
+  Future<int> fetchUnreadCount() async =>
+      (await _apiGetObject('notifications/unread'))['count'] as int? ?? 0;
+
   // -- Joining sessions --------------------------------------------------------
 
   /// Ask to join an open session. The host approves or declines.
@@ -1356,4 +1372,63 @@ class FootbagQueueItem {
         firstReportedAt: _time(json['first_reported_at']),
         actionedBy: json['actioned_by'] as String?,
       );
+}
+
+/// One line of the inbox.
+class FootbagInboxItem {
+  final String key;
+
+  /// `reaction`, `comment`, `join_request`, `join_approved`, `post_removed`
+  /// or `report_resolved`.
+  final String kind;
+  final List<({String userId, String name})> actors;
+  final int actorCount;
+  final int? postId;
+  final String? postThumbUrl;
+  final String postCaption;
+  final int? sessionId;
+  final String? sessionName;
+  final String? outcome;
+  final DateTime at;
+  final bool unread;
+
+  const FootbagInboxItem({
+    required this.key,
+    required this.kind,
+    required this.actors,
+    required this.actorCount,
+    required this.postId,
+    required this.postThumbUrl,
+    required this.postCaption,
+    required this.sessionId,
+    required this.sessionName,
+    required this.outcome,
+    required this.at,
+    required this.unread,
+  });
+
+  factory FootbagInboxItem.fromJson(Map<String, dynamic> json) {
+    final post = json['post'] as Map<String, dynamic>?;
+    final session = json['session'] as Map<String, dynamic>?;
+    return FootbagInboxItem(
+      key: json['key'] as String,
+      kind: json['kind'] as String,
+      actors: [
+        for (final a in (json['actors'] as List? ?? const []))
+          (
+            userId: (a as Map<String, dynamic>)['user_id'] as String,
+            name: a['display_name'] as String,
+          ),
+      ],
+      actorCount: json['actor_count'] as int? ?? 0,
+      postId: post?['id'] as int?,
+      postThumbUrl: post?['thumb_url'] as String?,
+      postCaption: post?['caption'] as String? ?? '',
+      sessionId: session?['id'] as int?,
+      sessionName: session?['name'] as String?,
+      outcome: json['outcome'] as String?,
+      at: _time(json['at']),
+      unread: json['unread'] as bool? ?? false,
+    );
+  }
 }

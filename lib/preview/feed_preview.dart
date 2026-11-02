@@ -19,6 +19,7 @@ import 'package:footbag_network/pages/feed/feed.dart';
 import 'package:footbag_network/pages/feed/feed_actions.dart';
 import 'package:footbag_network/pages/feed/widgets/comments.dart';
 import 'package:footbag_network/pages/feed/widgets/post_card.dart';
+import 'package:footbag_network/pages/inbox/inbox_page.dart';
 import 'package:footbag_network/pages/session/session_page.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
 import 'package:image_picker/image_picker.dart';
@@ -59,6 +60,7 @@ Widget previewBody(BuildContext context) =>
       'trick' => const _PreviewFeed(mode: 'trick'),
       'compose' => const _PreviewCompose(),
       'tabs' => const _TabSwap(),
+      'inbox' => const _PreviewInbox(),
       'session-host' => const _PreviewSession(role: 'host'),
       'session-stranger' => const _PreviewSession(role: null),
       'session-requested' => const _PreviewSession(role: 'requested'),
@@ -318,4 +320,103 @@ class _TabSwapState extends State<_TabSwap> {
       ),
     ],
   );
+}
+
+class _PreviewInbox extends InboxPage {
+  const _PreviewInbox();
+
+  @override
+  InboxPageState createState() => _PreviewInboxState();
+}
+
+class _PreviewInboxState extends InboxPageState {
+  @override
+  int chatCount(BuildContext context) => 2;
+
+  @override
+  Uri resolveMedia(String path) => Uri.parse('$_api/$path');
+
+  @override
+  Future<void> load() async {
+    PlayerAvatar.previewBuilder = PreviewActions().avatar;
+    final now = DateTime.now().toUtc();
+    String ago(Duration d) => now.subtract(d).toIso8601String();
+    Map<String, dynamic> a(String n) => {'user_id': '@$n:x', 'display_name': n};
+    setState(
+      () => items = [
+        for (final j in [
+          {
+            'key': 'r1',
+            'kind': 'join_request',
+            'actors': [a('Lamous')],
+            'actor_count': 1,
+            'session': {'id': 8, 'name': 'Tompkins Square — evening'},
+            'at': ago(const Duration(minutes: 4)),
+            'unread': true,
+          },
+          {
+            'key': 'r2',
+            'kind': 'reaction',
+            'actors': [a('Marco'), a('Kenji'), a('Landes')],
+            'actor_count': 5,
+            'post': {
+              'id': 1,
+              'thumb_url':
+                  'media/f898fd4e-588c-4394-8225-4f50f3cdcea7.jpeg?v=thumb&exp=1794182400&sig=87a4ea704abc50ef3401acce786d5b7e429952857e698ca39e191cc220dd6ea7',
+              'caption': 'Sunday circle',
+            },
+            'at': ago(const Duration(minutes: 18)),
+            'unread': true,
+          },
+          {
+            'key': 'r3',
+            'kind': 'comment',
+            'actors': [a('Kenji'), a('Marco')],
+            'actor_count': 2,
+            'post': {
+              'id': 2,
+              'thumb_url':
+                  'media/d3f980aa-2ebf-4c54-b5d5-afe7678cb710.jpeg?v=thumb&exp=1794182400&sig=0c17f03a6208e7f03636458ecd4b9bfe57aa18df4bce041bfddaaa7b2018a032',
+              'caption': '',
+            },
+            'at': ago(const Duration(hours: 2)),
+            'unread': false,
+          },
+          {
+            'key': 'r4',
+            'kind': 'join_approved',
+            'actors': [a('Landes')],
+            'actor_count': 1,
+            'session': {'id': 9, 'name': 'Washington Sq Saturday'},
+            'at': ago(const Duration(hours: 9)),
+            'unread': false,
+          },
+          {
+            'key': 'r5',
+            'kind': 'reaction',
+            'actors': [a('Jake')],
+            'actor_count': 1,
+            'post': {
+              'id': 5,
+              'thumb_url': null,
+              'caption': 'Anyone playing near Union Square tonight?',
+            },
+            'at': ago(const Duration(days: 1)),
+            'unread': false,
+          },
+          {
+            'key': 'r6',
+            'kind': 'report_resolved',
+            'actors': [],
+            'actor_count': 0,
+            'outcome': 'removed',
+            'post': {'id': 7, 'thumb_url': null, 'caption': ''},
+            'at': ago(const Duration(days: 3)),
+            'unread': false,
+          },
+        ])
+          FootbagInboxItem.fromJson(j),
+      ],
+    );
+  }
 }

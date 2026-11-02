@@ -4330,5 +4330,123 @@
         "type": "String",
         "description": "Approved players get the precise location from the host by DM; the app never stores it.",
         "placeholders": {}
+    },
+    "inbox": "Notifications",
+    "@inbox": {
+        "type": "String",
+        "description": "Title of the inbox and the bell's label.",
+        "placeholders": {}
+    },
+    "inboxEmpty": "Nothing yet. Diamonds, comments and join requests land here.",
+    "@inboxEmpty": {
+        "type": "String",
+        "description": "Empty inbox.",
+        "placeholders": {}
+    },
+    "namesTwo": "{a} and {b}",
+    "@namesTwo": {
+        "type": "String",
+        "description": "Two people, e.g. 'Marco and Kenji'.",
+        "placeholders": {
+            "a": {
+                "type": "String"
+            },
+            "b": {
+                "type": "String"
+            }
+        }
+    },
+    "namesMany": "{a} and {count, plural, =1{1 other} other{{count} others}}",
+    "@namesMany": {
+        "type": "String",
+        "description": "One name and how many more, e.g. 'Marco and 3 others'.",
+        "placeholders": {
+            "a": {
+                "type": "String"
+            },
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "inboxReaction": "{names} gave your post a ♦",
+    "@inboxReaction": {
+        "type": "String",
+        "description": "Someone reacted to your post. {names} is already formatted.",
+        "placeholders": {
+            "names": {
+                "type": "String"
+            }
+        }
+    },
+    "inboxComment": "{names} commented on your post",
+    "@inboxComment": {
+        "type": "String",
+        "description": "Someone commented on your post.",
+        "placeholders": {
+            "names": {
+                "type": "String"
+            }
+        }
+    },
+    "inboxJoinRequest": "{names} asked to join {session}",
+    "@inboxJoinRequest": {
+        "type": "String",
+        "description": "Someone asked to join a session you host.",
+        "placeholders": {
+            "names": {
+                "type": "String"
+            },
+            "session": {
+                "type": "String"
+            }
+        }
+    },
+    "inboxJoinApproved": "{names} let you into {session}",
+    "@inboxJoinApproved": {
+        "type": "String",
+        "description": "You were approved for, or invited to, a session.",
+        "placeholders": {
+            "names": {
+                "type": "String"
+            },
+            "session": {
+                "type": "String"
+            }
+        }
+    },
+    "inboxPostRemoved": "A moderator removed your post. Message a moderator if you think that was a mistake.",
+    "@inboxPostRemoved": {
+        "type": "String",
+        "description": "Your post was removed by moderation. There is no appeal flow; you message a moderator.",
+        "placeholders": {}
+    },
+    "inboxReportRemoved": "Your report was upheld and the post was removed.",
+    "@inboxReportRemoved": {
+        "type": "String",
+        "description": "Moderators acted on your report.",
+        "placeholders": {}
+    },
+    "inboxReportKept": "Your report was reviewed. The post stays up.",
+    "@inboxReportKept": {
+        "type": "String",
+        "description": "Moderators reviewed your report and kept the post.",
+        "placeholders": {}
+    },
+    "unreadChats": "{count, plural, =1{1 unread chat} other{{count} unread chats}}",
+    "@unreadChats": {
+        "type": "String",
+        "description": "Row at the top of the inbox that opens Chat.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "someone": "Someone",
+    "@someone": {
+        "type": "String",
+        "description": "Fallback when a notification's person is no longer known.",
+        "placeholders": {}
     }
 }

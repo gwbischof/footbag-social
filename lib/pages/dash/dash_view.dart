@@ -5,6 +5,8 @@
 import 'package:footbag_network/config/nyfa_theme.dart';
 import 'package:footbag_network/l10n/l10n.dart';
 import 'package:footbag_network/pages/dash/dash.dart';
+import 'package:footbag_network/pages/feed/feed_actions.dart';
+import 'package:footbag_network/pages/inbox/inbox_page.dart';
 import 'package:footbag_network/utils/date_time_extension.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
 import 'package:footbag_network/utils/localized_exception_extension.dart';
@@ -151,11 +153,12 @@ class _DashBar extends StatelessWidget implements PreferredSizeWidget {
           Text(l10n.dashGreeting, style: Nyfa.bodyMuted.copyWith(fontSize: 12)),
         ],
       ),
-      // One action only. Four icons beside the wordmark overflowed at phone
-      // width and cut the avatar off the screen; the rest moved into the body
-      // as labelled chips, which are both roomier and easier to recognise than
-      // a row of glyphs.
+      // Two actions: the bell and the avatar. Four icons beside the wordmark
+      // overflowed at phone width and cut the avatar off the screen; the rest
+      // live in the body as labelled chips. The bell earns its place because
+      // its badge is information, not just a door.
       actions: [
+        _Bell(controller: controller),
         Padding(
           padding: const EdgeInsets.only(right: 16),
           child: IconButton(
@@ -164,17 +167,12 @@ class _DashBar extends StatelessWidget implements PreferredSizeWidget {
             // The avatar goes to the profile, which is what an avatar means
             // everywhere else. Settings is reachable from there.
             onPressed: () => context.push('/rooms/dash/profile'),
-            icon: CircleAvatar(
-              radius: 17,
-              backgroundColor: Nyfa.raised,
-              child: Text(
-                _initial(context),
-                style: const TextStyle(
-                  fontFamily: Nyfa.display,
-                  color: Nyfa.green,
-                  fontSize: 17,
-                ),
-              ),
+            // The same picture chat shows, rather than a letter: it is the
+            // same person.
+            icon: PlayerAvatar(
+              userId: Matrix.of(context).client.userID ?? '',
+              name: _initial(context),
+              size: 34,
             ),
           ),
         ),
@@ -548,7 +546,8 @@ class _SessionRow extends StatelessWidget {
                   ],
                 ),
               ),
-              if (session.isHost && (session.requests?.isNotEmpty ?? false)) ...[
+              if (session.isHost &&
+                  (session.requests?.isNotEmpty ?? false)) ...[
                 const SizedBox(width: 12),
                 // Requests waiting on the host. There is no notification
                 // inbox yet, so this badge is how a host finds out.
@@ -556,7 +555,9 @@ class _SessionRow extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(7, 3, 7, 1),
                   color: Nyfa.green,
                   child: Text(
-                    l10n.sessionRequestsBadge(session.requests!.length).toUpperCase(),
+                    l10n
+                        .sessionRequestsBadge(session.requests!.length)
+                        .toUpperCase(),
                     style: const TextStyle(
                       fontFamily: Nyfa.display,
                       fontSize: 13,
@@ -666,3 +667,46 @@ String _hms(Duration d) =>
 
 String _short(Duration d) =>
     d.inHours > 0 ? '${d.inHours}H ${d.inMinutes % 60}M' : '${d.inMinutes} MIN';
+
+/// The inbox, with everything unread counted: inbox lines plus unread chats.
+///
+/// Chat's half is read live from Matrix on every sync, so a new message
+/// lights the bell without anyone asking the API.
+class _Bell extends StatelessWidget {
+  final DashController controller;
+
+  const _Bell({required this.controller});
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = L10n.of(context);
+    final client = Matrix.of(context).client;
+    return StreamBuilder<Object?>(
+      stream: client.onSync.stream,
+      builder: (context, _) {
+        final count = controller.unreadInbox + unreadChatCount(client);
+        return IconButton(
+          key: const Key('DashBell'),
+          tooltip: l10n.inbox,
+          onPressed: controller.openInbox,
+          icon: Badge(
+            isLabelVisible: count > 0,
+            label: Text(count > 99 ? '99+' : '$count'),
+            backgroundColor: Nyfa.green,
+            textColor: Nyfa.ground,
+            textStyle: const TextStyle(
+              fontFamily: Nyfa.display,
+              fontSize: 12,
+              letterSpacing: 0.5,
+            ),
+            child: const Icon(
+              Icons.notifications_none_rounded,
+              color: Nyfa.paper,
+              size: 26,
+            ),
+          ),
+        );
+      },
+    );
+  }
+}

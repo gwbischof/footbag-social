@@ -44,6 +44,17 @@ class DashController extends State<Dash> with WidgetsBindingObserver {
   /// assumed, and false until it answers -- a shortcut that appears and then
   /// vanishes would be worse than one that appears a moment late.
   bool canModerate = false;
+
+  /// Unread inbox lines, for the bell. Chat's unread count is added in the
+  /// view from the live Matrix state, which needs no request.
+  int unreadInbox = 0;
+
+  Future<void> openInbox() async {
+    await context.push('/rooms/dash/inbox');
+    // Opening it marked everything read; reflect that without a reload.
+    if (mounted) setState(() => unreadInbox = 0);
+  }
+
   bool busy = false;
 
   /// Redrawn once a second while something is running, so the clock moves.
@@ -134,6 +145,11 @@ class DashController extends State<Dash> with WidgetsBindingObserver {
 
   Future<void> load() async {
     final client = Matrix.of(context).client;
+    unawaited(
+      client.fetchUnreadCount().then((n) {
+        if (mounted && n != unreadInbox) setState(() => unreadInbox = n);
+      }, onError: (_) {}),
+    );
     unawaited(
       client.fetchMe().then((me) {
         if (mounted && me.canModerate != canModerate) {

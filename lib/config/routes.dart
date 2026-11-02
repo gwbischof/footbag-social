@@ -26,6 +26,7 @@ import 'package:footbag_network/pages/feed/feed.dart';
 import 'package:footbag_network/pages/feed/mod_queue.dart';
 import 'package:footbag_network/pages/feed/player_page.dart';
 import 'package:footbag_network/pages/feed/post_page.dart';
+import 'package:footbag_network/pages/inbox/inbox_page.dart';
 import 'package:footbag_network/pages/intro/intro_page_presenter.dart';
 import 'package:footbag_network/pages/invitation_selection/invitation_selection.dart';
 import 'package:footbag_network/pages/login/login.dart';
@@ -332,6 +333,12 @@ abstract class AppRoutes {
               ),
               redirect: loggedOutRedirect,
               routes: [
+                GoRoute(
+                  path: 'inbox',
+                  pageBuilder: (context, state) =>
+                      defaultPageBuilder(context, state, const InboxPage()),
+                  redirect: loggedOutRedirect,
+                ),
                 GoRoute(
                   path: 'mod',
                   pageBuilder: (context, state) =>
