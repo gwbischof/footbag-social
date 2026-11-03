@@ -275,6 +275,46 @@ extension FootbagApi on Client {
   Future<void> dismissModerator(String userId) =>
       _apiSend('DELETE', 'moderators/${Uri.encodeComponent(userId)}');
 
+  // -- Goals and Try next -------------------------------------------------------
+
+  /// Your goals for a session, in order. Private to you.
+  Future<List<FootbagGoal>> fetchGoals(int sessionId) async {
+    final list = await _apiGetList('sessions/$sessionId/goals');
+    return list
+        .map((e) => FootbagGoal.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
+  /// Replace your goals for a session, in order.
+  Future<List<FootbagGoal>> setGoals(
+    int sessionId,
+    List<String> entrySlugs,
+  ) async {
+    final list = await _apiPutList('sessions/$sessionId/goals', {
+      'entry_slugs': entrySlugs,
+    });
+    return list
+        .map((e) => FootbagGoal.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
+  /// What the goal picker offers: last time, Try next, favourites.
+  Future<List<FootbagIdea>> fetchGoalIdeas(int sessionId) async {
+    final list = await _apiGetList('sessions/$sessionId/goal-ideas');
+    return list
+        .map((e) => FootbagIdea.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
+  /// A few things to try next, each with its reason. Empty until a first
+  /// report.
+  Future<List<FootbagIdea>> fetchTryNext() async {
+    final list = await _apiGetList('me/try-next');
+    return list
+        .map((e) => FootbagIdea.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
   // -- Places ------------------------------------------------------------------
 
   /// Places you can pick -- approved ones and your own suggestions --
@@ -1869,5 +1909,54 @@ class FootbagWhere {
     'lat': ?lat,
     'lng': ?lng,
     'radius_miles': radiusMiles,
+  };
+}
+
+/// A goal for one session.
+class FootbagGoal {
+  final String entrySlug;
+  final String name;
+
+  const FootbagGoal({required this.entrySlug, required this.name});
+
+  factory FootbagGoal.fromJson(Map<String, dynamic> json) => FootbagGoal(
+    entrySlug: json['entry_slug'] as String,
+    name: json['name'] as String,
+  );
+}
+
+/// Something to work on, and the rule that offered it -- turned into a
+/// sentence by the app, so it can be said in the player's language.
+class FootbagIdea {
+  final String entrySlug;
+  final String name;
+
+  /// next_step | string_ready | string_again | ease_off | unmet |
+  /// last_session | favourite.
+  final String rule;
+  final String? becauseName;
+  final int? count;
+
+  const FootbagIdea({
+    required this.entrySlug,
+    required this.name,
+    required this.rule,
+    this.becauseName,
+    this.count,
+  });
+
+  factory FootbagIdea.fromJson(Map<String, dynamic> json) => FootbagIdea(
+    entrySlug: json['entry_slug'] as String,
+    name: json['name'] as String,
+    rule: json['rule'] as String,
+    becauseName: json['because_name'] as String?,
+    count: json['count'] as int?,
+  );
+
+  /// Where the goal picker files it.
+  String get source => switch (rule) {
+    'unmet' || 'last_session' => 'last',
+    'favourite' => 'favourite',
+    _ => 'next',
   };
 }

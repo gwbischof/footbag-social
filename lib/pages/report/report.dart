@@ -30,6 +30,10 @@ class ReportController extends State<Report> {
   /// `null` until the first load finishes, so the view can tell "not yet" from
   /// "nothing to show".
   List<FootbagFavourite>? favourites;
+
+  /// What the player meant to work on, read back first: a checklist chosen
+  /// an hour ago is answerable in seconds, where a blank list is not.
+  List<FootbagFavourite> goals = const [];
   Object? error;
   bool saving = false;
 
@@ -120,14 +124,13 @@ class ReportController extends State<Report> {
   Future<void> load() async {
     try {
       final client = Matrix.of(context).client;
-      // Both at once: they are independent, and the screen cannot be drawn
-      // without either.
-      // All three at once: they are independent, and the screen cannot be
-      // drawn without any of them.
+      // All at once: they are independent, and the screen cannot be drawn
+      // without any of them.
       final results = await Future.wait([
         client.fetchFavourites(),
         client.fetchReport(widget.sessionId),
         client.fetchSession(widget.sessionId),
+        client.fetchGoals(widget.sessionId),
       ]);
       if (!mounted) return;
 
@@ -135,8 +138,17 @@ class ReportController extends State<Report> {
       final existing = results[1] as FootbagReport?;
       final loadedSession = results[2] as FootbagSession;
 
+      final goalRows = results[3] as List<FootbagGoal>;
+      final goalSlugs = {for (final g in goalRows) g.entrySlug};
       setState(() {
-        favourites = loaded;
+        goals = [
+          for (final (i, g) in goalRows.indexed)
+            FootbagFavourite(entrySlug: g.entrySlug, name: g.name, position: i),
+        ];
+        // A goal is listed once, with the goals.
+        favourites = loaded
+            .where((f) => !goalSlugs.contains(f.entrySlug))
+            .toList();
         session = loadedSession;
         error = null;
         if (existing != null) {

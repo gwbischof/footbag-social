@@ -119,7 +119,22 @@ class ReportView extends StatelessWidget {
       key: const Key('ReportList'),
       padding: const EdgeInsets.only(bottom: 40),
       children: [
-        if (favourites.isEmpty)
+        if (controller.goals.isNotEmpty) ...[
+          NyfaForm.section(l10n.yourGoals),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
+            child: Text(l10n.goalsReportHint, style: Nyfa.bodyMuted),
+          ),
+          ...controller.goals.map(
+            (f) => _TrickBlock(
+              key: ValueKey(f.entrySlug),
+              controller: controller,
+              favourite: f,
+            ),
+          ),
+          if (favourites.isNotEmpty) NyfaForm.section(l10n.favourites),
+        ],
+        if (favourites.isEmpty && controller.goals.isEmpty)
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 40, 20, 8),
             child: Column(
@@ -155,7 +170,7 @@ class ReportView extends StatelessWidget {
               ],
             ),
           )
-        else
+        else if (favourites.isNotEmpty)
           ...favourites.map(
             (f) => _TrickBlock(
               // Keyed by slug: without it a reorder or reload of favourites

@@ -28,6 +28,7 @@ import 'package:footbag_network/pages/feed/feed.dart';
 import 'package:footbag_network/pages/feed/mod_queue.dart';
 import 'package:footbag_network/pages/feed/player_page.dart';
 import 'package:footbag_network/pages/feed/post_page.dart';
+import 'package:footbag_network/pages/goals/goals_page.dart';
 import 'package:footbag_network/pages/inbox/inbox_page.dart';
 import 'package:footbag_network/pages/intro/intro_page_presenter.dart';
 import 'package:footbag_network/pages/invitation_selection/invitation_selection.dart';
@@ -489,6 +490,23 @@ abstract class AppRoutes {
                     context,
                     state,
                     Report(
+                      sessionId: int.parse(state.pathParameters['sessionid']!),
+                    ),
+                  ),
+                ),
+                GoRoute(
+                  path: ':sessionid/goals',
+                  redirect: (context, state) {
+                    final id = state.pathParameters['sessionid'];
+                    if (id == null || int.tryParse(id) == null) {
+                      return '/rooms/dash';
+                    }
+                    return loggedOutRedirect(context, state);
+                  },
+                  pageBuilder: (context, state) => defaultPageBuilder(
+                    context,
+                    state,
+                    GoalsPage(
                       sessionId: int.parse(state.pathParameters['sessionid']!),
                     ),
                   ),

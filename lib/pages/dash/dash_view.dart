@@ -5,12 +5,14 @@
 import 'package:footbag_network/config/nyfa_theme.dart';
 import 'package:footbag_network/l10n/l10n.dart';
 import 'package:footbag_network/pages/dash/dash.dart';
+import 'package:footbag_network/pages/goals/goals_page.dart';
 import 'package:footbag_network/utils/date_time_extension.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
 import 'package:footbag_network/utils/localized_exception_extension.dart';
 import 'package:footbag_network/widgets/footbag_map.dart';
 import 'package:footbag_network/widgets/footbag_nav_bar.dart';
 import 'package:footbag_network/widgets/layouts/max_width_body.dart';
+import 'package:footbag_network/widgets/people.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -88,6 +90,17 @@ class DashView extends StatelessWidget {
           _Scoreboard(controller: controller, session: running)
         else
           _EmptyInvitation(controller: controller),
+
+        if (controller.tryNext.isNotEmpty) ...[
+          _SectionLabel(l10n.tryNext),
+          for (final idea in controller.tryNext)
+            _IdeaRow(
+              key: ValueKey('try_${idea.entrySlug}'),
+              idea: idea,
+              action: running != null ? l10n.addAsGoal : l10n.addToFavourites,
+              onPressed: () => controller.takeIdea(idea),
+            ),
+        ],
 
         _Nearby(controller: controller),
 
@@ -351,7 +364,36 @@ class _Scoreboard extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           Text(_subtitle(l10n, session), style: Nyfa.bodyMuted),
-          const SizedBox(height: 16),
+          const SizedBox(height: 12),
+          // What you came to work on, so it is in front of you mid-session.
+          InkWell(
+            key: const Key('RunningGoals'),
+            onTap: () => controller.editGoals(session.id),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(minHeight: 40),
+              child: Row(
+                children: [
+                  const Icon(Icons.flag_outlined, size: 18, color: Nyfa.green),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      controller.runningGoals.isEmpty
+                          ? l10n.setGoals
+                          : '${l10n.workingOn}: '
+                                '${controller.runningGoals.map((g) => g.name).join(', ')}',
+                      style: Nyfa.bodyText.copyWith(
+                        color: controller.runningGoals.isEmpty
+                            ? Nyfa.green
+                            : Nyfa.paper,
+                      ),
+                    ),
+                  ),
+                  const Icon(Icons.chevron_right_rounded, color: Nyfa.muted),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
           Wrap(
             spacing: 10,
             runSpacing: 10,
@@ -707,6 +749,56 @@ class _Nearby extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+/// One Try next idea: what, why, and the one thing to do with it.
+class _IdeaRow extends StatelessWidget {
+  final FootbagIdea idea;
+  final String action;
+  final VoidCallback onPressed;
+
+  const _IdeaRow({
+    required this.idea,
+    required this.action,
+    required this.onPressed,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final reason = ideaReason(L10n.of(context), idea);
+    return Container(
+      padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
+      decoration: const BoxDecoration(
+        border: Border(top: BorderSide(color: Nyfa.rule)),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  idea.name,
+                  style: Nyfa.bodyText.copyWith(fontWeight: FontWeight.w600),
+                ),
+                if (reason != null)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 2),
+                    child: Text(
+                      reason,
+                      style: Nyfa.bodyMuted.copyWith(fontSize: 13),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 12),
+          SmallButton(label: action, accent: true, onPressed: onPressed),
+        ],
+      ),
     );
   }
 }

@@ -21,6 +21,7 @@ import 'package:footbag_network/pages/feed/feed.dart';
 import 'package:footbag_network/pages/feed/feed_actions.dart';
 import 'package:footbag_network/pages/feed/widgets/comments.dart';
 import 'package:footbag_network/pages/feed/widgets/post_card.dart';
+import 'package:footbag_network/pages/goals/goals_page.dart';
 import 'package:footbag_network/pages/inbox/inbox_bell.dart';
 import 'package:footbag_network/pages/inbox/inbox_page.dart';
 import 'package:footbag_network/pages/places/pending_places_page.dart';
@@ -113,6 +114,7 @@ Widget previewBody(BuildContext context) =>
       ),
       'places' => const _PreviewPlaces(),
       'where' => const _PreviewWhere(),
+      'goals' => const _PreviewGoals(),
       _ => const _PreviewFeed(mode: 'recent'),
     };
 
@@ -645,4 +647,59 @@ class _NoClient implements Client {
   @override
   dynamic noSuchMethod(Invocation invocation) =>
       throw UnsupportedError('No server in the preview');
+}
+
+/// The goal step after Start, with one goal picked and ideas from each source.
+class _PreviewGoals extends GoalsPage {
+  const _PreviewGoals() : super(sessionId: 8);
+
+  @override
+  GoalsPageState createState() => _PreviewGoalsState();
+}
+
+class _PreviewGoalsState extends GoalsPageState {
+  @override
+  Future<void> load() async => setState(() {
+    goals = const [
+      FootbagGoal(entrySlug: 'paradox-mirage', name: 'Paradox Mirage'),
+    ];
+    ideas = const [
+      FootbagIdea(
+        entrySlug: 'atomic-mirage',
+        name: 'Atomic Mirage',
+        rule: 'unmet',
+        count: 2,
+      ),
+      FootbagIdea(entrySlug: 'whirl', name: 'Whirl', rule: 'last_session'),
+      FootbagIdea(
+        entrySlug: 'blurry-whirl',
+        name: 'Blurry Whirl',
+        rule: 'next_step',
+        becauseName: 'Whirl',
+      ),
+      FootbagIdea(
+        entrySlug: 'mirage',
+        name: 'Mirage',
+        rule: 'ease_off',
+        becauseName: 'Spinning Paradox Mirage',
+        count: 3,
+      ),
+      FootbagIdea(entrySlug: 'butterfly', name: 'Butterfly', rule: 'favourite'),
+      FootbagIdea(entrySlug: 'osis', name: 'Osis', rule: 'favourite'),
+    ];
+  });
+
+  @override
+  Future<List<FootbagGoal>> save(List<String> slugs) async => [
+    for (final slug in slugs)
+      FootbagGoal(
+        entrySlug: slug,
+        name: [
+          ...?goals,
+          ...ideas.map(
+            (i) => FootbagGoal(entrySlug: i.entrySlug, name: i.name),
+          ),
+        ].firstWhere((g) => g.entrySlug == slug).name,
+      ),
+  ];
 }

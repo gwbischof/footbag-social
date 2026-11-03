@@ -6,6 +6,7 @@ import 'dart:async';
 
 import 'package:footbag_network/l10n/l10n.dart';
 import 'package:footbag_network/pages/dash/dash_view.dart';
+import 'package:footbag_network/pages/goals/goals_page.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
 import 'package:footbag_network/utils/localized_exception_extension.dart';
 import 'package:footbag_network/utils/near_me.dart';
@@ -54,6 +55,11 @@ class DashController extends State<Dash> with WidgetsBindingObserver {
   /// location on open -- only the "Show what's near me" tap does.
   LatLng? here;
   List<FootbagSession>? nearby;
+
+  /// What the player is working on in the session they are running, and
+  /// what to try next. Both quietly empty until they load.
+  List<FootbagGoal> runningGoals = const [];
+  List<FootbagIdea> tryNext = const [];
 
   /// Redrawn once a second while something is running, so the clock moves.
   /// Cancelled the moment nothing is: a timer that outlives its reason is a
@@ -158,6 +164,7 @@ class DashController extends State<Dash> with WidgetsBindingObserver {
         sessions = loaded;
         error = null;
       });
+      unawaited(_loadPlans());
     } catch (e) {
       if (!mounted) return;
       setState(() => error = e);
@@ -204,8 +211,78 @@ class DashController extends State<Dash> with WidgetsBindingObserver {
 
   /// Start a session. Deliberately takes no arguments — the doc's whole point
   /// is that this is one tap, not a form.
+  /// Start, then offer goals: after Start, never before it, so Start stays
+  /// one tap -- and the goal step says Skip until something is picked.
   Future<void> startAction() async {
-    await _run(() => Matrix.of(context).client.startSession());
+    FootbagSession? started;
+    final client = Matrix.of(context).client;
+    if (!await _run(() async => started = await client.startSession())) return;
+    if (!mounted || started == null) return;
+    await context.push('/rooms/dash/${started!.id}/goals');
+    if (mounted) await load();
+  }
+
+  /// Edit the running session's goals.
+  Future<void> editGoals(int id) async {
+    await context.push('/rooms/dash/$id/goals');
+    if (mounted) await load();
+  }
+
+  /// Act on a Try next idea: a goal while a session runs -- the doc's "the
+  /// thing you commit to" -- and a favourite otherwise.
+  Future<void> takeIdea(FootbagIdea idea) async {
+    final client = Matrix.of(context).client;
+    final messenger = ScaffoldMessenger.of(context);
+    final l10n = L10n.of(context);
+    final session = running;
+    if (session != null && runningGoals.length >= maxGoals) {
+      messenger.showSnackBar(SnackBar(content: Text(l10n.goalsFull)));
+      return;
+    }
+    try {
+      if (session != null) {
+        runningGoals = await client.setGoals(session.id, [
+          ...runningGoals.map((g) => g.entrySlug),
+          idea.entrySlug,
+        ]);
+      } else {
+        final favourites = await client.fetchFavourites();
+        await client.setFavourites([
+          ...favourites.map((f) => f.entrySlug),
+          idea.entrySlug,
+        ]);
+      }
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text(
+            session != null ? l10n.addedAsGoal : l10n.addedToFavourites,
+          ),
+        ),
+      );
+    } on FootbagApiException catch (e) {
+      messenger.showSnackBar(SnackBar(content: Text(e.detail)));
+    }
+    if (mounted) await _loadPlans();
+  }
+
+  Future<void> _loadPlans() async {
+    final client = Matrix.of(context).client;
+    final session = running;
+    try {
+      final results = await Future.wait([
+        client.fetchTryNext(),
+        if (session != null) client.fetchGoals(session.id),
+      ]);
+      if (!mounted) return;
+      setState(() {
+        tryNext = results[0] as List<FootbagIdea>;
+        runningGoals = session == null
+            ? const []
+            : results[1] as List<FootbagGoal>;
+      });
+    } catch (e) {
+      Logs().w('Loading goals and Try next failed', e);
+    }
   }
 
   Future<void> checkInAction(int id) async {

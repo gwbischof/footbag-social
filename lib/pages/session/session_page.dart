@@ -40,6 +40,9 @@ class SessionPage extends StatefulWidget {
 class SessionPageState extends State<SessionPage> {
   FootbagSession? session;
   Object? error;
+
+  /// Your goals here, for the host and anyone going. Private to you.
+  List<FootbagGoal> goals = const [];
   bool busy = false;
 
   /// Redraws the clock while the session runs, and only then.
@@ -78,6 +81,10 @@ class SessionPageState extends State<SessionPage> {
     try {
       final s = await _client.fetchSession(widget.sessionId);
       if (mounted) _adopt(s);
+      if ((s.isHost || s.isGoing) && s.endedAt == null) {
+        final mine = await _client.fetchGoals(s.id);
+        if (mounted) setState(() => goals = mine);
+      }
     } catch (e, s) {
       Logs().w('Loading a session failed', e, s);
       if (mounted) setState(() => error = e);
@@ -124,6 +131,11 @@ class SessionPageState extends State<SessionPage> {
     // Stopping leads into reporting, as it does from Dash: it is the step
     // most likely to be skipped.
     await context.push<bool>('/rooms/dash/$id/report');
+    if (mounted) unawaited(load());
+  }
+
+  Future<void> editGoals() async {
+    await context.push('/rooms/dash/${widget.sessionId}/goals');
     if (mounted) unawaited(load());
   }
 
@@ -241,6 +253,8 @@ class SessionPageState extends State<SessionPage> {
                           padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
                           child: Text(s.note, style: Nyfa.bodyText),
                         ),
+                      if ((s.isHost || s.isGoing) && s.endedAt == null)
+                        _Goals(state: this),
                       _People(state: this),
                     ],
                   ),
@@ -776,6 +790,50 @@ class _Where extends StatelessWidget {
                   onPressed: () => state.openInMaps(place),
                 ),
             ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// Your goals for this session: one line, tap to change.
+class _Goals extends StatelessWidget {
+  final SessionPageState state;
+
+  const _Goals({required this.state});
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = L10n.of(context);
+    final goals = state.goals;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        NyfaForm.section(l10n.yourGoals),
+        InkWell(
+          key: const Key('SessionGoals'),
+          onTap: state.editGoals,
+          child: Container(
+            constraints: const BoxConstraints(minHeight: 48),
+            padding: const EdgeInsets.fromLTRB(20, 4, 12, 4),
+            child: Row(
+              children: [
+                const Icon(Icons.flag_outlined, size: 18, color: Nyfa.green),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    goals.isEmpty
+                        ? l10n.setGoals
+                        : goals.map((g) => g.name).join(', '),
+                    style: Nyfa.bodyText.copyWith(
+                      color: goals.isEmpty ? Nyfa.green : Nyfa.paper,
+                    ),
+                  ),
+                ),
+                const Icon(Icons.chevron_right_rounded, color: Nyfa.muted),
+              ],
+            ),
           ),
         ),
       ],

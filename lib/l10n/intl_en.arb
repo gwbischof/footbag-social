@@ -4910,5 +4910,152 @@
         "type": "String",
         "description": "Button: send a suggestion to the moderators.",
         "placeholders": {}
+    },
+    "goals": "Goals",
+    "@goals": {
+        "type": "String",
+        "description": "Heading: what a player means to work on in a session.",
+        "placeholders": {}
+    },
+    "yourGoals": "Your goals",
+    "@yourGoals": {
+        "type": "String",
+        "description": "Heading over the goals chosen for this session.",
+        "placeholders": {}
+    },
+    "goalsExplain": "Pick a few things to work on. You'll grade them when you stop. Three is plenty.",
+    "@goalsExplain": {
+        "type": "String",
+        "description": "Explains the goal step, shown after Start.",
+        "placeholders": {}
+    },
+    "noGoalsYet": "Nothing picked yet. Tap something below, or skip: goals are optional.",
+    "@noGoalsYet": {
+        "type": "String",
+        "description": "Empty goal list.",
+        "placeholders": {}
+    },
+    "goalsFull": "That's five. Grade these first.",
+    "@goalsFull": {
+        "type": "String",
+        "description": "Shown when the goal list is full.",
+        "placeholders": {}
+    },
+    "fromLastTime": "From last time",
+    "@fromLastTime": {
+        "type": "String",
+        "description": "Goal picker section: missed goals and last session's tricks.",
+        "placeholders": {}
+    },
+    "tryNext": "Try next",
+    "@tryNext": {
+        "type": "String",
+        "description": "Suggestions built from the player's own reports.",
+        "placeholders": {}
+    },
+    "searchAllTricks": "Search all tricks",
+    "@searchAllTricks": {
+        "type": "String",
+        "description": "Opens the full trick list.",
+        "placeholders": {}
+    },
+    "done": "Done",
+    "@done": {
+        "type": "String",
+        "description": "Closes a screen whose changes are already saved.",
+        "placeholders": {}
+    },
+    "setGoals": "Set goals",
+    "@setGoals": {
+        "type": "String",
+        "description": "Action: choose goals for a session.",
+        "placeholders": {}
+    },
+    "workingOn": "Working on",
+    "@workingOn": {
+        "type": "String",
+        "description": "Label before the goals of the running session.",
+        "placeholders": {}
+    },
+    "addAsGoal": "Add goal",
+    "@addAsGoal": {
+        "type": "String",
+        "description": "Add a suggestion to the running session's goals.",
+        "placeholders": {}
+    },
+    "addToFavourites": "Favourite",
+    "@addToFavourites": {
+        "type": "String",
+        "description": "Add a suggestion to favourites.",
+        "placeholders": {}
+    },
+    "addedAsGoal": "Added to this session's goals",
+    "@addedAsGoal": {
+        "type": "String",
+        "description": "After adding a goal from Try next.",
+        "placeholders": {}
+    },
+    "addedToFavourites": "Added to favourites",
+    "@addedToFavourites": {
+        "type": "String",
+        "description": "After adding a favourite from Try next.",
+        "placeholders": {}
+    },
+    "goalsReportHint": "Leave one ungraded and it counts as not today. That's worth knowing too.",
+    "@goalsReportHint": {
+        "type": "String",
+        "description": "Under the goals in a report: an unticked goal is a real answer.",
+        "placeholders": {}
+    },
+    "ideaNextStep": "One step up from {name}, which you hit",
+    "@ideaNextStep": {
+        "type": "String",
+        "description": "Reason for a suggestion built on a trick the player hit.",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "ideaStringReady": "You've hit every trick in it, just not together",
+    "@ideaStringReady": {
+        "type": "String",
+        "description": "Reason: a string whose parts the player has all hit.",
+        "placeholders": {}
+    },
+    "ideaStringAgain": "You hit it once. Again?",
+    "@ideaStringAgain": {
+        "type": "String",
+        "description": "Reason: a string hit once and not since.",
+        "placeholders": {}
+    },
+    "ideaEaseOff": "The base of {name}, which hasn't come in {count} sessions",
+    "@ideaEaseOff": {
+        "type": "String",
+        "description": "Reason: the player keeps missing a harder trick, so its easier base is offered.",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            },
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "ideaUnmet": "{count, plural, =1{Your goal last time} other{Your goal the last {count} sessions}}",
+    "@ideaUnmet": {
+        "type": "String",
+        "description": "Reason: a goal not hit in the last session(s).",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "ideaLastSession": "You worked on it last time",
+    "@ideaLastSession": {
+        "type": "String",
+        "description": "Reason: in the player's last report but not yet consistent.",
+        "placeholders": {}
     }
 }
