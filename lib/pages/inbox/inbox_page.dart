@@ -11,6 +11,7 @@ import 'package:footbag_network/pages/feed/widgets/feed_states.dart';
 import 'package:footbag_network/pages/feed/widgets/post_card.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
 import 'package:footbag_network/widgets/matrix.dart';
+import 'package:footbag_network/widgets/skeleton.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:matrix/matrix.dart';
@@ -100,15 +101,7 @@ class InboxPageState extends State<InboxPage> {
                 if (list == null && error != null)
                   FeedProblem(error: error!, onRetry: load)
                 else if (list == null)
-                  const Padding(
-                    padding: EdgeInsets.all(40),
-                    child: Center(
-                      child: CircularProgressIndicator(
-                        color: Nyfa.green,
-                        strokeWidth: 2,
-                      ),
-                    ),
-                  )
+                  const RowsSkeleton(avatar: true)
                 else if (list.isEmpty && chats == 0)
                   FeedEmpty(title: l10n.inboxEmpty)
                 else

@@ -7,6 +7,7 @@ import 'package:footbag_network/l10n/l10n.dart';
 import 'package:footbag_network/pages/favourites/favourites.dart';
 import 'package:footbag_network/utils/localized_exception_extension.dart';
 import 'package:footbag_network/widgets/layouts/max_width_body.dart';
+import 'package:footbag_network/widgets/skeleton.dart';
 import 'package:material_ui/material_ui.dart';
 
 class FavouritesView extends StatelessWidget {
@@ -78,9 +79,7 @@ class FavouritesView extends StatelessWidget {
       );
     }
     if (controller.favourites == null) {
-      return const Center(
-        child: CircularProgressIndicator(color: Nyfa.green, strokeWidth: 2),
-      );
+      return const SingleChildScrollView(child: RowsSkeleton());
     }
 
     if (controller.working.isEmpty) {

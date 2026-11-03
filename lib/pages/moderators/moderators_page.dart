@@ -10,6 +10,7 @@ import 'package:footbag_network/pages/feed/widgets/feed_states.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
 import 'package:footbag_network/widgets/matrix.dart';
 import 'package:footbag_network/widgets/people.dart';
+import 'package:footbag_network/widgets/skeleton.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:matrix/matrix.dart';
 
@@ -115,15 +116,7 @@ class ModeratorsPageState extends State<ModeratorsPage> {
                 if (list == null && error != null)
                   FeedProblem(error: error!, onRetry: load)
                 else if (list == null)
-                  const Padding(
-                    padding: EdgeInsets.all(32),
-                    child: Center(
-                      child: CircularProgressIndicator(
-                        color: Nyfa.green,
-                        strokeWidth: 2,
-                      ),
-                    ),
-                  )
+                  const RowsSkeleton(rows: 3, avatar: true)
                 else
                   for (final m in list)
                     PersonRow(

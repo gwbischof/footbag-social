@@ -8,6 +8,7 @@ import 'package:footbag_network/pages/trick_picker/trick_picker.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
 import 'package:footbag_network/utils/localized_exception_extension.dart';
 import 'package:footbag_network/widgets/layouts/max_width_body.dart';
+import 'package:footbag_network/widgets/skeleton.dart';
 import 'package:material_ui/material_ui.dart';
 
 class TrickPickerView extends StatelessWidget {
@@ -72,10 +73,7 @@ class TrickPickerView extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
           child: Align(
             alignment: Alignment.centerLeft,
-            child: Text(
-              l10n.searchTricksHelp,
-              style: Nyfa.meta,
-            ),
+            child: Text(l10n.searchTricksHelp, style: Nyfa.meta),
           ),
         ),
         Expanded(child: _list(context, l10n)),
@@ -114,9 +112,7 @@ class TrickPickerView extends StatelessWidget {
       );
     }
     if (controller.entries == null) {
-      return const Center(
-        child: CircularProgressIndicator(color: Nyfa.green, strokeWidth: 2),
-      );
+      return const SingleChildScrollView(child: RowsSkeleton());
     }
     if (controller.entries!.isEmpty) {
       return ListView(

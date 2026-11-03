@@ -8,6 +8,7 @@ import 'package:footbag_network/pages/rankings/rankings.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
 import 'package:footbag_network/utils/localized_exception_extension.dart';
 import 'package:footbag_network/widgets/layouts/max_width_body.dart';
+import 'package:footbag_network/widgets/skeleton.dart';
 import 'package:material_ui/material_ui.dart';
 
 class RankingsView extends StatelessWidget {
@@ -66,9 +67,7 @@ class RankingsView extends StatelessWidget {
       );
     }
     if (controller.rows == null) {
-      return const Center(
-        child: CircularProgressIndicator(color: Nyfa.green, strokeWidth: 2),
-      );
+      return const SingleChildScrollView(child: RowsSkeleton(avatar: true));
     }
 
     return ListView(
@@ -330,10 +329,7 @@ class _Heatmap extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.fromLTRB(20, 0, 20, 12),
-          child: Text(
-            l10n.yourPracticeBody,
-            style: Nyfa.meta,
-          ),
+          child: Text(l10n.yourPracticeBody, style: Nyfa.meta),
         ),
         if (days.isEmpty)
           Padding(

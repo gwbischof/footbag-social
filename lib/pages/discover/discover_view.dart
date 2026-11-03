@@ -11,6 +11,7 @@ import 'package:footbag_network/widgets/footbag_map.dart';
 import 'package:footbag_network/widgets/footbag_nav_bar.dart';
 import 'package:footbag_network/widgets/layouts/max_width_body.dart';
 import 'package:footbag_network/widgets/people.dart';
+import 'package:footbag_network/widgets/skeleton.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -150,7 +151,7 @@ class _SessionsTab extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = L10n.of(context);
     if (controller.error != null) return _problem(context, controller, l10n);
-    if (controller.sessions == null) return const _Spinner();
+    if (controller.sessions == null) return const _Loading();
 
     final rows = controller.sessions!;
     final near = controller.near;
@@ -273,7 +274,9 @@ class _PlayersTab extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = L10n.of(context);
     if (controller.error != null) return _problem(context, controller, l10n);
-    if (controller.players == null) return const _Spinner();
+    if (controller.players == null) {
+      return const _Loading(avatar: true);
+    }
 
     final rows = controller.players!;
     return RefreshIndicator(
@@ -334,9 +337,7 @@ class _PlayerRow extends StatelessWidget {
         else
           player.playStyles.map((s) => _styleLabel(l10n, s)).join(', '),
       ].join('  ·  '),
-      trailing: const [
-        Icon(Icons.chevron_right_rounded, color: Nyfa.faint),
-      ],
+      trailing: const [Icon(Icons.chevron_right_rounded, color: Nyfa.faint)],
     );
   }
 
@@ -349,13 +350,14 @@ class _PlayerRow extends StatelessWidget {
   };
 }
 
-class _Spinner extends StatelessWidget {
-  const _Spinner();
+class _Loading extends StatelessWidget {
+  final bool avatar;
+
+  const _Loading({this.avatar = false});
 
   @override
-  Widget build(BuildContext context) => const Center(
-    child: CircularProgressIndicator(color: Nyfa.green, strokeWidth: 2),
-  );
+  Widget build(BuildContext context) =>
+      SingleChildScrollView(child: RowsSkeleton(avatar: avatar));
 }
 
 class _Empty extends StatelessWidget {
@@ -444,15 +446,7 @@ class _ClubsTab extends StatelessWidget {
             ),
           ),
           if (list == null)
-            const Padding(
-              padding: EdgeInsets.all(32),
-              child: Center(
-                child: CircularProgressIndicator(
-                  color: Nyfa.green,
-                  strokeWidth: 2,
-                ),
-              ),
-            )
+            const RowsSkeleton(rows: 4)
           else if (list.isEmpty)
             _Empty(
               icon: Icons.groups_outlined,

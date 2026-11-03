@@ -38,6 +38,7 @@ import 'package:footbag_network/pages/welcome/welcome_page.dart';
 import 'package:footbag_network/preview/screens_preview.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
 import 'package:footbag_network/widgets/footbag_map.dart';
+import 'package:footbag_network/widgets/skeleton.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:material_ui/material_ui.dart';
@@ -133,6 +134,13 @@ Widget previewBody(BuildContext context) =>
       'dash' => const PreviewDash(),
       'dash-running' => const PreviewDash(mode: 'running'),
       'mod' => const _PreviewModQueue(),
+      'rows-loading' => Scaffold(
+        backgroundColor: Nyfa.ground,
+        appBar: Nyfa.appBar(title: 'Players'),
+        body: const SingleChildScrollView(
+          child: RowsSkeleton(header: true, avatar: true),
+        ),
+      ),
       'post' => const _PreviewPost(),
       'post-loading' => const _PreviewPost(loading: true),
       'discover' => const PreviewDiscover(),

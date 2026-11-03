@@ -15,6 +15,7 @@ import 'package:footbag_network/widgets/footbag_map.dart';
 import 'package:footbag_network/widgets/future_loading_dialog.dart';
 import 'package:footbag_network/widgets/matrix.dart';
 import 'package:footbag_network/widgets/people.dart';
+import 'package:footbag_network/widgets/skeleton.dart';
 import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:material_ui/material_ui.dart';
@@ -200,11 +201,8 @@ class SessionPageState extends State<SessionPage> {
           child: s == null
               ? (error != null
                     ? FeedProblem(error: error!, onRetry: load)
-                    : const Center(
-                        child: CircularProgressIndicator(
-                          color: Nyfa.green,
-                          strokeWidth: 2,
-                        ),
+                    : const SingleChildScrollView(
+                        child: RowsSkeleton(header: true),
                       ))
               : RefreshIndicator(
                   onRefresh: load,
@@ -776,10 +774,7 @@ class _Where extends StatelessWidget {
                       ),
                     ),
                     if (area != null)
-                      Text(
-                        l10n.areaMiles(_milesOf(area)),
-                        style: Nyfa.meta,
-                      ),
+                      Text(l10n.areaMiles(_milesOf(area)), style: Nyfa.meta),
                   ],
                 ),
               ),

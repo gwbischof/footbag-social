@@ -10,6 +10,7 @@ import 'package:footbag_network/l10n/l10n.dart';
 import 'package:footbag_network/pages/feed/widgets/feed_states.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
 import 'package:footbag_network/widgets/matrix.dart';
+import 'package:footbag_network/widgets/skeleton.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:matrix/matrix.dart';
@@ -181,11 +182,8 @@ class GoalsPageState extends State<GoalsPage> {
           child: list == null
               ? (error != null
                     ? FeedProblem(error: error!, onRetry: load)
-                    : const Center(
-                        child: CircularProgressIndicator(
-                          color: Nyfa.green,
-                          strokeWidth: 2,
-                        ),
+                    : const SingleChildScrollView(
+                        child: RowsSkeleton(header: true),
                       ))
               : ListView(
                   key: const Key('GoalsList'),

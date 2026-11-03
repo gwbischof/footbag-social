@@ -13,6 +13,7 @@ import 'package:footbag_network/widgets/footbag_map.dart';
 import 'package:footbag_network/widgets/footbag_nav_bar.dart';
 import 'package:footbag_network/widgets/layouts/max_width_body.dart';
 import 'package:footbag_network/widgets/people.dart';
+import 'package:footbag_network/widgets/skeleton.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -71,9 +72,7 @@ class DashView extends StatelessWidget {
       );
     }
     if (controller.sessions == null) {
-      return const Center(
-        child: CircularProgressIndicator(color: Nyfa.green, strokeWidth: 2),
-      );
+      return const SingleChildScrollView(child: RowsSkeleton(header: true));
     }
 
     final running = controller.running;

@@ -13,6 +13,7 @@ import 'package:footbag_network/utils/date_time_extension.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
 import 'package:footbag_network/widgets/matrix.dart';
 import 'package:footbag_network/widgets/people.dart';
+import 'package:footbag_network/widgets/skeleton.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:matrix/matrix.dart';
@@ -209,11 +210,8 @@ class ClubPageState extends State<ClubPage> {
           child: c == null
               ? (error != null
                     ? FeedProblem(error: error!, onRetry: load)
-                    : const Center(
-                        child: CircularProgressIndicator(
-                          color: Nyfa.green,
-                          strokeWidth: 2,
-                        ),
+                    : const SingleChildScrollView(
+                        child: RowsSkeleton(header: true),
                       ))
               : RefreshIndicator(
                   onRefresh: load,

@@ -8,6 +8,7 @@ import 'package:footbag_network/pages/profile/profile.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
 import 'package:footbag_network/utils/localized_exception_extension.dart';
 import 'package:footbag_network/widgets/layouts/max_width_body.dart';
+import 'package:footbag_network/widgets/skeleton.dart';
 import 'package:material_ui/material_ui.dart';
 
 class ProfileView extends StatelessWidget {
@@ -37,9 +38,7 @@ class ProfileView extends StatelessWidget {
       );
     }
     if (controller.player == null) {
-      return const Center(
-        child: CircularProgressIndicator(color: Nyfa.green, strokeWidth: 2),
-      );
+      return const SingleChildScrollView(child: RowsSkeleton(header: true));
     }
 
     return ListView(

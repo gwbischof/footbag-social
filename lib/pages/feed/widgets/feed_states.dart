@@ -6,6 +6,7 @@ import 'package:footbag_network/config/nyfa_theme.dart';
 import 'package:footbag_network/l10n/l10n.dart';
 import 'package:footbag_network/pages/feed/widgets/post_card.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
+import 'package:footbag_network/widgets/skeleton.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// A post's shape, before the post arrives.
@@ -13,90 +14,61 @@ import 'package:material_ui/material_ui.dart';
 /// The same proportions as a real card -- header, square, two lines -- so
 /// the first page lands without anything moving. A spinner in the middle of
 /// an empty screen says "wait"; this says what is coming.
-class PostSkeleton extends StatefulWidget {
+class PostSkeleton extends StatelessWidget {
   const PostSkeleton({super.key});
 
   @override
-  State<PostSkeleton> createState() => _PostSkeletonState();
-}
-
-class _PostSkeletonState extends State<PostSkeleton>
-    with SingleTickerProviderStateMixin {
-  late final _pulse = AnimationController(
-    vsync: this,
-    duration: const Duration(milliseconds: 1100),
-  )..repeat(reverse: true);
-
-  @override
-  void dispose() {
-    _pulse.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final reduced = MediaQuery.of(context).disableAnimations;
-    return AnimatedBuilder(
-      animation: _pulse,
-      builder: (context, _) {
-        // Between raised and rule: both solid tokens, so nothing here is
-        // dimmed with alpha.
-        final c = reduced
-            ? Nyfa.raised
-            : Color.lerp(Nyfa.raised, Nyfa.rule, _pulse.value)!;
-        Widget bar(double w, double h) =>
-            Container(width: w, height: h, color: c);
-        return DecoratedBox(
-          decoration: const BoxDecoration(
-            border: Border(top: BorderSide(color: Nyfa.rule)),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 36,
-                      height: 36,
-                      decoration: BoxDecoration(
-                        color: c,
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        bar(110, 12),
-                        const SizedBox(height: 6),
-                        bar(70, 10),
-                      ],
-                    ),
-                  ],
-                ),
+  Widget build(BuildContext context) => SkeletonPulse(
+    builder: (context, c) {
+      Widget bar(double w, double h) =>
+          Container(width: w, height: h, color: c);
+      return DecoratedBox(
+        decoration: const BoxDecoration(
+          border: Border(top: BorderSide(color: Nyfa.rule)),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
+              child: Row(
+                children: [
+                  Container(
+                    width: 36,
+                    height: 36,
+                    decoration: BoxDecoration(color: c, shape: BoxShape.circle),
+                  ),
+                  const SizedBox(width: 12),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      bar(110, 12),
+                      const SizedBox(height: 6),
+                      bar(70, 10),
+                    ],
+                  ),
+                ],
               ),
-              AspectRatio(aspectRatio: 1, child: ColoredBox(color: c)),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    bar(90, 14),
-                    const SizedBox(height: 10),
-                    bar(260, 12),
-                    const SizedBox(height: 6),
-                    bar(180, 12),
-                  ],
-                ),
+            ),
+            AspectRatio(aspectRatio: 1, child: ColoredBox(color: c)),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  bar(90, 14),
+                  const SizedBox(height: 10),
+                  bar(260, 12),
+                  const SizedBox(height: 6),
+                  bar(180, 12),
+                ],
               ),
-            ],
-          ),
-        );
-      },
-    );
-  }
+            ),
+          ],
+        ),
+      );
+    },
+  );
 }
 
 class FeedEmpty extends StatelessWidget {
