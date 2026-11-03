@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+import 'package:flutter/services.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// The club's look, as newyorkfootbag.com sets it.
@@ -398,7 +399,12 @@ class NyfaChip extends StatelessWidget {
       button: true,
       selected: selected,
       child: InkWell(
-        onTap: onTap,
+        onTap: onTap == null
+            ? null
+            : () {
+                HapticFeedback.selectionClick();
+                onTap!();
+              },
         // No `alignment` here, deliberately. A Container with alignment set
         // and no explicit width expands to fill its constraints -- inside a
         // Wrap that made every chip full width. Centring comes from padding.

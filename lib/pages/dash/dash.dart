@@ -4,6 +4,7 @@
 
 import 'dart:async';
 
+import 'package:flutter/services.dart';
 import 'package:footbag_network/l10n/l10n.dart';
 import 'package:footbag_network/pages/dash/dash_view.dart';
 import 'package:footbag_network/pages/goals/goals_page.dart';
@@ -217,6 +218,7 @@ class DashController extends State<Dash> with WidgetsBindingObserver {
     FootbagSession? started;
     final client = Matrix.of(context).client;
     if (!await _run(() async => started = await client.startSession())) return;
+    unawaited(HapticFeedback.mediumImpact());
     if (!mounted || started == null) return;
     await context.push('/rooms/dash/${started!.id}/goals');
     if (mounted) await load();
@@ -286,13 +288,16 @@ class DashController extends State<Dash> with WidgetsBindingObserver {
   }
 
   Future<void> checkInAction(int id) async {
-    await _run(() => Matrix.of(context).client.checkInToSession(id));
+    if (await _run(() => Matrix.of(context).client.checkInToSession(id))) {
+      unawaited(HapticFeedback.lightImpact());
+    }
   }
 
   /// Stop, then go straight to reporting — the doc says stopping "leads into
   /// reporting", and reporting is the step most likely to be skipped.
   Future<void> stopAction(int id) async {
     if (!await _run(() => Matrix.of(context).client.stopSession(id))) return;
+    unawaited(HapticFeedback.mediumImpact());
     if (!mounted) return;
     await context.push<bool>('/rooms/dash/$id/report');
     if (mounted) await load();

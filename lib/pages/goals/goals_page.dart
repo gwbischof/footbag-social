@@ -4,6 +4,7 @@
 
 import 'dart:async';
 
+import 'package:flutter/services.dart';
 import 'package:footbag_network/config/nyfa_theme.dart';
 import 'package:footbag_network/l10n/l10n.dart';
 import 'package:footbag_network/pages/feed/widgets/feed_states.dart';
@@ -99,6 +100,7 @@ class GoalsPageState extends State<GoalsPage> {
 
   void add(FootbagIdea idea) {
     if (full) return;
+    HapticFeedback.selectionClick();
     unawaited(
       _change([
         ...?goals,

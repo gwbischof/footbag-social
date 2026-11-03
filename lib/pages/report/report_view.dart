@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-import 'package:flutter/services.dart' show FilteringTextInputFormatter;
+import 'package:flutter/services.dart';
 import 'package:footbag_network/config/nyfa_theme.dart';
 import 'package:footbag_network/l10n/l10n.dart';
 import 'package:footbag_network/pages/report/report.dart';
@@ -407,8 +407,15 @@ class _Rung extends StatelessWidget {
       button: true,
       selected: current,
       child: InkWell(
-        onTap: onTap,
-        child: Container(
+        onTap: () {
+          HapticFeedback.selectionClick();
+          onTap();
+        },
+        // Animated, so moving up a rung reads as moving rather than as the
+        // strip being redrawn. Short: it answers a tap.
+        child: AnimatedContainer(
+          duration: Durations.short3,
+          curve: Easing.standard,
           height: 48, // A real tap target, and the strip's rhythm.
           alignment: Alignment.center,
           decoration: BoxDecoration(

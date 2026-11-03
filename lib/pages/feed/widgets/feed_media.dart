@@ -67,7 +67,12 @@ class _MediaCarouselState extends State<MediaCarousel>
   @override
   void didUpdateWidget(MediaCarousel old) {
     super.didUpdateWidget(old);
-    if (widget.burst != old.burst) unawaited(_burst.forward(from: 0));
+    // The diamond burst is decoration, so Reduce Motion skips it; the
+    // reaction itself still lands, and the haptic still says so.
+    if (widget.burst != old.burst &&
+        !MediaQuery.of(context).disableAnimations) {
+      unawaited(_burst.forward(from: 0));
+    }
   }
 
   @override
