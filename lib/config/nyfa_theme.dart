@@ -180,7 +180,14 @@ class Nyfa {
   static InputDecoration input(String label) => InputDecoration(
     labelText: label,
     labelStyle: const TextStyle(fontFamily: body, color: muted, fontSize: 14),
-    floatingLabelStyle: const TextStyle(fontFamily: body, color: green),
+    // Green only while typing, with the underline -- a filled field at
+    // rest keeps its label muted, or every answered field looks focused.
+    floatingLabelStyle: WidgetStateTextStyle.resolveWith(
+      (states) => TextStyle(
+        fontFamily: body,
+        color: states.contains(WidgetState.focused) ? green : muted,
+      ),
+    ),
     hintStyle: const TextStyle(fontFamily: body, color: faint),
     isDense: true,
     filled: true,
