@@ -110,6 +110,8 @@ class FeedController extends State<Feed> {
       final i = posts?.indexWhere((p) => p.id == updated.id) ?? -1;
       if (i >= 0) posts![i] = updated;
     }),
+    onBlocked: (userId) =>
+        setState(() => posts?.removeWhere((p) => p.authorId == userId)),
   );
 
   /// Asked once per app run, not on every visit to the feed.

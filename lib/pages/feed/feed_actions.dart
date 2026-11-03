@@ -27,10 +27,15 @@ class AppPostActions implements PostActions {
   final void Function(FootbagPost post) onRemoved;
   final void Function(FootbagPost updated) onReplaced;
 
+  /// Someone was blocked from this post's menu. A list drops all of their
+  /// posts at once; without this, only the one post goes.
+  final void Function(String userId)? onBlocked;
+
   AppPostActions(
     this.context, {
     required this.onRemoved,
     required this.onReplaced,
+    this.onBlocked,
   });
 
   Client get _client => Matrix.of(context).client;
@@ -100,7 +105,7 @@ class AppPostActions implements PostActions {
                 onTap: () => Navigator.of(context).pop('delete'),
               ),
             ],
-            if (!post.isMine)
+            if (!post.isMine) ...[
               _SheetRow(
                 key: const Key('MenuReport'),
                 icon: Icons.flag_outlined,
@@ -108,6 +113,14 @@ class AppPostActions implements PostActions {
                 danger: true,
                 onTap: () => Navigator.of(context).pop('report'),
               ),
+              _SheetRow(
+                key: const Key('MenuBlock'),
+                icon: Icons.block,
+                label: l10n.blockPlayer(post.authorName),
+                danger: true,
+                onTap: () => Navigator.of(context).pop('block'),
+              ),
+            ],
           ],
         ),
       ),
@@ -120,6 +133,11 @@ class AppPostActions implements PostActions {
         await _delete(post);
       case 'report':
         await showReportSheet(context, postId: post.id);
+      case 'block':
+        if (await confirmBlock(context, post.authorId, post.authorName)) {
+          final blocked = onBlocked;
+          blocked == null ? onRemoved(post) : blocked(post.authorId);
+        }
     }
   }
 
@@ -396,5 +414,41 @@ class PlayerAvatar extends StatelessWidget {
         fontFamily: Nyfa.body,
       ),
     );
+  }
+}
+
+
+/// Ask, then block. True once they are blocked.
+///
+/// The dialog says what a block does before it happens -- both ways, chat
+/// included, and silent -- because "block" means different things in
+/// different apps.
+Future<bool> confirmBlock(
+  BuildContext context,
+  String userId,
+  String name,
+) async {
+  final l10n = L10n.of(context);
+  final messenger = ScaffoldMessenger.of(context);
+  final client = Matrix.of(context).client;
+  final ok = await showOkCancelAlertDialog(
+    context: context,
+    title: l10n.blockPlayer(name),
+    message: l10n.blockPlayerBody,
+    okLabel: l10n.block,
+    cancelLabel: l10n.cancel,
+    isDestructive: true,
+  );
+  if (ok != OkCancelResult.ok) return false;
+  try {
+    await client.blockPlayer(userId);
+    messenger.showSnackBar(SnackBar(content: Text(l10n.playerBlocked(name))));
+    return true;
+  } catch (e) {
+    Logs().w('Blocking failed', e);
+    messenger.showSnackBar(
+      SnackBar(content: Text(l10n.oopsSomethingWentWrong)),
+    );
+    return false;
   }
 }

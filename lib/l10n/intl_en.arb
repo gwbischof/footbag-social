@@ -5346,5 +5346,69 @@
         "type": "String",
         "description": "Decline an offer for now.",
         "placeholders": {}
+    },
+    "blockPlayer": "Block {name}",
+    "@blockPlayer": {
+        "type": "String",
+        "description": "Menu row and dialog title for blocking someone in the feed or on their profile.",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "blockPlayerBody": "You won't see each other's posts, comments or sessions, and they won't be able to message you. They aren't told.",
+    "@blockPlayerBody": {
+        "type": "String",
+        "description": "Explains a block before it happens, in the confirm dialog.",
+        "placeholders": {}
+    },
+    "unblockPlayer": "Unblock {name}",
+    "@unblockPlayer": {
+        "type": "String",
+        "description": "Menu row on the profile of someone you blocked.",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "playerBlocked": "Blocked {name}",
+    "@playerBlocked": {
+        "type": "String",
+        "description": "Snackbar after blocking someone.",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "playerUnblocked": "Unblocked {name}",
+    "@playerUnblocked": {
+        "type": "String",
+        "description": "Snackbar after unblocking someone.",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "unblock": "Unblock",
+    "@unblock": {
+        "type": "String",
+        "description": "Button that removes a block.",
+        "placeholders": {}
+    },
+    "youBlockedThem": "You blocked this player.",
+    "@youBlockedThem": {
+        "type": "String",
+        "description": "Shown on the profile of someone you blocked, in place of their posts.",
+        "placeholders": {}
+    },
+    "noBlockedPlayers": "You haven't blocked anyone.",
+    "@noBlockedPlayers": {
+        "type": "String",
+        "description": "Empty state of the blocked players list.",
+        "placeholders": {}
     }
 }

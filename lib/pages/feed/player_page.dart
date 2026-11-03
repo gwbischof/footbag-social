@@ -97,6 +97,24 @@ class PlayerPageState extends State<PlayerPage> {
     }
   }
 
+  Future<void> block(String name) async {
+    if (await confirmBlock(context, widget.userId, name)) await load();
+  }
+
+  Future<void> unblock(String name) async {
+    final messenger = ScaffoldMessenger.of(context);
+    final l10n = L10n.of(context);
+    try {
+      await _client.unblockPlayer(widget.userId);
+      messenger.showSnackBar(
+        SnackBar(content: Text(l10n.playerUnblocked(name))),
+      );
+      await load();
+    } catch (e) {
+      Logs().w('Unblocking failed', e);
+    }
+  }
+
   Future<void> message() async {
     final router = GoRouter.of(context);
     final result = await showFutureLoadingDialog(
@@ -124,7 +142,30 @@ class PlayerPageState extends State<PlayerPage> {
     return Scaffold(
       key: const Key('PlayerScaffold'),
       backgroundColor: Nyfa.ground,
-      appBar: Nyfa.appBar(title: name),
+      appBar: Nyfa.appBar(
+        title: name,
+        actions: [
+          if (!isMe && profile != null)
+            PopupMenuButton<String>(
+              key: const Key('PlayerMenu'),
+              icon: const Icon(Icons.more_horiz, color: Nyfa.paper),
+              color: Nyfa.raised,
+              shape: Nyfa.dialogShape,
+              onSelected: (v) => v == 'block' ? block(name) : unblock(name),
+              itemBuilder: (_) => [
+                profile!.blocked
+                    ? PopupMenuItem(
+                        value: 'unblock',
+                        child: Text(l10n.unblockPlayer(name)),
+                      )
+                    : PopupMenuItem(
+                        value: 'block',
+                        child: Text(l10n.blockPlayer(name)),
+                      ),
+              ],
+            ),
+        ],
+      ),
       body: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: feedMaxWidth),
@@ -247,7 +288,15 @@ class PlayerPageState extends State<PlayerPage> {
                         const SliverToBoxAdapter(
                           child: Divider(height: 1, color: Nyfa.rule),
                         ),
-                        if (list == null)
+                        if (profile?.blocked ?? false)
+                          SliverToBoxAdapter(
+                            child: FeedEmpty(
+                              title: l10n.youBlockedThem,
+                              actionLabel: l10n.unblock,
+                              onAction: () => unblock(name),
+                            ),
+                          )
+                        else if (list == null)
                           const SliverToBoxAdapter(child: PostSkeleton())
                         else if (list.isEmpty)
                           SliverToBoxAdapter(

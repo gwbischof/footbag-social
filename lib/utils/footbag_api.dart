@@ -796,6 +796,24 @@ extension FootbagApi on Client {
         await _apiGetObject('players/${Uri.encodeComponent(userId)}'),
       );
 
+  /// Block someone: each of you disappears for the other, in the feed,
+  /// sessions, Discover and the inbox. Chat is muted too, through Matrix's
+  /// own ignore list, so one action covers the whole app.
+  Future<void> blockPlayer(String userId) async {
+    await _apiSend('PUT', 'players/${Uri.encodeComponent(userId)}/block');
+    if (!ignoredUsers.contains(userId)) await ignoreUser(userId);
+  }
+
+  Future<void> unblockPlayer(String userId) async {
+    await _apiSend('DELETE', 'players/${Uri.encodeComponent(userId)}/block');
+    if (ignoredUsers.contains(userId)) await unignoreUser(userId);
+  }
+
+  /// Everyone you have blocked, most recent first.
+  Future<List<FootbagPlayer>> fetchBlocks() async => (await _apiGetList(
+    'me/blocks',
+  )).map((e) => FootbagPlayer.fromJson(e as Map<String, dynamic>)).toList();
+
   // -- Moderation --------------------------------------------------------------
 
   Future<List<FootbagQueueItem>> fetchModQueue({String state = 'open'}) async {
@@ -1441,12 +1459,20 @@ class FootbagPlayerProfile {
   final FootbagPlayer player;
   final int postCount;
 
-  const FootbagPlayerProfile({required this.player, required this.postCount});
+  /// You blocked them.
+  final bool blocked;
+
+  const FootbagPlayerProfile({
+    required this.player,
+    required this.postCount,
+    this.blocked = false,
+  });
 
   factory FootbagPlayerProfile.fromJson(Map<String, dynamic> json) =>
       FootbagPlayerProfile(
         player: FootbagPlayer.fromJson(json),
         postCount: json['post_count'] as int? ?? 0,
+        blocked: json['blocked'] as bool? ?? false,
       );
 }
 
