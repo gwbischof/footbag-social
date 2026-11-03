@@ -7,6 +7,7 @@ import 'dart:async';
 import 'package:footbag_network/pages/trick_picker/trick_picker_view.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
 import 'package:footbag_network/widgets/matrix.dart';
+import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// Browse the dictionary and pick tricks to work on.
@@ -77,6 +78,19 @@ class TrickPickerController extends State<TrickPicker> {
   });
 
   void confirm() => Navigator.of(context).pop(chosen.toList());
+
+  /// Nothing fits: suggest it, carrying over what was typed, and come back
+  /// with it chosen -- it is usable at once, approved or not.
+  Future<void> suggest() async {
+    final entry = await context.push<FootbagEntry>(
+      '/rooms/dash/suggest-trick',
+      extra: searchController.text.trim(),
+    );
+    if (entry == null || !mounted) return;
+    searchController.text = entry.name;
+    setState(() => chosen.add(entry.slug));
+    await load();
+  }
 
   @override
   Widget build(BuildContext context) => TrickPickerView(this);

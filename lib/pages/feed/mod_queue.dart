@@ -131,6 +131,12 @@ class _ModQueueState extends State<ModQueue> {
           // Any moderator: places are part of keeping the app safe, the
           // same job as this queue.
           IconButton(
+            key: const Key('PendingTricks'),
+            tooltip: l10n.tricksQueue,
+            onPressed: () => context.push('/rooms/dash/mod/tricks'),
+            icon: const Icon(Icons.menu_book_outlined, color: Nyfa.paper),
+          ),
+          IconButton(
             key: const Key('PendingPlaces'),
             tooltip: l10n.places,
             onPressed: () => context.push('/rooms/dash/mod/places'),

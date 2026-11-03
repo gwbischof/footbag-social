@@ -5135,5 +5135,157 @@
         "type": "String",
         "description": "How clips reach a trick page.",
         "placeholders": {}
+    },
+    "suggestATrick": "Suggest a trick",
+    "@suggestATrick": {
+        "type": "String",
+        "description": "Screen title: add a trick, composite or string to the dictionary.",
+        "placeholders": {}
+    },
+    "suggestTrickExplain": "You can use it straight away. Everyone else sees it once a moderator adds it to the dictionary.",
+    "@suggestTrickExplain": {
+        "type": "String",
+        "description": "How a suggestion becomes public.",
+        "placeholders": {}
+    },
+    "cantFindIt": "Can't find it? Suggest it",
+    "@cantFindIt": {
+        "type": "String",
+        "description": "Opens the suggestion form from the trick list.",
+        "placeholders": {}
+    },
+    "trickNameLabel": "Name",
+    "@trickNameLabel": {
+        "type": "String",
+        "description": "Field: the trick's name.",
+        "placeholders": {}
+    },
+    "whatKind": "What it is",
+    "@whatKind": {
+        "type": "String",
+        "description": "Heading over trick / composite / string.",
+        "placeholders": {}
+    },
+    "kindTrickExplain": "A move of its own",
+    "@kindTrickExplain": {
+        "type": "String",
+        "description": "Explains the trick kind.",
+        "placeholders": {}
+    },
+    "kindCompositeExplain": "A trick with modifiers, like Paradox Mirage",
+    "@kindCompositeExplain": {
+        "type": "String",
+        "description": "Explains the composite kind.",
+        "placeholders": {}
+    },
+    "kindStringExplain": "Tricks done one after another",
+    "@kindStringExplain": {
+        "type": "String",
+        "description": "Explains the string kind.",
+        "placeholders": {}
+    },
+    "baseLabel": "Built on",
+    "@baseLabel": {
+        "type": "String",
+        "description": "Field: a composite's base trick.",
+        "placeholders": {}
+    },
+    "pickBase": "Pick the base trick",
+    "@pickBase": {
+        "type": "String",
+        "description": "Button when no base is chosen.",
+        "placeholders": {}
+    },
+    "modifiersLabel": "Modifiers",
+    "@modifiersLabel": {
+        "type": "String",
+        "description": "Field: a composite's modifiers.",
+        "placeholders": {}
+    },
+    "addModifier": "Add a modifier",
+    "@addModifier": {
+        "type": "String",
+        "description": "Button: pick a modifier.",
+        "placeholders": {}
+    },
+    "stepsInOrder": "Steps, in order",
+    "@stepsInOrder": {
+        "type": "String",
+        "description": "Field: a string's tricks.",
+        "placeholders": {}
+    },
+    "addStep": "Add a trick",
+    "@addStep": {
+        "type": "String",
+        "description": "Button: add a step to a string.",
+        "placeholders": {}
+    },
+    "aboutTrick": "Describe it (optional)",
+    "@aboutTrick": {
+        "type": "String",
+        "description": "Field: a description.",
+        "placeholders": {}
+    },
+    "nicknamesLabel": "Other names, separated by commas (optional)",
+    "@nicknamesLabel": {
+        "type": "String",
+        "description": "Field: nicknames.",
+        "placeholders": {}
+    },
+    "suggestTrickSave": "Suggest",
+    "@suggestTrickSave": {
+        "type": "String",
+        "description": "Action: send the suggestion.",
+        "placeholders": {}
+    },
+    "alreadyInDictionary": "Already in the dictionary as {name}. Added that instead.",
+    "@alreadyInDictionary": {
+        "type": "String",
+        "description": "When the suggested name exists.",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "onlyYou": "Only you",
+    "@onlyYou": {
+        "type": "String",
+        "description": "Badge: a suggestion only its author can see.",
+        "placeholders": {}
+    },
+    "tricksQueue": "Tricks",
+    "@tricksQueue": {
+        "type": "String",
+        "description": "Moderator screen: suggested tricks.",
+        "placeholders": {}
+    },
+    "tricksPendingEmpty": "No suggestions waiting.",
+    "@tricksPendingEmpty": {
+        "type": "String",
+        "description": "Empty trick queue.",
+        "placeholders": {}
+    },
+    "keepPrivate": "Keep private",
+    "@keepPrivate": {
+        "type": "String",
+        "description": "Moderator: not for the dictionary, but the author keeps it.",
+        "placeholders": {}
+    },
+    "suggestedBy": "Suggested by {name}",
+    "@suggestedBy": {
+        "type": "String",
+        "description": "Who suggested an entry.",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "keepPrivateExplain": "Approve adds it to everyone's dictionary. Keep private leaves it with its author: their reports may already use it.",
+    "@keepPrivateExplain": {
+        "type": "String",
+        "description": "Explains the moderator's two answers.",
+        "placeholders": {}
     }
 }

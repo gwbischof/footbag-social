@@ -38,6 +38,7 @@ import 'package:footbag_network/pages/new_group/new_group.dart';
 import 'package:footbag_network/pages/new_private_chat/new_private_chat.dart';
 import 'package:footbag_network/pages/new_session/new_session.dart';
 import 'package:footbag_network/pages/places/pending_places_page.dart';
+import 'package:footbag_network/pages/places/pending_tricks_page.dart';
 import 'package:footbag_network/pages/profile/profile.dart';
 import 'package:footbag_network/pages/rankings/rankings.dart';
 import 'package:footbag_network/pages/report/report.dart';
@@ -53,6 +54,7 @@ import 'package:footbag_network/pages/settings_password/settings_password.dart';
 import 'package:footbag_network/pages/settings_security/settings_security.dart';
 import 'package:footbag_network/pages/settings_style/settings_style.dart';
 import 'package:footbag_network/pages/sign_in/sign_in_page.dart';
+import 'package:footbag_network/pages/suggest_trick/suggest_trick.dart';
 import 'package:footbag_network/pages/trick_picker/trick_picker.dart';
 import 'package:footbag_network/pages/welcome/welcome_page.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
@@ -322,6 +324,21 @@ abstract class AppRoutes {
                     ),
                   ],
                 ),
+                // A sibling of the picker, not its child: a child route would
+                // rebuild the picker's page with this one's extra.
+                GoRoute(
+                  path: 'suggest-trick',
+                  pageBuilder: (context, state) => defaultPageBuilder(
+                    context,
+                    state,
+                    SuggestTrick(
+                      initialName: state.extra is String
+                          ? state.extra as String
+                          : '',
+                    ),
+                  ),
+                  redirect: loggedOutRedirect,
+                ),
                 GoRoute(
                   path: 'post/:postid',
                   // tryParse and redirect, as for reports: a malformed link
@@ -413,6 +430,15 @@ abstract class AppRoutes {
                         context,
                         state,
                         const ModeratorsPage(),
+                      ),
+                      redirect: loggedOutRedirect,
+                    ),
+                    GoRoute(
+                      path: 'tricks',
+                      pageBuilder: (context, state) => defaultPageBuilder(
+                        context,
+                        state,
+                        const PendingTricksPage(),
                       ),
                       redirect: loggedOutRedirect,
                     ),

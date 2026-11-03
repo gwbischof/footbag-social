@@ -275,6 +275,47 @@ extension FootbagApi on Client {
   Future<void> dismissModerator(String userId) =>
       _apiSend('DELETE', 'moderators/${Uri.encodeComponent(userId)}');
 
+  /// One dictionary entry.
+  Future<FootbagEntry> fetchEntry(String slug) async => FootbagEntry.fromJson(
+    await _apiGetObject('tricks/${Uri.encodeComponent(slug)}'),
+  );
+
+  /// Suggest a trick, composite or string. Usable by you at once; by
+  /// everyone once a moderator approves it. A name already in the
+  /// dictionary comes back as a 409 whose detail is the existing slug.
+  Future<FootbagEntry> suggestEntry({
+    required String name,
+    required String kind,
+    String description = '',
+    List<String> aka = const [],
+    String? base,
+    List<String> modifiers = const [],
+    List<String> steps = const [],
+  }) async => FootbagEntry.fromJson(
+    await _apiPostObject('tricks', {
+      'name': name,
+      'kind': kind,
+      'description': description,
+      'aka': aka,
+      'base': ?base,
+      'modifiers': modifiers,
+      'steps': steps,
+    }),
+  );
+
+  Future<List<FootbagPendingEntry>> fetchPendingEntries() async {
+    final list = await _apiGetList('mod/tricks');
+    return list
+        .map((e) => FootbagPendingEntry.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
+  Future<void> approveEntry(String slug) =>
+      _apiSend('POST', 'mod/tricks/${Uri.encodeComponent(slug)}/approve');
+
+  Future<void> keepEntryPrivate(String slug) =>
+      _apiSend('POST', 'mod/tricks/${Uri.encodeComponent(slug)}/keep-private');
+
   /// Everything a trick's page shows above its clips.
   Future<FootbagTrickDetail> fetchTrickDetail(String slug) async =>
       FootbagTrickDetail.fromJson(
@@ -1277,7 +1318,11 @@ class FootbagEntry {
   /// The breakdown, e.g. `['dex', 'dex', 'del']`.
   final List<String> adds;
 
+  /// False for a suggestion: yours alone until a moderator approves it.
+  final bool approved;
+
   const FootbagEntry({
+    this.approved = true,
     required this.slug,
     required this.name,
     required this.kind,
@@ -1293,6 +1338,7 @@ class FootbagEntry {
     description: json['description'] as String? ?? '',
     aka: (json['aka'] as List? ?? const []).cast<String>(),
     adds: (json['adds'] as List? ?? const []).cast<String>(),
+    approved: json['approved'] as bool? ?? true,
   );
 }
 
@@ -2007,4 +2053,31 @@ class FootbagTrickDetail {
       favourite: mine['favourite'] as bool? ?? false,
     );
   }
+}
+
+/// A suggestion as a moderator sees it: what it claims to be built from.
+class FootbagPendingEntry {
+  final FootbagEntry entry;
+  final String? baseName;
+  final List<String> modifierNames;
+  final List<String> stepNames;
+  final String? suggestedByName;
+
+  const FootbagPendingEntry({
+    required this.entry,
+    required this.baseName,
+    required this.modifierNames,
+    required this.stepNames,
+    required this.suggestedByName,
+  });
+
+  factory FootbagPendingEntry.fromJson(Map<String, dynamic> json) =>
+      FootbagPendingEntry(
+        entry: FootbagEntry.fromJson(json['entry'] as Map<String, dynamic>),
+        baseName: json['base_name'] as String?,
+        modifierNames: (json['modifier_names'] as List? ?? const [])
+            .cast<String>(),
+        stepNames: (json['step_names'] as List? ?? const []).cast<String>(),
+        suggestedByName: json['suggested_by_name'] as String?,
+      );
 }

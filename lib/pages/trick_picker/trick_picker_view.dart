@@ -134,6 +134,15 @@ class TrickPickerView extends StatelessWidget {
             textAlign: TextAlign.center,
             style: Nyfa.bodyMuted,
           ),
+          const SizedBox(height: 20),
+          Center(
+            child: NyfaForm.action(
+              key: const Key('SuggestTrickEmpty'),
+              label: l10n.cantFindIt,
+              filled: false,
+              onPressed: controller.suggest,
+            ),
+          ),
         ],
       );
     }
@@ -141,8 +150,32 @@ class TrickPickerView extends StatelessWidget {
     return ListView.builder(
       key: const Key('TrickList'),
       padding: const EdgeInsets.only(bottom: 32),
-      itemCount: controller.entries!.length,
+      // One more row at the end: the way out when the list has not got it.
+      itemCount: controller.entries!.length + 1,
       itemBuilder: (context, i) {
+        if (i == controller.entries!.length) {
+          return InkWell(
+            key: const Key('SuggestTrickRow'),
+            onTap: controller.suggest,
+            child: Container(
+              constraints: const BoxConstraints(minHeight: 56),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              decoration: const BoxDecoration(
+                border: Border(top: BorderSide(color: Nyfa.rule)),
+              ),
+              child: Row(
+                children: [
+                  const Icon(Icons.add, size: 18, color: Nyfa.green),
+                  const SizedBox(width: 10),
+                  Text(
+                    l10n.cantFindIt,
+                    style: Nyfa.bodyText.copyWith(color: Nyfa.green),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
         final e = controller.entries![i];
         final have = controller.widget.alreadyHave.contains(e.slug);
         final chosen = controller.isChosen(e.slug);
@@ -151,7 +184,9 @@ class TrickPickerView extends StatelessWidget {
           entry: e,
           alreadyHave: have,
           chosen: chosen,
-          kindLabel: _kindLabel(l10n, e.kind),
+          kindLabel: e.approved
+              ? _kindLabel(l10n, e.kind)
+              : '${_kindLabel(l10n, e.kind)}   ·   ${l10n.onlyYou}',
           addedLabel: l10n.alreadyAdded,
           onTap: have ? null : () => controller.toggle(e.slug),
         );
