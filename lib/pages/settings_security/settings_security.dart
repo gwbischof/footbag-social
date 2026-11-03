@@ -5,6 +5,7 @@
 
 import 'package:footbag_network/config/setting_keys.dart';
 import 'package:footbag_network/l10n/l10n.dart';
+import 'package:footbag_network/utils/footbag_api.dart';
 import 'package:footbag_network/widgets/adaptive_dialogs/show_ok_cancel_alert_dialog.dart';
 import 'package:footbag_network/widgets/adaptive_dialogs/show_text_input_dialog.dart';
 import 'package:footbag_network/widgets/app_lock.dart';
@@ -104,37 +105,33 @@ class SettingsSecurityController extends State<SettingsSecurity> {
     }
   }
 
+  /// Delete the account: footbag data first, then the chat account.
+  ///
+  /// In that order because deactivating the chat account kills the token the
+  /// API checks -- done the other way round, the data could never be
+  /// erased. One plain confirm, rather than FluffyChat's "type your Matrix
+  /// ID", which asked people for an identifier this app never shows them.
   Future<void> deleteAccountAction() async {
     final l10n = L10n.of(context);
     final matrix = Matrix.of(context);
     if (await showOkCancelAlertDialog(
           useRootNavigator: false,
           context: context,
-          title: l10n.warning,
-          message: l10n.deactivateAccountWarning,
-          okLabel: l10n.ok,
+          title: l10n.deleteAccountTitle,
+          message: l10n.deleteAccountBody,
+          okLabel: l10n.deleteAccount,
           cancelLabel: l10n.cancel,
           isDestructive: true,
-        ) ==
-        OkCancelResult.cancel) {
+        ) !=
+        OkCancelResult.ok) {
       return;
     }
     if (!mounted) return;
-    final supposedMxid = matrix.client.userID!;
-    final mxid = await showTextInputDialog(
-      useRootNavigator: false,
+    final data = await showFutureLoadingDialog(
       context: context,
-      title: l10n.confirmMatrixId,
-      validator: (text) =>
-          text == supposedMxid ? null : l10n.supposedMxid(supposedMxid),
-      isDestructive: true,
-      okLabel: l10n.delete,
-      cancelLabel: l10n.cancel,
+      future: matrix.client.deleteFootbagAccount,
     );
-    if (mxid == null || mxid.isEmpty || mxid != supposedMxid) {
-      return;
-    }
-    if (!mounted) return;
+    if (data.isError || !mounted) return;
     final resp = await showFutureLoadingDialog(
       context: context,
       delay: false,
@@ -142,7 +139,6 @@ class SettingsSecurityController extends State<SettingsSecurity> {
         (auth) => matrix.client.deactivateAccount(auth: auth, erase: true),
       ),
     );
-
     if (!resp.isError) {
       if (!mounted) return;
       await showFutureLoadingDialog(

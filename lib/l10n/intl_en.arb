@@ -5410,5 +5410,17 @@
         "type": "String",
         "description": "Empty state of the blocked players list.",
         "placeholders": {}
+    },
+    "deleteAccountTitle": "Delete your account?",
+    "@deleteAccountTitle": {
+        "type": "String",
+        "description": "Confirm dialog title before deleting an account.",
+        "placeholders": {}
+    },
+    "deleteAccountBody": "This deletes your profile, posts, photos and videos, sessions, reports and chat account. It can't be undone.",
+    "@deleteAccountBody": {
+        "type": "String",
+        "description": "Says what deleting an account removes, before it happens.",
+        "placeholders": {}
     }
 }

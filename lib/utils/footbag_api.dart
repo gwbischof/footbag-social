@@ -809,6 +809,10 @@ extension FootbagApi on Client {
     if (ignoredUsers.contains(userId)) await unignoreUser(userId);
   }
 
+  /// Delete everything the footbag API holds about you. The chat account is
+  /// deactivated separately, after this: once it is, this token is dead.
+  Future<void> deleteFootbagAccount() => _apiSend('DELETE', 'me');
+
   /// Everyone you have blocked, most recent first.
   Future<List<FootbagPlayer>> fetchBlocks() async => (await _apiGetList(
     'me/blocks',
