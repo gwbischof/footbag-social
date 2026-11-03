@@ -198,7 +198,7 @@ class _Picker extends StatelessWidget {
       child: Container(
         height: 62,
         padding: const EdgeInsets.symmetric(horizontal: 14),
-        decoration: BoxDecoration(border: Border.all(color: Nyfa.rule)),
+        color: Nyfa.raised,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,

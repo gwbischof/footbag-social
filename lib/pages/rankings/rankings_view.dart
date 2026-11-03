@@ -187,7 +187,7 @@ class _Chips extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SizedBox(
-    height: 44,
+    height: 48,
     child: ListView(
       scrollDirection: Axis.horizontal,
       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -195,36 +195,11 @@ class _Chips extends StatelessWidget {
         for (final o in options)
           Padding(
             padding: const EdgeInsets.only(right: 8),
-            child: Semantics(
-              button: true,
+            child: NyfaChip(
+              key: Key('$keyPrefix${o.value}'),
+              label: o.label,
               selected: selected == o.value,
-              child: InkWell(
-                key: Key('$keyPrefix${o.value}'),
-                onTap: () => onTap(o.value),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  decoration: BoxDecoration(
-                    color: selected == o.value
-                        ? Nyfa.green
-                        : Colors.transparent,
-                    border: Border.all(
-                      color: selected == o.value ? Nyfa.green : Nyfa.rule,
-                    ),
-                  ),
-                  child: Center(
-                    widthFactor: 1,
-                    child: Text(
-                      o.label.toUpperCase(),
-                      style: TextStyle(
-                        fontFamily: Nyfa.display,
-                        fontSize: 16,
-                        letterSpacing: 0.8,
-                        color: selected == o.value ? Nyfa.ground : Nyfa.paper,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              onTap: () => onTap(o.value),
             ),
           ),
       ],

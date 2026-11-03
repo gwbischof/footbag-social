@@ -394,8 +394,9 @@ class PlayerAvatar extends StatelessWidget {
         name: name,
         size: size,
         client: client,
-        backgroundColor: Nyfa.greenDim,
+        backgroundColor: Nyfa.toneFor(userId),
         textColor: Nyfa.paper,
+        fontFamily: Nyfa.display,
       ),
     );
   }

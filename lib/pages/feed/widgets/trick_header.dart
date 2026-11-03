@@ -125,9 +125,7 @@ class _TrickHeaderState extends State<TrickHeader> {
                       child: Container(
                         constraints: const BoxConstraints(minHeight: 40),
                         padding: const EdgeInsets.symmetric(horizontal: 12),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Nyfa.rule),
-                        ),
+                        color: Nyfa.tonal,
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [

@@ -24,15 +24,36 @@ class Nyfa {
   /// Rows and cards: a lift off the ground rather than a grey.
   ///
   /// Warm-shifted, because [paper] and [muted] both are — a neutral mixed from
-  /// pure grey against a warm type colour reads as an accident.
-  static const raised = Color(0xFF14130F);
+  /// pure grey against a warm type colour reads as an accident. 1.15:1 off
+  /// the ground: the old 1.07:1 was a step nobody could see, so a raised row
+  /// read as nothing.
+  static const raised = Color(0xFF1C1B17);
+
+  /// The fill of a secondary control -- a chip, a quiet button, an input.
+  ///
+  /// Fill, not outline: a screen of outlined rectangles is the busiest thing
+  /// a dark UI can be, and visual complexity is what most lowers how good a
+  /// screen looks at a glance (see best-practices/beautiful-mobile-app-ui).
+  /// The control's label carries its contrast; the fill only says "tap me".
+  static const tonal = Color(0xFF2A2923);
+
+  /// The one outline that must read as an edge: an input's underline, a
+  /// focus ring. 3.3:1 on [ground], clearing WCAG 1.4.11's 3:1 for controls.
+  static const edge = Color(0xFF66645C);
 
   /// Primary text. ~15:1 on [ground].
   static const paper = Color(0xFFEDEBE7);
 
-  /// Secondary text. ~5.6:1 on [ground], so it clears 4.5:1 as a solid colour —
-  /// which is why nothing here dims text with alpha instead.
-  static const muted = Color(0xFF89867F);
+  /// Secondary text people actually read: captions, metadata, explanations.
+  ///
+  /// APCA Lc 58 on [ground]. The old #89867F passed WCAG 2 at 5.45:1 but is
+  /// only Lc 38 -- WCAG 2 overstates light-on-dark contrast, and Lc 38 is
+  /// placeholder territory, not reading text.
+  static const muted = Color(0xFFB2AEA5);
+
+  /// Text nobody needs to read closely: timestamps, placeholders, disabled
+  /// labels. Lc 40 -- above APCA's floor of 30 for any text, and no more.
+  static const faint = Color(0xFF8F8C84);
 
   /// The club green. The clock, the active rung, the primary action.
   static const green = Color(0xFFB0F42F);
@@ -48,6 +69,28 @@ class Nyfa {
 
   /// Hairlines. The structural device this look uses instead of cards.
   static const rule = Color(0xFF26251F);
+
+  /// Avatar tones for people without a photo: the club olive, then rust,
+  /// slate, plum, teal and ochre. Muted, so none competes with [green];
+  /// dark, so a [paper] letter on any of them is APCA Lc 74 or better.
+  /// One flat colour for everyone made a feed of five people read as one.
+  static const _tones = [
+    Color(0xFF4C6819),
+    Color(0xFF5C3424),
+    Color(0xFF2B4257),
+    Color(0xFF4B2F52),
+    Color(0xFF235049),
+    Color(0xFF5E4B1E),
+  ];
+
+  /// The same person always gets the same tone, on every device.
+  static Color toneFor(String id) {
+    var h = 0;
+    for (final unit in id.codeUnits) {
+      h = (h * 31 + unit) & 0x7fffffff;
+    }
+    return _tones[h % _tones.length];
+  }
 
   static const display = 'BebasNeue';
   static const body = 'DMSans';
@@ -69,19 +112,42 @@ class Nyfa {
     letterSpacing: 1.6,
   );
 
+  /// Reading text. 15, up from 14: bigger reads measurably better and the
+  /// platforms sit at 16-17, but this is also row and caption text in a
+  /// dense feed, where 16 would crowd.
   static const bodyText = TextStyle(
     fontFamily: body,
     color: paper,
-    fontSize: 14,
+    fontSize: 15,
     height: 1.45,
   );
 
   static const bodyMuted = TextStyle(
     fontFamily: body,
     color: muted,
-    fontSize: 13,
+    fontSize: 14,
     height: 1.45,
   );
+
+  /// Timestamps and asides.
+  static const bodyFaint = TextStyle(
+    fontFamily: body,
+    color: faint,
+    fontSize: 13,
+    height: 1.4,
+  );
+
+  /// A quiet button: tonal fill, paper label, no outline. The style every
+  /// secondary action shares, so they cannot drift apart again.
+  static ButtonStyle quietButton({bool accent = false}) =>
+      FilledButton.styleFrom(
+        backgroundColor: tonal,
+        foregroundColor: accent ? green : paper,
+        disabledBackgroundColor: raised,
+        disabledForegroundColor: faint,
+        shape: const RoundedRectangleBorder(),
+        elevation: 0,
+      );
 
   /// The scoreboard clock.
   ///
@@ -97,22 +163,29 @@ class Nyfa {
   );
 
   /// An input's text and its label, in the body face.
+  ///
+  /// A filled field with an underline rather than a box: one edge, at a
+  /// contrast that reads as an edge, instead of four at one that does not.
   static InputDecoration input(String label) => InputDecoration(
     labelText: label,
-    labelStyle: const TextStyle(fontFamily: body, color: muted, fontSize: 13),
+    labelStyle: const TextStyle(fontFamily: body, color: muted, fontSize: 14),
     floatingLabelStyle: const TextStyle(fontFamily: body, color: green),
+    hintStyle: const TextStyle(fontFamily: body, color: faint),
     isDense: true,
-    enabledBorder: const OutlineInputBorder(
+    filled: true,
+    fillColor: raised,
+    contentPadding: const EdgeInsets.fromLTRB(14, 14, 14, 12),
+    enabledBorder: const UnderlineInputBorder(
       borderRadius: BorderRadius.zero,
-      borderSide: BorderSide(color: rule),
+      borderSide: BorderSide(color: edge),
     ),
-    focusedBorder: const OutlineInputBorder(
+    focusedBorder: const UnderlineInputBorder(
       borderRadius: BorderRadius.zero,
-      borderSide: BorderSide(color: green),
+      borderSide: BorderSide(color: green, width: 2),
     ),
-    border: const OutlineInputBorder(
+    border: const UnderlineInputBorder(
       borderRadius: BorderRadius.zero,
-      borderSide: BorderSide(color: rule),
+      borderSide: BorderSide(color: edge),
     ),
   );
 
@@ -239,10 +312,9 @@ class NyfaForm {
     padding: const EdgeInsets.symmetric(horizontal: 20),
     child: Wrap(
       spacing: 8,
-      runSpacing: 8,
       children: [
         for (final o in options)
-          _Chip(
+          NyfaChip(
             key: Key('$keyPrefix${o.value}'),
             label: o.label,
             selected: selected.contains(o.value),
@@ -266,7 +338,7 @@ class NyfaForm {
             onPressed: onPressed,
             style: FilledButton.styleFrom(
               backgroundColor: Nyfa.green,
-              disabledBackgroundColor: Nyfa.rule,
+              disabledBackgroundColor: Nyfa.tonal,
               shape: const RoundedRectangleBorder(),
             ),
             child: Text(
@@ -279,13 +351,10 @@ class NyfaForm {
               ),
             ),
           )
-        : OutlinedButton(
+        : FilledButton(
             key: key,
             onPressed: onPressed,
-            style: OutlinedButton.styleFrom(
-              side: const BorderSide(color: Nyfa.rule),
-              shape: const RoundedRectangleBorder(),
-            ),
+            style: Nyfa.quietButton(),
             child: Text(
               label.toUpperCase(),
               style: const TextStyle(
@@ -299,51 +368,68 @@ class NyfaForm {
   );
 }
 
-class _Chip extends StatelessWidget {
+/// A selectable chip: a filter, an option, a tab. One widget for every chip
+/// in the app -- there were five, each styled by hand.
+///
+/// Unselected is a tonal fill with no outline; selected is the club green.
+/// A 44 high visual box inside a 48 tap target.
+class NyfaChip extends StatelessWidget {
   final String label;
   final bool selected;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
+  final IconData? icon;
 
-  const _Chip({
+  const NyfaChip({
     required this.label,
     required this.selected,
     required this.onTap,
+    this.icon,
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) => Semantics(
-    button: true,
-    selected: selected,
-    child: InkWell(
-      onTap: onTap,
-      // No `alignment` here, deliberately. A Container with alignment set and
-      // no explicit width expands to fill its constraints -- inside a Wrap that
-      // made every chip full width and stacked them one per row, which looked
-      // like a broken list rather than a set of options. Centring comes from
-      // the symmetric padding instead.
-      child: Container(
-        height: 44,
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        decoration: BoxDecoration(
-          color: selected ? Nyfa.green : Colors.transparent,
-          border: Border.all(color: selected ? Nyfa.green : Nyfa.rule),
-        ),
-        child: Center(
-          widthFactor: 1,
-          child: Text(
-            label.toUpperCase(),
-            style: TextStyle(
-              fontFamily: Nyfa.display,
-              fontSize: 16,
-              letterSpacing: 0.8,
-              // Solid either way: dimming paper with alpha was what failed
-              // contrast the first time round.
-              color: selected ? Nyfa.ground : Nyfa.paper,
+  Widget build(BuildContext context) {
+    final fg = selected
+        ? Nyfa.ground
+        : (onTap == null ? Nyfa.faint : Nyfa.paper);
+    return Semantics(
+      button: true,
+      selected: selected,
+      child: InkWell(
+        onTap: onTap,
+        // No `alignment` here, deliberately. A Container with alignment set
+        // and no explicit width expands to fill its constraints -- inside a
+        // Wrap that made every chip full width. Centring comes from padding.
+        child: AnimatedContainer(
+          duration: Durations.short3,
+          curve: Easing.standard,
+          height: 40,
+          margin: const EdgeInsets.symmetric(vertical: 4),
+          padding: const EdgeInsets.symmetric(horizontal: 14),
+          color: selected ? Nyfa.green : Nyfa.tonal,
+          child: Center(
+            widthFactor: 1,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (icon != null) ...[
+                  Icon(icon, size: 16, color: fg),
+                  const SizedBox(width: 6),
+                ],
+                Text(
+                  label.toUpperCase(),
+                  style: TextStyle(
+                    fontFamily: Nyfa.display,
+                    fontSize: 16,
+                    letterSpacing: 0.8,
+                    color: fg,
+                  ),
+                ),
+              ],
             ),
           ),
         ),
       ),
-    ),
-  );
+    );
+  }
 }

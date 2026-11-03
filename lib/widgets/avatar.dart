@@ -24,6 +24,10 @@ class Avatar extends StatelessWidget {
   final Color? backgroundColor;
   final Color? textColor;
 
+  /// The fallback letter's face. Chat keeps its monospace; the club's own
+  /// screens pass the display face.
+  final String fontFamily;
+
   const Avatar({
     this.mxContent,
     this.name,
@@ -37,6 +41,7 @@ class Avatar extends StatelessWidget {
     this.icon,
     this.backgroundColor,
     this.textColor,
+    this.fontFamily = 'RobotoMono',
     super.key,
   });
 
@@ -97,7 +102,7 @@ class Avatar extends StatelessWidget {
                         fallbackLetters,
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontFamily: 'RobotoMono',
+                          fontFamily: fontFamily,
                           color:
                               textColor ??
                               fallbackLetters.colorScheme.onPrimaryContainer,

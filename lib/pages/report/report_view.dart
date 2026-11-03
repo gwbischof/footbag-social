@@ -86,12 +86,10 @@ class ReportView extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           Center(
-            child: OutlinedButton(
+            child: FilledButton(
               onPressed: controller.load,
-              style: OutlinedButton.styleFrom(
-                side: const BorderSide(color: Nyfa.rule),
-                shape: const RoundedRectangleBorder(),
-                minimumSize: const Size(0, 48),
+              style: Nyfa.quietButton().copyWith(
+                minimumSize: const WidgetStatePropertyAll(Size(0, 48)),
               ),
               child: Text(
                 l10n.retry.toUpperCase(),
@@ -467,10 +465,7 @@ class _FirstToggle extends StatelessWidget {
       child: Container(
         height: 48,
         padding: const EdgeInsets.symmetric(horizontal: 14),
-        decoration: BoxDecoration(
-          color: selected ? Nyfa.green : Colors.transparent,
-          border: Border.all(color: selected ? Nyfa.green : Nyfa.rule),
-        ),
+        color: selected ? Nyfa.green : Nyfa.tonal,
         child: Row(
           children: [
             Icon(

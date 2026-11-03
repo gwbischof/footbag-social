@@ -190,7 +190,7 @@ class _MediaStrip extends StatelessWidget {
           onTap: c.pickMedia,
           child: Container(
             height: 180,
-            decoration: BoxDecoration(border: Border.all(color: Nyfa.rule)),
+            color: Nyfa.raised,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -231,9 +231,7 @@ class _MediaStrip extends StatelessWidget {
                   onTap: c.pickMedia,
                   child: Container(
                     width: 100,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Nyfa.rule),
-                    ),
+                    color: Nyfa.raised,
                     child: const Icon(Icons.add, color: Nyfa.green, size: 28),
                   ),
                 ),
@@ -382,7 +380,9 @@ class _TagChip extends StatelessWidget {
   Widget build(BuildContext context) => Container(
     height: 44,
     padding: const EdgeInsets.only(left: 12),
-    decoration: BoxDecoration(border: Border.all(color: Nyfa.green)),
+    // Tonal, with the green kept to the diamond: a row of green boxes
+    // made the tags the loudest thing on a screen whose point is the post.
+    color: Nyfa.tonal,
     child: Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -419,7 +419,7 @@ class _AddChip extends StatelessWidget {
     child: Container(
       height: 44,
       padding: const EdgeInsets.symmetric(horizontal: 14),
-      decoration: BoxDecoration(border: Border.all(color: Nyfa.rule)),
+      color: Nyfa.tonal,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [

@@ -231,8 +231,8 @@ class PreviewActions implements PostActions {
     width: size,
     height: size,
     alignment: Alignment.center,
-    decoration: const BoxDecoration(
-      color: Nyfa.greenDim,
+    decoration: BoxDecoration(
+      color: Nyfa.toneFor(userId),
       shape: BoxShape.circle,
     ),
     child: Text(

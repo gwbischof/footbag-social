@@ -223,9 +223,7 @@ class _Shortcuts extends StatelessWidget {
                 onTap: () => context.push(s.path),
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 14),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Nyfa.rule),
-                  ),
+                  color: Nyfa.tonal,
                   child: Center(
                     widthFactor: 1,
                     child: Row(
@@ -294,7 +292,7 @@ class _EmptyInvitation extends StatelessWidget {
               onPressed: controller.busy ? null : controller.startAction,
               style: FilledButton.styleFrom(
                 backgroundColor: Nyfa.green,
-                disabledBackgroundColor: Nyfa.rule,
+                disabledBackgroundColor: Nyfa.tonal,
                 shape: const RoundedRectangleBorder(),
               ),
               icon: Icon(
@@ -470,17 +468,14 @@ class _Action extends StatelessWidget {
               onPressed: busy ? null : onPressed,
               style: FilledButton.styleFrom(
                 backgroundColor: Nyfa.green,
-                disabledBackgroundColor: Nyfa.rule,
+                disabledBackgroundColor: Nyfa.tonal,
                 shape: const RoundedRectangleBorder(),
               ),
               child: Text(label.toUpperCase(), style: style),
             )
-          : OutlinedButton(
+          : FilledButton(
               onPressed: busy ? null : onPressed,
-              style: OutlinedButton.styleFrom(
-                side: const BorderSide(color: Nyfa.rule),
-                shape: const RoundedRectangleBorder(),
-              ),
+              style: Nyfa.quietButton(),
               child: Text(label.toUpperCase(), style: style),
             ),
     );

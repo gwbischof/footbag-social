@@ -144,7 +144,9 @@ class GoalsPageState extends State<GoalsPage> {
             title: i.name,
             subtitle: ideaReason(l10n, i),
             icon: Icons.add,
-            iconColor: full ? Nyfa.rule : Nyfa.green,
+            // Paper, not green: six green plus signs pulled the eye down the
+            // list instead of to Done.
+            iconColor: full ? Nyfa.faint : Nyfa.paper,
             onTap: full ? null : () => add(i),
           ),
       ];

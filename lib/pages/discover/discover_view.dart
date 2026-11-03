@@ -98,7 +98,7 @@ class _Filters extends StatelessWidget {
         // One filter row drives both tabs: a discipline is a session type and
         // a play style, which is the point of using one vocabulary for both.
         SizedBox(
-          height: 44,
+          height: 48,
           child: ListView(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -106,7 +106,7 @@ class _Filters extends StatelessWidget {
               if (nearMe)
                 Padding(
                   padding: const EdgeInsets.only(right: 8),
-                  child: _FilterChip(
+                  child: NyfaChip(
                     key: const Key('Filter_near'),
                     label: l10n.nearMe,
                     icon: Icons.near_me_outlined,
@@ -123,7 +123,7 @@ class _Filters extends StatelessWidget {
               ])
                 Padding(
                   padding: const EdgeInsets.only(right: 8),
-                  child: _FilterChip(
+                  child: NyfaChip(
                     key: Key('Filter_${o.value ?? 'all'}'),
                     label: o.label,
                     selected: controller.style == o.value,
@@ -137,62 +137,6 @@ class _Filters extends StatelessWidget {
       ],
     );
   }
-}
-
-class _FilterChip extends StatelessWidget {
-  final String label;
-  final IconData? icon;
-  final bool selected;
-  final VoidCallback? onTap;
-
-  const _FilterChip({
-    required this.label,
-    required this.selected,
-    required this.onTap,
-    this.icon,
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) => Semantics(
-    button: true,
-    selected: selected,
-    child: InkWell(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        decoration: BoxDecoration(
-          color: selected ? Nyfa.green : Colors.transparent,
-          border: Border.all(color: selected ? Nyfa.green : Nyfa.rule),
-        ),
-        child: Center(
-          widthFactor: 1,
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (icon != null) ...[
-                Icon(
-                  icon,
-                  size: 16,
-                  color: selected ? Nyfa.ground : Nyfa.paper,
-                ),
-                const SizedBox(width: 6),
-              ],
-              Text(
-                label.toUpperCase(),
-                style: TextStyle(
-                  fontFamily: Nyfa.display,
-                  fontSize: 16,
-                  letterSpacing: 0.8,
-                  color: selected ? Nyfa.ground : Nyfa.paper,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    ),
-  );
 }
 
 class _SessionsTab extends StatelessWidget {

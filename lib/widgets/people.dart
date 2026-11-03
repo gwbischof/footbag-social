@@ -102,31 +102,28 @@ class SmallButton extends StatelessWidget {
           ? Nyfa.green
           : Nyfa.paper,
     );
-    const shape = RoundedRectangleBorder();
-    return SizedBox(
-      height: 36,
-      child: filled
-          ? FilledButton(
-              onPressed: onPressed,
-              style: FilledButton.styleFrom(
-                backgroundColor: Nyfa.green,
-                disabledBackgroundColor: Nyfa.rule,
-                shape: shape,
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                tapTargetSize: MaterialTapTargetSize.padded,
-              ),
-              child: Text(label.toUpperCase(), style: style),
+    // 36 to see, 48 to hit: the button draws at 36 and MaterialTapTargetSize
+    // pads the touch area to 48. It used to sit in a SizedBox(height: 36),
+    // which clipped that padding away and left a 36-high target.
+    const size = Size(0, 36);
+    const padding = EdgeInsets.symmetric(horizontal: 12);
+    return FilledButton(
+      onPressed: onPressed,
+      style: filled
+          ? FilledButton.styleFrom(
+              backgroundColor: Nyfa.green,
+              disabledBackgroundColor: Nyfa.tonal,
+              shape: const RoundedRectangleBorder(),
+              minimumSize: size,
+              padding: padding,
+              tapTargetSize: MaterialTapTargetSize.padded,
             )
-          : OutlinedButton(
-              onPressed: onPressed,
-              style: OutlinedButton.styleFrom(
-                side: BorderSide(color: accent ? Nyfa.green : Nyfa.rule),
-                shape: shape,
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                tapTargetSize: MaterialTapTargetSize.padded,
-              ),
-              child: Text(label.toUpperCase(), style: style),
+          : Nyfa.quietButton(accent: accent).copyWith(
+              minimumSize: const WidgetStatePropertyAll(size),
+              padding: const WidgetStatePropertyAll(padding),
+              tapTargetSize: MaterialTapTargetSize.padded,
             ),
+      child: Text(label.toUpperCase(), style: style),
     );
   }
 }

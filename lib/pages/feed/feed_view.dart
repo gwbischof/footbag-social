@@ -302,10 +302,10 @@ class FeedChip extends StatelessWidget {
           onTap: busy ? null : onTap,
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 14),
-            decoration: BoxDecoration(
-              color: filled ? Nyfa.green : Colors.transparent,
-              border: Border.all(color: selected ? Nyfa.green : Nyfa.rule),
-            ),
+            // Tonal when off, green when on -- the shared chip's look; an
+            // outlined-when-on chip keeps the tonal fill and turns its label
+            // green, so "on" never needs a box drawn round it.
+            color: filled ? Nyfa.green : Nyfa.tonal,
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
