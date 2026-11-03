@@ -13,6 +13,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:footbag_network/config/nyfa_theme.dart';
+import 'package:footbag_network/config/themes.dart';
 import 'package:footbag_network/l10n/l10n.dart';
 import 'package:footbag_network/pages/club/club_form.dart';
 import 'package:footbag_network/pages/club/club_page.dart';
@@ -121,6 +122,7 @@ Widget previewBody(BuildContext context) =>
       'where' => const _PreviewWhere(),
       'goals' => const _PreviewGoals(),
       'player' => const _PreviewPlayer(),
+      'm3' => const _M3Gallery(),
       'dash' => const PreviewDash(),
       'dash-running' => const PreviewDash(mode: 'running'),
       'discover' => const PreviewDiscover(),
@@ -823,5 +825,102 @@ class _PreviewPlayerState extends PlayerPageState {
       });
       posts = [..._posts, ..._posts];
     });
+  }
+}
+
+/// The inherited Material screens' parts, under the app's real dark theme:
+/// what chat and settings are built from.
+class _M3Gallery extends StatelessWidget {
+  const _M3Gallery();
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = AppThemes.buildTheme(context, Brightness.dark);
+    final cs = theme.colorScheme;
+    Widget bubble(String text, bool own) => Align(
+      alignment: own ? Alignment.centerRight : Alignment.centerLeft,
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+        decoration: BoxDecoration(
+          color: own ? theme.bubbleColor : cs.surfaceContainerHigh,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Text(
+          text,
+          style: TextStyle(color: own ? theme.onBubbleColor : cs.onSurface),
+        ),
+      ),
+    );
+    return Theme(
+      data: theme,
+      child: Scaffold(
+        appBar: AppBar(title: const Text('Chats')),
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: () {},
+          icon: const Icon(Icons.add),
+          label: const Text('New chat'),
+        ),
+        body: ListView(
+          children: [
+            ListTile(
+              leading: const CircleAvatar(child: Text('T')),
+              title: const Text('Tompkins Footbag'),
+              subtitle: const Text('Marco: see you at 6'),
+              trailing: Badge(
+                label: const Text('3'),
+                backgroundColor: cs.primary,
+                textColor: cs.onPrimary,
+              ),
+            ),
+            ListTile(
+              selected: true,
+              selectedTileColor: cs.secondaryContainer,
+              leading: const CircleAvatar(child: Text('L')),
+              title: const Text('Landes'),
+              subtitle: const Text('You: bring the 32-panel'),
+            ),
+            const Divider(),
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  bubble('Anyone at Tompkins tonight?', false),
+                  bubble('Yes, from 7. Link: footbagsocial.com', true),
+                  const SizedBox(height: 16),
+                  Wrap(
+                    spacing: 8,
+                    children: [
+                      FilledButton(
+                        onPressed: () {},
+                        child: const Text('Filled'),
+                      ),
+                      FilledButton.tonal(
+                        onPressed: () {},
+                        child: const Text('Tonal'),
+                      ),
+                      OutlinedButton(
+                        onPressed: () {},
+                        child: const Text('Outlined'),
+                      ),
+                      TextButton(onPressed: () {}, child: const Text('Text')),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  const TextField(
+                    decoration: InputDecoration(labelText: 'Message'),
+                  ),
+                  SwitchListTile(
+                    value: true,
+                    onChanged: (_) {},
+                    title: const Text('Notifications'),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

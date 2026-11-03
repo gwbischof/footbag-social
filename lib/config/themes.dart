@@ -5,6 +5,7 @@
 
 import 'package:flutter/services.dart';
 import 'package:footbag_network/config/app_config.dart';
+import 'package:footbag_network/config/nyfa_theme.dart';
 import 'package:footbag_network/config/setting_keys.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -45,16 +46,55 @@ abstract class AppThemes {
     Brightness brightness, [
     Color? seed,
   ]) {
-    final colorScheme = ColorScheme.fromSeed(
+    final seeded = ColorScheme.fromSeed(
       brightness: brightness,
       seedColor: seed ?? Color(AppSettings.colorSchemeSeedInt.value),
       dynamicSchemeVariant: DynamicSchemeVariant.tonalSpot,
     );
+    // Dark -- the default -- is the club's palette, so chat and settings,
+    // inherited from FluffyChat, stop looking like a second app seeded from
+    // a different green. Own bubbles are primaryContainer: the club olive
+    // with paper text (APCA Lc 74), not lime -- a screen of lime bubbles is
+    // exactly the large-area accent that vibrates on black. Links on them
+    // are a pale lime (Lc 73); full lime would be Lc 67.
+    final colorScheme = brightness == Brightness.dark
+        ? seeded.copyWith(
+            primary: Nyfa.green,
+            onPrimary: Nyfa.ground,
+            primaryContainer: Nyfa.greenDim,
+            onPrimaryContainer: Nyfa.paper,
+            secondary: Nyfa.muted,
+            onSecondary: Nyfa.ground,
+            secondaryContainer: Nyfa.tonal,
+            onSecondaryContainer: Nyfa.paper,
+            tertiaryContainer: Nyfa.tonal,
+            onTertiaryContainer: const Color(0xFFD7F59A),
+            surface: Nyfa.ground,
+            onSurface: Nyfa.paper,
+            onSurfaceVariant: Nyfa.muted,
+            surfaceContainerLowest: Nyfa.ground,
+            surfaceContainerLow: const Color(0xFF13120F),
+            surfaceContainer: Nyfa.raised,
+            surfaceContainerHigh: Nyfa.tonal,
+            surfaceContainerHighest: const Color(0xFF33322B),
+            outline: Nyfa.edge,
+            outlineVariant: Nyfa.rule,
+            inverseSurface: Nyfa.paper,
+            onInverseSurface: Nyfa.ground,
+          )
+        : seeded;
     final isColumnMode = AppThemes.isColumnMode(context);
     final dividerColor = brightness == Brightness.dark
         ? colorScheme.surfaceContainerHighest
         : colorScheme.surfaceContainer;
     return ThemeData(
+      // The club's text face everywhere, chat included.
+      fontFamily: Nyfa.body,
+      // A selected row (the open chat) is marked by its tonal fill; lime
+      // text across a whole row is the accent spent as body copy.
+      listTileTheme: brightness == Brightness.dark
+          ? const ListTileThemeData(selectedColor: Nyfa.paper)
+          : null,
       visualDensity: VisualDensity.standard,
       useMaterial3: true,
       brightness: brightness,

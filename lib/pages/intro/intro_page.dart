@@ -3,6 +3,7 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+import 'package:footbag_network/config/nyfa_theme.dart';
 import 'package:footbag_network/config/setting_keys.dart';
 import 'package:footbag_network/l10n/l10n.dart';
 import 'package:footbag_network/pages/intro/flows/restore_backup_flow.dart';
@@ -18,18 +19,10 @@ import 'package:url_launcher/url_launcher_string.dart';
 /// This is the club's -- near-black ground, Bebas Neue set large in caps, and
 /// the name lit from behind in the club green.
 ///
-/// Tokens are the site's own, converted from the oklch values in
-/// nyfa-business/src/app/globals.css (.dark) so the two cannot drift apart by
-/// eye.
-class _Nyfa {
-  static const ground = Color(0xFF0A0A0A); // --background
-  static const paper = Color(0xFFEDEBE7); // --foreground, warm off-white
-  static const muted = Color(0xFF89867F); // --muted-foreground
-  static const green = Color(0xFFB0F42F); // --primary, the club green
-}
-
-const _display = 'BebasNeue';
-const _body = 'DMSans';
+/// Tokens are the app's shared [Nyfa] set. They began as the site's own
+/// (nyfa-business globals.css, .dark); secondary text has since been lifted
+/// for legibility, so this page no longer keeps a private copy of the old
+/// values.
 
 class IntroPage extends StatelessWidget {
   final bool isLoading, hasPresetHomeserver;
@@ -53,19 +46,19 @@ class IntroPage extends StatelessWidget {
 
     return Scaffold(
       key: const Key('LoginScaffold'),
-      backgroundColor: _Nyfa.ground,
+      backgroundColor: Nyfa.ground,
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
         elevation: 0,
-        iconTheme: const IconThemeData(color: _Nyfa.muted),
+        iconTheme: const IconThemeData(color: Nyfa.muted),
         title: addMultiAccount
             ? Text(
                 L10n.of(context).addAccount,
                 style: const TextStyle(
-                  color: _Nyfa.paper,
-                  fontFamily: _display,
+                  color: Nyfa.paper,
+                  fontFamily: Nyfa.display,
                   fontSize: 20,
                   letterSpacing: 1.0,
                 ),
@@ -141,14 +134,14 @@ class _Loading extends StatelessWidget {
           height: 26,
           child: CircularProgressIndicator(
             strokeWidth: 2.5,
-            valueColor: AlwaysStoppedAnimation(_Nyfa.green),
+            valueColor: AlwaysStoppedAnimation(Nyfa.green),
           ),
         ),
         // Not "logging in to <host>": the host is ours, the person never chose
         // it, and naming it only raises a question they cannot act on.
         Text(
           L10n.of(context).signingIn,
-          style: const TextStyle(color: _Nyfa.muted, fontFamily: _body),
+          style: const TextStyle(color: Nyfa.muted, fontFamily: Nyfa.body),
         ),
       ],
     ),
@@ -188,8 +181,8 @@ class _Content extends StatelessWidget {
                         welcomeText ?? l10n.appDescription,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
-                          color: _Nyfa.muted,
-                          fontFamily: _body,
+                          color: Nyfa.muted,
+                          fontFamily: Nyfa.body,
                           fontSize: 15.5,
                           height: 1.6,
                         ),
@@ -204,8 +197,8 @@ class _Content extends StatelessWidget {
                         l10n.newAccountsAreApproved,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
-                          color: _Nyfa.muted,
-                          fontFamily: _body,
+                          color: Nyfa.muted,
+                          fontFamily: Nyfa.body,
                           fontSize: 12.5,
                           height: 1.5,
                         ),
@@ -256,8 +249,8 @@ class _Wordmark extends StatelessWidget {
                 gradient: RadialGradient(
                   radius: 0.85,
                   colors: [
-                    _Nyfa.green.withValues(alpha: 0.17),
-                    _Nyfa.green.withValues(alpha: 0.05),
+                    Nyfa.green.withValues(alpha: 0.17),
+                    Nyfa.green.withValues(alpha: 0.05),
                     Colors.transparent,
                   ],
                   stops: const [0.0, 0.42, 0.75],
@@ -278,15 +271,15 @@ class _Wordmark extends StatelessWidget {
                   maxLines: 1,
                   softWrap: false,
                   style: TextStyle(
-                    fontFamily: _display,
+                    fontFamily: Nyfa.display,
                     // Nominal only -- FittedBox rescales it to the real width.
                     fontSize: compact ? 72 : 96,
                     height: 0.92,
-                    color: i == last ? _Nyfa.green : _Nyfa.paper,
+                    color: i == last ? Nyfa.green : Nyfa.paper,
                     shadows: i == last
                         ? [
                             Shadow(
-                              color: _Nyfa.green.withValues(alpha: 0.55),
+                              color: Nyfa.green.withValues(alpha: 0.55),
                               blurRadius: 34,
                             ),
                           ]
@@ -333,7 +326,7 @@ class _GoogleButton extends StatelessWidget {
           Text(
             L10n.of(context).continueWithGoogle,
             style: const TextStyle(
-              fontFamily: _body,
+              fontFamily: Nyfa.body,
               fontSize: 15,
               fontWeight: FontWeight.w500,
               letterSpacing: 0.2,
