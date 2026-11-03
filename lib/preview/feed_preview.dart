@@ -31,6 +31,7 @@ import 'package:footbag_network/pages/session/session_page.dart';
 import 'package:footbag_network/pages/session/where_sheet.dart';
 import 'package:footbag_network/pages/suggest_trick/suggest_trick.dart';
 import 'package:footbag_network/pages/welcome/welcome_page.dart';
+import 'package:footbag_network/preview/screens_preview.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
 import 'package:footbag_network/widgets/footbag_map.dart';
 import 'package:image_picker/image_picker.dart';
@@ -118,6 +119,15 @@ Widget previewBody(BuildContext context) =>
       'places' => const _PreviewPlaces(),
       'where' => const _PreviewWhere(),
       'goals' => const _PreviewGoals(),
+      'dash' => const PreviewDash(),
+      'dash-running' => const PreviewDash(mode: 'running'),
+      'discover' => const PreviewDiscover(),
+      'rankings' => const PreviewRankings(),
+      'report' => const PreviewReport(),
+      'profile' => const PreviewProfile(),
+      'favourites' => const PreviewFavourites(),
+      'picker' => const PreviewTrickPicker(),
+      'schedule' => const PreviewNewSession(),
       'suggest' => const SuggestTrick(initialName: 'Toe Blur'),
       'tricks-queue' => const _PreviewTricksQueue(),
       _ => const _PreviewFeed(mode: 'recent'),

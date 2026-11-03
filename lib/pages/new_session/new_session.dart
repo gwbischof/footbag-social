@@ -52,6 +52,11 @@ class NewSessionController extends State<NewSession> {
   void initState() {
     super.initState();
     clubId = widget.clubId;
+    loadClubs();
+  }
+
+  /// Overridden by the preview harness, which has no client.
+  void loadClubs() {
     Matrix.of(context).client.fetchClubs(mine: true).then((all) {
       if (!mounted) return;
       setState(() => clubs = all.where((c) => c.isMember).toList());

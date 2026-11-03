@@ -305,7 +305,7 @@ class FeedChip extends StatelessWidget {
             // Tonal when off, green when on -- the shared chip's look; an
             // outlined-when-on chip keeps the tonal fill and turns its label
             // green, so "on" never needs a box drawn round it.
-            color: filled ? Nyfa.green : Nyfa.tonal,
+            color: filled ? Nyfa.paper : Nyfa.tonal,
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [

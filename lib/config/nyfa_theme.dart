@@ -371,8 +371,10 @@ class NyfaForm {
 /// A selectable chip: a filter, an option, a tab. One widget for every chip
 /// in the app -- there were five, each styled by hand.
 ///
-/// Unselected is a tonal fill with no outline; selected is the club green.
-/// A 44 high visual box inside a 48 tap target.
+/// Unselected is a tonal fill with no outline; selected is solid paper with
+/// ground type (APCA Lc 94). Not green: a form has three or four chip groups,
+/// and a green selection in each spent the accent four times on a screen
+/// whose one green thing should be the action. 40 to see, 48 to hit.
 class NyfaChip extends StatelessWidget {
   final String label;
   final bool selected;
@@ -406,7 +408,7 @@ class NyfaChip extends StatelessWidget {
           height: 40,
           margin: const EdgeInsets.symmetric(vertical: 4),
           padding: const EdgeInsets.symmetric(horizontal: 14),
-          color: selected ? Nyfa.green : Nyfa.tonal,
+          color: selected ? Nyfa.paper : Nyfa.tonal,
           child: Center(
             widthFactor: 1,
             child: Row(

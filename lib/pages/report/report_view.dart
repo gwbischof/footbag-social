@@ -465,13 +465,15 @@ class _FirstToggle extends StatelessWidget {
       child: Container(
         height: 48,
         padding: const EdgeInsets.symmetric(horizontal: 14),
-        color: selected ? Nyfa.green : Nyfa.tonal,
+        // Tonal either way, the star and label turning green when on: a
+        // full-width green bar was the loudest thing on the report.
+        color: Nyfa.tonal,
         child: Row(
           children: [
             Icon(
               selected ? Icons.star_rounded : Icons.star_outline_rounded,
               size: 18,
-              color: selected ? Nyfa.ground : Nyfa.muted,
+              color: selected ? Nyfa.green : Nyfa.muted,
             ),
             const SizedBox(width: 7),
             Text(
@@ -480,7 +482,7 @@ class _FirstToggle extends StatelessWidget {
                 fontFamily: Nyfa.display,
                 fontSize: 16,
                 letterSpacing: 0.8,
-                color: selected ? Nyfa.ground : Nyfa.paper,
+                color: selected ? Nyfa.green : Nyfa.paper,
               ),
             ),
           ],
