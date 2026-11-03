@@ -36,11 +36,16 @@ Future<void> showInviteSheet(
 class PersonRow extends StatelessWidget {
   final String userId;
   final String name;
+
+  /// A second line -- where they play, what they play -- when the list is
+  /// for finding someone rather than managing them.
+  final String? detail;
   final List<Widget> trailing;
 
   const PersonRow({
     required this.userId,
     required this.name,
+    this.detail,
     this.trailing = const [],
     super.key,
   });
@@ -52,21 +57,38 @@ class PersonRow extends StatelessWidget {
       extra: name,
     ),
     child: Container(
-      constraints: const BoxConstraints(minHeight: 56),
-      padding: const EdgeInsets.fromLTRB(20, 6, 12, 6),
+      constraints: BoxConstraints(minHeight: detail == null ? 56 : 68),
+      padding: const EdgeInsets.fromLTRB(20, 8, 12, 8),
       decoration: const BoxDecoration(
         border: Border(top: BorderSide(color: Nyfa.rule)),
       ),
       child: Row(
         children: [
-          PlayerAvatar(userId: userId, name: name, size: 32),
+          PlayerAvatar(
+            userId: userId,
+            name: name,
+            size: detail == null ? 32 : 40,
+          ),
           const SizedBox(width: 12),
           Expanded(
-            child: Text(
-              name,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: Nyfa.bodyText.copyWith(fontWeight: FontWeight.w600),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: Nyfa.bodyText.copyWith(fontWeight: FontWeight.w600),
+                ),
+                if (detail != null)
+                  Text(
+                    detail!,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Nyfa.meta,
+                  ),
+              ],
             ),
           ),
           ...trailing,

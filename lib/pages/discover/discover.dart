@@ -19,7 +19,10 @@ import 'package:material_ui/material_ui.dart';
 /// small community actually finds each other, so it is useful rather than a
 /// placeholder.
 class Discover extends StatefulWidget {
-  const Discover({super.key});
+  /// Which tab opens first: 0 sessions, 1 players, 2 clubs.
+  final int initialTab;
+
+  const Discover({this.initialTab = 0, super.key});
 
   @override
   DiscoverController createState() => DiscoverController();

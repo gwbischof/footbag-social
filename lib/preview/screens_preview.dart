@@ -156,7 +156,7 @@ class _PreviewDashState extends DashController {
 // -- Discover -----------------------------------------------------------------
 
 class PreviewDiscover extends Discover {
-  const PreviewDiscover({super.key});
+  const PreviewDiscover({super.initialTab, super.key});
 
   @override
   DiscoverController createState() => _PreviewDiscoverState();
@@ -209,7 +209,30 @@ class _PreviewDiscoverState extends DiscoverController {
             .toIso8601String(),
       }),
     ];
-    clubs = [];
+    clubs = [
+      FootbagClub.fromJson({
+        'id': 1,
+        'name': 'Tompkins Footbag',
+        'location': 'East Village',
+        'member_count': 23,
+        'my_state': 'approved',
+        'my_role': 'organiser',
+      }),
+      FootbagClub.fromJson({
+        'id': 2,
+        'name': 'Brooklyn Net Club',
+        'location': 'Prospect Park',
+        'member_count': 11,
+        'my_state': 'requested',
+      }),
+      FootbagClub.fromJson({
+        'id': 3,
+        'name': 'Chicago Shred',
+        'location': 'Chicago',
+        'member_count': 41,
+        'my_state': null,
+      }),
+    ];
   });
 }
 

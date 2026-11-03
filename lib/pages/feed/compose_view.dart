@@ -327,7 +327,7 @@ class _DraftTile extends StatelessWidget {
                     child: Text(
                       l10n.uploadFailed,
                       textAlign: TextAlign.center,
-                      style: Nyfa.bodyMuted.copyWith(fontSize: 12),
+                      style: Nyfa.meta,
                     ),
                   ),
                 ),

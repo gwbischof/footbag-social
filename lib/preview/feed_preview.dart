@@ -41,7 +41,12 @@ import 'package:latlong2/latlong.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:matrix/matrix.dart' show Client;
 
-void main() => runApp(const FeedPreviewApp());
+void main() {
+  // Every screen with a face on it needs this, not only the ones that
+  // remembered to set it: there is no Matrix client here to ask.
+  PlayerAvatar.previewBuilder = PreviewActions().avatar;
+  runApp(const FeedPreviewApp());
+}
 
 const _api = 'http://127.0.0.1:8000';
 
@@ -126,6 +131,8 @@ Widget previewBody(BuildContext context) =>
       'dash' => const PreviewDash(),
       'dash-running' => const PreviewDash(mode: 'running'),
       'discover' => const PreviewDiscover(),
+      'discover-players' => const PreviewDiscover(initialTab: 1),
+      'discover-clubs' => const PreviewDiscover(initialTab: 2),
       'rankings' => const PreviewRankings(),
       'report' => const PreviewReport(),
       'profile' => const PreviewProfile(),
@@ -167,7 +174,6 @@ class _PreviewFeedController extends FeedController {
 
   @override
   String get myUserId {
-    PlayerAvatar.previewBuilder = PreviewActions().avatar;
     InboxBell.previewCount = 3;
     return '@g:x';
   }
@@ -303,7 +309,6 @@ class _PreviewSession extends SessionPage {
 class _PreviewSessionState extends SessionPageState {
   @override
   Future<void> load() async {
-    PlayerAvatar.previewBuilder = PreviewActions().avatar;
     final role = (widget as _PreviewSession).role;
     final host = role == 'host';
     final named = host || role == 'approved';
@@ -430,7 +435,6 @@ class _PreviewInboxState extends InboxPageState {
 
   @override
   Future<void> load() async {
-    PlayerAvatar.previewBuilder = PreviewActions().avatar;
     final now = DateTime.now().toUtc();
     String ago(Duration d) => now.subtract(d).toIso8601String();
     Map<String, dynamic> a(String n) => {'user_id': '@$n:x', 'display_name': n};
@@ -533,7 +537,6 @@ class _PreviewClubState extends ClubPageState {
 
   @override
   Future<void> load() async {
-    PlayerAvatar.previewBuilder = PreviewActions().avatar;
     final w = widget as _PreviewClub;
     final organiser = w.role == 'organiser';
     Map<String, dynamic> m(String n, String role, {bool creator = false}) => {
@@ -813,7 +816,6 @@ class _PreviewPlayerState extends PlayerPageState {
 
   @override
   Future<void> load() async {
-    PlayerAvatar.previewBuilder = PreviewActions().avatar;
     setState(() {
       profile = FootbagPlayerProfile.fromJson({
         'user_id': '@landes:footbagsocial.com',

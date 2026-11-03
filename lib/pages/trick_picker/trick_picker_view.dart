@@ -74,7 +74,7 @@ class TrickPickerView extends StatelessWidget {
             alignment: Alignment.centerLeft,
             child: Text(
               l10n.searchTricksHelp,
-              style: Nyfa.bodyMuted.copyWith(fontSize: 12),
+              style: Nyfa.meta,
             ),
           ),
         ),
@@ -261,7 +261,7 @@ class _EntryRow extends StatelessWidget {
                       const SizedBox(height: 3),
                       Text(
                         detail,
-                        style: Nyfa.bodyMuted.copyWith(fontSize: 12),
+                        style: Nyfa.meta,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),

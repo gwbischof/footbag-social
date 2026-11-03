@@ -358,7 +358,7 @@ class _CommentRowState extends State<CommentRow> {
                           ),
                           TextSpan(
                             text: relativeTime(l10n, comment.createdAt),
-                            style: Nyfa.bodyMuted.copyWith(fontSize: 12),
+                            style: Nyfa.meta,
                           ),
                         ],
                       ),

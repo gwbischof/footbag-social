@@ -169,7 +169,7 @@ class _ChatRow extends StatelessWidget {
                 style: Nyfa.bodyText.copyWith(fontWeight: FontWeight.w700),
               ),
             ),
-            const Icon(Icons.chevron_right_rounded, color: Nyfa.muted),
+            const Icon(Icons.chevron_right_rounded, color: Nyfa.faint),
           ],
         ),
       ),
@@ -303,7 +303,7 @@ class _InboxRow extends StatelessWidget {
         child: const Icon(Icons.notes_rounded, size: 20, color: Nyfa.muted),
       );
     } else if (item.sessionId != null || item.club != null) {
-      trail = const Icon(Icons.chevron_right_rounded, color: Nyfa.muted);
+      trail = const Icon(Icons.chevron_right_rounded, color: Nyfa.faint);
     }
 
     return InkWell(
@@ -324,7 +324,7 @@ class _InboxRow extends StatelessWidget {
                     ..._emphasised(_text(l10n), _names(l10n, item)),
                     TextSpan(
                       text: '  ${relativeTime(l10n, item.at)}',
-                      style: Nyfa.bodyMuted.copyWith(fontSize: 12),
+                      style: Nyfa.meta,
                     ),
                   ],
                 ),

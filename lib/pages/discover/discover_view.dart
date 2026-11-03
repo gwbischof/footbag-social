@@ -10,6 +10,7 @@ import 'package:footbag_network/utils/localized_exception_extension.dart';
 import 'package:footbag_network/widgets/footbag_map.dart';
 import 'package:footbag_network/widgets/footbag_nav_bar.dart';
 import 'package:footbag_network/widgets/layouts/max_width_body.dart';
+import 'package:footbag_network/widgets/people.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -24,6 +25,7 @@ class DiscoverView extends StatelessWidget {
 
     return DefaultTabController(
       length: 3,
+      initialIndex: controller.widget.initialTab,
       child: Scaffold(
         key: const Key('DiscoverScaffold'),
         backgroundColor: Nyfa.ground,
@@ -235,7 +237,7 @@ class _SessionsTab extends StatelessWidget {
                               if (s.myState == 'requested') l10n.requestSent,
                               if (s.myState == 'approved') l10n.youreGoing,
                             ].join('  ·  '),
-                            style: Nyfa.bodyMuted.copyWith(fontSize: 12),
+                            style: Nyfa.meta,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -250,7 +252,7 @@ class _SessionsTab extends StatelessWidget {
                       ),
                     ],
                     const SizedBox(width: 6),
-                    const Icon(Icons.chevron_right_rounded, color: Nyfa.muted),
+                    const Icon(Icons.chevron_right_rounded, color: Nyfa.faint),
                   ],
                 ),
               ),
@@ -322,60 +324,19 @@ class _PlayerRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = L10n.of(context);
-    final detail = [
-      if (player.city != null && player.city!.isNotEmpty) player.city!,
-      if (player.playStyles.isEmpty)
-        l10n.playsNothingYet
-      else
-        player.playStyles.map((s) => _styleLabel(l10n, s)).join(' · '),
-    ].join('   ·   ');
-
-    return DecoratedBox(
-      decoration: const BoxDecoration(
-        border: Border(top: BorderSide(color: Nyfa.rule)),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-        child: Row(
-          children: [
-            CircleAvatar(
-              radius: 18,
-              backgroundColor: Nyfa.raised,
-              child: Text(
-                player.displayName.isEmpty
-                    ? '?'
-                    : player.displayName.characters.first.toUpperCase(),
-                style: const TextStyle(
-                  fontFamily: Nyfa.display,
-                  color: Nyfa.green,
-                  fontSize: 17,
-                ),
-              ),
-            ),
-            const SizedBox(width: 14),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    player.displayName.toUpperCase(),
-                    style: Nyfa.heading.copyWith(fontSize: 17),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 3),
-                  Text(
-                    detail,
-                    style: Nyfa.bodyMuted.copyWith(fontSize: 12),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
+    return PersonRow(
+      userId: player.userId,
+      name: player.displayName,
+      detail: [
+        if (player.city != null && player.city!.isNotEmpty) player.city!,
+        if (player.playStyles.isEmpty)
+          l10n.playsNothingYet
+        else
+          player.playStyles.map((s) => _styleLabel(l10n, s)).join(', '),
+      ].join('  ·  '),
+      trailing: const [
+        Icon(Icons.chevron_right_rounded, color: Nyfa.faint),
+      ],
     );
   }
 
@@ -493,13 +454,10 @@ class _ClubsTab extends StatelessWidget {
               ),
             )
           else if (list.isEmpty)
-            Padding(
-              padding: const EdgeInsets.all(32),
-              child: Text(
-                l10n.clubsEmpty,
-                textAlign: TextAlign.center,
-                style: Nyfa.bodyMuted,
-              ),
+            _Empty(
+              icon: Icons.groups_outlined,
+              title: l10n.discoverClubs,
+              body: l10n.clubsEmpty,
             )
           else
             for (final c in list)
@@ -534,7 +492,7 @@ class _ClubsTab extends StatelessWidget {
                               ].join('  ·  '),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: Nyfa.bodyMuted.copyWith(fontSize: 12),
+                              style: Nyfa.meta,
                             ),
                           ],
                         ),
@@ -545,10 +503,7 @@ class _ClubsTab extends StatelessWidget {
                           child: Text(
                             (c.isOrganiser ? l10n.organiser : l10n.youAreMember)
                                 .toUpperCase(),
-                            style: Nyfa.eyebrow.copyWith(
-                              fontSize: 13,
-                              color: Nyfa.green,
-                            ),
+                            style: Nyfa.eyebrow.copyWith(fontSize: 13),
                           ),
                         )
                       else if (c.myState == 'requested')
@@ -561,7 +516,7 @@ class _ClubsTab extends StatelessWidget {
                         ),
                       const Icon(
                         Icons.chevron_right_rounded,
-                        color: Nyfa.muted,
+                        color: Nyfa.faint,
                       ),
                     ],
                   ),

@@ -778,7 +778,7 @@ class _Where extends StatelessWidget {
                     if (area != null)
                       Text(
                         l10n.areaMiles(_milesOf(area)),
-                        style: Nyfa.bodyMuted.copyWith(fontSize: 12),
+                        style: Nyfa.meta,
                       ),
                   ],
                 ),

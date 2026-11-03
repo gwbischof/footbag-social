@@ -203,7 +203,7 @@ class _WhereSheetState extends State<_WhereSheet> {
                   if (subtitle != null)
                     Text(
                       subtitle,
-                      style: Nyfa.bodyMuted.copyWith(fontSize: 12),
+                      style: Nyfa.meta,
                     ),
                 ],
               ),

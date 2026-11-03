@@ -332,7 +332,7 @@ class _Heatmap extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(20, 0, 20, 12),
           child: Text(
             l10n.yourPracticeBody,
-            style: Nyfa.bodyMuted.copyWith(fontSize: 12),
+            style: Nyfa.meta,
           ),
         ),
         if (days.isEmpty)

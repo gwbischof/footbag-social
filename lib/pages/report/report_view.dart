@@ -205,7 +205,7 @@ class ReportView extends StatelessWidget {
               Expanded(
                 child: Text(
                   l10n.consecutiveKicksHelp,
-                  style: Nyfa.bodyMuted.copyWith(fontSize: 12),
+                  style: Nyfa.meta,
                 ),
               ),
             ],

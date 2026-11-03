@@ -130,6 +130,16 @@ class Nyfa {
     height: 1.45,
   );
 
+  /// The second line of a list row: who, where, how many. 13, not the 12
+  /// these rows were each setting by hand -- below 13 the muted grey stops
+  /// being readable at arm's length.
+  static const meta = TextStyle(
+    fontFamily: body,
+    color: muted,
+    fontSize: 13,
+    height: 1.35,
+  );
+
   /// Timestamps and asides.
   static const bodyFaint = TextStyle(
     fontFamily: body,
