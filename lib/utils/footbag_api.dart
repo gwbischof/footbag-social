@@ -683,12 +683,14 @@ extension FootbagApi on Client {
     List<String> tags = const [],
     bool isTutorial = false,
     int? sessionId,
+    bool shareResults = false,
     int? clubId,
     String? placeName,
     double? lat,
     double? lng,
   }) async => FootbagPost.fromJson(
     await _apiPostObject('posts', {
+      if (shareResults) 'share_results': true,
       'caption': caption,
       'media_ids': mediaIds,
       'tags': tags,
@@ -975,6 +977,9 @@ class FootbagSession {
   /// The club running it, if any. Its members are let in without asking.
   final FootbagClubRef? club;
 
+  /// The host has put everyone's results on their post.
+  final bool resultsShared;
+
   /// The circle anyone who can see the session sees. Centred near the spot,
   /// never on it.
   final FootbagArea? area;
@@ -1016,6 +1021,7 @@ class FootbagSession {
     required this.duration,
     this.hostName,
     this.club,
+    this.resultsShared = false,
     this.area,
     this.place,
     this.attendeeCount = 0,
@@ -1054,6 +1060,7 @@ class FootbagSession {
         : Duration(seconds: json['duration_seconds'] as int),
     hostName: json['host_name'] as String?,
     club: FootbagClubRef.maybe(json['club']),
+    resultsShared: json['results_shared'] as bool? ?? false,
     area: json['area'] == null
         ? null
         : FootbagArea.fromJson(json['area'] as Map<String, dynamic>),
@@ -1503,7 +1510,11 @@ class FootbagSessionSummary {
   final int? kicks;
   final List<FootbagSessionLine> lines;
 
+  /// Everyone else's results, on the host's post once shared.
+  final List<FootbagPlayerResult> others;
+
   const FootbagSessionSummary({
+    this.others = const [],
     required this.id,
     required this.name,
     required this.type,
@@ -1524,6 +1535,10 @@ class FootbagSessionSummary {
         lines: [
           for (final l in (json['lines'] as List? ?? const []))
             FootbagSessionLine.fromJson(l as Map<String, dynamic>),
+        ],
+        others: [
+          for (final o in (json['others'] as List? ?? const []))
+            FootbagPlayerResult.fromJson(o as Map<String, dynamic>),
         ],
       );
 }
@@ -2079,5 +2094,31 @@ class FootbagPendingEntry {
             .cast<String>(),
         stepNames: (json['step_names'] as List? ?? const []).cast<String>(),
         suggestedByName: json['suggested_by_name'] as String?,
+      );
+}
+
+/// One attendee's results on a shared session.
+class FootbagPlayerResult {
+  final String userId;
+  final String name;
+  final int? kicks;
+  final List<FootbagSessionLine> lines;
+
+  const FootbagPlayerResult({
+    required this.userId,
+    required this.name,
+    required this.kicks,
+    required this.lines,
+  });
+
+  factory FootbagPlayerResult.fromJson(Map<String, dynamic> json) =>
+      FootbagPlayerResult(
+        userId: json['user_id'] as String,
+        name: json['name'] as String,
+        kicks: json['kicks'] as int?,
+        lines: [
+          for (final l in (json['lines'] as List? ?? const []))
+            FootbagSessionLine.fromJson(l as Map<String, dynamic>),
+        ],
       );
 }

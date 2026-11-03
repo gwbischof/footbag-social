@@ -5287,5 +5287,64 @@
         "type": "String",
         "description": "Explains the moderator's two answers.",
         "placeholders": {}
+    },
+    "inboxResultsShared": "{names} shared the results of {session}",
+    "@inboxResultsShared": {
+        "type": "String",
+        "description": "Inbox: the host put everyone's reports on their post.",
+        "placeholders": {
+            "names": {
+                "type": "String"
+            },
+            "session": {
+                "type": "String"
+            }
+        }
+    },
+    "morePlayers": "{count, plural, =1{1 more player} other{{count} more players}}",
+    "@morePlayers": {
+        "type": "String",
+        "description": "More results than a card shows.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "includeEveryonesResults": "Include everyone's results",
+    "@includeEveryonesResults": {
+        "type": "String",
+        "description": "Host's switch when posting a finished session.",
+        "placeholders": {}
+    },
+    "includeEveryonesResultsBody": "Their firsts and grades go on your post. Numbers only for those who share them, and nobody who keeps their sessions hidden.",
+    "@includeEveryonesResultsBody": {
+        "type": "String",
+        "description": "Explains what sharing results shows.",
+        "placeholders": {}
+    },
+    "reportSavedTitle": "Report saved",
+    "@reportSavedTitle": {
+        "type": "String",
+        "description": "Sheet title after saving a report.",
+        "placeholders": {}
+    },
+    "shareSessionPrompt": "Post it to the feed? Your firsts and grades go on the card; your numbers only if you share them.",
+    "@shareSessionPrompt": {
+        "type": "String",
+        "description": "Offer to post a public session after reporting.",
+        "placeholders": {}
+    },
+    "shareSessionPromptHost": "Post it to the feed? You can include everyone's results too.",
+    "@shareSessionPromptHost": {
+        "type": "String",
+        "description": "Offer to the host after reporting.",
+        "placeholders": {}
+    },
+    "notNow": "Not now",
+    "@notNow": {
+        "type": "String",
+        "description": "Decline an offer for now.",
+        "placeholders": {}
     }
 }

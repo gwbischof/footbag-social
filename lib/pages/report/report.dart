@@ -4,6 +4,7 @@
 
 import 'dart:async';
 
+import 'package:footbag_network/config/nyfa_theme.dart';
 import 'package:footbag_network/l10n/l10n.dart';
 import 'package:footbag_network/pages/report/report_view.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
@@ -270,24 +271,58 @@ class ReportController extends State<Report> {
     if (!mounted) return;
     setState(() => saving = false);
     // A public session is a feed post, per the doc -- but posting is the
-    // player's choice, so it is offered rather than done. The router is
-    // captured now because this screen is gone by the time anyone taps.
+    // player's choice, so it is offered rather than done. Asked in a sheet,
+    // not a snackbar: this is the moment the session becomes something to
+    // show, and an eight-second toast is easy to miss.
     final router = GoRouter.of(context);
-    final shareable = session?.onFeed == 'public';
-    messenger.showSnackBar(
-      SnackBar(
-        content: Text(l10n.reportSaved),
-        duration: Duration(seconds: shareable ? 8 : 4),
-        action: shareable
-            ? SnackBarAction(
-                label: l10n.shareToFeed.toUpperCase(),
-                onPressed: () =>
-                    router.push('/rooms/feed/new', extra: widget.sessionId),
-              )
-            : null,
+    final s = session;
+    if (s?.onFeed != 'public') {
+      messenger.showSnackBar(SnackBar(content: Text(l10n.reportSaved)));
+      navigator.pop(true);
+      return;
+    }
+    final share = await showModalBottomSheet<bool>(
+      context: context,
+      backgroundColor: Nyfa.ground,
+      shape: const RoundedRectangleBorder(),
+      builder: (context) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 24, 20, 16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(l10n.reportSavedTitle.toUpperCase(), style: Nyfa.heading),
+              const SizedBox(height: 8),
+              Text(
+                s!.isHost
+                    ? l10n.shareSessionPromptHost
+                    : l10n.shareSessionPrompt,
+                style: Nyfa.bodyMuted,
+              ),
+              const SizedBox(height: 20),
+              NyfaForm.action(
+                key: const Key('ReportShareToFeed'),
+                label: l10n.shareToFeed,
+                onPressed: () => Navigator.of(context).pop(true),
+              ),
+              const SizedBox(height: 10),
+              NyfaForm.action(
+                key: const Key('ReportNotNow'),
+                label: l10n.notNow,
+                filled: false,
+                onPressed: () => Navigator.of(context).pop(false),
+              ),
+            ],
+          ),
+        ),
       ),
     );
+    if (!mounted) return;
     navigator.pop(true);
+    if (share == true) {
+      unawaited(router.push('/rooms/feed/new', extra: widget.sessionId));
+    }
   }
 
   @override

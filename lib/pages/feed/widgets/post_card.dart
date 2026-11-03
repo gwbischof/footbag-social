@@ -153,7 +153,10 @@ class _PostCardState extends State<PostCard> {
             if (post.session != null)
               GestureDetector(
                 onDoubleTap: _doubleTap,
-                child: SessionResults(summary: post.session!),
+                child: SessionResults(
+                  summary: post.session!,
+                  authorName: post.authorName,
+                ),
               ),
           ],
           _ActionRow(
@@ -179,7 +182,7 @@ class _PostCardState extends State<PostCard> {
               onClub: widget.actions.openClub,
             ),
           if (hasMedia && post.session != null)
-            SessionResults(summary: post.session!),
+            SessionResults(summary: post.session!, authorName: post.authorName),
           if (!widget.expanded)
             _CommentPreview(post: post, onOpen: () => _comments(typing: false)),
           const SizedBox(height: 16),
@@ -744,7 +747,16 @@ class _Tags extends StatelessWidget {
 class SessionResults extends StatelessWidget {
   final FootbagSessionSummary summary;
 
-  const SessionResults({required this.summary, super.key});
+  /// Who posted it: named over their own lines once others' results share
+  /// the card, so it reads as a table of players rather than one list.
+  final String? authorName;
+
+  const SessionResults({required this.summary, this.authorName, super.key});
+
+  /// How much of a shared session a card holds; the post page is the same
+  /// card, so the cap is about the feed staying a feed.
+  static const _perPlayer = 3;
+  static const _players = 8;
 
   static String _duration(Duration d) {
     final h = d.inHours;
@@ -814,19 +826,40 @@ class SessionResults extends StatelessWidget {
               ),
               text: l10n.consecutiveKicks,
             ),
-          for (final line in summary.lines.take(6))
-            _line(
-              lead: line.isFirst ? _Badge(text: l10n.firstLanded) : null,
-              text: line.name,
-              trailing: [
-                _grade(l10n, line.grade),
-                if (line.count != null) '×${line.count}',
-              ].whereType<String>().join('  '),
-            ),
+          if (summary.others.isNotEmpty && authorName != null)
+            _player(authorName!),
+          for (final line in summary.lines.take(
+            summary.others.isEmpty ? 6 : _perPlayer,
+          ))
+            _result(l10n, line),
+          for (final o in summary.others.take(_players)) ...[
+            _player(o.name),
+            if (o.kicks != null)
+              _line(text: l10n.consecutiveKicks, trailing: '${o.kicks}'),
+            for (final line in o.lines.take(_perPlayer)) _result(l10n, line),
+          ],
+          if (summary.others.length > _players)
+            _line(text: l10n.morePlayers(summary.others.length - _players)),
         ],
       ),
     );
   }
+
+  Widget _result(L10n l10n, FootbagSessionLine line) => _line(
+    lead: line.isFirst ? _Badge(text: l10n.firstLanded) : null,
+    text: line.name,
+    trailing: [
+      _grade(l10n, line.grade),
+      if (line.count != null) '×${line.count}',
+    ].whereType<String>().join('  '),
+  );
+
+  /// A player's name, heading their lines on a shared session.
+  /// No rule of its own: the lines under it carry theirs.
+  Widget _player(String name) => Padding(
+    padding: const EdgeInsets.fromLTRB(14, 14, 14, 6),
+    child: Text(name.toUpperCase(), style: Nyfa.eyebrow),
+  );
 
   Widget _line({Widget? lead, required String text, String trailing = ''}) =>
       DecoratedBox(

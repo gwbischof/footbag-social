@@ -249,6 +249,7 @@ class _InboxRow extends StatelessWidget {
       'join_approved' => l10n.inboxJoinApproved(names, session),
       'club_request' => l10n.inboxClubRequest(names, item.club?.name ?? ''),
       'club_approved' => l10n.inboxClubApproved(names, item.club?.name ?? ''),
+      'results_shared' => l10n.inboxResultsShared(names, session),
       'post_removed' => l10n.inboxPostRemoved,
       'report_resolved' =>
         item.outcome == 'removed'

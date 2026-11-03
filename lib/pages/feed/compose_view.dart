@@ -116,6 +116,16 @@ class ComposeView extends StatelessWidget {
                     onToggle: (v) =>
                         c.setSession(v == 'none' ? null : int.parse(v)),
                   ),
+                  if (c.canShareResults) ...[
+                    const SizedBox(height: 8),
+                    NyfaForm.toggle(
+                      key: const Key('ComposeShareResults'),
+                      label: l10n.includeEveryonesResults,
+                      explain: l10n.includeEveryonesResultsBody,
+                      value: c.shareResults,
+                      onChanged: c.setShareResults,
+                    ),
+                  ],
                 ],
                 if (c.clubs.isNotEmpty) ...[
                   NyfaForm.section(l10n.postToClub),

@@ -232,6 +232,17 @@ class ComposeController extends State<Compose> {
 
   void setSession(int? id) => setState(() => sessionId = id);
 
+  /// The host's Share results, on by default: a finished session you ran is
+  /// most often posted to show how it went for everyone.
+  bool shareResults = true;
+  void setShareResults(bool v) => setState(() => shareResults = v);
+
+  /// Offered only where it can apply: your session, over, not yet shared.
+  bool get canShareResults {
+    final s = sessions?.where((s) => s.id == sessionId).firstOrNull;
+    return s != null && s.isHost && s.endedAt != null && !s.resultsShared;
+  }
+
   Future<void> setAddArea(bool on) async {
     if (!on) {
       setState(() {
@@ -283,6 +294,7 @@ class ComposeController extends State<Compose> {
         tags: tags,
         isTutorial: tutorial,
         sessionId: sessionId,
+        shareResults: canShareResults && shareResults,
         clubId: clubId,
         placeName: addArea && place.text.trim().isNotEmpty
             ? place.text.trim()
