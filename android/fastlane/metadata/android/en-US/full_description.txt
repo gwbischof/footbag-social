@@ -1,10 +1,10 @@
 <b>For the footbag community</b>
 
-Footbag Network connects footbag players worldwide — freestyle, net, and casual. Find people to play with, keep up with what's happening in the scene, and talk shop about shoes, bags, and tricks.
+Footbag Social connects footbag players worldwide — freestyle, net, and casual. Find people to play with, keep up with what's happening in the scene, and talk shop about shoes, bags, and tricks.
 
 <b>One community, not another silo</b>
 
-The chat here is the same network the footbag community already uses, so you are not starting over in an empty app. Footbag Network is built on the open Matrix protocol and works with any other Matrix client, including Element, Cinny, and NeoChat.
+The chat here is the same network the footbag community already uses, so you are not starting over in an empty app. Footbag Social is built on the open Matrix protocol and works with any other Matrix client, including Element, Cinny, and NeoChat.
 
 <b>Easy to use</b>
 
@@ -20,4 +20,4 @@ Group chats, spaces, images and files, voice messages, location sharing, custom 
 
 <b>Open source</b>
 
-Footbag Network is free and open source under the AGPL. It is a fork of FluffyChat, an excellent Matrix client built by volunteers — our thanks to them. Source code and issue tracker: https://github.com/gwbischof/footbag-network
+Footbag Social is free and open source under the AGPL. It is a fork of FluffyChat, an excellent Matrix client built by volunteers — our thanks to them. Source code and issue tracker: https://github.com/gwbischof/footbag-network

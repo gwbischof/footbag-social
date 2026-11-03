@@ -540,7 +540,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "inviteText": "دعاك {username} إلى Footbag Network.\n1. قم بزيارة موقع footbagsocial.com وقم بتثبيت التطبيق\n2. قم بإنشاءحساب أو تسجيل الدخول\n3. افتح رابط الدعوة:\n {link}",
+    "inviteText": "دعاك {username} إلى Footbag Social.\n1. قم بزيارة موقع footbagsocial.com وقم بتثبيت التطبيق\n2. قم بإنشاءحساب أو تسجيل الدخول\n3. افتح رابط الدعوة:\n {link}",
     "@inviteText": {
         "type": "String",
         "placeholders": {
@@ -672,7 +672,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "newMessageInApp": "💬 رسالة جديدة في Footbag Network",
+    "newMessageInApp": "💬 رسالة جديدة في Footbag Social",
     "@newMessageInApp": {
         "type": "String",
         "placeholders": {}
@@ -2449,7 +2449,7 @@
     "advancedConfigurations": "التكويناتالمتقدمة",
     "signIn": "تسجيل الدخول",
     "createNewAccount": "إنشاء حساب جديد",
-    "signUpGreeting": "Footbag Network لا مركزي! اختر الخادم الذي تريد إنشاء حسابك عليه ولنبدأ!",
+    "signUpGreeting": "Footbag Social لا مركزي! اختر الخادم الذي تريد إنشاء حسابك عليه ولنبدأ!",
     "signInGreeting": "هل لديك حساب بالفعل في ماتريكس؟ أهلاً بك مجدداً! اختر خادمك المنزلي وسجّل الدخول.",
     "theProcessWasCanceled": "تم إلغاء العملية.",
     "join": "انضمام",
@@ -2468,7 +2468,7 @@
     },
     "createNewChat": "إنشاء محادثة جديدة",
     "reset": "إعادة تعيين",
-    "supportApp": "ادعم Footbag Network",
+    "supportApp": "ادعم Footbag Social",
     "support": "دعم",
     "setLowPriority": "حدد أولوية منخفضة",
     "unsetLowPriority": "إلغاء تعيين الأولوية المنخفضة",
@@ -2478,7 +2478,7 @@
     "tagName": "اسم الوسم",
     "createNewTag": "إنشاء وسم جديد",
     "hideRoomsInSpaces": "إخفاء الغرف الموجودة في مساحة",
-    "possibleByYou": "لم يكن هذا الإصدار ليتحقق لولا دعمكم. سيظل Footbag Network مجانيًا ومفتوح المصدر، ويعتمد كليًا على جهود المجتمع.",
+    "possibleByYou": "لم يكن هذا الإصدار ليتحقق لولا دعمكم. سيظل Footbag Social مجانيًا ومفتوح المصدر، ويعتمد كليًا على جهود المجتمع.",
     "showThumbnailsInTimeline": "عرض الصور المصغرة للصور ومقاطع الفيديو",
     "interactiveVerification": "التحقق التفاعلي",
     "interactiveVerificationDescription": "إذا كنتم بجانب بعضكم البعض أو تتواصلون عبر قناة آمنة، فيمكنكم التحقق من جميع الأجهزة في وقت واحد عن طريق مقارنة رقم الأمان أو الرموز التعبيرية.",
@@ -2550,7 +2550,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "newPassphraseDescription": "يستخدم تطبيق Footbag Network التشفير التام بين الطرفين. ولضمان عدم فقدان رسائلك، يُرجى اختيار عبارة مرور قوية لحماية هويتك الرقمية ونسخة احتياطية من رسائلك المشفرة.",
+    "newPassphraseDescription": "يستخدم تطبيق Footbag Social التشفير التام بين الطرفين. ولضمان عدم فقدان رسائلك، يُرجى اختيار عبارة مرور قوية لحماية هويتك الرقمية ونسخة احتياطية من رسائلك المشفرة.",
     "@newPassphraseDescription": {
         "type": "String",
         "placeholders": {}

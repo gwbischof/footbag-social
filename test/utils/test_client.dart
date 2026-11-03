@@ -31,7 +31,7 @@ class _FakeNotifications extends FlutterLocalNotificationsPlatform {}
 Future<Client> prepareTestClient({
   bool loggedIn = false,
   Uri? homeserver,
-  String id = 'Footbag Network Widget Test',
+  String id = 'Footbag Social Widget Test',
   http.Client? httpClient,
 }) async {
   await setUpVodozemac();
@@ -41,7 +41,7 @@ Future<Client> prepareTestClient({
 
   homeserver ??= Uri.parse('https://fakeserver.notexisting');
   final client = Client(
-    'Footbag Network Widget Tests',
+    'Footbag Social Widget Tests',
     httpClient: httpClient ?? FakeMatrixApi(),
     verificationMethods: {
       KeyVerificationMethod.numbers,

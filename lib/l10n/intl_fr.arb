@@ -815,7 +815,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "inviteText": "{username} vous a invité·e sur Footbag Network.\n1. Visiter footbagsocial.com et installer l'application\n2. Inscrivez-vous ou connectez-vous\n3. Ouvrez le lien d'invitation :\n{link}",
+    "inviteText": "{username} vous a invité·e sur Footbag Social.\n1. Visiter footbagsocial.com et installer l'application\n2. Inscrivez-vous ou connectez-vous\n3. Ouvrez le lien d'invitation :\n{link}",
     "@inviteText": {
         "type": "String",
         "placeholders": {
@@ -972,7 +972,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "newMessageInApp": "💬 Nouveau message dans Footbag Network",
+    "newMessageInApp": "💬 Nouveau message dans Footbag Social",
     "@newMessageInApp": {
         "type": "String",
         "placeholders": {}
@@ -2311,7 +2311,7 @@
     "notificationRuleIsUserMentionDescription": "Notifie l'utilisateur/trice lorsqu'il est mentionné directement dans un message.",
     "notificationRuleServerAcl": "Retire les Évènements ACL du Serveur",
     "advancedConfigurations": "Configurations avancées",
-    "signUpGreeting": "Footbag Network est décentralisé ! Sélectionnez un hôte sur lequel vous voulez créer un compte et c'est parti !",
+    "signUpGreeting": "Footbag Social est décentralisé ! Sélectionnez un hôte sur lequel vous voulez créer un compte et c'est parti !",
     "notificationRuleCall": "Appeler",
     "baseUrl": "URL racine",
     "pause": "Pause",
@@ -2481,7 +2481,7 @@
     "approve": "Approuver",
     "notificationRuleRoomnotifDescription": "Notifie l'utilisateur/trice lorsqu'un message contient '@room'.",
     "generalNotificationSettings": "Réglages généraux des notifications",
-    "supportApp": "Soutenir Footbag Network",
+    "supportApp": "Soutenir Footbag Social",
     "notificationRuleEncrypted": "Chiffré",
     "pleaseFillOut": "Veuillez remplir",
     "changedTheChatName": "{username} a changé le nom de la discussion",
@@ -2502,7 +2502,7 @@
     "showMore": "Voir plus",
     "showLess": "Voir moins",
     "hideRoomsInSpaces": "Cacher les salons qui sont dans un espace",
-    "possibleByYou": "Cette mise à jour a été possible uniquement grâce à votre support. Footbag Network restera gratuit, open-source et entièrement communautaire.",
+    "possibleByYou": "Cette mise à jour a été possible uniquement grâce à votre support. Footbag Social restera gratuit, open-source et entièrement communautaire.",
     "showThumbnailsInTimeline": "Afficher les apperçus des images et vidéos",
     "interactiveVerification": "Vérification intéractive",
     "interactiveVerificationDescription": "Si vous êtes l'un à coté de l'autre ou que vous communiquez par un canal sécurisé, vous pouvez vérifier tous vos appareils en une seule fois en comparant un numéro de sécurité ou des émoticônes.",
@@ -2582,7 +2582,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "newPassphraseDescription": "Footbag Network utilise le chiffrement de bout en bout. Pour ne pas perdre vos messages, veuillez choisir une phrase de passe forte pour sécuriser votre profile crypto et votre sauvegarde chiffrée des messages.",
+    "newPassphraseDescription": "Footbag Social utilise le chiffrement de bout en bout. Pour ne pas perdre vos messages, veuillez choisir une phrase de passe forte pour sécuriser votre profile crypto et votre sauvegarde chiffrée des messages.",
     "@newPassphraseDescription": {
         "type": "String",
         "placeholders": {}

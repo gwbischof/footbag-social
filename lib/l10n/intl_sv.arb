@@ -648,7 +648,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "inviteText": "{username} bjöd in dig till Footbag Network.\n1. Besök footbagsocial.com och installera appen\n2. Registrera dig eller logga in\n3. Öppna inbjudningslänk:\n {link}",
+    "inviteText": "{username} bjöd in dig till Footbag Social.\n1. Besök footbagsocial.com och installera appen\n2. Registrera dig eller logga in\n3. Öppna inbjudningslänk:\n {link}",
     "@inviteText": {
         "type": "String",
         "placeholders": {
@@ -795,7 +795,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "newMessageInApp": "💬 Nya meddelanden i Footbag Network",
+    "newMessageInApp": "💬 Nya meddelanden i Footbag Social",
     "@newMessageInApp": {
         "type": "String",
         "placeholders": {}
@@ -825,7 +825,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "noGoogleServicesWarning": "De ser ut som att du inte har google-tjänster på din telefon. Det är ett bra beslut för din integritet! För att få aviseringar i Footbag Network rekommenderar vi att använda https://microg.org/ eller https://unifiedpush.org/ .",
+    "noGoogleServicesWarning": "De ser ut som att du inte har google-tjänster på din telefon. Det är ett bra beslut för din integritet! För att få aviseringar i Footbag Social rekommenderar vi att använda https://microg.org/ eller https://unifiedpush.org/ .",
     "@noGoogleServicesWarning": {
         "type": "String",
         "placeholders": {}
@@ -2459,7 +2459,7 @@
     "identityServer": "Identitetsserver:",
     "advancedConfigs": "Avancerad konfiguration",
     "advancedConfigurations": "Avancerade konfigurationer",
-    "signUpGreeting": "Footbag Network är decentraliserad! Välj en server där du vill skapa ditt konto och kom igång!",
+    "signUpGreeting": "Footbag Social är decentraliserad! Välj en server där du vill skapa ditt konto och kom igång!",
     "signInGreeting": "Har du redan ett konto i Matrix? Välkommen tillbaka! Välj din hemserver och logga in.",
     "theProcessWasCanceled": "Processen blev avbruten.",
     "join": "Gå med",
@@ -2479,7 +2479,7 @@
     },
     "createNewChat": "Skapa ny chatt",
     "reset": "Återställ",
-    "supportApp": "Stöd Footbag Network",
+    "supportApp": "Stöd Footbag Social",
     "support": "Stöd",
     "setLowPriority": "Sätt låg prioritet",
     "unsetLowPriority": "Ta bort låg prioritet",
@@ -2489,7 +2489,7 @@
     "tagName": "Taggnamn",
     "createNewTag": "Skapa ny tagg",
     "hideRoomsInSpaces": "Dölj rum som är i en plats",
-    "possibleByYou": "Denna utgåva var endast möjlig tack vare ditt stöd. Footbag Network behålls gratis, öppen källkod, och helt gemenskapsdriven.",
+    "possibleByYou": "Denna utgåva var endast möjlig tack vare ditt stöd. Footbag Social behålls gratis, öppen källkod, och helt gemenskapsdriven.",
     "showThumbnailsInTimeline": "Visa förhandsvisning av bilder och videor",
     "interactiveVerification": "Interaktiv verifikation",
     "interactiveVerificationDescription": "Om ni är nära varandra eller kommunicerar genom en säker kanal kan nu verifiera alla enheter samtidigt genom att jämföra ett säkerhetsnummer eller emojis.",
@@ -2571,7 +2571,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "newPassphraseDescription": "Footbag Network använder helsträckskryptering. För att inte bli av med dina meddelanden, vänligen välj en stark lösenfras för att säkra din krypto-identitet och din krypterade säkerhetskopiering av meddelanden.",
+    "newPassphraseDescription": "Footbag Social använder helsträckskryptering. För att inte bli av med dina meddelanden, vänligen välj en stark lösenfras för att säkra din krypto-identitet och din krypterade säkerhetskopiering av meddelanden.",
     "@newPassphraseDescription": {
         "type": "String",
         "placeholders": {}

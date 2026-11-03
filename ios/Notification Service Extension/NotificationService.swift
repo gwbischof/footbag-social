@@ -119,7 +119,7 @@ class NotificationService: UNNotificationServiceExtension {
                         roomName
                         ?? heroes.map { hero in
                             hero.content.displayname
-                                ?? String(localized: "Footbag Network User")
+                                ?? String(localized: "Footbag Social User")
                         }.joined(separator: ", ")
                     roomAvatarUrl = roomAvatarUrl ?? heroes.first?.content.avatar_url
                 } else {

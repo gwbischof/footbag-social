@@ -26,7 +26,7 @@ find . -type f \
     -not -path "*/test/metadata/*" \
     -exec reuse annotate \
     --copyright="Christian Kußowski" \
-    --copyright="Contributors to Footbag Network" \
+    --copyright="Contributors to Footbag Social" \
     --license="AGPL-3.0-or-later" \
     --year="2019-Present" \
     --merge-copyrights \

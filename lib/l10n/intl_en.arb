@@ -986,7 +986,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "inviteText": "{username} invited you to Footbag Network.\n1. Visit footbagsocial.com and install the app \n2. Sign up or sign in \n3. Open the invite link: \n {link}",
+    "inviteText": "{username} invited you to Footbag Social.\n1. Visit footbagsocial.com and install the app \n2. Sign up or sign in \n3. Open the invite link: \n {link}",
     "@inviteText": {
         "type": "String",
         "placeholders": {
@@ -1147,7 +1147,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "newMessageInApp": "💬 New message in Footbag Network",
+    "newMessageInApp": "💬 New message in Footbag Social",
     "@newMessageInApp": {
         "type": "String",
         "placeholders": {}
@@ -3326,7 +3326,7 @@
     "advancedConfigurations": "Advanced configurations",
     "signIn": "Sign in",
     "createNewAccount": "Create new account",
-    "signUpGreeting": "Welcome to Footbag Network! Create an account to get started.",
+    "signUpGreeting": "Welcome to Footbag Social! Create an account to get started.",
     "signInGreeting": "You already have an account in Matrix? Welcome back! Select your homeserver and sign in.",
     "theProcessWasCanceled": "The process was canceled.",
     "join": "Join",
@@ -3346,7 +3346,7 @@
     },
     "createNewChat": "Create new chat",
     "reset": "Reset",
-    "supportApp": "Support Footbag Network",
+    "supportApp": "Support Footbag Social",
     "support": "Support",
     "setLowPriority": "Set low priority",
     "unsetLowPriority": "Unset low priority",
@@ -3356,7 +3356,7 @@
     "tagName": "Tag name",
     "createNewTag": "Create new tag",
     "hideRoomsInSpaces": "Hide rooms that are in a space",
-    "possibleByYou": "This release was only possible thanks to your support. Footbag Network remains free, open-source, and entirely community-driven.",
+    "possibleByYou": "This release was only possible thanks to your support. Footbag Social remains free, open-source, and entirely community-driven.",
     "showThumbnailsInTimeline": "Show thumbnails of images and videos",
     "appSubtitle": "Footbag, together",
     "appDescription": "Chat with footbag players around the world, find people to play with near you, and keep up with the scene.",
@@ -3440,7 +3440,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "newPassphraseDescription": "Footbag Network uses end to end encryption. To not lose your messages, please choose a strong passphrase to secure your crypto identity and your encrypted message backup.",
+    "newPassphraseDescription": "Footbag Social uses end to end encryption. To not lose your messages, please choose a strong passphrase to secure your crypto identity and your encrypted message backup.",
     "@newPassphraseDescription": {
         "type": "String",
         "placeholders": {}

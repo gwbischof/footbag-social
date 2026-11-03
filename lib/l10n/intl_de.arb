@@ -809,7 +809,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "inviteText": "{username} hat Dich zu Footbag Network eingeladen. \n1. Gehe auf footbagsocial.com und installiere die App \n2. Melde Dich in der App an \n3. Öffne den Einladungslink: \n {link}",
+    "inviteText": "{username} hat Dich zu Footbag Social eingeladen. \n1. Gehe auf footbagsocial.com und installiere die App \n2. Melde Dich in der App an \n3. Öffne den Einladungslink: \n {link}",
     "@inviteText": {
         "type": "String",
         "placeholders": {
@@ -966,7 +966,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "newMessageInApp": "💬 Neue Nachricht in Footbag Network",
+    "newMessageInApp": "💬 Neue Nachricht in Footbag Social",
     "@newMessageInApp": {
         "type": "String",
         "placeholders": {}
@@ -2477,7 +2477,7 @@
     "advancedConfigurations": "Erweiterte Konfigurationen",
     "signIn": "Anmelden",
     "createNewAccount": "Neues Konto erstellen",
-    "signUpGreeting": "Footbag Network ist dezentral! Wähle einen Server, auf dem du dein Konto erstellen möchtest, und los geht's!",
+    "signUpGreeting": "Footbag Social ist dezentral! Wähle einen Server, auf dem du dein Konto erstellen möchtest, und los geht's!",
     "signInGreeting": "Du hast bereits ein Konto bei Matrix? Willkommen zurück! Wähle deinen Homeserver aus und melde dich an.",
     "theProcessWasCanceled": "Der Vorgang wurde abgebrochen.",
     "federationBaseUrl": "Basis-URL der Föderation",
@@ -2499,7 +2499,7 @@
         "description": "This should be a very short string because there is not much space in the button!"
     },
     "createNewChat": "Neuen Chat erstellen",
-    "supportApp": "Footbag Network unterstützen",
+    "supportApp": "Footbag Social unterstützen",
     "support": "Unterstützen",
     "createNewTag": "Neuen tag erstellen",
     "tagName": "Tag-Name",
@@ -2516,7 +2516,7 @@
     "showMore": "Mehr anzeigen",
     "showLess": "Weniger anzeigen",
     "hideRoomsInSpaces": "Räume ausblenden, die sich in einem space befinden",
-    "possibleByYou": "Diese Veröffentlichung war nur dank eurer Unterstützung möglich. Footbag Network bleibt kostenlos, Open-Source und vollständig von der Community getragen.",
+    "possibleByYou": "Diese Veröffentlichung war nur dank eurer Unterstützung möglich. Footbag Social bleibt kostenlos, Open-Source und vollständig von der Community getragen.",
     "showThumbnailsInTimeline": "Thumbnails von Bildern und Videos anzeigen",
     "interactiveVerification": "Interaktive Verifikation",
     "interactiveVerificationDescription": "Wenn ihr euch nebeneinander befindet oder über einen sicheren Kanal kommuniziert, könnt ihr alle Geräte gleichzeitig verifizieren, indem ihr eine Sicherheitsnummer oder Emojis vergleicht.",
@@ -2598,7 +2598,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "newPassphraseDescription": "Footbag Network verwendet Ende-zu-Ende-Verschlüsselung. Um deine Nachrichten nicht zu verlieren, wähle bitte eine starke Passphrase, um deine Krypto-Identität und dein verschlüsseltes Nachrichten-Backup zu sichern.",
+    "newPassphraseDescription": "Footbag Social verwendet Ende-zu-Ende-Verschlüsselung. Um deine Nachrichten nicht zu verlieren, wähle bitte eine starke Passphrase, um deine Krypto-Identität und dein verschlüsseltes Nachrichten-Backup zu sichern.",
     "@newPassphraseDescription": {
         "type": "String",
         "placeholders": {}

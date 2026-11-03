@@ -814,7 +814,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "inviteText": "{username} vás pozval/a na Footbag Network.\n1. Navštivte footbagsocial.com a nainstalujte si aplikaci.\n2. Zaregistrujte se nebo se přihlaste.\n3. Otevřte pozvánku: \n {link}",
+    "inviteText": "{username} vás pozval/a na Footbag Social.\n1. Navštivte footbagsocial.com a nainstalujte si aplikaci.\n2. Zaregistrujte se nebo se přihlaste.\n3. Otevřte pozvánku: \n {link}",
     "@inviteText": {
         "type": "String",
         "placeholders": {
@@ -971,7 +971,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "newMessageInApp": "💬 Nová zpráva ve Footbag Network",
+    "newMessageInApp": "💬 Nová zpráva ve Footbag Social",
     "@newMessageInApp": {
         "type": "String",
         "placeholders": {}
@@ -2321,7 +2321,7 @@
     "advancedConfigs": "Pokročilá nastavení",
     "signIn": "Přihlásit se",
     "createNewAccount": "Vytvořit nový účet",
-    "signUpGreeting": "Footbag Network je decentralizovaný! Vyberte server, kde si chcete vytvořit účet, a jdeme na věc!",
+    "signUpGreeting": "Footbag Social je decentralizovaný! Vyberte server, kde si chcete vytvořit účet, a jdeme na věc!",
     "signInGreeting": "Již máte účet na Matrixu? Vítejte zpět! Vyberte svůj domácí server a přihlaste se.",
     "theProcessWasCanceled": "Proces byl zrušen.",
     "sendImages": "Poslat {count} obrazků",

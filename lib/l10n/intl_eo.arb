@@ -803,7 +803,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "inviteText": "{username} invitis vin al Footbag Network. \n1. Instalu la aplikaĵon Footbag Network: https://footbagsocial.com \n2. Registriĝu aŭ salutu \n3. Malfermu la invitan ligilon: {link}",
+    "inviteText": "{username} invitis vin al Footbag Social. \n1. Instalu la aplikaĵon Footbag Social: https://footbagsocial.com \n2. Registriĝu aŭ salutu \n3. Malfermu la invitan ligilon: {link}",
     "@inviteText": {
         "type": "String",
         "placeholders": {
@@ -950,7 +950,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "newMessageInApp": "Nova mesaĝo en Footbag Network",
+    "newMessageInApp": "Nova mesaĝo en Footbag Social",
     "@newMessageInApp": {
         "type": "String",
         "placeholders": {}
@@ -985,7 +985,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "noGoogleServicesWarning": "Ŝajnas, ke via telefono ne havas servojn de Google. Tio estas bona decido por via privateco! Por ricevadi pasivajn sciigojn en Footbag Network, ni rekomendas, ke vi uzu la https://microg.org/ aŭ https://unifiedpush.org/.",
+    "noGoogleServicesWarning": "Ŝajnas, ke via telefono ne havas servojn de Google. Tio estas bona decido por via privateco! Por ricevadi pasivajn sciigojn en Footbag Social, ni rekomendas, ke vi uzu la https://microg.org/ aŭ https://unifiedpush.org/.",
     "@noGoogleServicesWarning": {
         "type": "String",
         "placeholders": {}

@@ -999,7 +999,7 @@
         "placeholders": {}
     },
     "scanQrCode": "Scan cód QR",
-    "inviteText": "Thug {username} cuireadh duit chuig Footbag Network.\n1. Tabhair cuairt ar footbagsocial.com agus a shuiteáil an app\n2. Cláraigh nó sínigh isteach\n3. Oscail an nasc cuirí:\n {link}",
+    "inviteText": "Thug {username} cuireadh duit chuig Footbag Social.\n1. Tabhair cuairt ar footbagsocial.com agus a shuiteáil an app\n2. Cláraigh nó sínigh isteach\n3. Oscail an nasc cuirí:\n {link}",
     "@inviteText": {
         "type": "String",
         "placeholders": {
@@ -1048,7 +1048,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "newMessageInApp": "💬 Teachtaireacht nua in Footbag Network",
+    "newMessageInApp": "💬 Teachtaireacht nua in Footbag Social",
     "@newMessageInApp": {
         "type": "String",
         "placeholders": {}
@@ -2477,7 +2477,7 @@
     "advancedConfigurations": "Cumraíochtaí ardleibhéil",
     "signIn": "Sínigh isteach",
     "createNewAccount": "Cruthaigh cuntas nua",
-    "signUpGreeting": "Tá Footbag Network díláraithe! Roghnaigh freastalaí inar mian leat do chuntas a chruthú agus déanaimis é!",
+    "signUpGreeting": "Tá Footbag Social díláraithe! Roghnaigh freastalaí inar mian leat do chuntas a chruthú agus déanaimis é!",
     "signInGreeting": "An bhfuil cuntas agat i Matrix cheana féin? Fáilte ar ais! Roghnaigh do fhreastalaí baile agus sínigh isteach.",
     "theProcessWasCanceled": "Cuireadh an próiseas ar ceal.",
     "join": "Téigh i",
@@ -2497,7 +2497,7 @@
     },
     "createNewChat": "Cruthaigh comhrá nua",
     "reset": "Athshocraigh",
-    "supportApp": "Tacaigh le Footbag Network",
+    "supportApp": "Tacaigh le Footbag Social",
     "support": "Tacaíocht",
     "setLowPriority": "Socraigh tosaíocht íseal",
     "unsetLowPriority": "Díshuiteáil tosaíocht íseal",
@@ -2514,7 +2514,7 @@
     "showMore": "Taispeáin níos mó",
     "showLess": "Taispeáin níos lú",
     "hideRoomsInSpaces": "Folaigh seomraí atá i spás",
-    "possibleByYou": "Níorbh fhéidir an scaoileadh seo a dhéanamh ach amháin a bhuíochas le do thacaíocht. Tá Footbag Network fós saor in aisce, foinse oscailte, agus dírithe go hiomlán ar an bpobal.",
+    "possibleByYou": "Níorbh fhéidir an scaoileadh seo a dhéanamh ach amháin a bhuíochas le do thacaíocht. Tá Footbag Social fós saor in aisce, foinse oscailte, agus dírithe go hiomlán ar an bpobal.",
     "showThumbnailsInTimeline": "Taispeáin mionsamhlacha d'íomhánna agus físeáin",
     "interactiveVerification": "Fíorú idirghníomhach",
     "interactiveVerificationDescription": "Má tá sibh in aice le chéile nó má bhíonn sibh ag cumarsáid trí chainéal slán, is féidir libh gach gléas a fhíorú ag an am céanna trí uimhir slándála nó emoji a chur i gcomparáid.",
@@ -2596,7 +2596,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "newPassphraseDescription": "Úsáideann Footbag Network criptiú ó cheann ceann go ceann. Chun nach gcaillfidh tú do theachtaireachtaí, roghnaigh frása faire láidir le do chéannacht chripte agus cúltaca do theachtaireachta criptithe a dhaingniú.",
+    "newPassphraseDescription": "Úsáideann Footbag Social criptiú ó cheann ceann go ceann. Chun nach gcaillfidh tú do theachtaireachtaí, roghnaigh frása faire láidir le do chéannacht chripte agus cúltaca do theachtaireachta criptithe a dhaingniú.",
     "@newPassphraseDescription": {
         "type": "String",
         "placeholders": {}

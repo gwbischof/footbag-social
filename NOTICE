@@ -1,7 +1,7 @@
-Footbag Network
+Footbag Social
 ===============
 
-Footbag Network is a fork of FluffyChat.
+Footbag Social is a fork of FluffyChat.
 
 Upstream project:  FluffyChat — https://github.com/krille-chan/fluffychat
 Upstream authors:  Christian Kußowski and Contributors to FluffyChat
@@ -9,7 +9,7 @@ Upstream license:  GNU Affero General Public License v3.0 or later
 Forked from commit: bf9ecfa (FluffyChat v2.10.0)
 Fork date:         October 2026
 
-Footbag Network is licensed under the GNU Affero General Public License
+Footbag Social is licensed under the GNU Affero General Public License
 v3.0 or later, the same license as the upstream project. See LICENSE.
 
 This is a modified version of FluffyChat. Modifications include, but are
@@ -18,7 +18,7 @@ removal of the voice/video calling subsystem, and configuration changes
 binding the application to a specific Matrix homeserver. The complete
 history of modifications is available in this repository's git history.
 
-The names "Footbag Network" and "NYFA", and the Footbag Network and NYFA
+The names "Footbag Social" and "NYFA", and the Footbag Social and NYFA
 logos, are trademarks of the New York Footbag Association and are not
 licensed for use by derivative works under the AGPL. See the AGPL's
 section 7(e) and the README for details.

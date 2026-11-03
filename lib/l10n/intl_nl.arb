@@ -814,7 +814,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "inviteText": "{username} heeft je uitgenodigd voor Footbag Network.\n1. Bezoek https://footbagsocial.com en installeer de app\n2. Registreer of log in\n3. Open deze uitnodigingslink:\n{link}",
+    "inviteText": "{username} heeft je uitgenodigd voor Footbag Social.\n1. Bezoek https://footbagsocial.com en installeer de app\n2. Registreer of log in\n3. Open deze uitnodigingslink:\n{link}",
     "@inviteText": {
         "type": "String",
         "placeholders": {
@@ -971,7 +971,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "newMessageInApp": "💬 Nieuw bericht in Footbag Network",
+    "newMessageInApp": "💬 Nieuw bericht in Footbag Social",
     "@newMessageInApp": {
         "type": "String",
         "placeholders": {}
@@ -2470,7 +2470,7 @@
     "advancedConfigurations": "Geavanceerde configuraties",
     "signIn": "Log in",
     "createNewAccount": "Registreer nieuw account",
-    "signUpGreeting": "Footbag Network is decentraal! Kies een server waar je wil voor jouw account en laten we gaan!",
+    "signUpGreeting": "Footbag Social is decentraal! Kies een server waar je wil voor jouw account en laten we gaan!",
     "signInGreeting": "Heb je al een Matrix account? Welkom terug! Kies jouw server en log in.",
     "theProcessWasCanceled": "Het proces is geannuleerd.",
     "join": "Deelnemen",
@@ -2490,7 +2490,7 @@
     },
     "createNewChat": "Creëer nieuw chat",
     "reset": "Resetten",
-    "supportApp": "Footbag Network steunen",
+    "supportApp": "Footbag Social steunen",
     "support": "Steunen",
     "setLowPriority": "Lage prioriteit instellen",
     "unsetLowPriority": "Lage prioriteit uitschakelen",
@@ -2505,7 +2505,7 @@
         "placeholders": {}
     },
     "hideRoomsInSpaces": "Kamers in een space verbergen",
-    "possibleByYou": "Deze versie was alleen mogelijk dankzij jullie steun. Footbag Network blijft gratis, open source en volledig door de community gedreven.",
+    "possibleByYou": "Deze versie was alleen mogelijk dankzij jullie steun. Footbag Social blijft gratis, open source en volledig door de community gedreven.",
     "showThumbnailsInTimeline": "Miniatuurafbeeldingen van foto’s en video’s weergeven",
     "interactiveVerification": "Interactieve verificatie",
     "interactiveVerificationDescription": "Als jullie naast elkaar zitten of via een beveiligd kanaal communiceren, kun je alle apparaten in één keer verifiëren door een beveiligingscode of emoji’s te vergelijken.",
@@ -2589,7 +2589,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "newPassphraseDescription": "Footbag Network gebruikt eind-tot-eind versleuteling. Om je berichten niet te verliezen, kies alsjeblieft een sterke wachtwoordzin. Hiermee beveilig je je crypto-identiteit en je versleutelde berichten back-up.",
+    "newPassphraseDescription": "Footbag Social gebruikt eind-tot-eind versleuteling. Om je berichten niet te verliezen, kies alsjeblieft een sterke wachtwoordzin. Hiermee beveilig je je crypto-identiteit en je versleutelde berichten back-up.",
     "@newPassphraseDescription": {
         "type": "String",
         "placeholders": {}

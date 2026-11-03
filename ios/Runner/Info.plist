@@ -11,7 +11,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Footbag Network</string>
+	<string>Footbag Social</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -59,27 +59,27 @@
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>Play audio and voice messages on bluetooth devices</string>
 	<key>NSCalendarsUsageDescription</key>
-	<string>Share calendar dates with your contacts in Footbag Network.</string>
+	<string>Share calendar dates with your contacts in Footbag Social.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Open the camera and take a picture to share them with your contacts on Footbag Network.</string>
+	<string>Open the camera and take a picture to share them with your contacts on Footbag Social.</string>
 	<key>NSContactsUsageDescription</key>
-	<string>Share contacts with your contacts in Footbag Network.</string>
+	<string>Share contacts with your contacts in Footbag Social.</string>
 	<key>NSFaceIDUsageDescription</key>
-	<string>Footbag Network uses an app lock for an additional security level</string>
+	<string>Footbag Social uses an app lock for an additional security level</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Share your location with your contacts in Footbag Network.</string>
+	<string>Share your location with your contacts in Footbag Social.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Share your location with your contacts in Footbag Network.</string>
+	<string>Share your location with your contacts in Footbag Social.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Share your location with your contacts in Footbag Network.</string>
+	<string>Share your location with your contacts in Footbag Social.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Record voice message and share them with your contacts on Footbag Network.</string>
+	<string>Record voice message and share them with your contacts on Footbag Social.</string>
 	<key>NSMotionUsageDescription</key>
-	<string>Share motions with your contacts in Footbag Network.</string>
+	<string>Share motions with your contacts in Footbag Social.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Open photos from your gallery and share them with your contacts on Footbag Network.</string>
+	<string>Open photos from your gallery and share them with your contacts on Footbag Social.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>Share data with your contacts in Footbag Network.</string>
+	<string>Share data with your contacts in Footbag Social.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

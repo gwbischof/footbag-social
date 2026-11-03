@@ -1,6 +1,6 @@
 {
     "repeatPassword": "Salasana uudelleen",
-    "about": "Tietoa Footbag Network",
+    "about": "Tietoa Footbag Social",
     "@about": {
         "type": "String",
         "placeholders": {}
@@ -638,7 +638,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "inviteText": "{username} kutsui sinut Footbag Network.\n1. Viereaile sivulla: https://footbagsocial.com ja asenna sovellus\n2. Rekisteröidy tai kirjaudu sisään\n3. Avaa kutsulinkki:\n{link}",
+    "inviteText": "{username} kutsui sinut Footbag Social.\n1. Viereaile sivulla: https://footbagsocial.com ja asenna sovellus\n2. Rekisteröidy tai kirjaudu sisään\n3. Avaa kutsulinkki:\n{link}",
     "@inviteText": {
         "type": "String",
         "placeholders": {
@@ -776,7 +776,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "newMessageInApp": "💬 Uusi viesti Footbag Network",
+    "newMessageInApp": "💬 Uusi viesti Footbag Social",
     "@newMessageInApp": {
         "type": "String",
         "placeholders": {}

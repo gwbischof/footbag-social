@@ -813,7 +813,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "inviteText": "{username} convidou você para o Footbag Network.\n1. Visite footbagsocial.com e instale o aplicativo\n2. Entre ou crie uma conta\n3. Abra o link do convite:\n{link}",
+    "inviteText": "{username} convidou você para o Footbag Social.\n1. Visite footbagsocial.com e instale o aplicativo\n2. Entre ou crie uma conta\n3. Abra o link do convite:\n{link}",
     "@inviteText": {
         "type": "String",
         "placeholders": {
@@ -970,7 +970,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "newMessageInApp": "💬 Nova mensagem no Footbag Network",
+    "newMessageInApp": "💬 Nova mensagem no Footbag Social",
     "@newMessageInApp": {
         "type": "String",
         "placeholders": {}

@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "New York Footbag Association" "\0"
-            VALUE "FileDescription", "Footbag Network" "\0"
+            VALUE "FileDescription", "Footbag Social" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "footbag_network" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2026 New York Footbag Association. All rights reserved." "\0"
             VALUE "OriginalFilename", "footbag_network.exe" "\0"
-            VALUE "ProductName", "Footbag Network" "\0"
+            VALUE "ProductName", "Footbag Social" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

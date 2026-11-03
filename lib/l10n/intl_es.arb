@@ -622,7 +622,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "inviteText": "{username} te invitó a Footbag Network.\n1.Visita footbagsocial.com e instala la app\n2. Regístrate o inicia sesión\n3. Abre el enlace de invitación:\n{link}",
+    "inviteText": "{username} te invitó a Footbag Social.\n1.Visita footbagsocial.com e instala la app\n2. Regístrate o inicia sesión\n3. Abre el enlace de invitación:\n{link}",
     "@inviteText": {
         "type": "String",
         "placeholders": {
@@ -759,7 +759,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "newMessageInApp": "Nuevo mensaje en Footbag Network",
+    "newMessageInApp": "Nuevo mensaje en Footbag Social",
     "@newMessageInApp": {
         "type": "String",
         "placeholders": {}
@@ -2479,7 +2479,7 @@
     "advancedConfigurations": "Configuraciones Avanzadas",
     "signIn": "Iniciar sesión",
     "createNewAccount": "Crear nueva cuenta",
-    "signUpGreeting": "¡Footbag Network está descentralizado! ¡Selecciona un servidor donde quieres crear tu cuenta y sigamos!",
+    "signUpGreeting": "¡Footbag Social está descentralizado! ¡Selecciona un servidor donde quieres crear tu cuenta y sigamos!",
     "signInGreeting": "¿Ya tienes una cuenta en Matrix? ¡Bienvenido de nuevo! Selecciona tu servidor e inicia sesión.",
     "theProcessWasCanceled": "El proceso se ha cancelado.",
     "join": "Unirse",
@@ -2499,7 +2499,7 @@
     },
     "createNewChat": "Crear nuevo chat",
     "reset": "Resetear",
-    "supportApp": "Apoyar Footbag Network",
+    "supportApp": "Apoyar Footbag Social",
     "support": "Apoyar",
     "setLowPriority": "Colocar baja prioridad",
     "unsetLowPriority": "Desactivar baja prioridad",
@@ -2516,7 +2516,7 @@
     "showMore": "Mostrar más",
     "showLess": "Mostrar menos",
     "hideRoomsInSpaces": "Esconder salas que estén en un espacio",
-    "possibleByYou": "Esta versión sólo fue posible gracias a tu apoyo. Footbag Network sigue siendo gratis, de código abierto y totalmente impulsado por la comunidad.",
+    "possibleByYou": "Esta versión sólo fue posible gracias a tu apoyo. Footbag Social sigue siendo gratis, de código abierto y totalmente impulsado por la comunidad.",
     "showThumbnailsInTimeline": "Mostrar miniaturas de imágenes y videos",
     "interactiveVerification": "Verificación interactiva",
     "interactiveVerificationDescription": "Si se encuentran cerca o se comunican por una vía segura pueden verificar todos los dispositivos a la vez comparando números de seguridad o emojis.",

@@ -1,4 +1,4 @@
-﻿; Inno Setup script for the Footbag Network Windows installer.
+﻿; Inno Setup script for the Footbag Social Windows installer.
 ; Build with: scripts/package-windows.ps1
 
 #ifndef AppVersion
@@ -13,9 +13,9 @@
 ; Never change the AppId! Inno Setup uses it to detect an existing
 ; installation, so that a new installer updates it in place.
 AppId={{4914EA58-B990-4CA5-BFAA-8EAC9A24F6A5}
-AppName=Footbag Network
+AppName=Footbag Social
 AppVersion={#AppVersion}
-AppVerName=Footbag Network {#AppVersion}
+AppVerName=Footbag Social {#AppVersion}
 AppPublisher=New York Footbag Association
 AppPublisherURL=https://newyorkfootbag.com
 AppSupportURL=https://github.com/gwbischof/footbag-network/issues
@@ -24,7 +24,7 @@ VersionInfoVersion={#AppVersion}
 ; Per-user installation into %LOCALAPPDATA%\Programs, so that neither the
 ; installation nor updates require admin rights.
 PrivilegesRequired=lowest
-DefaultDirName={autopf}\Footbag Network
+DefaultDirName={autopf}\Footbag Social
 DisableProgramGroupPage=yes
 ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
@@ -66,8 +66,8 @@ Type: filesandordirs; Name: "{app}\data"
 Source: "{#BuildDir}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
-Name: "{autoprograms}\Footbag Network"; Filename: "{app}\footbag_network.exe"
-Name: "{autodesktop}\Footbag Network"; Filename: "{app}\footbag_network.exe"; Tasks: desktopicon
+Name: "{autoprograms}\Footbag Social"; Filename: "{app}\footbag_network.exe"
+Name: "{autodesktop}\Footbag Social"; Filename: "{app}\footbag_network.exe"; Tasks: desktopicon
 
 [Run]
-Filename: "{app}\footbag_network.exe"; Description: "{cm:LaunchProgram,Footbag Network}"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\footbag_network.exe"; Description: "{cm:LaunchProgram,Footbag Social}"; Flags: nowait postinstall skipifsilent

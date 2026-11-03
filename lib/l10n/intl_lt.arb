@@ -696,7 +696,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "newMessageInApp": "💬 Nauja žinutė Footbag Network'e",
+    "newMessageInApp": "💬 Nauja žinutė Footbag Social'e",
     "@newMessageInApp": {
         "type": "String",
         "placeholders": {}
@@ -1035,7 +1035,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "noGoogleServicesWarning": "Atrodo, kad jūsų telefone nėra Google Services. Tai geras sprendimas jūsų privatumui! Norėdami gauti tiesioginius pranešimus Footbag Network, rekomenduojame naudoti https://microg.org/ arba https://unifiedpush.org/.",
+    "noGoogleServicesWarning": "Atrodo, kad jūsų telefone nėra Google Services. Tai geras sprendimas jūsų privatumui! Norėdami gauti tiesioginius pranešimus Footbag Social, rekomenduojame naudoti https://microg.org/ arba https://unifiedpush.org/.",
     "@noGoogleServicesWarning": {
         "type": "String",
         "placeholders": {}
@@ -1456,7 +1456,7 @@
             }
         }
     },
-    "inviteText": "{username} pakvietė jus prisijungti prie Footbag Network. \n1. Įdiekite Footbag Network: https://footbagsocial.com \n2. Prisiregistruokite arba prisijunkite \n3. Atidarykite pakvietimo nuorodą: {link}",
+    "inviteText": "{username} pakvietė jus prisijungti prie Footbag Social. \n1. Įdiekite Footbag Social: https://footbagsocial.com \n2. Prisiregistruokite arba prisijunkite \n3. Atidarykite pakvietimo nuorodą: {link}",
     "@inviteText": {
         "type": "String",
         "placeholders": {
@@ -1896,7 +1896,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "newPassphraseDescription": "„Footbag Network“ naudoja visapusišką šifravimą. Kad neprarastumėte savo žinučių, pasirinkite saugią slaptafrazę, kuri apsaugos jūsų kriptografinę tapatybę ir užšifruotą žinučių atsarginę kopiją.",
+    "newPassphraseDescription": "„Footbag Social“ naudoja visapusišką šifravimą. Kad neprarastumėte savo žinučių, pasirinkite saugią slaptafrazę, kuri apsaugos jūsų kriptografinę tapatybę ir užšifruotą žinučių atsarginę kopiją.",
     "@newPassphraseDescription": {
         "type": "String",
         "placeholders": {}

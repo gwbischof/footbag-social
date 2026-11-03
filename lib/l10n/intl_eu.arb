@@ -534,7 +534,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "inviteText": "{username}(e)k Footbag Network gonbidatu zaitu.\n1. Bisitatu https://footbagsocial.com eta instalatu aplikazioa\n2. Eman izena edo hasi saioa\n3. Ireki gonbidapen-esteka:\n{link}",
+    "inviteText": "{username}(e)k Footbag Social gonbidatu zaitu.\n1. Bisitatu https://footbagsocial.com eta instalatu aplikazioa\n2. Eman izena edo hasi saioa\n3. Ireki gonbidapen-esteka:\n{link}",
     "@inviteText": {
         "type": "String",
         "placeholders": {
@@ -666,7 +666,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "newMessageInApp": "💬 Mezu berria Footbag Network",
+    "newMessageInApp": "💬 Mezu berria Footbag Social",
     "@newMessageInApp": {
         "type": "String",
         "placeholders": {}
@@ -2471,7 +2471,7 @@
     "identityServer": "Identitate-zerbitzaria:",
     "signIn": "Hasi saioa",
     "createNewAccount": "Sortu kontu berria",
-    "signUpGreeting": "Footbag Network deszentralizatua da! Hautatu zure kontua zein zerbitzaritan sortu nahi duzun, eta hasi erabiltzen!",
+    "signUpGreeting": "Footbag Social deszentralizatua da! Hautatu zure kontua zein zerbitzaritan sortu nahi duzun, eta hasi erabiltzen!",
     "signInGreeting": "Baduzu dagoeneko Matrix kontu bat? Ongi etorri berriro ere! Hautatu zure zerbitzaria eta hasi saioa.",
     "theProcessWasCanceled": "Eragiketa bertan behera utzi da.",
     "join": "Batu",
@@ -2491,7 +2491,7 @@
     },
     "createNewChat": "Sortu txat berria",
     "reset": "Berrezarri",
-    "supportApp": "Eman babesa Footbag Network-i",
+    "supportApp": "Eman babesa Footbag Social-i",
     "support": "Lagundu",
     "setLowPriority": "Ezarri lehentasun baxua",
     "unsetLowPriority": "Kendu lehentasun baxua",
@@ -2508,7 +2508,7 @@
     "showMore": "Erakutsi gehiago",
     "showLess": "Erakutsi gutxiago",
     "hideRoomsInSpaces": "Ezkutatu gune batean dauden gelak",
-    "possibleByYou": "Bertsio hau zure laguntzari esker izan da posible. Footbag Network-ek doakoa, kode irekikoa eta guztiz komunitarioa izaten jarraitzen du.",
+    "possibleByYou": "Bertsio hau zure laguntzari esker izan da posible. Footbag Social-ek doakoa, kode irekikoa eta guztiz komunitarioa izaten jarraitzen du.",
     "showThumbnailsInTimeline": "Erakutsi irudi eta bideoen iruditxoa",
     "interactiveVerification": "Egiaztapen interaktiboa",
     "interactiveVerificationDescription": "Elkarren ondoan bazaudete edo kanal seguru baten bidez komunikatzen bazarete, gailu guztiak batera egiazta ditzakezu, segurtasun-zenbaki bat edo emoji bat konparatuz.",

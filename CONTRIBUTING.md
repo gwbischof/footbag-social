@@ -6,7 +6,7 @@ SPDX-FileCopyrightText: 2026-Present New York Footbag Association
 SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 
-# Contributing to Footbag Network
+# Contributing to Footbag Social
 Contributions are always welcome. This is a small project, so reviews may take a while.
 
 Much of the guidance below is inherited from
@@ -35,7 +35,7 @@ To improve the process please make sure that you read the following guidelines c
 
 # Code Style
 
-Footbag Network tries to be as minimal as possible even in the code style. We try to keep the code clean, simple and easy to read. The source code of the app is under `/lib` with the main entry point `/lib/main.dart`.
+Footbag Social tries to be as minimal as possible even in the code style. We try to keep the code clean, simple and easy to read. The source code of the app is under `/lib` with the main entry point `/lib/main.dart`.
 
 <!-- editorconfig-checker-disable -->
 <!-- prettier-ignore-start -->

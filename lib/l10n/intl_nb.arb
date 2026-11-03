@@ -663,7 +663,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "inviteText": "{username} har invitert deg til Footbag Network. \n1. Installer Footbag Network: https://footbagsocial.com \n2. Registrer deg eller logg inn \n3. Åpne invitasjonslenken: \n {link}",
+    "inviteText": "{username} har invitert deg til Footbag Social. \n1. Installer Footbag Social: https://footbagsocial.com \n2. Registrer deg eller logg inn \n3. Åpne invitasjonslenken: \n {link}",
     "@inviteText": {
         "type": "String",
         "placeholders": {
@@ -810,7 +810,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "newMessageInApp": "Ny melding i Footbag Network",
+    "newMessageInApp": "Ny melding i Footbag Social",
     "@newMessageInApp": {
         "type": "String",
         "placeholders": {}
@@ -2478,7 +2478,7 @@
     "addChatOrSubSpace": "Legg til chat eller under-romgruppe",
     "signIn": "Logg på",
     "createNewAccount": "Opprett ny konto",
-    "signUpGreeting": "Footbag Network er desentralisert! Velg en server der du vil opprette kontoen din, så kjører vi på!",
+    "signUpGreeting": "Footbag Social er desentralisert! Velg en server der du vil opprette kontoen din, så kjører vi på!",
     "signInGreeting": "Har du allerede en Matrix-konto? Velkommen tilbake! Velg hjemmeserveren din og logg inn.",
     "theProcessWasCanceled": "Prosessen ble avbrutt.",
     "join": "Bli med",
@@ -2498,7 +2498,7 @@
     },
     "createNewChat": "Opprett ny chat",
     "reset": "Nullstill",
-    "supportApp": "Støtt Footbag Network",
+    "supportApp": "Støtt Footbag Social",
     "support": "Støtte",
     "setLowPriority": "Sett lav prioritet",
     "unsetLowPriority": "Fjern lav prioritet",
@@ -2515,7 +2515,7 @@
     "showMore": "Vis mer",
     "showLess": "Vis mindre",
     "hideRoomsInSpaces": "Skjul rom som er med i en romgruppe",
-    "possibleByYou": "Denne versjonen var bare mulig takket være din støtte. Footbag Network forblir gratis, har åpen kildekode og er helt fellesskapsdrevet.",
+    "possibleByYou": "Denne versjonen var bare mulig takket være din støtte. Footbag Social forblir gratis, har åpen kildekode og er helt fellesskapsdrevet.",
     "showThumbnailsInTimeline": "Vis miniatyrbilder av bilder og videoer",
     "interactiveVerification": "Interaktiv verifisering",
     "interactiveVerificationDescription": "Hvis dere står ved siden av hverandre eller kommuniserer via en sikker kanal, kan dere verifisere alle enhetene samtidig ved å sammenligne et sikkerhetsnummer eller emojier.",
@@ -2577,7 +2577,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "newPassphraseDescription": "Footbag Network bruker ende-til-ende-kryptering. For å ikke miste meldingene dine, vennligst velg et sterkt passord for å sikre din kryptografiske identitet og din krypterte sikkerhetskopi av meldinger.",
+    "newPassphraseDescription": "Footbag Social bruker ende-til-ende-kryptering. For å ikke miste meldingene dine, vennligst velg et sterkt passord for å sikre din kryptografiske identitet og din krypterte sikkerhetskopi av meldinger.",
     "@newPassphraseDescription": {
         "type": "String",
         "placeholders": {}

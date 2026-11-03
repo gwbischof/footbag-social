@@ -619,7 +619,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "inviteText": "{username} הזמין אותך ל-Footbag Network.\n1. התקן את Footbag Network: https://footbagsocial.com\n2. הירשם או היכנס\n3. פתח את קישור ההזמנה: {link}",
+    "inviteText": "{username} הזמין אותך ל-Footbag Social.\n1. התקן את Footbag Social: https://footbagsocial.com\n2. הירשם או היכנס\n3. פתח את קישור ההזמנה: {link}",
     "@inviteText": {
         "type": "String",
         "placeholders": {
@@ -1082,12 +1082,12 @@
         "type": "String",
         "placeholders": {}
     },
-    "newMessageInApp": "הודעה חדשה ב-Footbag Network",
+    "newMessageInApp": "הודעה חדשה ב-Footbag Social",
     "@newMessageInApp": {
         "type": "String",
         "placeholders": {}
     },
-    "noGoogleServicesWarning": "נראה שאין לך שירותי גוגל בטלפון שלך. זו החלטה טובה לפרטיות שלך! כדי לקבל התרעות ב- Footbag Network אנו ממליצים להשתמש https://microg.org/ או https://unifiedpush.org/.",
+    "noGoogleServicesWarning": "נראה שאין לך שירותי גוגל בטלפון שלך. זו החלטה טובה לפרטיות שלך! כדי לקבל התרעות ב- Footbag Social אנו ממליצים להשתמש https://microg.org/ או https://unifiedpush.org/.",
     "@noGoogleServicesWarning": {
         "type": "String",
         "placeholders": {}

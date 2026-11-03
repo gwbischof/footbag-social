@@ -88,7 +88,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "inviteText": "{username} mengundang kamu ke Footbag Network. \n1. Kunjungi footbagsocial.com dan instal aplikasi\n2. Daftar atau masuk \n3. Buka tautan undangan: \n {link}",
+    "inviteText": "{username} mengundang kamu ke Footbag Social. \n1. Kunjungi footbagsocial.com dan instal aplikasi\n2. Daftar atau masuk \n3. Buka tautan undangan: \n {link}",
     "@inviteText": {
         "type": "String",
         "placeholders": {
@@ -805,7 +805,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "newMessageInApp": "💬 Pesan baru di Footbag Network",
+    "newMessageInApp": "💬 Pesan baru di Footbag Social",
     "@newMessageInApp": {
         "type": "String",
         "placeholders": {}
@@ -2470,7 +2470,7 @@
     "advancedConfigurations": "Konfigurasi lanjutan",
     "signIn": "Masuk",
     "createNewAccount": "Buat akun baru",
-    "signUpGreeting": "Footbag Network terdesentralisasi! Pilih server tempat Anda ingin membuat akun dan mari kita mulai!",
+    "signUpGreeting": "Footbag Social terdesentralisasi! Pilih server tempat Anda ingin membuat akun dan mari kita mulai!",
     "signInGreeting": "Anda sudah memiliki akun di Matrix? Selamat datang kembali! Pilih homeserver Anda dan masuk.",
     "theProcessWasCanceled": "Proses dibatalkan.",
     "join": "Bergabung",
@@ -2490,7 +2490,7 @@
     },
     "createNewChat": "Buat obrolan baru",
     "reset": "Atur ulang",
-    "supportApp": "Dukung Footbag Network",
+    "supportApp": "Dukung Footbag Social",
     "support": "Dukungan",
     "setLowPriority": "Atur prioritas rendah",
     "unsetLowPriority": "Batalkan prioritas rendah",
@@ -2507,7 +2507,7 @@
     "showMore": "Tampilkan lebih banyak",
     "showLess": "Tampilkan lebih sedikit",
     "hideRoomsInSpaces": "Sembunyikan room yang berada dalam sebuah space",
-    "possibleByYou": "Rilis ini hanya dapat terwujud berkat dukungan Anda. Footbag Network tetap gratis, open-source, dan sepenuhnya digerakkan oleh komunitas.",
+    "possibleByYou": "Rilis ini hanya dapat terwujud berkat dukungan Anda. Footbag Social tetap gratis, open-source, dan sepenuhnya digerakkan oleh komunitas.",
     "showThumbnailsInTimeline": "Tampilkan thumbnail gambar dan video",
     "interactiveVerification": "Verifikasi interaktif",
     "interactiveVerificationDescription": "Jika Anda berada bersebelahan atau berkomunikasi melalui saluran yang aman, Anda dapat memverifikasi semua perangkat sekaligus dengan membandingkan nomor keamanan atau emoji.",
@@ -2589,7 +2589,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "newPassphraseDescription": "Footbag Network menggunakan enkripsi end-to-end. Agar tidak kehilangan pesan Anda, silakan pilih passphrase yang kuat untuk mengamankan identitas kripto Anda dan cadangan pesan terenkripsi Anda.",
+    "newPassphraseDescription": "Footbag Social menggunakan enkripsi end-to-end. Agar tidak kehilangan pesan Anda, silakan pilih passphrase yang kuat untuk mengamankan identitas kripto Anda dan cadangan pesan terenkripsi Anda.",
     "@newPassphraseDescription": {
         "type": "String",
         "placeholders": {}

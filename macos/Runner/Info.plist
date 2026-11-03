@@ -25,13 +25,13 @@
 	<key>LSMinimumSystemVersion</key>
 	<string>$(MACOSX_DEPLOYMENT_TARGET)</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Open the camera and take a picture to share them with your contacts on Footbag Network.</string>
+	<string>Open the camera and take a picture to share them with your contacts on Footbag Social.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Record voice message and share them with your contacts on Footbag Network.</string>
+	<string>Record voice message and share them with your contacts on Footbag Social.</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>$(PRODUCT_COPYRIGHT)</string>
 	<key>NSLocationUsageDescription</key>
-	<string>Share your location with your contacts in Footbag Network.</string>
+	<string>Share your location with your contacts in Footbag Social.</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>

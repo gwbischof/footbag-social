@@ -761,7 +761,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "inviteText": "{username} convidou-te para o Footbag Network.\n1. Instala o Footbag Network: https://footbagsocial.com\n2. Regista-te ou inicia sessão.\n3. Abre a ligação de convite: {link}",
+    "inviteText": "{username} convidou-te para o Footbag Social.\n1. Instala o Footbag Social: https://footbagsocial.com\n2. Regista-te ou inicia sessão.\n3. Abre a ligação de convite: {link}",
     "@inviteText": {
         "type": "String",
         "placeholders": {
@@ -918,7 +918,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "newMessageInApp": "Nova mensagem no Footbag Network",
+    "newMessageInApp": "Nova mensagem no Footbag Social",
     "@newMessageInApp": {
         "type": "String",
         "placeholders": {}
@@ -953,7 +953,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "noGoogleServicesWarning": "Parece que não tens nenhuns serviços da Google no seu telemóvel. É uma boa decisão para a sua privacidade! Para receber notificações instantâneas no Footbag Network, recomendamos que uses https://microg.org/ ou https://unifiedpush.org/.",
+    "noGoogleServicesWarning": "Parece que não tens nenhuns serviços da Google no seu telemóvel. É uma boa decisão para a sua privacidade! Para receber notificações instantâneas no Footbag Social, recomendamos que uses https://microg.org/ ou https://unifiedpush.org/.",
     "@noGoogleServicesWarning": {
         "type": "String",
         "placeholders": {}

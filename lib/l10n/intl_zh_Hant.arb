@@ -685,7 +685,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "inviteText": "{username} 邀請您使用 Footbag Network\n1. 安裝 Footbag Network：https://footbagsocial.com\n2. 登入或註冊\n3. 打開該邀請網址：\n{link}",
+    "inviteText": "{username} 邀請您使用 Footbag Social\n1. 安裝 Footbag Social：https://footbagsocial.com\n2. 登入或註冊\n3. 打開該邀請網址：\n{link}",
     "@inviteText": {
         "type": "String",
         "placeholders": {
@@ -832,7 +832,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "newMessageInApp": "💬 來自 Footbag Network 的新訊息",
+    "newMessageInApp": "💬 來自 Footbag Social 的新訊息",
     "@newMessageInApp": {
         "type": "String",
         "placeholders": {}

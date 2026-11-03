@@ -515,7 +515,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "inviteText": "{username} uzaicināja pievienoties Footbag Network.\n1. Jāapmeklē footbagsocial.com un jāuzstāda lietotne \n2. Jāizveido konts vai jāpiesakās \n3. Jāatver uzaicinājuma saite: \n {link}",
+    "inviteText": "{username} uzaicināja pievienoties Footbag Social.\n1. Jāapmeklē footbagsocial.com un jāuzstāda lietotne \n2. Jāizveido konts vai jāpiesakās \n3. Jāatver uzaicinājuma saite: \n {link}",
     "@inviteText": {
         "type": "String",
         "placeholders": {
@@ -840,7 +840,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "newMessageInApp": "💬 Jauna ziņa Footbag Network",
+    "newMessageInApp": "💬 Jauna ziņa Footbag Social",
     "@newMessageInApp": {
         "type": "String",
         "placeholders": {}
@@ -2455,7 +2455,7 @@
     "theProcessWasCanceled": "Darbība tika atcelta.",
     "signIn": "Pieteikties",
     "createNewAccount": "Izveidot jaunu kontu",
-    "signUpGreeting": "Footbag Network ir decentralizēta. Jāatlasa serveris, kurā ir vēlēšanās izveidot savu kontu, un aiziet!",
+    "signUpGreeting": "Footbag Social ir decentralizēta. Jāatlasa serveris, kurā ir vēlēšanās izveidot savu kontu, un aiziet!",
     "signInGreeting": "Jau ir Matrix konts? Laipni lūdzam atpakaļ! Jāatlasa savs mājasserveris un jāpiesakās.",
     "reset": "Atiestatīt",
     "createNewTag": "Izveidot jaunu birku",
@@ -2482,13 +2482,13 @@
     "unsetLowPriority": "Noņemt zemu svatīgumu",
     "setLowPriority": "Iestatīt zemu svarīgumu",
     "removeTag": "Noņemt birku",
-    "supportApp": "Atbalstīt Footbag Network",
+    "supportApp": "Atbalstīt Footbag Social",
     "discardEdits": "Ir nesaglabātas izmaiņas. Atmest labojumus?",
     "@discardEdits": {
         "type": "String",
         "placeholders": {}
     },
-    "possibleByYou": "Šis laidiens bija iespējams pateicoties Tavam atbalstam. Footbag Network joprojām ir brīva, atvērta pirmkoda un pilnībā kopienas virzīta.",
+    "possibleByYou": "Šis laidiens bija iespējams pateicoties Tavam atbalstam. Footbag Social joprojām ir brīva, atvērta pirmkoda un pilnībā kopienas virzīta.",
     "hideRoomsInSpaces": "Paslēpt istabas, kas ir vietā",
     "showThumbnailsInTimeline": "Rādīt attēlu un video sīktēlus",
     "interactiveVerification": "Mijiedarbīga apliecināšana",
@@ -2688,7 +2688,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "newPassphraseDescription": "Footbag Network izmanto pilnīgu šifrēšanu. Lai nezaudētu savas ziņas, lūgums izvēlēties drošu paroles vārdkopu, lai aizsargātu savu kripto identitāti un šifrēto ziņu rezerves kopiju.",
+    "newPassphraseDescription": "Footbag Social izmanto pilnīgu šifrēšanu. Lai nezaudētu savas ziņas, lūgums izvēlēties drošu paroles vārdkopu, lai aizsargātu savu kripto identitāti un šifrēto ziņu rezerves kopiju.",
     "@newPassphraseDescription": {
         "type": "String",
         "placeholders": {}

@@ -752,7 +752,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "newMessageInApp": "💬 Izen amaynut deg Footbag Network",
+    "newMessageInApp": "💬 Izen amaynut deg Footbag Social",
     "@newMessageInApp": {
         "type": "String",
         "placeholders": {}
@@ -1133,7 +1133,7 @@
         }
     },
     "noChatDescriptionYet": "Ulac aglam n udiwenni i d-yenulfan yakan.",
-    "inviteText": "{username} yeɛreḍ-ik·m ɣer Footbag Network.\n1. Rzu ɣer footbagsocial.com syin sbedd asnas \n2. Jerred neɣ kcem \n3. Ldi aseɣwen n tinubga: \n {link}",
+    "inviteText": "{username} yeɛreḍ-ik·m ɣer Footbag Social.\n1. Rzu ɣer footbagsocial.com syin sbedd asnas \n2. Jerred neɣ kcem \n3. Ldi aseɣwen n tinubga: \n {link}",
     "@inviteText": {
         "type": "String",
         "placeholders": {
@@ -1691,7 +1691,7 @@
     "clientWellKnownInformation": "Talɣut yettwasnen ɣef umsaɣ:",
     "advancedConfigs": "Tawila leqqayen",
     "advancedConfigurations": "Tawila tinaẓiyin",
-    "signUpGreeting": "Footbag Network d araslemmes! Fren aqeddac anda tebɣiḍ ad ternuḍ amiḍan-ik·im, u yyaw ad neddu!",
+    "signUpGreeting": "Footbag Social d araslemmes! Fren aqeddac anda tebɣiḍ ad ternuḍ amiḍan-ik·im, u yyaw ad neddu!",
     "signInGreeting": "Tesɛiḍ yakan amiḍan deg Matriks? Anṣuf yes-k·m tikkelt niḍen! Fren aqeddac-ik·im, u tkecmeḍ.",
     "theProcessWasCanceled": "Tettwasefsex ukala-nni.",
     "searchOrEnterHomeserverAddress": "Nadi neɣ sekcem tansa n uqeddac agejdan",
