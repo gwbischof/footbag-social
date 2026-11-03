@@ -20,7 +20,9 @@ import 'package:footbag_network/pages/club/club_page.dart';
 import 'package:footbag_network/pages/feed/compose.dart';
 import 'package:footbag_network/pages/feed/feed.dart';
 import 'package:footbag_network/pages/feed/feed_actions.dart';
+import 'package:footbag_network/pages/feed/mod_queue.dart';
 import 'package:footbag_network/pages/feed/player_page.dart';
+import 'package:footbag_network/pages/feed/post_page.dart';
 import 'package:footbag_network/pages/feed/widgets/comments.dart';
 import 'package:footbag_network/pages/feed/widgets/post_card.dart';
 import 'package:footbag_network/pages/feed/widgets/trick_header.dart';
@@ -130,6 +132,9 @@ Widget previewBody(BuildContext context) =>
       'm3' => const _M3Gallery(),
       'dash' => const PreviewDash(),
       'dash-running' => const PreviewDash(mode: 'running'),
+      'mod' => const _PreviewModQueue(),
+      'post' => const _PreviewPost(),
+      'post-loading' => const _PreviewPost(loading: true),
       'discover' => const PreviewDiscover(),
       'discover-players' => const PreviewDiscover(initialTab: 1),
       'discover-clubs' => const PreviewDiscover(initialTab: 2),
@@ -256,7 +261,7 @@ class PreviewActions implements PostActions {
       shape: BoxShape.circle,
     ),
     child: Text(
-      name.substring(0, 1).toUpperCase(),
+      name.isEmpty ? 'G' : name.substring(0, 1).toUpperCase(),
       style: TextStyle(
         fontFamily: Nyfa.display,
         fontSize: size * 0.5,
@@ -383,6 +388,84 @@ class _PreviewThread extends CommentThread {
     ];
     notifyListeners();
   }
+}
+
+/// The real post page: a post with photos and its conversation.
+class _PreviewPost extends PostPage {
+  final bool loading;
+
+  const _PreviewPost({this.loading = false}) : super(postId: 1);
+
+  @override
+  PostPageState createState() => _PreviewPostState();
+}
+
+class _PreviewPostState extends PostPageState {
+  @override
+  Client? get client => null;
+
+  @override
+  PostActions makeActions() => PreviewActions()..context = context;
+
+  @override
+  CommentThread threadFor(FootbagPost p) => _PreviewThread(p);
+
+  @override
+  Future<void> load() async {
+    if ((widget as _PreviewPost).loading) return;
+    setState(() => adopt(_posts.first));
+    await thread!.load();
+  }
+}
+
+/// The real moderation queue: an urgent post, a spam comment.
+class _PreviewModQueue extends ModQueue {
+  const _PreviewModQueue();
+
+  @override
+  ModQueueState createState() => _PreviewModQueueState();
+}
+
+class _PreviewModQueueState extends ModQueueState {
+  @override
+  PostActions makeActions() => PreviewActions()..context = context;
+
+  @override
+  void loadRole() => isAdmin = true;
+
+  @override
+  Future<void> load() async => setState(() {
+    items = [
+      FootbagQueueItem(
+        reportIds: const [4, 5],
+        reasons: const ['illegal', 'harassment'],
+        notes: const ['This is someone\'s address in the caption'],
+        state: 'open',
+        post: _posts[4],
+        comment: null,
+        firstReportedAt: DateTime.now(),
+        actionedBy: null,
+      ),
+      FootbagQueueItem(
+        reportIds: const [6],
+        reasons: const ['spam'],
+        notes: const [],
+        state: 'open',
+        post: null,
+        comment: FootbagComment(
+          id: 9,
+          postId: 1,
+          authorId: '@s:x',
+          authorName: 'bagdeals',
+          body: 'Cheap footbags, link in bio!!',
+          createdAt: DateTime.now(),
+          isMine: false,
+        ),
+        firstReportedAt: DateTime.now(),
+        actionedBy: null,
+      ),
+    ];
+  });
 }
 
 /// Feed and an empty "other tab", swapped by a button -- the Feed is torn

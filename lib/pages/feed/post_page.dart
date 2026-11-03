@@ -28,38 +28,43 @@ class PostPage extends StatefulWidget {
   const PostPage({required this.postId, this.initial, super.key});
 
   @override
-  State<PostPage> createState() => _PostPageState();
+  PostPageState createState() => PostPageState();
 }
 
-class _PostPageState extends State<PostPage> {
+class PostPageState extends State<PostPage> {
   FootbagPost? post;
   CommentThread? thread;
   Object? error;
   final input = TextEditingController();
   final scroll = ScrollController();
 
-  late final actions = AppPostActions(
+  late final PostActions actions = makeActions();
+
+  PostActions makeActions() => AppPostActions(
     context,
     onRemoved: (_) => Navigator.of(context).pop(),
-    onReplaced: (updated) => setState(() => _adopt(updated)),
+    onReplaced: (updated) => setState(() => adopt(updated)),
   );
 
-  Client get _client => Matrix.of(context).client;
+  /// Null in the preview harness, which overrides [load] instead.
+  Client? get client => Matrix.of(context).client;
 
   @override
   void initState() {
     super.initState();
     input.addListener(() => setState(() {}));
-    if (widget.initial != null) _adopt(widget.initial!);
+    if (widget.initial != null) adopt(widget.initial!);
     unawaited(load());
   }
 
-  void _adopt(FootbagPost p) {
+  void adopt(FootbagPost p) {
     post = p;
     thread?.removeListener(_changed);
     thread?.dispose();
-    thread = CommentThread(_client, p)..addListener(_changed);
+    thread = threadFor(p)..addListener(_changed);
   }
+
+  CommentThread threadFor(FootbagPost p) => CommentThread(client, p);
 
   void _changed() {
     if (mounted) setState(() {});
@@ -75,10 +80,10 @@ class _PostPageState extends State<PostPage> {
 
   Future<void> load() async {
     try {
-      final p = await _client.fetchPost(widget.postId);
+      final p = await client!.fetchPost(widget.postId);
       if (!mounted) return;
       setState(() {
-        _adopt(p);
+        adopt(p);
         error = null;
       });
       await thread!.load();
@@ -160,8 +165,8 @@ class _PostPageState extends State<PostPage> {
                   sending: t.sending,
                   onSend: send,
                   avatar: actions.avatar(
-                    _client.userID ?? '',
-                    _client.userID?.substring(1) ?? '',
+                    client?.userID ?? '',
+                    client?.userID?.substring(1) ?? '',
                     32,
                   ),
                 ),

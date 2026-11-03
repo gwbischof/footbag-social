@@ -30,10 +30,10 @@ class ModQueue extends StatefulWidget {
   const ModQueue({super.key});
 
   @override
-  State<ModQueue> createState() => _ModQueueState();
+  ModQueueState createState() => ModQueueState();
 }
 
-class _ModQueueState extends State<ModQueue> {
+class ModQueueState extends State<ModQueue> {
   String state = 'open';
   List<FootbagQueueItem>? items;
   Object? error;
@@ -43,7 +43,9 @@ class _ModQueueState extends State<ModQueue> {
 
   Client get _client => Matrix.of(context).client;
 
-  late final actions = AppPostActions(
+  late final PostActions actions = makeActions();
+
+  PostActions makeActions() => AppPostActions(
     context,
     onRemoved: (_) => unawaited(load()),
     onReplaced: (_) => unawaited(load()),
@@ -56,10 +58,12 @@ class _ModQueueState extends State<ModQueue> {
   void initState() {
     super.initState();
     unawaited(load());
-    _client.fetchMe().then((me) {
-      if (mounted && me.role == 'admin') setState(() => isAdmin = true);
-    }, onError: (_) {});
+    loadRole();
   }
+
+  void loadRole() => _client.fetchMe().then((me) {
+    if (mounted && me.role == 'admin') setState(() => isAdmin = true);
+  }, onError: (_) {});
 
   Future<void> load() async {
     try {
@@ -272,12 +276,8 @@ class _Item extends StatelessWidget {
                         children: [
                           for (final r in reasons)
                             Container(
-                              padding: const EdgeInsets.fromLTRB(7, 3, 7, 1),
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: r == 'illegal' ? _urgent : Nyfa.muted,
-                                ),
-                              ),
+                              padding: const EdgeInsets.fromLTRB(8, 4, 8, 2),
+                              color: Nyfa.tonal,
                               child: Text(
                                 reasonLabel(r).toUpperCase(),
                                 style: Nyfa.eyebrow.copyWith(
@@ -300,7 +300,7 @@ class _Item extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 8),
                     child: Text(
                       '“$note”',
-                      style: Nyfa.bodyMuted.copyWith(fontSize: 14),
+                      style: Nyfa.bodyMuted,
                     ),
                   ),
                 if (!open && item.actionedBy != null)
