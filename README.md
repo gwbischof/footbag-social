@@ -6,25 +6,48 @@ SPDX-FileCopyrightText: 2026-Present New York Footbag Association
 SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 
-# Footbag Network
+# Footbag Social
 
-A chat and community app for footbag players, built on [Matrix](https://matrix.org).
+**The app for people who play footbag.** Find a circle near you, log what you
+worked on, see what everyone else is landing, and talk about it, all in one
+place instead of scattered across Instagram, a forum and a dozen group chats.
 
-Footbag Network connects the global footbag community — freestyle, net, and casual
-players — in one place. The chat isn't a separate silo: it's the same Matrix network
-the community already uses, so the app and the web community are one.
+Footbag is a small, global, obsessive sport. The hardest part of it isn't the
+tricks; it's finding someone to play with. Footbag Social is built around that.
 
-Part of the footbag ecosystem alongside [New York Footbag](https://newyorkfootbag.com)
-and the [Modified forum](https://modified.korroni.com).
+## What it does
+
+- **Sessions.** Start one in a tap and the clock runs. Check in while you play,
+  stop when you're done, and the time counts to your last check-in, so a
+  forgotten timer can't invent hours. Schedule one ahead and let people ask
+  to join.
+- **Progress, the way footbag works.** After a session, grade each trick on a
+  four-rung ladder (tried, footing, hitting, consistent), add counts and mark
+  firsts. Set goals for the next one, and get suggestions for what to try
+  next, built from what you've already landed.
+- **The trick dictionary.** Hundreds of tricks, composites and strings, with
+  what each one adds. Anyone can suggest a missing one; moderators approve it.
+- **Find players near you.** Discover sessions, players and clubs by discipline
+  (kicking, freestyle, net, stitching) and by distance. Locations are shown
+  as a circle, never a pin, until the host lets you in.
+- **A feed for the sport.** Photos, video and session results from the people
+  you play with, tagged by trick, with a page for every trick showing who's
+  working on it.
+- **Clubs.** A home for your local scene: members, organisers, and sessions.
+- **Rankings.** Who has played the most, and your own recent activity at a glance.
+- **Chat.** Direct messages and group chats, end-to-end encrypted.
 
 ## Status
 
-Early development. Currently a rebranded Matrix client; footbag-specific features
-(finding players near you, progress tracking, club profiles) are in progress.
+In active development and live at [footbagsocial.com](https://footbagsocial.com)
+on the web. iOS and Android builds come next.
+
+Part of the footbag ecosystem alongside [New York Footbag](https://newyorkfootbag.com)
+and the [Modified forum](https://modified.in).
 
 ## Attribution
 
-Footbag Network is a **fork of [FluffyChat](https://github.com/krille-chan/fluffychat)**
+Footbag Social is a **fork of [FluffyChat](https://github.com/krille-chan/fluffychat)**
 by Christian Kußowski and contributors — an excellent open-source Matrix client. We
 forked it rather than reinventing a Matrix client from scratch. Please consider
 [supporting FluffyChat's development](https://de.liberapay.com/KrilleChritzelius).
@@ -38,22 +61,10 @@ AGPL-3.0-or-later. See [LICENSE](LICENSE).
 The source for this app, including all modifications, is at
 https://github.com/gwbischof/footbag-social.
 
-**Trademarks.** The names "Footbag Network" and "NYFA", and their logos, are
+**Trademarks.** The names "Footbag Social", "Footbag Network" and "NYFA", and their logos, are
 trademarks of the New York Footbag Association. The AGPL grants you rights to the
 code, not to the branding — if you distribute a derivative, use your own name and
 logo.
-
-## Features
-
-- 📩 Messages, images, and files
-- 🎙️ Voice messages
-- 📍 Location sharing
-- 🔔 Push notifications
-- 💬 Private and public group chats
-- 🌌 Spaces
-- 🔐 End-to-end encryption with encrypted chat backup
-- 😀 Emoji verification & cross-signing
-- 🎨 Material You design
 
 ## How to build
 
