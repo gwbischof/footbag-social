@@ -56,12 +56,7 @@ class IntroPage extends StatelessWidget {
         title: addMultiAccount
             ? Text(
                 L10n.of(context).addAccount,
-                style: const TextStyle(
-                  color: Nyfa.paper,
-                  fontFamily: Nyfa.display,
-                  fontSize: 20,
-                  letterSpacing: 1.0,
-                ),
+                style: Nyfa.heading,
               )
             : null,
         actions: [_menu(context)],

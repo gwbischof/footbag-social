@@ -131,7 +131,7 @@ class _WelcomePageState extends State<WelcomePage> {
                 padding: const EdgeInsets.fromLTRB(20, 8, 20, 6),
                 child: Text(
                   l10n.welcomeTitle,
-                  style: Nyfa.clock.copyWith(color: Nyfa.paper, fontSize: 56),
+                  style: Nyfa.title.copyWith(fontSize: 30),
                 ),
               ),
               Padding(

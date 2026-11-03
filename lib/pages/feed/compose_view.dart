@@ -295,79 +295,82 @@ class _DraftTile extends StatelessWidget {
 
     return SizedBox(
       width: 100,
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          image,
-          if (d.isVideo)
-            const Positioned(
-              left: 6,
-              bottom: 8,
-              child: Icon(
-                Icons.play_arrow_rounded,
-                color: Nyfa.paper,
-                size: 22,
+      child: ClipRRect(
+        borderRadius: Nyfa.rounded,
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            image,
+            if (d.isVideo)
+              const Positioned(
+                left: 6,
+                bottom: 8,
+                child: Icon(
+                  Icons.play_arrow_rounded,
+                  color: Nyfa.paper,
+                  size: 22,
+                ),
               ),
-            ),
-          if (index == 0)
-            Positioned(
-              left: 0,
-              top: 0,
-              child: Container(
-                color: Nyfa.green,
-                padding: const EdgeInsets.fromLTRB(5, 2, 5, 0),
-                child: const Diamond(size: 10, color: Nyfa.ground),
+            if (index == 0)
+              Positioned(
+                left: 0,
+                top: 0,
+                child: Container(
+                  color: Nyfa.green,
+                  padding: const EdgeInsets.fromLTRB(5, 2, 5, 0),
+                  child: const Diamond(size: 10, color: Nyfa.ground),
+                ),
               ),
-            ),
-          if (d.failed)
-            Material(
-              color: Nyfa.ground,
-              child: InkWell(
-                onTap: onRetry,
-                child: Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Center(
-                    child: Text(
-                      l10n.uploadFailed,
-                      textAlign: TextAlign.center,
-                      style: Nyfa.meta,
+            if (d.failed)
+              Material(
+                color: Nyfa.ground,
+                child: InkWell(
+                  onTap: onRetry,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Center(
+                      child: Text(
+                        l10n.uploadFailed,
+                        textAlign: TextAlign.center,
+                        style: Nyfa.meta,
+                      ),
                     ),
                   ),
                 ),
+              )
+            else if (!d.done)
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: LinearProgressIndicator(
+                  // The web reports nothing until the end, so an honest bar
+                  // there is an indeterminate one.
+                  value: d.progress > 0 && d.progress < 1 ? d.progress : null,
+                  minHeight: 3,
+                  color: Nyfa.green,
+                  backgroundColor: Nyfa.rule,
+                ),
               ),
-            )
-          else if (!d.done)
             Positioned(
-              left: 0,
               right: 0,
-              bottom: 0,
-              child: LinearProgressIndicator(
-                // The web reports nothing until the end, so an honest bar
-                // there is an indeterminate one.
-                value: d.progress > 0 && d.progress < 1 ? d.progress : null,
-                minHeight: 3,
-                color: Nyfa.green,
-                backgroundColor: Nyfa.rule,
-              ),
-            ),
-          Positioned(
-            right: 0,
-            top: 0,
-            child: Semantics(
-              button: true,
-              label: MaterialLocalizations.of(context).deleteButtonTooltip,
-              child: InkWell(
-                onTap: onRemove,
-                child: Container(
-                  width: 30,
-                  height: 30,
-                  color: Nyfa.ground,
-                  child: const Icon(Icons.close, size: 16, color: Nyfa.paper),
+              top: 0,
+              child: Semantics(
+                button: true,
+                label: MaterialLocalizations.of(context).deleteButtonTooltip,
+                child: InkWell(
+                  onTap: onRemove,
+                  child: Container(
+                    width: 30,
+                    height: 30,
+                    color: Nyfa.ground,
+                    child: const Icon(Icons.close, size: 16, color: Nyfa.paper),
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -271,8 +271,9 @@ class PreviewActions implements PostActions {
     child: Text(
       name.isEmpty ? 'G' : name.substring(0, 1).toUpperCase(),
       style: TextStyle(
-        fontFamily: Nyfa.display,
-        fontSize: size * 0.5,
+        fontFamily: Nyfa.body,
+        fontWeight: FontWeight.w600,
+        fontSize: size * 0.42,
         color: Nyfa.paper,
       ),
     ),

@@ -87,8 +87,9 @@ abstract class AppThemes {
     final dividerColor = brightness == Brightness.dark
         ? colorScheme.surfaceContainerHighest
         : colorScheme.surfaceContainer;
+    final dark = brightness == Brightness.dark;
     return ThemeData(
-      // The club's text face everywhere, chat included.
+      // The app's text face everywhere, chat included.
       fontFamily: Nyfa.body,
       // A selected row (the open chat) is marked by its tonal fill; lime
       // text across a whole row is the accent spent as body copy.
@@ -110,12 +111,51 @@ abstract class AppThemes {
         selectionColor: colorScheme.onSurface.withAlpha(128),
         selectionHandleColor: colorScheme.secondary,
       ),
-      inputDecorationTheme: InputDecorationTheme(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppConfig.borderRadius / 2),
-        ),
-        contentPadding: const EdgeInsets.all(12),
-      ),
+      // Dark is the app's own look: fields filled and borderless like the
+      // rest of it, controls at the shared 8px radius rather than pills,
+      // lime kept for the primary action. Light keeps FluffyChat's defaults.
+      inputDecorationTheme: dark
+          ? const InputDecorationTheme(
+              filled: true,
+              fillColor: Nyfa.raised,
+              hintStyle: TextStyle(color: Nyfa.faint),
+              border: OutlineInputBorder(
+                borderRadius: Nyfa.rounded,
+                borderSide: BorderSide.none,
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: Nyfa.rounded,
+                borderSide: BorderSide.none,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: Nyfa.rounded,
+                borderSide: BorderSide(color: Nyfa.edge, width: 1.5),
+              ),
+              contentPadding: EdgeInsets.all(12),
+            )
+          : InputDecorationTheme(
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppConfig.borderRadius / 2),
+              ),
+              contentPadding: const EdgeInsets.all(12),
+            ),
+      filledButtonTheme: dark
+          ? FilledButtonThemeData(
+              style: FilledButton.styleFrom(
+                shape: Nyfa.controlShape,
+                textStyle: Nyfa.label,
+              ),
+            )
+          : null,
+      floatingActionButtonTheme: dark
+          ? const FloatingActionButtonThemeData(
+              backgroundColor: Nyfa.tonal,
+              foregroundColor: Nyfa.paper,
+              elevation: 0,
+              highlightElevation: 0,
+              shape: Nyfa.dialogShape,
+            )
+          : null,
       chipTheme: ChipThemeData(
         showCheckmark: false,
         backgroundColor: colorScheme.surfaceContainer,
@@ -126,6 +166,8 @@ abstract class AppThemes {
       ),
       appBarTheme: AppBarTheme(
         toolbarHeight: isColumnMode ? 72 : 56,
+        centerTitle: dark ? false : null,
+        titleTextStyle: dark ? Nyfa.heading.copyWith(fontSize: 18) : null,
         surfaceTintColor: isColumnMode ? colorScheme.surface : null,
         backgroundColor: isColumnMode ? colorScheme.surface : null,
         actionsPadding: isColumnMode
@@ -140,13 +182,22 @@ abstract class AppThemes {
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
-        style: OutlinedButton.styleFrom(
-          side: BorderSide(width: 1, color: colorScheme.primary),
-          shape: RoundedRectangleBorder(
-            side: BorderSide(color: colorScheme.primary),
-            borderRadius: BorderRadius.circular(AppConfig.borderRadius / 2),
-          ),
-        ),
+        style: dark
+            ? OutlinedButton.styleFrom(
+                foregroundColor: Nyfa.paper,
+                side: const BorderSide(color: Nyfa.edge),
+                shape: Nyfa.controlShape,
+                textStyle: Nyfa.label,
+              )
+            : OutlinedButton.styleFrom(
+                side: BorderSide(width: 1, color: colorScheme.primary),
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(color: colorScheme.primary),
+                  borderRadius: BorderRadius.circular(
+                    AppConfig.borderRadius / 2,
+                  ),
+                ),
+              ),
       ),
       progressIndicatorTheme: ProgressIndicatorThemeData(
         strokeCap: StrokeCap.round,
@@ -167,6 +218,7 @@ abstract class AppThemes {
           elevation: 0,
           padding: const EdgeInsets.all(16),
           textStyle: const TextStyle(fontSize: 16),
+          shape: dark ? Nyfa.controlShape : null,
         ),
       ),
     );

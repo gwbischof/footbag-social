@@ -3,7 +3,7 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-import 'package:footbag_network/utils/string_color.dart';
+import 'package:footbag_network/config/nyfa_theme.dart';
 import 'package:footbag_network/widgets/mxc_image.dart';
 import 'package:footbag_network/widgets/presence_builder.dart';
 import 'package:material_ui/material_ui.dart';
@@ -41,7 +41,7 @@ class Avatar extends StatelessWidget {
     this.icon,
     this.backgroundColor,
     this.textColor,
-    this.fontFamily = 'RobotoMono',
+    this.fontFamily = Nyfa.body,
     super.key,
   });
 
@@ -93,9 +93,9 @@ class Avatar extends StatelessWidget {
               placeholder: (_) => noPic
                   ? Container(
                       decoration: BoxDecoration(
-                        color:
-                            backgroundColor ??
-                            fallbackLetters.colorScheme.primaryContainer,
+                        // The app's six avatar tones, so a person reads the
+                        // same in chat as in the feed.
+                        color: backgroundColor ?? Nyfa.toneFor(name ?? ''),
                       ),
                       alignment: Alignment.center,
                       child: Text(
@@ -103,10 +103,8 @@ class Avatar extends StatelessWidget {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontFamily: fontFamily,
-                          color:
-                              textColor ??
-                              fallbackLetters.colorScheme.onPrimaryContainer,
-                          fontWeight: FontWeight.bold,
+                          color: textColor ?? Nyfa.paper,
+                          fontWeight: FontWeight.w600,
                           fontSize: (size / 2.5).roundToDouble(),
                         ),
                       ),
