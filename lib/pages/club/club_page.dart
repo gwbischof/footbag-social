@@ -475,7 +475,7 @@ class _Members extends StatelessWidget {
                     (m.isCreator ? l10n.founder : l10n.organiser).toUpperCase(),
                     style: Nyfa.eyebrow.copyWith(
                       fontSize: 13,
-                      color: Nyfa.green,
+                      color: Nyfa.muted,
                     ),
                   ),
                 ),
