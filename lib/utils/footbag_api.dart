@@ -653,19 +653,40 @@ extension FootbagApi on Client {
           ..headers['content-type'] = contentType
           ..contentLength = length;
 
+    // Two limits, so a dead connection ends in a Retry rather than a
+    // spinner forever: no bytes moving for [_uploadStall] -- where progress
+    // is reported at all -- and [_uploadDeadline] overall, a minute past the
+    // server's own.
     var sent = 0;
+    var lastMoved = DateTime.now();
+    final stalled = Completer<http.Response>();
+    final watchdog = Timer.periodic(const Duration(seconds: 10), (_) {
+      if (sent > 0 &&
+          sent < length &&
+          DateTime.now().difference(lastMoved) > _uploadStall &&
+          !stalled.isCompleted) {
+        stalled.completeError(_uploadTooSlow);
+      }
+    });
     unawaited(
       bytes
           .map((chunk) {
             sent += chunk.length;
+            lastMoved = DateTime.now();
             onProgress?.call(sent, length);
             return chunk;
           })
           .pipe(request.sink),
     );
-    final response = await http.Response.fromStream(
-      await httpClient.send(request),
-    );
+    final http.Response response;
+    try {
+      response = await Future.any([
+        httpClient.send(request).then(http.Response.fromStream),
+        stalled.future,
+      ]).timeout(_uploadDeadline, onTimeout: () => throw _uploadTooSlow);
+    } finally {
+      watchdog.cancel();
+    }
     if (response.statusCode == 401) {
       throw const FootbagApiException.notSignedIn();
     }
@@ -676,6 +697,13 @@ extension FootbagApi on Client {
       jsonDecode(response.body) as Map<String, dynamic>,
     );
   }
+
+  static const _uploadStall = Duration(seconds: 90);
+  static const _uploadDeadline = Duration(minutes: 11);
+  static const _uploadTooSlow = FootbagApiException(
+    408,
+    'The upload stopped. Check your connection and try again.',
+  );
 
   Future<FootbagPost> createPost({
     String caption = '',
