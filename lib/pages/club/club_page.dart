@@ -318,7 +318,7 @@ class _Header extends StatelessWidget {
         children: [
           Text(
             l10n.clubMemberCount(club.memberCount).toUpperCase(),
-            style: Nyfa.eyebrow.copyWith(color: Nyfa.green),
+            style: Nyfa.eyebrow,
           ),
           if (club.location.isNotEmpty) ...[
             const SizedBox(height: 8),

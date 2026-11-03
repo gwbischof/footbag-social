@@ -33,10 +33,10 @@ class PlayerPage extends StatefulWidget {
   const PlayerPage({required this.userId, this.name, super.key});
 
   @override
-  State<PlayerPage> createState() => _PlayerPageState();
+  PlayerPageState createState() => PlayerPageState();
 }
 
-class _PlayerPageState extends State<PlayerPage> {
+class PlayerPageState extends State<PlayerPage> {
   FootbagPlayerProfile? profile;
   List<FootbagPost>? posts;
   String? _next;
@@ -45,7 +45,10 @@ class _PlayerPageState extends State<PlayerPage> {
 
   Client get _client => Matrix.of(context).client;
 
+  /// Overridable, with [resolve], by the preview harness.
   bool get isMe => widget.userId == _client.userID;
+
+  Uri resolve(String path) => _client.footbagMediaUri(path);
 
   @override
   void initState() {
@@ -180,9 +183,7 @@ class _PlayerPageState extends State<PlayerPage> {
                                                       profile!.postCount,
                                                     )
                                                     .toUpperCase(),
-                                                style: Nyfa.eyebrow.copyWith(
-                                                  color: Nyfa.green,
-                                                ),
+                                                style: Nyfa.eyebrow,
                                               ),
                                             ),
                                         ],
@@ -204,11 +205,7 @@ class _PlayerPageState extends State<PlayerPage> {
                                             8,
                                             1,
                                           ),
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: Nyfa.rule,
-                                            ),
-                                          ),
+                                          color: Nyfa.tonal,
                                           child: Text(
                                             _style(l10n, s).toUpperCase(),
                                             style: Nyfa.eyebrow.copyWith(
@@ -275,7 +272,7 @@ class _PlayerPageState extends State<PlayerPage> {
                             itemCount: list.length,
                             itemBuilder: (context, i) => PostGridTile(
                               post: list[i],
-                              resolve: _client.footbagMediaUri,
+                              resolve: resolve,
                               onTap: () => open(list[i]),
                             ),
                           ),

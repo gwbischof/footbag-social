@@ -19,6 +19,7 @@ import 'package:footbag_network/pages/club/club_page.dart';
 import 'package:footbag_network/pages/feed/compose.dart';
 import 'package:footbag_network/pages/feed/feed.dart';
 import 'package:footbag_network/pages/feed/feed_actions.dart';
+import 'package:footbag_network/pages/feed/player_page.dart';
 import 'package:footbag_network/pages/feed/widgets/comments.dart';
 import 'package:footbag_network/pages/feed/widgets/post_card.dart';
 import 'package:footbag_network/pages/feed/widgets/trick_header.dart';
@@ -119,6 +120,7 @@ Widget previewBody(BuildContext context) =>
       'places' => const _PreviewPlaces(),
       'where' => const _PreviewWhere(),
       'goals' => const _PreviewGoals(),
+      'player' => const _PreviewPlayer(),
       'dash' => const PreviewDash(),
       'dash-running' => const PreviewDash(mode: 'running'),
       'discover' => const PreviewDiscover(),
@@ -789,4 +791,37 @@ class _PreviewTricksQueueState extends PendingTricksPageState {
       }),
     ],
   );
+}
+
+/// Someone's page, with the preview feed's posts as theirs.
+class _PreviewPlayer extends PlayerPage {
+  const _PreviewPlayer()
+    : super(userId: '@landes:footbagsocial.com', name: 'Landes');
+
+  @override
+  PlayerPageState createState() => _PreviewPlayerState();
+}
+
+class _PreviewPlayerState extends PlayerPageState {
+  @override
+  bool get isMe => false;
+
+  @override
+  Uri resolve(String path) => Uri.parse('$_api/$path');
+
+  @override
+  Future<void> load() async {
+    PlayerAvatar.previewBuilder = PreviewActions().avatar;
+    setState(() {
+      profile = FootbagPlayerProfile.fromJson({
+        'user_id': '@landes:footbagsocial.com',
+        'display_name': 'Landes',
+        'bio': 'Freestyle and net. Tompkins most Tuesdays; bring a bag.',
+        'city': 'Brooklyn',
+        'play_styles': ['freestyle', 'net'],
+        'post_count': _posts.length,
+      });
+      posts = [..._posts, ..._posts];
+    });
+  }
 }
