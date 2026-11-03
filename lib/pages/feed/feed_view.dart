@@ -10,6 +10,7 @@ import 'package:footbag_network/pages/feed/feed.dart';
 import 'package:footbag_network/pages/feed/feed_actions.dart';
 import 'package:footbag_network/pages/feed/widgets/feed_states.dart';
 import 'package:footbag_network/pages/feed/widgets/post_card.dart';
+import 'package:footbag_network/pages/feed/widgets/trick_header.dart';
 import 'package:footbag_network/pages/inbox/inbox_bell.dart';
 import 'package:footbag_network/widgets/footbag_nav_bar.dart';
 import 'package:go_router/go_router.dart';
@@ -127,6 +128,10 @@ class FeedView extends StatelessWidget {
                       child: _Filters(controller: controller),
                     ),
                   ),
+                  if (trick)
+                    SliverToBoxAdapter(
+                      child: TrickHeader(slug: controller.widget.entrySlug!),
+                    ),
                   if (controller.error != null && posts == null)
                     SliverFillRemaining(
                       hasScrollBody: false,
@@ -149,8 +154,12 @@ class FeedView extends StatelessWidget {
                               onAction: controller.clearFilters,
                             )
                           : FeedEmpty(
-                              title: l10n.feedEmptyTitle,
-                              body: l10n.feedEmptyBody,
+                              title: trick
+                                  ? l10n.trickNoClipsTitle
+                                  : l10n.feedEmptyTitle,
+                              body: trick
+                                  ? l10n.trickNoClipsBody
+                                  : l10n.feedEmptyBody,
                               actionLabel: trick ? null : l10n.postSomething,
                               onAction: trick ? null : controller.compose,
                             ),

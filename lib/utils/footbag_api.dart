@@ -275,6 +275,12 @@ extension FootbagApi on Client {
   Future<void> dismissModerator(String userId) =>
       _apiSend('DELETE', 'moderators/${Uri.encodeComponent(userId)}');
 
+  /// Everything a trick's page shows above its clips.
+  Future<FootbagTrickDetail> fetchTrickDetail(String slug) async =>
+      FootbagTrickDetail.fromJson(
+        await _apiGetObject('tricks/${Uri.encodeComponent(slug)}/detail'),
+      );
+
   // -- Goals and Try next -------------------------------------------------------
 
   /// Your goals for a session, in order. Private to you.
@@ -1959,4 +1965,46 @@ class FootbagIdea {
     'favourite' => 'favourite',
     _ => 'next',
   };
+}
+
+/// A trick's page: what it is, where it sits, and your record with it.
+class FootbagTrickDetail {
+  final FootbagEntry entry;
+  final List<({String slug, String name})> builtOn;
+  final List<({String slug, String name})> buildsInto;
+  final List<({String slug, String name})> steps;
+  final FootbagGrade? bestGrade;
+  final int hitSessions;
+  final bool reported;
+  final bool favourite;
+
+  const FootbagTrickDetail({
+    required this.entry,
+    required this.builtOn,
+    required this.buildsInto,
+    required this.steps,
+    required this.bestGrade,
+    required this.hitSessions,
+    required this.reported,
+    required this.favourite,
+  });
+
+  static List<({String slug, String name})> _refs(Object? list) => [
+    for (final e in (list as List? ?? const []).cast<Map<String, dynamic>>())
+      (slug: e['slug'] as String, name: e['name'] as String),
+  ];
+
+  factory FootbagTrickDetail.fromJson(Map<String, dynamic> json) {
+    final mine = json['mine'] as Map<String, dynamic>;
+    return FootbagTrickDetail(
+      entry: FootbagEntry.fromJson(json['entry'] as Map<String, dynamic>),
+      builtOn: _refs(json['built_on']),
+      buildsInto: _refs(json['builds_into']),
+      steps: _refs(json['steps']),
+      bestGrade: FootbagGrade.fromWire(mine['best_grade']),
+      hitSessions: mine['hit_sessions'] as int? ?? 0,
+      reported: mine['last_reported'] != null,
+      favourite: mine['favourite'] as bool? ?? false,
+    );
+  }
 }

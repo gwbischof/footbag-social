@@ -21,6 +21,7 @@ import 'package:footbag_network/pages/feed/feed.dart';
 import 'package:footbag_network/pages/feed/feed_actions.dart';
 import 'package:footbag_network/pages/feed/widgets/comments.dart';
 import 'package:footbag_network/pages/feed/widgets/post_card.dart';
+import 'package:footbag_network/pages/feed/widgets/trick_header.dart';
 import 'package:footbag_network/pages/goals/goals_page.dart';
 import 'package:footbag_network/pages/inbox/inbox_bell.dart';
 import 'package:footbag_network/pages/inbox/inbox_page.dart';
@@ -67,7 +68,7 @@ Widget previewBody(BuildContext context) =>
       'top' => const _PreviewFeed(mode: 'top'),
       'empty' => const _PreviewFeed(mode: 'empty'),
       'loading' => const _PreviewFeed(mode: 'loading'),
-      'trick' => const _PreviewFeed(mode: 'trick'),
+      'trick' => _trickPage(),
       'compose' => const _PreviewCompose(),
       'tabs' => const _TabSwap(),
       'inbox' => const _PreviewInbox(),
@@ -702,4 +703,35 @@ class _PreviewGoalsState extends GoalsPageState {
         ].firstWhere((g) => g.entrySlug == slug).name,
       ),
   ];
+}
+
+/// A trick's page: the header from canned data, the clips from the preview
+/// feed.
+Widget _trickPage() {
+  TrickHeader.preview = FootbagTrickDetail.fromJson({
+    'entry': {
+      'slug': 'paradox-mirage',
+      'name': 'Paradox Mirage',
+      'kind': 'composite',
+      'description':
+          'A mirage taken paradox: the set crosses behind the plant leg before the dex.',
+      'aka': ['PDX Mirage'],
+      'adds': ['pdx', 'dex', 'del'],
+    },
+    'built_on': [
+      {'slug': 'mirage', 'name': 'Mirage'},
+    ],
+    'builds_into': [
+      {'slug': 'spinning-paradox-mirage', 'name': 'Spinning Paradox Mirage'},
+      {'slug': 'blurry-paradox-mirage', 'name': 'Blurry Paradox Mirage'},
+      {'slug': 'atomic-paradox-mirage', 'name': 'Atomic Paradox Mirage'},
+    ],
+    'mine': {
+      'best_grade': 'hitting',
+      'hit_sessions': 4,
+      'last_reported': '2026-10-30T18:00:00Z',
+      'favourite': true,
+    },
+  });
+  return const _PreviewFeed(mode: 'trick');
 }

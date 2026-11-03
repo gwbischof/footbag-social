@@ -5057,5 +5057,83 @@
         "type": "String",
         "description": "Reason: in the player's last report but not yet consistent.",
         "placeholders": {}
+    },
+    "alsoCalled": "Also called {names}",
+    "@alsoCalled": {
+        "type": "String",
+        "description": "A trick's nicknames.",
+        "placeholders": {
+            "names": {
+                "type": "String"
+            }
+        }
+    },
+    "addsCount": "{count, plural, =1{1 add} other{{count} adds}}",
+    "@addsCount": {
+        "type": "String",
+        "description": "How many adds a trick is.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "builtOn": "Built on",
+    "@builtOn": {
+        "type": "String",
+        "description": "A trick's bases: what to learn first.",
+        "placeholders": {}
+    },
+    "buildsInto": "Builds into",
+    "@buildsInto": {
+        "type": "String",
+        "description": "Tricks one modifier up from this one.",
+        "placeholders": {}
+    },
+    "trickSteps": "Steps",
+    "@trickSteps": {
+        "type": "String",
+        "description": "A string's tricks, in order.",
+        "placeholders": {}
+    },
+    "notInYourReports": "Not in your reports yet",
+    "@notInYourReports": {
+        "type": "String",
+        "description": "The player has never reported this trick.",
+        "placeholders": {}
+    },
+    "hitInSessions": "{count, plural, =0{Not hit yet} =1{Hit in 1 session} other{Hit in {count} sessions}}",
+    "@hitInSessions": {
+        "type": "String",
+        "description": "How many sessions the player hit a trick in.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "favourited": "Favourited",
+    "@favourited": {
+        "type": "String",
+        "description": "State of the favourite toggle when on.",
+        "placeholders": {}
+    },
+    "clips": "Clips",
+    "@clips": {
+        "type": "String",
+        "description": "Heading over a trick's clips.",
+        "placeholders": {}
+    },
+    "trickNoClipsTitle": "No clips yet",
+    "@trickNoClipsTitle": {
+        "type": "String",
+        "description": "A trick page with no clips.",
+        "placeholders": {}
+    },
+    "trickNoClipsBody": "Tag this trick when you post a clip and it shows up here.",
+    "@trickNoClipsBody": {
+        "type": "String",
+        "description": "How clips reach a trick page.",
+        "placeholders": {}
     }
 }
