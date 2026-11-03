@@ -292,7 +292,10 @@ class _InboxRow extends StatelessWidget {
         width: 44,
         height: 44,
         alignment: Alignment.center,
-        color: Nyfa.raised,
+        decoration: const BoxDecoration(
+          color: Nyfa.raised,
+          borderRadius: Nyfa.rounded,
+        ),
         child: const Icon(Icons.notes_rounded, size: 20, color: Nyfa.muted),
       );
     } else if (item.sessionId != null || item.club != null) {

@@ -151,11 +151,7 @@ class _Problem extends StatelessWidget {
       const SizedBox(height: 80),
       const Icon(Icons.cloud_off_rounded, size: 44, color: Nyfa.muted),
       const SizedBox(height: 18),
-      Text(
-        title.toUpperCase(),
-        textAlign: TextAlign.center,
-        style: Nyfa.heading,
-      ),
+      Text(title, textAlign: TextAlign.center, style: Nyfa.heading),
       const SizedBox(height: 8),
       Text(message, textAlign: TextAlign.center, style: Nyfa.bodyMuted),
       const SizedBox(height: 20),

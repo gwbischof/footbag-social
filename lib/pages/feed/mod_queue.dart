@@ -279,7 +279,7 @@ class _Item extends StatelessWidget {
                               padding: const EdgeInsets.fromLTRB(8, 4, 8, 2),
                               color: Nyfa.tonal,
                               child: Text(
-                                reasonLabel(r).toUpperCase(),
+                                reasonLabel(r),
                                 style: Nyfa.eyebrow.copyWith(
                                   fontSize: 13,
                                   color: r == 'illegal' ? _urgent : Nyfa.paper,
@@ -290,7 +290,7 @@ class _Item extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      l10n.reportCount(item.reportIds.length).toUpperCase(),
+                      l10n.reportCount(item.reportIds.length),
                       style: Nyfa.eyebrow,
                     ),
                   ],
@@ -298,10 +298,7 @@ class _Item extends StatelessWidget {
                 for (final note in item.notes)
                   Padding(
                     padding: const EdgeInsets.only(top: 8),
-                    child: Text(
-                      '“$note”',
-                      style: Nyfa.bodyMuted,
-                    ),
+                    child: Text('“$note”', style: Nyfa.bodyMuted),
                   ),
                 if (!open && item.actionedBy != null)
                   Padding(

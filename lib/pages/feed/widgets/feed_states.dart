@@ -94,7 +94,7 @@ class FeedEmpty extends StatelessWidget {
         const Diamond(size: 44, filled: false, color: Nyfa.greenDim),
         const SizedBox(height: 20),
         Text(
-          title.toUpperCase(),
+          title,
           textAlign: TextAlign.center,
           style: Nyfa.heading.copyWith(fontSize: 24),
         ),

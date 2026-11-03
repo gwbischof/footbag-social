@@ -5,30 +5,25 @@
 import 'package:flutter/services.dart';
 import 'package:material_ui/material_ui.dart';
 
-/// The club's look, as newyorkfootbag.com sets it.
+/// Footbag Social's look.
 ///
-/// Near-black ground, warm paper type, the club green, Bebas Neue in caps.
-/// Lives here rather than privately in each page because it is now used by the
-/// intro screen and the session screens, and a palette copied three times is a
-/// palette that drifts.
+/// Its own, not the NYFA club theme it started as (decided Nov 2026; see the
+/// design doc's "Visual style"). From NYFA it keeps the near-black ground,
+/// the lime and Bebas Neue -- the lime for the one primary action and
+/// anything live, Bebas for the wordmark and big numbers only. Everything
+/// else is quiet: one sans in sentence case, emphasis by weight, neutral
+/// greys, small radii, chrome that steps back so photos lead.
 ///
-/// Deliberately not derived from [ThemeData]: the rest of the app is Material 3
-/// seeded from a different green, and these screens are the club's own surface.
-/// Reading the M3 scheme here would mean half-inheriting a palette this does
-/// not want.
+/// The class keeps its old name: forty files call it, and a rename would be
+/// churn with no change a person could see.
 class Nyfa {
   const Nyfa._();
 
   /// The page.
   static const ground = Color(0xFF0A0A0A);
 
-  /// Rows and cards: a lift off the ground rather than a grey.
-  ///
-  /// Warm-shifted, because [paper] and [muted] both are — a neutral mixed from
-  /// pure grey against a warm type colour reads as an accident. 1.15:1 off
-  /// the ground: the old 1.07:1 was a step nobody could see, so a raised row
-  /// read as nothing.
-  static const raised = Color(0xFF1C1B17);
+  /// Sheets, inputs and placeholders: a lift off the ground.
+  static const raised = Color(0xFF181818);
 
   /// The fill of a secondary control -- a chip, a quiet button, an input.
   ///
@@ -36,27 +31,28 @@ class Nyfa {
   /// a dark UI can be, and visual complexity is what most lowers how good a
   /// screen looks at a glance (see best-practices/beautiful-mobile-app-ui).
   /// The control's label carries its contrast; the fill only says "tap me".
-  static const tonal = Color(0xFF2A2923);
+  static const tonal = Color(0xFF2A2A2A);
 
   /// The one outline that must read as an edge: an input's underline, a
   /// focus ring. 3.3:1 on [ground], clearing WCAG 1.4.11's 3:1 for controls.
-  static const edge = Color(0xFF66645C);
+  static const edge = Color(0xFF5E5E5E);
 
-  /// Primary text. ~15:1 on [ground].
-  static const paper = Color(0xFFEDEBE7);
+  /// Primary text. ~18:1 on [ground].
+  static const paper = Color(0xFFF5F5F5);
 
   /// Secondary text people actually read: captions, metadata, explanations.
   ///
-  /// APCA Lc 58 on [ground]. The old #89867F passed WCAG 2 at 5.45:1 but is
-  /// only Lc 38 -- WCAG 2 overstates light-on-dark contrast, and Lc 38 is
-  /// placeholder territory, not reading text.
-  static const muted = Color(0xFFB2AEA5);
+  /// APCA Lc ~58 on [ground] -- reading text, not placeholder grey. WCAG 2
+  /// overstates light-on-dark contrast, so a grey that merely passes it can
+  /// still be too dim to read.
+  static const muted = Color(0xFFABABAB);
 
   /// Text nobody needs to read closely: timestamps, placeholders, disabled
   /// labels. Lc 40 -- above APCA's floor of 30 for any text, and no more.
-  static const faint = Color(0xFF8F8C84);
+  static const faint = Color(0xFF8C8C8C);
 
-  /// The club green. The clock, the active rung, the primary action.
+  /// The lime, kept from the club. The primary action, the clock, the
+  /// active rung, live state -- and nothing decorative.
   static const green = Color(0xFFB0F42F);
 
   /// A rung already attained, below the current one.
@@ -68,11 +64,30 @@ class Nyfa {
   /// non-text UI state) and 5.34:1 under [paper].
   static const greenDim = Color(0xFF4C6819);
 
-  /// Hairlines. The structural device this look uses instead of cards.
-  static const rule = Color(0xFF26251F);
+  /// Hairlines between rows.
+  static const rule = Color(0xFF232323);
 
-  /// Avatar tones for people without a photo: the club olive, then rust,
-  /// slate, plum, teal and ochre. Muted, so none competes with [green];
+  /// Corner radii: controls, then sheets and media in a card. Small, so the
+  /// shapes read as soft rather than as bubbles.
+  static const radius = 8.0;
+  static const radiusLarge = 12.0;
+  static const rounded = BorderRadius.all(Radius.circular(radius));
+  static const roundedLarge = BorderRadius.all(Radius.circular(radiusLarge));
+  static const controlShape = RoundedRectangleBorder(
+    borderRadius: BorderRadius.all(Radius.circular(radius)),
+  );
+
+  /// A bottom sheet: rounded where it meets the screen, square at the edge.
+  static const sheetShape = RoundedRectangleBorder(
+    borderRadius: BorderRadius.vertical(top: Radius.circular(radiusLarge)),
+  );
+
+  static const dialogShape = RoundedRectangleBorder(
+    borderRadius: BorderRadius.all(Radius.circular(radiusLarge)),
+  );
+
+  /// Avatar tones for people without a photo: olive, rust, slate, plum, teal
+  /// and ochre. Muted, so none competes with [green];
   /// dark, so a [paper] letter on any of them is APCA Lc 74 or better.
   /// One flat colour for everyone made a feed of five people read as one.
   static const _tones = [
@@ -93,24 +108,46 @@ class Nyfa {
     return _tones[h % _tones.length];
   }
 
+  /// Bebas Neue: the wordmark and big numbers. Never a label.
   static const display = 'BebasNeue';
   static const body = 'DMSans';
 
-  /// Section headings and anything set like a scoreboard label.
-  static const heading = TextStyle(
-    fontFamily: display,
+  /// A screen's own title, where it has one in the page rather than the bar.
+  static const title = TextStyle(
+    fontFamily: body,
     color: paper,
-    fontSize: 20,
-    letterSpacing: 1.2,
-    height: 1.1,
+    fontSize: 22,
+    fontWeight: FontWeight.w700,
+    letterSpacing: -0.3,
+    height: 1.2,
   );
 
-  /// Small caps labels above a group.
+  /// Headings: a section, a row's name, a sheet's title.
+  static const heading = TextStyle(
+    fontFamily: body,
+    color: paper,
+    fontSize: 17,
+    fontWeight: FontWeight.w700,
+    letterSpacing: -0.1,
+    height: 1.25,
+  );
+
+  /// Small labels: a count, a state, a tag. Sentence case and weight, not
+  /// tracked capitals -- caps on every label is what made the old look shout.
   static const eyebrow = TextStyle(
-    fontFamily: display,
+    fontFamily: body,
     color: muted,
-    fontSize: 14,
-    letterSpacing: 1.6,
+    fontSize: 13,
+    fontWeight: FontWeight.w600,
+    height: 1.3,
+  );
+
+  /// A control's label: buttons, chips, tabs.
+  static const label = TextStyle(
+    fontFamily: body,
+    fontSize: 15,
+    fontWeight: FontWeight.w600,
+    height: 1.2,
   );
 
   /// Reading text. 15, up from 14: bigger reads measurably better and the
@@ -156,7 +193,8 @@ class Nyfa {
         foregroundColor: accent ? green : paper,
         disabledBackgroundColor: raised,
         disabledForegroundColor: faint,
-        shape: const RoundedRectangleBorder(),
+        shape: controlShape,
+        textStyle: label,
         elevation: 0,
       );
 
@@ -173,19 +211,18 @@ class Nyfa {
     fontFeatures: [FontFeature.tabularFigures()],
   );
 
-  /// An input's text and its label, in the body face.
-  ///
-  /// A filled field with an underline rather than a box: one edge, at a
-  /// contrast that reads as an edge, instead of four at one that does not.
-  static InputDecoration input(String label) => InputDecoration(
-    labelText: label,
+  /// A filled, rounded field with no outline at rest and a grey ring while
+  /// typing -- the field is findable by its fill, and the lime stays for
+  /// the action the field leads to.
+  static InputDecoration input(String text) => InputDecoration(
+    labelText: text,
     labelStyle: const TextStyle(fontFamily: body, color: muted, fontSize: 14),
     // Green only while typing, with the underline -- a filled field at
     // rest keeps its label muted, or every answered field looks focused.
     floatingLabelStyle: WidgetStateTextStyle.resolveWith(
       (states) => TextStyle(
         fontFamily: body,
-        color: states.contains(WidgetState.focused) ? green : muted,
+        color: states.contains(WidgetState.focused) ? paper : muted,
       ),
     ),
     hintStyle: const TextStyle(fontFamily: body, color: faint),
@@ -193,17 +230,17 @@ class Nyfa {
     filled: true,
     fillColor: raised,
     contentPadding: const EdgeInsets.fromLTRB(14, 14, 14, 12),
-    enabledBorder: const UnderlineInputBorder(
-      borderRadius: BorderRadius.zero,
-      borderSide: BorderSide(color: edge),
+    enabledBorder: const OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(radius)),
+      borderSide: BorderSide.none,
     ),
-    focusedBorder: const UnderlineInputBorder(
-      borderRadius: BorderRadius.zero,
-      borderSide: BorderSide(color: green, width: 2),
+    focusedBorder: const OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(radius)),
+      borderSide: BorderSide(color: edge, width: 1.5),
     ),
-    border: const UnderlineInputBorder(
-      borderRadius: BorderRadius.zero,
-      borderSide: BorderSide(color: edge),
+    border: const OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(radius)),
+      borderSide: BorderSide.none,
     ),
   );
 
@@ -227,18 +264,13 @@ class Nyfa {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(title.toUpperCase(), style: heading),
+        Text(title, style: heading.copyWith(fontSize: 18)),
         // The subtitle exists because you arrive at a report from a list of
         // near-identical rows and need to know which session you are filling in.
-        if (subtitle != null)
-          Text(subtitle, style: bodyMuted.copyWith(fontSize: 12)),
+        if (subtitle != null) Text(subtitle, style: meta),
       ],
     ),
     actions: actions,
-    bottom: const PreferredSize(
-      preferredSize: Size.fromHeight(1),
-      child: Divider(height: 1, thickness: 1, color: rule),
-    ),
   );
 }
 
@@ -249,10 +281,10 @@ class Nyfa {
 class NyfaForm {
   const NyfaForm._();
 
-  /// A section heading with a hairline above it.
+  /// A section heading.
   static Widget section(String label) => Padding(
     padding: const EdgeInsets.fromLTRB(20, 28, 20, 10),
-    child: Text(label.toUpperCase(), style: Nyfa.eyebrow),
+    child: Text(label, style: Nyfa.heading.copyWith(fontSize: 16)),
   );
 
   /// A labelled text field.
@@ -289,7 +321,7 @@ class NyfaForm {
         if (helper != null)
           Padding(
             padding: const EdgeInsets.only(top: 6),
-            child: Text(helper, style: Nyfa.bodyMuted.copyWith(fontSize: 12)),
+            child: Text(helper, style: Nyfa.meta),
           ),
       ],
     ),
@@ -314,10 +346,10 @@ class NyfaForm {
     inactiveTrackColor: Nyfa.raised,
     contentPadding: const EdgeInsets.symmetric(horizontal: 20),
     title: Text(
-      label.toUpperCase(),
-      style: Nyfa.heading.copyWith(fontSize: 16),
+      label,
+      style: Nyfa.bodyText.copyWith(fontWeight: FontWeight.w600),
     ),
-    subtitle: Text(explain, style: Nyfa.bodyMuted),
+    subtitle: Text(explain, style: Nyfa.meta),
   );
 
   /// A row of selectable chips. Wraps, so a long set never clips at 360px.
@@ -350,39 +382,22 @@ class NyfaForm {
     bool filled = true,
   }) => SizedBox(
     height: 48,
-    child: filled
-        ? FilledButton(
-            key: key,
-            onPressed: onPressed,
-            style: FilledButton.styleFrom(
+    child: FilledButton(
+      key: key,
+      onPressed: onPressed,
+      style: filled
+          ? FilledButton.styleFrom(
               backgroundColor: Nyfa.green,
+              foregroundColor: Nyfa.ground,
               disabledBackgroundColor: Nyfa.tonal,
-              shape: const RoundedRectangleBorder(),
-            ),
-            child: Text(
-              label.toUpperCase(),
-              style: TextStyle(
-                fontFamily: Nyfa.display,
-                fontSize: 17,
-                letterSpacing: 1.1,
-                color: onPressed == null ? Nyfa.muted : Nyfa.ground,
-              ),
-            ),
-          )
-        : FilledButton(
-            key: key,
-            onPressed: onPressed,
-            style: Nyfa.quietButton(),
-            child: Text(
-              label.toUpperCase(),
-              style: const TextStyle(
-                fontFamily: Nyfa.display,
-                fontSize: 17,
-                letterSpacing: 1.1,
-                color: Nyfa.paper,
-              ),
-            ),
-          ),
+              disabledForegroundColor: Nyfa.muted,
+              shape: Nyfa.controlShape,
+              textStyle: Nyfa.label,
+              elevation: 0,
+            )
+          : Nyfa.quietButton(),
+      child: Text(label),
+    ),
   );
 }
 
@@ -392,7 +407,7 @@ class NyfaForm {
 /// Unselected is a tonal fill with no outline; selected is solid paper with
 /// ground type (APCA Lc 94). Not green: a form has three or four chip groups,
 /// and a green selection in each spent the accent four times on a screen
-/// whose one green thing should be the action. 40 to see, 48 to hit.
+/// whose one green thing should be the action. 36 to see, 48 to hit.
 class NyfaChip extends StatelessWidget {
   final String label;
   final bool selected;
@@ -428,10 +443,13 @@ class NyfaChip extends StatelessWidget {
         child: AnimatedContainer(
           duration: Durations.short3,
           curve: Easing.standard,
-          height: 40,
-          margin: const EdgeInsets.symmetric(vertical: 4),
+          height: 36,
+          margin: const EdgeInsets.symmetric(vertical: 6),
           padding: const EdgeInsets.symmetric(horizontal: 14),
-          color: selected ? Nyfa.paper : Nyfa.tonal,
+          decoration: BoxDecoration(
+            color: selected ? Nyfa.paper : Nyfa.tonal,
+            borderRadius: const BorderRadius.all(Radius.circular(Nyfa.radius)),
+          ),
           child: Center(
             widthFactor: 1,
             child: Row(
@@ -442,13 +460,8 @@ class NyfaChip extends StatelessWidget {
                   const SizedBox(width: 6),
                 ],
                 Text(
-                  label.toUpperCase(),
-                  style: TextStyle(
-                    fontFamily: Nyfa.display,
-                    fontSize: 16,
-                    letterSpacing: 0.8,
-                    color: fg,
-                  ),
+                  label,
+                  style: Nyfa.label.copyWith(fontSize: 14, color: fg),
                 ),
               ],
             ),

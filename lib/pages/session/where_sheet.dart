@@ -27,7 +27,7 @@ Future<FootbagWhere?> showWhereSheet(
   context: context,
   isScrollControlled: true,
   backgroundColor: Nyfa.ground,
-  shape: const RoundedRectangleBorder(),
+  shape: Nyfa.sheetShape,
   builder: (_) => _WhereSheet(client: client, current: current),
 );
 
@@ -113,8 +113,8 @@ class _WhereSheetState extends State<_WhereSheet> {
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: Nyfa.raised,
-        shape: const RoundedRectangleBorder(),
-        title: Text(l10n.suggestPlace.toUpperCase(), style: Nyfa.heading),
+        shape: Nyfa.dialogShape,
+        title: Text(l10n.suggestPlace, style: Nyfa.heading),
         content: TextField(
           controller: name,
           autofocus: true,
@@ -200,21 +200,14 @@ class _WhereSheetState extends State<_WhereSheet> {
                       color: selected ? Nyfa.green : Nyfa.paper,
                     ),
                   ),
-                  if (subtitle != null)
-                    Text(
-                      subtitle,
-                      style: Nyfa.meta,
-                    ),
+                  if (subtitle != null) Text(subtitle, style: Nyfa.meta),
                 ],
               ),
             ),
             if (badge != null)
               Padding(
                 padding: const EdgeInsets.only(left: 8),
-                child: Text(
-                  badge.toUpperCase(),
-                  style: Nyfa.eyebrow.copyWith(fontSize: 12),
-                ),
+                child: Text(badge, style: Nyfa.eyebrow.copyWith(fontSize: 12)),
               ),
             if (selected) ...[
               const SizedBox(width: 8),

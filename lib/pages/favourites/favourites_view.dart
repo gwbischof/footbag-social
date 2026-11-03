@@ -32,11 +32,11 @@ class FavouritesView extends StatelessWidget {
               onPressed: controller.saving ? null : controller.addAction,
               icon: const Icon(Icons.add, color: Nyfa.green, size: 20),
               label: Text(
-                l10n.addTrick.toUpperCase(),
+                l10n.addTrick,
                 style: const TextStyle(
-                  fontFamily: Nyfa.display,
-                  fontSize: 17,
-                  letterSpacing: 1.1,
+                  fontFamily: Nyfa.body,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 15,
                   color: Nyfa.green,
                 ),
               ),
@@ -57,7 +57,7 @@ class FavouritesView extends StatelessWidget {
           const Icon(Icons.cloud_off_rounded, size: 44, color: Nyfa.muted),
           const SizedBox(height: 18),
           Text(
-            l10n.oopsSomethingWentWrong.toUpperCase(),
+            l10n.oopsSomethingWentWrong,
             textAlign: TextAlign.center,
             style: Nyfa.heading,
           ),
@@ -90,7 +90,7 @@ class FavouritesView extends StatelessWidget {
           const Icon(Icons.star_outline_rounded, size: 44, color: Nyfa.muted),
           const SizedBox(height: 18),
           Text(
-            l10n.noFavouritesHere.toUpperCase(),
+            l10n.noFavouritesHere,
             textAlign: TextAlign.center,
             style: Nyfa.heading,
           ),
@@ -124,7 +124,7 @@ class FavouritesView extends StatelessWidget {
             children: [
               const Icon(Icons.drag_handle, size: 16, color: Nyfa.muted),
               const SizedBox(width: 6),
-              Text(l10n.reorderHint.toUpperCase(), style: Nyfa.eyebrow),
+              Text(l10n.reorderHint, style: Nyfa.eyebrow),
             ],
           ),
         ),
@@ -162,7 +162,7 @@ class FavouritesView extends StatelessWidget {
                       const SizedBox(width: 14),
                       Expanded(
                         child: Text(
-                          f.name.toUpperCase(),
+                          f.name,
                           style: Nyfa.heading.copyWith(fontSize: 17),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,

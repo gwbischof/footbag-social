@@ -32,19 +32,26 @@ class PostGridTile extends StatelessWidget {
     if (first != null) {
       body = FeedImage(media: first, resolve: resolve, thumb: true);
     } else {
+      // Designed as a tile of its own rather than a photo that failed to
+      // load: centred words on a tonal ground, marked in the corner the way
+      // a video or an album is.
+      final words = post.caption.isNotEmpty
+          ? post.caption
+          : (post.session?.name ?? '');
       body = Container(
-        color: Nyfa.raised,
-        padding: const EdgeInsets.all(10),
-        alignment: Alignment.topLeft,
+        color: Nyfa.tonal,
+        padding: const EdgeInsets.all(12),
+        alignment: Alignment.center,
         child: Text(
-          post.caption.isNotEmpty
-              ? post.caption
-              : (post.session?.name ?? '').toUpperCase(),
-          maxLines: 6,
-          overflow: TextOverflow.fade,
-          style: post.caption.isNotEmpty
-              ? Nyfa.bodyText.copyWith(fontSize: 12, height: 1.35)
-              : Nyfa.heading.copyWith(fontSize: 16),
+          words,
+          maxLines: 5,
+          overflow: TextOverflow.ellipsis,
+          textAlign: TextAlign.center,
+          style: Nyfa.bodyText.copyWith(
+            fontSize: 13,
+            height: 1.35,
+            fontWeight: post.caption.isEmpty ? FontWeight.w700 : null,
+          ),
         ),
       );
     }
@@ -55,12 +62,16 @@ class PostGridTile extends StatelessWidget {
         fit: StackFit.expand,
         children: [
           body,
-          if (post.media.length > 1 || (first?.isVideo ?? false))
+          if (first == null || post.media.length > 1 || first.isVideo)
             Positioned(
               top: 6,
               right: 6,
               child: Icon(
-                first!.isVideo
+                first == null
+                    ? (post.session != null
+                          ? Icons.timer_outlined
+                          : Icons.notes_rounded)
+                    : first.isVideo
                     ? Icons.play_arrow_rounded
                     : Icons.collections_outlined,
                 size: 18,

@@ -198,15 +198,15 @@ class _Picker extends StatelessWidget {
       child: Container(
         height: 62,
         padding: const EdgeInsets.symmetric(horizontal: 14),
-        color: Nyfa.raised,
+        decoration: const BoxDecoration(
+          color: Nyfa.raised,
+          borderRadius: Nyfa.rounded,
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              label.toUpperCase(),
-              style: Nyfa.eyebrow.copyWith(fontSize: 12),
-            ),
+            Text(label, style: Nyfa.eyebrow.copyWith(fontSize: 12)),
             const SizedBox(height: 2),
             FittedBox(
               fit: BoxFit.scaleDown,

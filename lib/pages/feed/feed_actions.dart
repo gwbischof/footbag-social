@@ -80,7 +80,7 @@ class AppPostActions implements PostActions {
     final choice = await showModalBottomSheet<String>(
       context: context,
       backgroundColor: Nyfa.raised,
-      shape: const RoundedRectangleBorder(),
+      shape: Nyfa.sheetShape,
       builder: (context) => SafeArea(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -154,7 +154,7 @@ class AppPostActions implements PostActions {
       context: context,
       isScrollControlled: true,
       backgroundColor: Nyfa.ground,
-      shape: const RoundedRectangleBorder(),
+      shape: Nyfa.sheetShape,
       builder: (context) => StatefulBuilder(
         builder: (context, setSheet) => Padding(
           padding: EdgeInsets.only(
@@ -236,10 +236,7 @@ class _SheetRow extends StatelessWidget {
     minTileHeight: 56,
     contentPadding: const EdgeInsets.symmetric(horizontal: 20),
     leading: Icon(icon, color: Nyfa.paper),
-    title: Text(
-      label.toUpperCase(),
-      style: Nyfa.heading.copyWith(fontSize: 17),
-    ),
+    title: Text(label, style: Nyfa.heading.copyWith(fontSize: 17)),
     onTap: onTap,
   );
 }
@@ -273,7 +270,7 @@ Future<void> showReportSheet(
     context: context,
     isScrollControlled: true,
     backgroundColor: Nyfa.ground,
-    shape: const RoundedRectangleBorder(),
+    shape: Nyfa.sheetShape,
     builder: (context) => StatefulBuilder(
       builder: (context, setSheet) => Padding(
         padding: EdgeInsets.only(
@@ -396,7 +393,7 @@ class PlayerAvatar extends StatelessWidget {
         client: client,
         backgroundColor: Nyfa.toneFor(userId),
         textColor: Nyfa.paper,
-        fontFamily: Nyfa.display,
+        fontFamily: Nyfa.body,
       ),
     );
   }

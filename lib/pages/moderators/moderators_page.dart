@@ -126,9 +126,8 @@ class ModeratorsPageState extends State<ModeratorsPage> {
                       trailing: [
                         Text(
                           (m.isAdmin
-                                  ? l10n.adminRole
-                                  : l10n.moderatorActions(m.actions))
-                              .toUpperCase(),
+                              ? l10n.adminRole
+                              : l10n.moderatorActions(m.actions)),
                           style: Nyfa.eyebrow.copyWith(
                             fontSize: 13,
                             color: m.isAdmin ? Nyfa.green : Nyfa.muted,

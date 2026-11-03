@@ -77,7 +77,7 @@ class FeedView extends StatelessWidget {
                     // page carries the trick's name.
                     title: Text(
                       trick
-                          ? (controller.widget.entryName ?? '').toUpperCase()
+                          ? (controller.widget.entryName ?? '')
                           : 'FOOTBAG SOCIAL',
                       style: trick
                           ? Nyfa.heading.copyWith(fontSize: 20)
@@ -124,7 +124,7 @@ class FeedView extends StatelessWidget {
                       ],
                     ],
                     bottom: PreferredSize(
-                      preferredSize: const Size.fromHeight(57),
+                      preferredSize: const Size.fromHeight(48),
                       child: _Filters(controller: controller),
                     ),
                   ),
@@ -211,19 +211,19 @@ class _Filters extends StatelessWidget {
     final l10n = L10n.of(context);
     final c = controller;
 
-    return DecoratedBox(
-      decoration: const BoxDecoration(
-        color: Nyfa.ground,
-        border: Border(bottom: BorderSide(color: Nyfa.rule)),
-      ),
+    // Small and borderless, so the first post starts right under the
+    // masthead: a row of 40px blocks over a ruled edge was the heaviest
+    // thing on the home screen.
+    return ColoredBox(
+      color: Nyfa.ground,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           SizedBox(
-            height: 56,
+            height: 48,
             child: ListView(
               scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.fromLTRB(20, 6, 20, 10),
+              padding: const EdgeInsets.fromLTRB(16, 6, 16, 10),
               children: [
                 FeedChip(
                   key: const Key('SortRecent'),
@@ -262,8 +262,8 @@ class _Filters extends StatelessWidget {
 
 /// A filter chip in the feed header.
 ///
-/// Sort chips fill green when chosen. Filters, when on, are outlined in green
-/// instead: two kinds of control, and filling both the same way made "Top"
+/// Sort chips fill paper when chosen. Filters, when on, keep their fill and
+/// turn their label green instead: two kinds of control, and filling both the same way made "Top"
 /// and "Tutorials" read as one choice from a set of four.
 class FeedChip extends StatelessWidget {
   final String label;
@@ -301,11 +301,14 @@ class FeedChip extends StatelessWidget {
         child: InkWell(
           onTap: busy ? null : onTap,
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 14),
-            // Tonal when off, green when on -- the shared chip's look; an
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            // Tonal when off, paper when on -- the shared chip's look; an
             // outlined-when-on chip keeps the tonal fill and turns its label
             // green, so "on" never needs a box drawn round it.
-            color: filled ? Nyfa.paper : Nyfa.tonal,
+            decoration: BoxDecoration(
+              color: filled ? Nyfa.paper : Nyfa.tonal,
+              borderRadius: Nyfa.rounded,
+            ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -326,11 +329,11 @@ class FeedChip extends StatelessWidget {
                     child: Icon(icon, size: 15, color: fg),
                   ),
                 Text(
-                  label.toUpperCase(),
+                  label,
                   style: TextStyle(
-                    fontFamily: Nyfa.display,
-                    fontSize: 16,
-                    letterSpacing: 0.8,
+                    fontFamily: Nyfa.body,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 13,
                     color: fg,
                     height: 1.2,
                   ),
@@ -386,7 +389,10 @@ class _TopChipState extends State<_TopChip> {
       style: const MenuStyle(
         backgroundColor: WidgetStatePropertyAll(Nyfa.raised),
         shape: WidgetStatePropertyAll(
-          RoundedRectangleBorder(side: BorderSide(color: Nyfa.rule)),
+          RoundedRectangleBorder(
+            side: BorderSide(color: Nyfa.rule),
+            borderRadius: Nyfa.rounded,
+          ),
         ),
         padding: WidgetStatePropertyAll(EdgeInsets.zero),
       ),
@@ -402,11 +408,11 @@ class _TopChipState extends State<_TopChip> {
                 ? const Icon(Icons.check, size: 18, color: Nyfa.green)
                 : null,
             child: Text(
-              w.label.toUpperCase(),
+              w.label,
               style: TextStyle(
-                fontFamily: Nyfa.display,
-                fontSize: 16,
-                letterSpacing: 1,
+                fontFamily: Nyfa.body,
+                fontWeight: FontWeight.w600,
+                fontSize: 14,
                 color: w.value == c.window ? Nyfa.green : Nyfa.paper,
               ),
             ),

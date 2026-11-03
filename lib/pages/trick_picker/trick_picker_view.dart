@@ -35,12 +35,11 @@ class TrickPickerView extends StatelessWidget {
               child: Text(
                 // The count is the point: it says how many taps are about to
                 // take effect, so "Add" never fires on an empty selection.
-                (count == 0 ? l10n.addTrick : '${l10n.addTrick} ($count)')
-                    .toUpperCase(),
+                (count == 0 ? l10n.addTrick : '${l10n.addTrick} ($count)'),
                 style: TextStyle(
-                  fontFamily: Nyfa.display,
-                  fontSize: 18,
-                  letterSpacing: 1.1,
+                  fontFamily: Nyfa.body,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
                   color: count == 0 ? Nyfa.muted : Nyfa.green,
                 ),
               ),
@@ -90,7 +89,7 @@ class TrickPickerView extends StatelessWidget {
           const Icon(Icons.cloud_off_rounded, size: 44, color: Nyfa.muted),
           const SizedBox(height: 18),
           Text(
-            l10n.oopsSomethingWentWrong.toUpperCase(),
+            l10n.oopsSomethingWentWrong,
             textAlign: TextAlign.center,
             style: Nyfa.heading,
           ),
@@ -120,7 +119,7 @@ class TrickPickerView extends StatelessWidget {
         children: [
           const SizedBox(height: 56),
           Text(
-            l10n.noTricksFound.toUpperCase(),
+            l10n.noTricksFound,
             textAlign: TextAlign.center,
             style: Nyfa.heading,
           ),
@@ -244,7 +243,7 @@ class _EntryRow extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        entry.name.toUpperCase(),
+                        entry.name,
                         style: Nyfa.heading.copyWith(
                           fontSize: 17,
                           // An entry already in the list is context, not an
@@ -266,10 +265,7 @@ class _EntryRow extends StatelessWidget {
                 ),
                 const SizedBox(width: 12),
                 if (alreadyHave)
-                  Text(
-                    addedLabel.toUpperCase(),
-                    style: Nyfa.eyebrow.copyWith(fontSize: 13),
-                  )
+                  Text(addedLabel, style: Nyfa.eyebrow.copyWith(fontSize: 13))
                 else
                   Icon(
                     chosen

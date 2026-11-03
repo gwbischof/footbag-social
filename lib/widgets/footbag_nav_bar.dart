@@ -16,9 +16,10 @@ enum FootbagTab { dash, feed, discover, chat }
 /// "Dash is what you land on". Dash -- your sessions, favourites, rankings --
 /// is one tap away beside it.
 ///
-/// The centre [+] is raised and green because it creates a *session*, not a
-/// post: getting people to play is still the point, and posting has its own
-/// control in the Feed header.
+/// Icons only, outline at rest and solid when open, the way Instagram's bar
+/// reads: the frame steps back so the screen above it leads. Each tab's name
+/// is still there for screen readers. The centre [+] creates a *session*,
+/// not a post -- posting has its own control in the Feed header.
 class FootbagNavBar extends StatelessWidget {
   final FootbagTab current;
 
@@ -56,13 +57,14 @@ class FootbagNavBar extends StatelessWidget {
         child: SafeArea(
           top: false,
           child: SizedBox(
-            height: 64,
+            height: 56,
             child: Row(
               children: [
                 Expanded(
                   child: _Tab(
                     key: const Key('NavFeed'),
-                    icon: Icons.dynamic_feed_outlined,
+                    icon: Icons.home_outlined,
+                    activeIcon: Icons.home_rounded,
                     label: l10n.feed,
                     selected: current == FootbagTab.feed,
                     onTap: current == FootbagTab.feed && onReselect != null
@@ -74,6 +76,7 @@ class FootbagNavBar extends StatelessWidget {
                   child: _Tab(
                     key: const Key('NavDash'),
                     icon: Icons.sports_handball_outlined,
+                    activeIcon: Icons.sports_handball,
                     label: l10n.dash,
                     selected: current == FootbagTab.dash,
                     onTap: () => context.go('/rooms/dash'),
@@ -89,6 +92,7 @@ class FootbagNavBar extends StatelessWidget {
                   child: _Tab(
                     key: const Key('NavDiscover'),
                     icon: Icons.explore_outlined,
+                    activeIcon: Icons.explore,
                     label: l10n.discover,
                     selected: current == FootbagTab.discover,
                     onTap: () => context.go('/rooms/discover'),
@@ -97,7 +101,8 @@ class FootbagNavBar extends StatelessWidget {
                 Expanded(
                   child: _Tab(
                     key: const Key('NavChat'),
-                    icon: Icons.forum_outlined,
+                    icon: Icons.chat_bubble_outline_rounded,
+                    activeIcon: Icons.chat_bubble_rounded,
                     label: l10n.chats,
                     selected: current == FootbagTab.chat,
                     onTap: () => context.go('/rooms'),
@@ -114,12 +119,14 @@ class FootbagNavBar extends StatelessWidget {
 
 class _Tab extends StatelessWidget {
   final IconData icon;
+  final IconData activeIcon;
   final String label;
   final bool selected;
   final VoidCallback onTap;
 
   const _Tab({
     required this.icon,
+    required this.activeIcon,
     required this.label,
     required this.selected,
     required this.onTap,
@@ -127,34 +134,23 @@ class _Tab extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    // Solid colours, not alpha: muted already clears 4.5:1 on the ground, and
-    // dimming paper with opacity does not.
-    final colour = selected ? Nyfa.green : Nyfa.muted;
-    return Semantics(
-      button: true,
-      selected: selected,
-      child: InkWell(
-        onTap: onTap,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, size: 22, color: colour),
-            const SizedBox(height: 3),
-            Text(
-              label.toUpperCase(),
-              style: TextStyle(
-                fontFamily: Nyfa.display,
-                fontSize: 13,
-                letterSpacing: 0.9,
-                color: colour,
-              ),
-            ),
-          ],
+  Widget build(BuildContext context) => Semantics(
+    button: true,
+    selected: selected,
+    label: label,
+    excludeSemantics: true,
+    child: InkResponse(
+      onTap: onTap,
+      radius: 28,
+      child: Center(
+        child: Icon(
+          selected ? activeIcon : icon,
+          size: 27,
+          color: selected ? Nyfa.paper : Nyfa.muted,
         ),
       ),
-    );
-  }
+    ),
+  );
 }
 
 /// The centre action: start a session.
@@ -165,32 +161,22 @@ class _StartButton extends StatelessWidget {
   const _StartButton({required this.onPressed, required this.label});
 
   @override
-  Widget build(BuildContext context) {
-    final enabled = onPressed != null;
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: Semantics(
-        button: true,
-        enabled: enabled,
-        label: label,
-        child: InkWell(
-          onTap: onPressed,
-          child: Container(
-            width: 58,
-            height: 44,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: enabled ? Nyfa.green : Nyfa.rule,
-              borderRadius: BorderRadius.circular(2),
-            ),
-            child: Icon(
-              Icons.add,
-              size: 26,
-              color: enabled ? Nyfa.ground : Nyfa.muted,
-            ),
-          ),
+  Widget build(BuildContext context) => Semantics(
+    button: true,
+    enabled: onPressed != null,
+    label: label,
+    excludeSemantics: true,
+    child: InkResponse(
+      onTap: onPressed,
+      radius: 28,
+      child: SizedBox(
+        width: 64,
+        child: Icon(
+          Icons.add_box_outlined,
+          size: 29,
+          color: onPressed != null ? Nyfa.paper : Nyfa.faint,
         ),
       ),
-    );
-  }
+    ),
+  );
 }

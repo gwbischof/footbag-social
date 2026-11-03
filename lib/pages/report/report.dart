@@ -284,7 +284,7 @@ class ReportController extends State<Report> {
     final share = await showModalBottomSheet<bool>(
       context: context,
       backgroundColor: Nyfa.ground,
-      shape: const RoundedRectangleBorder(),
+      shape: Nyfa.sheetShape,
       builder: (context) => SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(20, 24, 20, 16),
@@ -292,7 +292,7 @@ class ReportController extends State<Report> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(l10n.reportSavedTitle.toUpperCase(), style: Nyfa.heading),
+              Text(l10n.reportSavedTitle, style: Nyfa.heading),
               const SizedBox(height: 8),
               Text(
                 s!.isHost

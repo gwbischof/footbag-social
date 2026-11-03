@@ -48,11 +48,11 @@ class ReportView extends StatelessWidget {
               key: const Key('SaveReportButton'),
               onPressed: controller.saving ? null : controller.saveAction,
               child: Text(
-                (controller.saving ? l10n.saving : l10n.save).toUpperCase(),
+                (controller.saving ? l10n.saving : l10n.save),
                 style: TextStyle(
-                  fontFamily: Nyfa.display,
-                  fontSize: 18,
-                  letterSpacing: 1.1,
+                  fontFamily: Nyfa.body,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
                   color: controller.saving ? Nyfa.muted : Nyfa.green,
                 ),
               ),
@@ -75,7 +75,7 @@ class ReportView extends StatelessWidget {
           const Icon(Icons.cloud_off_rounded, size: 44, color: Nyfa.muted),
           const SizedBox(height: 18),
           Text(
-            l10n.oopsSomethingWentWrong.toUpperCase(),
+            l10n.oopsSomethingWentWrong,
             textAlign: TextAlign.center,
             style: Nyfa.heading,
           ),
@@ -93,11 +93,11 @@ class ReportView extends StatelessWidget {
                 minimumSize: const WidgetStatePropertyAll(Size(0, 48)),
               ),
               child: Text(
-                l10n.retry.toUpperCase(),
+                l10n.retry,
                 style: const TextStyle(
-                  fontFamily: Nyfa.display,
-                  fontSize: 17,
-                  letterSpacing: 1.1,
+                  fontFamily: Nyfa.body,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 15,
                   color: Nyfa.paper,
                 ),
               ),
@@ -143,7 +143,7 @@ class ReportView extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  l10n.noFavouritesYet.toUpperCase(),
+                  l10n.noFavouritesYet,
                   textAlign: TextAlign.center,
                   style: Nyfa.heading,
                 ),
@@ -236,7 +236,7 @@ class ReportView extends StatelessWidget {
           inactiveThumbColor: Nyfa.muted,
           inactiveTrackColor: Nyfa.raised,
           title: Text(
-            l10n.includeMyNumbers.toUpperCase(),
+            l10n.includeMyNumbers,
             style: Nyfa.heading.copyWith(fontSize: 16),
           ),
           subtitle: Text(l10n.includeMyNumbersBody, style: Nyfa.bodyMuted),
@@ -274,7 +274,7 @@ class _TrickBlock extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  favourite.name.toUpperCase(),
+                  favourite.name,
                   style: Nyfa.heading.copyWith(fontSize: 19),
                 ),
               ),
@@ -348,9 +348,11 @@ class _Ladder extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = L10n.of(context);
 
-    return DecoratedBox(
+    return Container(
+      clipBehavior: Clip.antiAlias,
       decoration: const BoxDecoration(
         border: Border.fromBorderSide(BorderSide(color: Nyfa.rule)),
+        borderRadius: Nyfa.rounded,
       ),
       child: Row(
         children: [
@@ -427,11 +429,11 @@ class _Rung extends StatelessWidget {
             child: FittedBox(
               fit: BoxFit.scaleDown,
               child: Text(
-                label.toUpperCase(),
+                label,
                 style: TextStyle(
-                  fontFamily: Nyfa.display,
-                  fontSize: 15,
-                  letterSpacing: 0.6,
+                  fontFamily: Nyfa.body,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 13,
                   // Solid colours throughout: the previous version dimmed text
                   // with alpha and failed 4.5:1 on both themes.
                   color: current
@@ -470,7 +472,10 @@ class _FirstToggle extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 14),
         // Tonal either way, the star and label turning green when on: a
         // full-width green bar was the loudest thing on the report.
-        color: Nyfa.tonal,
+        decoration: const BoxDecoration(
+          color: Nyfa.tonal,
+          borderRadius: Nyfa.rounded,
+        ),
         child: Row(
           children: [
             Icon(
@@ -480,11 +485,11 @@ class _FirstToggle extends StatelessWidget {
             ),
             const SizedBox(width: 7),
             Text(
-              label.toUpperCase(),
+              label,
               style: TextStyle(
-                fontFamily: Nyfa.display,
-                fontSize: 16,
-                letterSpacing: 0.8,
+                fontFamily: Nyfa.body,
+                fontWeight: FontWeight.w600,
+                fontSize: 14,
                 color: selected ? Nyfa.green : Nyfa.paper,
               ),
             ),

@@ -148,7 +148,7 @@ class _PendingRow extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(kind.toUpperCase(), style: Nyfa.eyebrow),
+          Text(kind, style: Nyfa.eyebrow),
           const SizedBox(height: 4),
           Text(e.name, style: Nyfa.heading.copyWith(fontSize: 20)),
           if (parts != null && parts.isNotEmpty)

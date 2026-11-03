@@ -228,9 +228,9 @@ class _Pill extends StatelessWidget {
     child: Text(
       text,
       style: const TextStyle(
-        fontFamily: Nyfa.display,
-        fontSize: 14,
-        letterSpacing: 1,
+        fontFamily: Nyfa.body,
+        fontWeight: FontWeight.w600,
+        fontSize: 12,
         color: Nyfa.paper,
         fontFeatures: [FontFeature.tabularFigures()],
       ),

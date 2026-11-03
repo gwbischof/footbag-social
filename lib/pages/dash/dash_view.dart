@@ -152,10 +152,7 @@ class _DashBar extends StatelessWidget implements PreferredSizeWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            l10n.dash.toUpperCase(),
-            style: Nyfa.heading.copyWith(fontSize: 26),
-          ),
+          Text(l10n.dash, style: Nyfa.heading.copyWith(fontSize: 26)),
           Text(l10n.dashGreeting, style: Nyfa.meta),
         ],
       ),
@@ -222,7 +219,10 @@ class _Shortcuts extends StatelessWidget {
                 onTap: () => context.push(s.path),
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 14),
-                  color: Nyfa.tonal,
+                  decoration: const BoxDecoration(
+                    color: Nyfa.tonal,
+                    borderRadius: Nyfa.rounded,
+                  ),
                   child: Center(
                     widthFactor: 1,
                     child: Row(
@@ -230,11 +230,11 @@ class _Shortcuts extends StatelessWidget {
                         Icon(s.icon, size: 16, color: Nyfa.muted),
                         const SizedBox(width: 7),
                         Text(
-                          s.label.toUpperCase(),
+                          s.label,
                           style: const TextStyle(
-                            fontFamily: Nyfa.display,
-                            fontSize: 16,
-                            letterSpacing: 0.8,
+                            fontFamily: Nyfa.body,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
                             color: Nyfa.paper,
                           ),
                         ),
@@ -269,7 +269,7 @@ class _EmptyInvitation extends StatelessWidget {
       padding: const EdgeInsets.all(20),
       decoration: const BoxDecoration(
         color: Nyfa.raised,
-        border: Border(left: BorderSide(color: Nyfa.green, width: 3)),
+        borderRadius: Nyfa.roundedLarge,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -280,7 +280,7 @@ class _EmptyInvitation extends StatelessWidget {
             Text(l10n.dashNobodyPlaying, style: Nyfa.bodyMuted),
             const SizedBox(height: 16),
           ],
-          Text(l10n.dashStartYourOwn.toUpperCase(), style: Nyfa.heading),
+          Text(l10n.dashStartYourOwn, style: Nyfa.heading),
           const SizedBox(height: 6),
           Text(l10n.dashStartYourOwnBody, style: Nyfa.bodyMuted),
           const SizedBox(height: 16),
@@ -292,18 +292,18 @@ class _EmptyInvitation extends StatelessWidget {
               style: FilledButton.styleFrom(
                 backgroundColor: Nyfa.green,
                 disabledBackgroundColor: Nyfa.tonal,
-                shape: const RoundedRectangleBorder(),
+                shape: Nyfa.controlShape,
               ),
               icon: Icon(
                 Icons.play_arrow_rounded,
                 color: controller.busy ? Nyfa.muted : Nyfa.ground,
               ),
               label: Text(
-                l10n.startSession.toUpperCase(),
+                l10n.startSession,
                 style: TextStyle(
-                  fontFamily: Nyfa.display,
-                  fontSize: 17,
-                  letterSpacing: 1.1,
+                  fontFamily: Nyfa.body,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 15,
                   color: controller.busy ? Nyfa.muted : Nyfa.ground,
                 ),
               ),
@@ -332,9 +332,9 @@ class _Scoreboard extends StatelessWidget {
       margin: const EdgeInsets.fromLTRB(20, 20, 20, 4),
       decoration: const BoxDecoration(
         color: Nyfa.raised,
-        border: Border(left: BorderSide(color: Nyfa.green, width: 3)),
+        borderRadius: Nyfa.roundedLarge,
       ),
-      padding: const EdgeInsets.fromLTRB(17, 18, 20, 20),
+      padding: const EdgeInsets.fromLTRB(20, 18, 20, 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -342,7 +342,7 @@ class _Scoreboard extends StatelessWidget {
             children: [
               const _LiveDot(),
               const SizedBox(width: 8),
-              Text(l10n.sessionRunning.toUpperCase(), style: Nyfa.eyebrow),
+              Text(l10n.sessionRunning, style: Nyfa.eyebrow),
             ],
           ),
           const SizedBox(height: 10),
@@ -455,9 +455,9 @@ class _Action extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final style = TextStyle(
-      fontFamily: Nyfa.display,
-      fontSize: 17,
-      letterSpacing: 1.1,
+      fontFamily: Nyfa.body,
+      fontWeight: FontWeight.w600,
+      fontSize: 15,
       color: filled ? Nyfa.ground : Nyfa.paper,
     );
     return SizedBox(
@@ -468,14 +468,14 @@ class _Action extends StatelessWidget {
               style: FilledButton.styleFrom(
                 backgroundColor: Nyfa.green,
                 disabledBackgroundColor: Nyfa.tonal,
-                shape: const RoundedRectangleBorder(),
+                shape: Nyfa.controlShape,
               ),
-              child: Text(label.toUpperCase(), style: style),
+              child: Text(label, style: style),
             )
           : FilledButton(
               onPressed: busy ? null : onPressed,
               style: Nyfa.quietButton(),
-              child: Text(label.toUpperCase(), style: style),
+              child: Text(label, style: style),
             ),
     );
   }
@@ -489,7 +489,7 @@ class _SectionLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Padding(
     padding: const EdgeInsets.fromLTRB(20, 26, 20, 10),
-    child: Text(text.toUpperCase(), style: Nyfa.eyebrow),
+    child: Text(text, style: Nyfa.eyebrow),
   );
 }
 
@@ -519,7 +519,7 @@ class _SessionRow extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      session.name.toUpperCase(),
+                      session.name,
                       style: Nyfa.heading.copyWith(fontSize: 17),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -553,13 +553,11 @@ class _SessionRow extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(7, 3, 7, 1),
                   color: Nyfa.green,
                   child: Text(
-                    l10n
-                        .sessionRequestsBadge(session.requests!.length)
-                        .toUpperCase(),
+                    l10n.sessionRequestsBadge(session.requests!.length),
                     style: const TextStyle(
-                      fontFamily: Nyfa.display,
-                      fontSize: 13,
-                      letterSpacing: 1,
+                      fontFamily: Nyfa.body,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 12,
                       color: Nyfa.ground,
                     ),
                   ),
@@ -613,11 +611,7 @@ class _Centred extends StatelessWidget {
       const SizedBox(height: 72),
       Icon(icon, size: 44, color: Nyfa.muted),
       const SizedBox(height: 18),
-      Text(
-        title.toUpperCase(),
-        textAlign: TextAlign.center,
-        style: Nyfa.heading,
-      ),
+      Text(title, textAlign: TextAlign.center, style: Nyfa.heading),
       const SizedBox(height: 8),
       Text(body, textAlign: TextAlign.center, style: Nyfa.bodyMuted),
       if (actionLabel != null && onAction != null) ...[
@@ -790,7 +784,7 @@ class _IdeaRow extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 12),
-          SmallButton(label: action, accent: true, onPressed: onPressed),
+          SmallButton(label: action, onPressed: onPressed),
         ],
       ),
     );

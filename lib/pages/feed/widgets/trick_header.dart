@@ -125,7 +125,10 @@ class _TrickHeaderState extends State<TrickHeader> {
                       child: Container(
                         constraints: const BoxConstraints(minHeight: 40),
                         padding: const EdgeInsets.symmetric(horizontal: 12),
-                        color: Nyfa.tonal,
+                        decoration: const BoxDecoration(
+                          color: Nyfa.tonal,
+                          borderRadius: Nyfa.rounded,
+                        ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -174,9 +177,12 @@ class _TrickHeaderState extends State<TrickHeader> {
                           horizontal: 8,
                           vertical: 2,
                         ),
-                        color: Nyfa.raised,
+                        decoration: const BoxDecoration(
+                          color: Nyfa.tonal,
+                          borderRadius: BorderRadius.all(Radius.circular(4)),
+                        ),
                         child: Text(
-                          add.toUpperCase(),
+                          add,
                           style: Nyfa.eyebrow.copyWith(color: Nyfa.paper),
                         ),
                       ),

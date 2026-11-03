@@ -133,7 +133,7 @@ class ClubPageState extends State<ClubPage> {
     final choice = await showModalBottomSheet<String>(
       context: context,
       backgroundColor: Nyfa.raised,
-      shape: const RoundedRectangleBorder(),
+      shape: Nyfa.sheetShape,
       builder: (context) => SafeArea(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -149,10 +149,7 @@ class ClubPageState extends State<ClubPage> {
                 minTileHeight: 56,
                 contentPadding: const EdgeInsets.symmetric(horizontal: 20),
                 leading: Icon(icon, color: Nyfa.paper),
-                title: Text(
-                  label.toUpperCase(),
-                  style: Nyfa.heading.copyWith(fontSize: 17),
-                ),
+                title: Text(label, style: Nyfa.heading.copyWith(fontSize: 17)),
                 onTap: () => Navigator.of(context).pop(value),
               ),
           ],
@@ -314,10 +311,7 @@ class _Header extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            l10n.clubMemberCount(club.memberCount).toUpperCase(),
-            style: Nyfa.eyebrow,
-          ),
+          Text(l10n.clubMemberCount(club.memberCount), style: Nyfa.eyebrow),
           if (club.location.isNotEmpty) ...[
             const SizedBox(height: 8),
             Row(
@@ -375,7 +369,7 @@ class _Sessions extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          s.name.toUpperCase(),
+                          s.name,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: Nyfa.heading.copyWith(fontSize: 17),
@@ -470,7 +464,7 @@ class _Members extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(right: 4),
                   child: Text(
-                    (m.isCreator ? l10n.founder : l10n.organiser).toUpperCase(),
+                    (m.isCreator ? l10n.founder : l10n.organiser),
                     style: Nyfa.eyebrow.copyWith(
                       fontSize: 13,
                       color: Nyfa.muted,
@@ -560,10 +554,7 @@ class _ActionBar extends StatelessWidget {
             children: [
               if (note != null)
                 Expanded(
-                  child: Text(
-                    note.toUpperCase(),
-                    style: Nyfa.heading.copyWith(fontSize: 17),
-                  ),
+                  child: Text(note, style: Nyfa.heading.copyWith(fontSize: 17)),
                 ),
               if (action != null) Expanded(child: action),
               ?secondary,

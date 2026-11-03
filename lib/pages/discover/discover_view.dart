@@ -38,21 +38,21 @@ class DiscoverView extends StatelessWidget {
           automaticallyImplyLeading: false,
           centerTitle: false,
           titleSpacing: 20,
-          title: Text(l10n.discover.toUpperCase(), style: Nyfa.heading),
+          title: Text(l10n.discover, style: Nyfa.heading),
           bottom: TabBar(
-            labelColor: Nyfa.green,
+            labelColor: Nyfa.paper,
             unselectedLabelColor: Nyfa.muted,
-            indicatorColor: Nyfa.green,
+            indicatorColor: Nyfa.paper,
             dividerColor: Nyfa.rule,
             labelStyle: const TextStyle(
-              fontFamily: Nyfa.display,
-              fontSize: 17,
-              letterSpacing: 1.1,
+              fontFamily: Nyfa.body,
+              fontWeight: FontWeight.w600,
+              fontSize: 15,
             ),
             tabs: [
-              Tab(text: l10n.discoverSessions.toUpperCase()),
-              Tab(text: l10n.discoverPlayers.toUpperCase()),
-              Tab(text: l10n.discoverClubs.toUpperCase()),
+              Tab(text: l10n.discoverSessions),
+              Tab(text: l10n.discoverPlayers),
+              Tab(text: l10n.discoverClubs),
             ],
           ),
         ),
@@ -223,7 +223,7 @@ class _SessionsTab extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            s.name.toUpperCase(),
+                            s.name,
                             style: Nyfa.heading.copyWith(fontSize: 17),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -248,7 +248,7 @@ class _SessionsTab extends StatelessWidget {
                     if (s.isRunning) ...[
                       const SizedBox(width: 10),
                       Text(
-                        l10n.runningNow.toUpperCase(),
+                        l10n.runningNow,
                         style: Nyfa.eyebrow.copyWith(color: Nyfa.green),
                       ),
                     ],
@@ -374,11 +374,7 @@ class _Empty extends StatelessWidget {
       children: [
         Icon(icon, size: 44, color: Nyfa.muted),
         const SizedBox(height: 18),
-        Text(
-          title.toUpperCase(),
-          textAlign: TextAlign.center,
-          style: Nyfa.heading,
-        ),
+        Text(title, textAlign: TextAlign.center, style: Nyfa.heading),
         const SizedBox(height: 8),
         Text(body, textAlign: TextAlign.center, style: Nyfa.bodyMuted),
       ],
@@ -394,7 +390,7 @@ Widget _problem(BuildContext context, DiscoverController c, L10n l10n) =>
         const Icon(Icons.cloud_off_rounded, size: 44, color: Nyfa.muted),
         const SizedBox(height: 18),
         Text(
-          l10n.oopsSomethingWentWrong.toUpperCase(),
+          l10n.oopsSomethingWentWrong,
           textAlign: TextAlign.center,
           style: Nyfa.heading,
         ),
@@ -473,7 +469,7 @@ class _ClubsTab extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              c.name.toUpperCase(),
+                              c.name,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: Nyfa.heading.copyWith(fontSize: 17),
@@ -495,8 +491,9 @@ class _ClubsTab extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(left: 8),
                           child: Text(
-                            (c.isOrganiser ? l10n.organiser : l10n.youAreMember)
-                                .toUpperCase(),
+                            (c.isOrganiser
+                                ? l10n.organiser
+                                : l10n.youAreMember),
                             style: Nyfa.eyebrow.copyWith(fontSize: 13),
                           ),
                         )
@@ -504,7 +501,7 @@ class _ClubsTab extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(left: 8),
                           child: Text(
-                            l10n.clubRequestSent.toUpperCase(),
+                            l10n.clubRequestSent,
                             style: Nyfa.eyebrow.copyWith(fontSize: 13),
                           ),
                         ),

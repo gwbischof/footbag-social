@@ -29,7 +29,7 @@ Future<void> showInviteSheet(
   context: context,
   isScrollControlled: true,
   backgroundColor: Nyfa.ground,
-  shape: const RoundedRectangleBorder(),
+  shape: Nyfa.sheetShape,
   builder: (_) => _InviteSheet(client: client, already: already, add: add),
 );
 
@@ -115,9 +115,9 @@ class SmallButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final style = TextStyle(
-      fontFamily: Nyfa.display,
-      fontSize: 15,
-      letterSpacing: 1,
+      fontFamily: Nyfa.body,
+      fontWeight: FontWeight.w600,
+      fontSize: 13,
       color: filled
           ? Nyfa.ground
           : accent
@@ -135,7 +135,7 @@ class SmallButton extends StatelessWidget {
           ? FilledButton.styleFrom(
               backgroundColor: Nyfa.green,
               disabledBackgroundColor: Nyfa.tonal,
-              shape: const RoundedRectangleBorder(),
+              shape: Nyfa.controlShape,
               minimumSize: size,
               padding: padding,
               tapTargetSize: MaterialTapTargetSize.padded,
@@ -145,7 +145,7 @@ class SmallButton extends StatelessWidget {
               padding: const WidgetStatePropertyAll(padding),
               tapTargetSize: MaterialTapTargetSize.padded,
             ),
-      child: Text(label.toUpperCase(), style: style),
+      child: Text(label, style: style),
     );
   }
 }
@@ -261,7 +261,7 @@ class _InviteSheetState extends State<_InviteSheet> {
                                   Padding(
                                     padding: const EdgeInsets.only(right: 8),
                                     child: Text(
-                                      l10n.sessionAdded.toUpperCase(),
+                                      l10n.sessionAdded,
                                       style: Nyfa.eyebrow.copyWith(
                                         color: Nyfa.green,
                                       ),

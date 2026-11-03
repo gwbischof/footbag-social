@@ -87,7 +87,7 @@ Future<void> showCommentMenu(
   final choice = await showModalBottomSheet<String>(
     context: context,
     backgroundColor: Nyfa.raised,
-    shape: const RoundedRectangleBorder(),
+    shape: Nyfa.sheetShape,
     builder: (context) => SafeArea(
       child: ListTile(
         minTileHeight: 56,
@@ -97,7 +97,7 @@ Future<void> showCommentMenu(
           color: Nyfa.paper,
         ),
         title: Text(
-          (c.isMine ? l10n.delete : l10n.reportThis).toUpperCase(),
+          (c.isMine ? l10n.delete : l10n.reportThis),
           style: Nyfa.heading.copyWith(fontSize: 17),
         ),
         onTap: () => Navigator.of(context).pop(c.isMine ? 'delete' : 'report'),
@@ -273,7 +273,7 @@ class _CommentsSheetState extends State<_CommentsSheet> {
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 12, 20, 10),
               child: Text(
-                l10n.comments.toUpperCase(),
+                l10n.comments,
                 style: Nyfa.heading.copyWith(fontSize: 18),
               ),
             ),
@@ -463,11 +463,11 @@ class CommentBar extends StatelessWidget {
                         ),
                       )
                     : Text(
-                        l10n.postComment.toUpperCase(),
+                        l10n.postComment,
                         style: TextStyle(
-                          fontFamily: Nyfa.display,
-                          fontSize: 17,
-                          letterSpacing: 1,
+                          fontFamily: Nyfa.body,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 15,
                           color: ready ? Nyfa.green : Nyfa.muted,
                         ),
                       ),

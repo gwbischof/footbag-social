@@ -161,12 +161,7 @@ class PlayerPageState extends State<PlayerPage> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Text(
-                                            name.toUpperCase(),
-                                            style: Nyfa.heading.copyWith(
-                                              fontSize: 28,
-                                            ),
-                                          ),
+                                          Text(name, style: Nyfa.title),
                                           if (p?.city != null)
                                             Text(
                                               p!.city!,
@@ -178,12 +173,10 @@ class PlayerPageState extends State<PlayerPage> {
                                                 top: 4,
                                               ),
                                               child: Text(
-                                                l10n
-                                                    .postCount(
-                                                      profile!.postCount,
-                                                    )
-                                                    .toUpperCase(),
-                                                style: Nyfa.eyebrow,
+                                                l10n.postCount(
+                                                  profile!.postCount,
+                                                ),
+                                                style: Nyfa.meta,
                                               ),
                                             ),
                                         ],
@@ -200,14 +193,19 @@ class PlayerPageState extends State<PlayerPage> {
                                       for (final s in p.playStyles)
                                         Container(
                                           padding: const EdgeInsets.fromLTRB(
-                                            8,
-                                            3,
-                                            8,
-                                            1,
+                                            10,
+                                            5,
+                                            10,
+                                            5,
                                           ),
-                                          color: Nyfa.tonal,
+                                          decoration: const BoxDecoration(
+                                            color: Nyfa.tonal,
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(6),
+                                            ),
+                                          ),
                                           child: Text(
-                                            _style(l10n, s).toUpperCase(),
+                                            _style(l10n, s),
                                             style: Nyfa.eyebrow.copyWith(
                                               color: Nyfa.paper,
                                             ),
@@ -232,9 +230,13 @@ class PlayerPageState extends State<PlayerPage> {
                                             '/rooms/dash/profile',
                                           ),
                                         )
+                                      // Quiet, like the rest of the header:
+                                      // on a profile the grid leads, and a
+                                      // full-width lime bar outshone it.
                                       : NyfaForm.action(
                                           key: const Key('PlayerMessage'),
                                           label: l10n.sendAMessage,
+                                          filled: false,
                                           onPressed: message,
                                         ),
                                 ),

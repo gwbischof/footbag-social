@@ -45,7 +45,7 @@ class RankingsView extends StatelessWidget {
           const Icon(Icons.cloud_off_rounded, size: 44, color: Nyfa.muted),
           const SizedBox(height: 18),
           Text(
-            l10n.oopsSomethingWentWrong.toUpperCase(),
+            l10n.oopsSomethingWentWrong,
             textAlign: TextAlign.center,
             style: Nyfa.heading,
           ),
@@ -119,7 +119,7 @@ class RankingsView extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  l10n.noRankingsYet.toUpperCase(),
+                  l10n.noRankingsYet,
                   textAlign: TextAlign.center,
                   style: Nyfa.heading,
                 ),
@@ -153,7 +153,7 @@ class RankingsView extends StatelessWidget {
               tilePadding: EdgeInsets.zero,
               iconColor: Nyfa.muted,
               collapsedIconColor: Nyfa.muted,
-              title: Text(l10n.whyNotRanked.toUpperCase(), style: Nyfa.eyebrow),
+              title: Text(l10n.whyNotRanked, style: Nyfa.eyebrow),
               children: [
                 Padding(
                   padding: const EdgeInsets.only(bottom: 14),
@@ -246,7 +246,7 @@ class _Row extends StatelessWidget {
               children: [
                 Flexible(
                   child: Text(
-                    row.displayName.toUpperCase(),
+                    row.displayName,
                     style: Nyfa.heading.copyWith(fontSize: 17),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -255,7 +255,7 @@ class _Row extends StatelessWidget {
                 if (row.isYou) ...[
                   const SizedBox(width: 8),
                   Text(
-                    youLabel.toUpperCase(),
+                    youLabel,
                     style: Nyfa.eyebrow.copyWith(
                       color: Nyfa.green,
                       fontSize: 13,
@@ -325,7 +325,7 @@ class _Heatmap extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.fromLTRB(20, 0, 20, 4),
-          child: Text(l10n.yourPractice.toUpperCase(), style: Nyfa.eyebrow),
+          child: Text(l10n.yourPractice, style: Nyfa.eyebrow),
         ),
         Padding(
           padding: const EdgeInsets.fromLTRB(20, 0, 20, 12),

@@ -305,21 +305,15 @@ class _Status extends StatelessWidget {
       big = s.duration == null ? '—' : _short(s.duration!);
     } else {
       label = l10n.sessionScheduled;
-      big =
-          (s.scheduledAt ?? s.startedAt)
-              ?.localizedTime(context)
-              .toUpperCase() ??
-          '';
+      big = (s.scheduledAt ?? s.startedAt)?.localizedTime(context) ?? '';
     }
 
     return Container(
       margin: const EdgeInsets.fromLTRB(20, 20, 20, 20),
-      padding: const EdgeInsets.fromLTRB(17, 16, 20, 18),
-      decoration: BoxDecoration(
+      padding: const EdgeInsets.fromLTRB(20, 16, 20, 18),
+      decoration: const BoxDecoration(
         color: Nyfa.raised,
-        border: Border(
-          left: BorderSide(color: live ? Nyfa.green : Nyfa.rule, width: 3),
-        ),
+        borderRadius: Nyfa.roundedLarge,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -337,10 +331,10 @@ class _Status extends StatelessWidget {
                 ),
                 const SizedBox(width: 8),
               ],
-              Text(label.toUpperCase(), style: Nyfa.eyebrow),
+              Text(label, style: Nyfa.eyebrow),
               const Spacer(),
               Text(
-                l10n.goingCount(s.attendeeCount).toUpperCase(),
+                l10n.goingCount(s.attendeeCount),
                 style: Nyfa.eyebrow.copyWith(
                   color: s.attendeeCount > 0 ? Nyfa.green : Nyfa.muted,
                 ),
@@ -403,11 +397,11 @@ class _Host extends StatelessWidget {
                 color: Nyfa.green,
               ),
               label: Text(
-                l10n.messageHost.toUpperCase(),
+                l10n.messageHost,
                 style: const TextStyle(
-                  fontFamily: Nyfa.display,
-                  fontSize: 16,
-                  letterSpacing: 1,
+                  fontFamily: Nyfa.body,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
                   color: Nyfa.green,
                 ),
               ),
@@ -653,7 +647,7 @@ class _ActionBar extends StatelessWidget {
                         ),
                       Flexible(
                         child: Text(
-                          note.toUpperCase(),
+                          note,
                           style: Nyfa.heading.copyWith(
                             fontSize: 17,
                             color: s.myState == 'approved'
@@ -714,9 +708,7 @@ class _Where extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(20, 18, 8, 0),
           child: Row(
             children: [
-              Expanded(
-                child: Text(l10n.where.toUpperCase(), style: Nyfa.eyebrow),
-              ),
+              Expanded(child: Text(l10n.where, style: Nyfa.eyebrow)),
               if (s.isHost)
                 TextButton(
                   key: const Key('SetWhere'),
@@ -726,8 +718,7 @@ class _Where extends StatelessWidget {
                     minimumSize: const Size(48, 48),
                   ),
                   child: Text(
-                    (area == null ? l10n.setLocation : l10n.changeLocation)
-                        .toUpperCase(),
+                    (area == null ? l10n.setLocation : l10n.changeLocation),
                     style: Nyfa.eyebrow.copyWith(color: Nyfa.green),
                   ),
                 ),

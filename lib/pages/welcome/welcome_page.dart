@@ -96,11 +96,11 @@ class _WelcomePageState extends State<WelcomePage> {
             key: const Key('WelcomeSkip'),
             onPressed: saving ? null : () => _finish(save: false),
             child: Text(
-              l10n.skip.toUpperCase(),
+              l10n.skip,
               style: const TextStyle(
-                fontFamily: Nyfa.display,
-                fontSize: 17,
-                letterSpacing: 1,
+                fontFamily: Nyfa.body,
+                fontWeight: FontWeight.w600,
+                fontSize: 15,
                 color: Nyfa.muted,
               ),
             ),
@@ -130,7 +130,7 @@ class _WelcomePageState extends State<WelcomePage> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 8, 20, 6),
                 child: Text(
-                  l10n.welcomeTitle.toUpperCase(),
+                  l10n.welcomeTitle,
                   style: Nyfa.clock.copyWith(color: Nyfa.paper, fontSize: 56),
                 ),
               ),

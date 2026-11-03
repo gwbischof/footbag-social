@@ -190,7 +190,10 @@ class _MediaStrip extends StatelessWidget {
           onTap: c.pickMedia,
           child: Container(
             height: 180,
-            color: Nyfa.raised,
+            decoration: const BoxDecoration(
+              color: Nyfa.raised,
+              borderRadius: Nyfa.roundedLarge,
+            ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -200,10 +203,7 @@ class _MediaStrip extends StatelessWidget {
                   color: Nyfa.green,
                 ),
                 const SizedBox(height: 10),
-                Text(
-                  l10n.addMedia.toUpperCase(),
-                  style: Nyfa.heading.copyWith(fontSize: 18),
-                ),
+                Text(l10n.addMedia, style: Nyfa.heading.copyWith(fontSize: 18)),
                 const SizedBox(height: 4),
                 Text(l10n.photoOrClip, style: Nyfa.bodyMuted),
               ],
@@ -231,7 +231,10 @@ class _MediaStrip extends StatelessWidget {
                   onTap: c.pickMedia,
                   child: Container(
                     width: 100,
-                    color: Nyfa.raised,
+                    decoration: const BoxDecoration(
+                      color: Nyfa.raised,
+                      borderRadius: Nyfa.rounded,
+                    ),
                     child: const Icon(Icons.add, color: Nyfa.green, size: 28),
                   ),
                 ),
@@ -382,18 +385,21 @@ class _TagChip extends StatelessWidget {
     padding: const EdgeInsets.only(left: 12),
     // Tonal, with the green kept to the diamond: a row of green boxes
     // made the tags the loudest thing on a screen whose point is the post.
-    color: Nyfa.tonal,
+    decoration: const BoxDecoration(
+      color: Nyfa.tonal,
+      borderRadius: Nyfa.rounded,
+    ),
     child: Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         const Diamond(size: 10, color: Nyfa.green),
         const SizedBox(width: 8),
         Text(
-          label.toUpperCase(),
+          label,
           style: const TextStyle(
-            fontFamily: Nyfa.display,
-            fontSize: 16,
-            letterSpacing: 0.8,
+            fontFamily: Nyfa.body,
+            fontWeight: FontWeight.w600,
+            fontSize: 14,
             color: Nyfa.paper,
           ),
         ),
@@ -419,18 +425,21 @@ class _AddChip extends StatelessWidget {
     child: Container(
       height: 44,
       padding: const EdgeInsets.symmetric(horizontal: 14),
-      color: Nyfa.tonal,
+      decoration: const BoxDecoration(
+        color: Nyfa.tonal,
+        borderRadius: Nyfa.rounded,
+      ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           const Icon(Icons.add, size: 16, color: Nyfa.green),
           const SizedBox(width: 6),
           Text(
-            label.toUpperCase(),
+            label,
             style: const TextStyle(
-              fontFamily: Nyfa.display,
-              fontSize: 16,
-              letterSpacing: 0.8,
+              fontFamily: Nyfa.body,
+              fontWeight: FontWeight.w600,
+              fontSize: 14,
               color: Nyfa.paper,
             ),
           ),

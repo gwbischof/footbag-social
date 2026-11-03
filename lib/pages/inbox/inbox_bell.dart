@@ -64,9 +64,9 @@ class _InboxBellState extends State<InboxBell> {
       backgroundColor: Nyfa.green,
       textColor: Nyfa.ground,
       textStyle: const TextStyle(
-        fontFamily: Nyfa.display,
+        fontFamily: Nyfa.body,
+        fontWeight: FontWeight.w600,
         fontSize: 12,
-        letterSpacing: 0.5,
       ),
       child: const Icon(
         Icons.notifications_none_rounded,

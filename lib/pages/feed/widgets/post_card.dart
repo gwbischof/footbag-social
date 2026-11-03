@@ -265,8 +265,8 @@ class _Header extends StatelessWidget {
   }
 }
 
-/// A small outlined label. Green outline, green text: a property of the post,
-/// not an action, so it is never filled.
+/// A small label for a property of the post, such as "Tutorial". Quiet:
+/// a tonal pill with paper text, never the lime of an action.
 class _Badge extends StatelessWidget {
   final String text;
 
@@ -274,15 +274,18 @@ class _Badge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-    padding: const EdgeInsets.fromLTRB(7, 3, 7, 1),
-    decoration: BoxDecoration(border: Border.all(color: Nyfa.green)),
+    padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
+    decoration: const BoxDecoration(
+      color: Nyfa.tonal,
+      borderRadius: BorderRadius.all(Radius.circular(6)),
+    ),
     child: Text(
-      text.toUpperCase(),
+      text,
       style: const TextStyle(
-        fontFamily: Nyfa.display,
-        fontSize: 13,
-        letterSpacing: 1.2,
-        color: Nyfa.green,
+        fontFamily: Nyfa.body,
+        fontWeight: FontWeight.w600,
+        fontSize: 12,
+        color: Nyfa.paper,
         height: 1.1,
       ),
     ),
@@ -516,7 +519,7 @@ class _Counts extends StatelessWidget {
   Widget build(BuildContext context) => Padding(
     padding: const EdgeInsets.fromLTRB(20, 0, 20, 6),
     child: Text(
-      L10n.of(context).diamonds(post.reactionCount).toUpperCase(),
+      L10n.of(context).diamonds(post.reactionCount),
       style: Nyfa.heading.copyWith(
         fontSize: 17,
         color: post.reactionCount == 0 ? Nyfa.muted : Nyfa.paper,
@@ -687,7 +690,10 @@ class _Tags extends StatelessWidget {
             child: Container(
               constraints: const BoxConstraints(minHeight: 32),
               padding: const EdgeInsets.symmetric(horizontal: 10),
-              decoration: BoxDecoration(border: Border.all(color: Nyfa.green)),
+              decoration: const BoxDecoration(
+                color: Nyfa.tonal,
+                borderRadius: BorderRadius.all(Radius.circular(6)),
+              ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -698,11 +704,11 @@ class _Tags extends StatelessWidget {
                   ),
                   const SizedBox(width: 7),
                   Text(
-                    club!.name.toUpperCase(),
+                    club!.name,
                     style: const TextStyle(
-                      fontFamily: Nyfa.display,
-                      fontSize: 15,
-                      letterSpacing: 0.9,
+                      fontFamily: Nyfa.body,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 13,
                       color: Nyfa.paper,
                       height: 1.6,
                     ),
@@ -718,18 +724,22 @@ class _Tags extends StatelessWidget {
             child: Container(
               constraints: const BoxConstraints(minHeight: 32),
               padding: const EdgeInsets.symmetric(horizontal: 10),
-              decoration: BoxDecoration(border: Border.all(color: Nyfa.rule)),
+              clipBehavior: Clip.antiAlias,
+              decoration: BoxDecoration(
+                border: Border.all(color: Nyfa.rule),
+                borderRadius: Nyfa.roundedLarge,
+              ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const Diamond(size: 9, color: Nyfa.green),
                   const SizedBox(width: 7),
                   Text(
-                    t.name.toUpperCase(),
+                    t.name,
                     style: const TextStyle(
-                      fontFamily: Nyfa.display,
-                      fontSize: 15,
-                      letterSpacing: 0.9,
+                      fontFamily: Nyfa.body,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 13,
                       color: Nyfa.paper,
                       height: 1.6,
                     ),
@@ -790,7 +800,11 @@ class SessionResults extends StatelessWidget {
 
     return Container(
       margin: const EdgeInsets.fromLTRB(20, 4, 20, 10),
-      decoration: BoxDecoration(border: Border.all(color: Nyfa.rule)),
+      clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(
+        border: Border.all(color: Nyfa.rule),
+        borderRadius: Nyfa.roundedLarge,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -801,7 +815,7 @@ class SessionResults extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    summary.name.toUpperCase(),
+                    summary.name,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: Nyfa.heading.copyWith(fontSize: 16),
@@ -809,7 +823,7 @@ class SessionResults extends StatelessWidget {
                 ),
                 const SizedBox(width: 12),
                 Text(
-                  head.toUpperCase(),
+                  head,
                   style: Nyfa.eyebrow.copyWith(
                     fontSize: 13,
                     fontFeatures: const [FontFeature.tabularFigures()],
@@ -858,7 +872,7 @@ class SessionResults extends StatelessWidget {
   /// No rule of its own: the lines under it carry theirs.
   Widget _player(String name) => Padding(
     padding: const EdgeInsets.fromLTRB(14, 14, 14, 6),
-    child: Text(name.toUpperCase(), style: Nyfa.eyebrow),
+    child: Text(name, style: Nyfa.eyebrow),
   );
 
   Widget _line({Widget? lead, required String text, String trailing = ''}) =>
@@ -881,7 +895,7 @@ class SessionResults extends StatelessWidget {
               ),
               if (trailing.isNotEmpty)
                 Text(
-                  trailing.toUpperCase(),
+                  trailing,
                   style: Nyfa.eyebrow.copyWith(
                     color: Nyfa.green,
                     fontSize: 14,
