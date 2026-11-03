@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Session</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+  <style>
+    body { margin: 0; }
+    .wf { font-family: "IBM Plex Sans", "Helvetica Neue", sans-serif; }
+    .box { background: #E4E3DF; border: 1px solid #C2C0BA; }
+    .lbl { color: #6E6B64; font-size: 11px; letter-spacing: .04em; text-transform: uppercase; }
+  </style>
+</helmet>
+
+<div class="wf" style="width: 390px; height: 844px; box-sizing: border-box; background: #F4F3EF; color: #2E2C28; display: flex; flex-direction: column; overflow: hidden">
+
+  <div style="padding: 14px 16px 10px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #DAD8D2">
+    <div style="display: flex; align-items: center; gap: 10px">
+      <a href="Dash.dc.html" style="font-size: 17px; color: #6E6B64; text-decoration: none">‹</a>
+      <strong style="font-size: 17px; font-weight: 600">Session</strong>
+    </div>
+    <a href="EditSession.dc.html" style="font-size: 13px; color: #2E2C28; text-decoration: none">Edit</a>
+  </div>
+
+  <div class="box" style="margin: 12px 16px 0; height: 86px; display: flex; align-items: center; justify-content: center; position: relative">
+    <div style="position: absolute; width: 64px; height: 64px; border-radius: 50%; border: 1px solid #8A867D; background: rgba(46, 44, 40, .08)"></div>
+    <span class="lbl" style="position: relative">area only · until approved</span>
+  </div>
+
+  <div style="padding: 13px 16px 10px; border-bottom: 1px solid #DAD8D2">
+    <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap">
+      <div style="font-size: 17px; font-weight: 600">Washington Square Park Meetup</div>
+      <span style="font-size: 10px; letter-spacing: .04em; text-transform: uppercase; color: #6E6B64; background: #E4E3DF; border: 1px solid #C2C0BA; padding: 2px 6px; border-radius: 3px">open</span>
+      <span style="font-size: 10px; letter-spacing: .04em; text-transform: uppercase; color: #6E6B64; background: #E4E3DF; border: 1px solid #C2C0BA; padding: 2px 6px; border-radius: 3px">freestyle</span>
+    </div>
+    <div style="font-size: 13px; color: #6E6B64; margin-top: 3px">Thu 23 Oct · 6:00 pm</div>
+    <div style="font-size: 13px; color: #6E6B64">North Brooklyn · about 2 mi away</div>
+    <a href="Club.dc.html" style="font-size: 13px; color: #2E2C28; text-decoration: none; display: inline-block; margin-top: 7px">Brooklyn Footbag ›</a>
+    <div style="font-size: 13px; margin-top: 9px; line-height: 1.5">bring a spare bag</div>
+  </div>
+
+  <div style="padding: 13px 16px 9px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap">
+    <button type="button" style="font: inherit; font-size: 13px; font-weight: 500; padding: 9px 20px; border-radius: 999px; border: 1px solid #2E2C28; background: #2E2C28; color: #F4F3EF">Request to join</button>
+    <a href="Chat.dc.html" style="font: inherit; font-size: 13px; padding: 9px 16px; border-radius: 999px; border: 1px solid #C2C0BA; text-decoration: none; color: #2E2C28">Message host</a>
+  </div>
+
+  <div style="padding: 0 16px 12px; font-size: 12px; color: #6E6B64; line-height: 1.5">
+    Every session shows an area until the host approves you — no exceptions for public parks. Members of the club running it are already approved and see the spot straight away.
+  </div>
+
+  <div style="margin: 0 16px 12px; padding: 10px 11px; border: 1px solid #C2C0BA; background: #E4E3DF">
+    <div class="lbl" style="margin-bottom: 7px">Not started yet</div>
+    <a href="SessionActive.dc.html" style="font: inherit; font-size: 13px; font-weight: 500; padding: 8px 16px; border-radius: 999px; border: 1px solid #2E2C28; background: #2E2C28; color: #F4F3EF; text-decoration: none; display: inline-block">Start session</a>
+    <div style="font-size: 11px; color: #6E6B64; margin-top: 8px; line-height: 1.45">Starting runs the timer and, if broadcast is on, puts it on the live map. Once stopped: report progress, and the host may <strong>share results</strong>. Three separate switches, one verb each — <em>Open / Invite only</em> is who may join, <em>Public / Private</em> is whether it reaches the feed, <em>Share results</em> is the host releasing the reports onto that post.</div>
+    <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 9px">
+      <a href="ReportProgress.dc.html" style="font: inherit; font-size: 12px; padding: 6px 12px; border-radius: 999px; border: 1px solid #C2C0BA; text-decoration: none; color: #2E2C28">Report progress</a>
+      <a href="SessionResults.dc.html" style="font: inherit; font-size: 12px; padding: 6px 12px; border-radius: 999px; border: 1px solid #C2C0BA; text-decoration: none; color: #2E2C28">Results</a>
+    </div>
+  </div>
+
+  <div style="padding: 2px 16px 8px">
+    <span class="lbl">Going · 4</span>
+  </div>
+  <div style="padding: 0 16px 14px; display: flex; gap: 7px; border-bottom: 1px solid #DAD8D2">
+    <a href="Profile.dc.html" class="box" style="width: 36px; height: 36px; border-radius: 50%; text-decoration: none"></a>
+    <div class="box" style="width: 36px; height: 36px; border-radius: 50%"></div>
+    <div class="box" style="width: 36px; height: 36px; border-radius: 50%"></div>
+    <div class="box" style="width: 36px; height: 36px; border-radius: 50%"></div>
+  </div>
+
+  <div style="padding: 14px 16px 8px; display: flex; align-items: baseline; justify-content: space-between">
+    <span class="lbl">Clips from this session</span>
+    <a href="Main.dc.html" style="font-size: 12px; color: #6E6B64; text-decoration: none">See all ›</a>
+  </div>
+  <div style="padding: 0 16px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 7px">
+    <a href="PostDetail.dc.html" class="box" style="aspect-ratio: 1; display: flex; align-items: center; justify-content: center; text-decoration: none"><span class="lbl">clip</span></a>
+    <div class="box" style="aspect-ratio: 1"></div>
+    <div class="box" style="aspect-ratio: 1"></div>
+  </div>
+
+  <div style="flex-grow: 1"></div>
+
+  <nav style="border-top: 1px solid #DAD8D2; padding: 10px 16px 16px; display: flex; justify-content: space-between; align-items: center">
+    <a href="Dash.dc.html" style="font-size: 12px; color: #2E2C28; font-weight: 600; text-decoration: none">Dash</a>
+    <a href="Main.dc.html" style="font-size: 12px; color: #8A867D; text-decoration: none">Feed</a>
+    <a href="NewSession.dc.html" aria-label="New session" style="width: 34px; height: 34px; border-radius: 50%; background: #2E2C28; color: #F4F3EF; display: flex; align-items: center; justify-content: center; font-size: 18px; text-decoration: none">+</a>
+    <a href="Discover.dc.html" style="font-size: 12px; color: #8A867D; text-decoration: none">Discover</a>
+    <a href="Chat.dc.html" style="font-size: 12px; color: #8A867D; text-decoration: none">Chat</a>
+  </nav>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

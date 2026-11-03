@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Compose</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+  <style>
+    body { margin: 0; }
+    .wf { font-family: "IBM Plex Sans", "Helvetica Neue", sans-serif; }
+    .box { background: #E4E3DF; border: 1px solid #C2C0BA; }
+    .lbl { color: #6E6B64; font-size: 11px; letter-spacing: .04em; text-transform: uppercase; }
+    .row { display: flex; align-items: center; justify-content: space-between; padding: 13px 16px; border-bottom: 1px solid #DAD8D2; font-size: 14px; }
+  </style>
+</helmet>
+
+<div class="wf" style="width: 390px; height: 844px; box-sizing: border-box; background: #F4F3EF; color: #2E2C28; display: flex; flex-direction: column; overflow: hidden">
+
+  <div style="padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #DAD8D2">
+    <a href="Main.dc.html" style="font-size: 14px; color: #6E6B64; text-decoration: none">Cancel</a>
+    <strong style="font-size: 15px; font-weight: 600">New post</strong>
+    <button type="button" style="font: inherit; font-size: 14px; font-weight: 500; border: 0; background: none; color: #2E2C28">Share</button>
+  </div>
+
+  <div style="padding: 16px 16px 10px">
+    <span class="lbl">Media · up to 4</span>
+    <div style="display: flex; gap: 8px; margin-top: 8px">
+      <div class="box" style="width: 78px; height: 78px; display: flex; align-items: center; justify-content: center; font-size: 22px; color: #8A867D">+</div>
+      <div class="box" style="width: 78px; height: 78px; opacity: .5"></div>
+      <div class="box" style="width: 78px; height: 78px; opacity: .5"></div>
+      <div class="box" style="width: 78px; height: 78px; opacity: .5"></div>
+    </div>
+    <div style="margin-top: 9px; font-size: 12px; color: #6E6B64">Photos or one clip. Clips are compressed before upload.</div>
+  </div>
+
+  <div style="padding: 4px 16px 14px">
+    <div class="box" style="height: 44px; display: flex; align-items: center; padding: 0 12px; font-size: 13px; color: #8A867D">or paste a YouTube / Vimeo link</div>
+  </div>
+
+  <div class="box" style="margin: 0 16px; height: 76px; padding: 11px; box-sizing: border-box; font-size: 13px; color: #8A867D">Say something about it…</div>
+
+  <div style="margin: 16px 16px 0; padding: 11px 12px; border: 1px solid #C2C0BA; background: #E4E3DF; display: flex; align-items: center; justify-content: space-between; gap: 12px">
+    <div style="min-width: 0">
+      <div style="font-size: 10px; letter-spacing: .04em; text-transform: uppercase; color: #6E6B64">Tagged from your session</div>
+      <div style="font-size: 13px; font-weight: 500; margin-top: 3px">Saturday shred · 1h ago</div>
+      <div style="font-size: 11px; color: #6E6B64; margin-top: 2px">Club, session and location filled in</div>
+    </div>
+    <button type="button" style="font: inherit; font-size: 12px; padding: 5px 11px; border-radius: 999px; border: 1px solid #C2C0BA; background: transparent; color: #2E2C28; white-space: nowrap">Not this</button>
+  </div>
+
+  <div style="margin-top: 14px; border-top: 1px solid #DAD8D2; padding: 12px 16px 7px; display: flex; align-items: baseline; justify-content: space-between">
+    <span class="lbl">What is in it</span>
+    <a href="Tricks.dc.html" style="font-size: 12px; color: #6E6B64; text-decoration: none">Search all ›</a>
+  </div>
+
+  <div style="padding: 0 16px 8px; display: flex; gap: 6px; flex-wrap: wrap; align-items: center">
+    <span style="font-size: 12px; padding: 5px 10px; border-radius: 4px; background: #2E2C28; color: #F4F3EF">Paradox Symposium Whirl ×</span>
+    <span style="font-size: 12px; padding: 5px 10px; border-radius: 4px; background: #2E2C28; color: #F4F3EF">string name ×</span>
+  </div>
+
+  <div style="padding: 0 16px 10px; display: flex; gap: 6px; flex-wrap: wrap">
+    <button type="button" style="font: inherit; font-size: 12px; padding: 5px 10px; border-radius: 999px; border: 1px dashed #B9B6AE; background: transparent; color: #2E2C28">+ from your favourites</button>
+    <a href="SuggestEntry.dc.html" style="font: inherit; font-size: 12px; padding: 5px 10px; border-radius: 999px; border: 1px solid #C2C0BA; text-decoration: none; color: #2E2C28">+ not in the list</a>
+  </div>
+
+  <div style="padding: 0 16px 11px; display: flex; align-items: center; justify-content: space-between; gap: 12px">
+    <div style="min-width: 0">
+      <div style="font-size: 13px; font-weight: 500">It explains how to do it</div>
+      <div style="font-size: 11px; color: #6E6B64; line-height: 1.45">Marks it a tutorial, not just a clip of you hitting it. Your call — nobody approves it.</div>
+    </div>
+    <div class="box" style="width: 42px; height: 24px; border-radius: 999px; flex-shrink: 0; position: relative">
+      <div style="position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: #F4F3EF; border: 1px solid #C2C0BA; box-sizing: border-box"></div>
+    </div>
+  </div>
+
+  <div style="padding: 0 16px 12px; font-size: 12px; color: #6E6B64; line-height: 1.5">
+    Tricks, composites and strings all tag the same way. <strong>This is what fills a trick's video list</strong> — and the tutorial flag splits "watch someone land it" from "learn how", which are different needs.
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

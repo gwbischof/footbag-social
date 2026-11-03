@@ -72,3 +72,7 @@ path = [
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2026-Present Christian Kußowski"
 SPDX-License-Identifier = "LicenseRef-All-Rights-Reserved"
+[[annotations]]
+path = ["docs/wireframes/**"]
+SPDX-FileCopyrightText = "2026-Present New York Footbag Association"
+SPDX-License-Identifier = "AGPL-3.0-or-later"

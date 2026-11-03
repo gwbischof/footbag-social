@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Mod queue</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+  <style>
+    body { margin: 0; }
+    .wf { font-family: "IBM Plex Sans", "Helvetica Neue", sans-serif; }
+    .box { background: #E4E3DF; border: 1px solid #C2C0BA; }
+    .lbl { color: #6E6B64; font-size: 11px; letter-spacing: .04em; text-transform: uppercase; }
+    .num { font-variant-numeric: tabular-nums; }
+    .chip { font: inherit; font-size: 12px; padding: 5px 11px; border-radius: 999px; border: 1px solid #C2C0BA; background: transparent; color: #2E2C28; }
+    .chip-on { font: inherit; font-size: 12px; font-weight: 500; padding: 5px 11px; border-radius: 999px; border: 1px solid #2E2C28; background: #2E2C28; color: #F4F3EF; }
+    .mini { font: inherit; font-size: 12px; padding: 5px 11px; border-radius: 999px; border: 1px solid #C2C0BA; background: transparent; color: #2E2C28; }
+    .tag { font-size: 10px; letter-spacing: .04em; text-transform: uppercase; color: #6E6B64; background: #E4E3DF; border: 1px solid #C2C0BA; padding: 2px 6px; border-radius: 3px; }
+  </style>
+</helmet>
+
+<div class="wf" style="width: 390px; height: 844px; box-sizing: border-box; background: #F4F3EF; color: #2E2C28; display: flex; flex-direction: column; overflow: hidden">
+
+  <div style="padding: 14px 16px 10px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #DAD8D2">
+    <div style="display: flex; align-items: center; gap: 10px">
+      <a href="Dash.dc.html" style="font-size: 17px; color: #6E6B64; text-decoration: none">‹</a>
+      <strong style="font-size: 17px; font-weight: 600">Mod queue</strong>
+    </div>
+    <a href="ModTeam.dc.html" style="font-size: 13px; color: #2E2C28; text-decoration: none">Team</a>
+  </div>
+
+  <div style="padding: 12px 16px 10px; display: flex; gap: 7px; border-bottom: 1px solid #DAD8D2">
+    <button type="button" class="chip-on">Open · 3</button>
+    <button type="button" class="chip">Actioned</button>
+    <button type="button" class="chip">Suggestions · 4</button>
+    <button type="button" class="chip">Done</button>
+  </div>
+
+  <div style="padding: 13px 16px 11px; border-bottom: 1px solid #DAD8D2">
+    <div style="display: flex; gap: 11px; align-items: flex-start">
+      <div class="box" style="width: 52px; height: 52px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 9px; color: #8A867D">clip</div>
+      <div style="flex-grow: 1; min-width: 0">
+        <div style="display: flex; align-items: center; gap: 7px; flex-wrap: wrap">
+          <span class="tag" style="background: #2E2C28; color: #F4F3EF; border-color: #2E2C28">illegal</span>
+          <span style="font-size: 12px; color: #6E6B64">2 reports · 1h</span>
+        </div>
+        <div style="font-size: 13px; font-weight: 500; margin-top: 4px">player name</div>
+        <div style="font-size: 12px; color: #6E6B64; line-height: 1.45; margin-top: 2px">"caption text sits here"</div>
+      </div>
+    </div>
+    <div style="display: flex; gap: 7px; margin-top: 10px; flex-wrap: wrap">
+      <button type="button" style="font: inherit; font-size: 12px; font-weight: 500; padding: 6px 13px; border-radius: 999px; border: 1px solid #2E2C28; background: #2E2C28; color: #F4F3EF">Remove</button>
+      <button type="button" class="mini">Keep</button>
+      <a href="PostDetail.dc.html" class="mini" style="text-decoration: none">View post</a>
+    </div>
+  </div>
+
+  <div style="padding: 13px 16px 11px; border-bottom: 1px solid #DAD8D2">
+    <div style="display: flex; gap: 11px; align-items: flex-start">
+      <div class="box" style="width: 52px; height: 52px; flex-shrink: 0"></div>
+      <div style="flex-grow: 1; min-width: 0">
+        <div style="display: flex; align-items: center; gap: 7px; flex-wrap: wrap">
+          <span class="tag">spam</span>
+          <span style="font-size: 12px; color: #6E6B64">1 report · 5h</span>
+        </div>
+        <div style="font-size: 13px; font-weight: 500; margin-top: 4px">player name</div>
+        <div style="font-size: 12px; color: #6E6B64; line-height: 1.45; margin-top: 2px">"caption text sits here"</div>
+      </div>
+    </div>
+    <div style="display: flex; gap: 7px; margin-top: 10px; flex-wrap: wrap">
+      <button type="button" style="font: inherit; font-size: 12px; font-weight: 500; padding: 6px 13px; border-radius: 999px; border: 1px solid #2E2C28; background: #2E2C28; color: #F4F3EF">Remove</button>
+      <button type="button" class="mini">Keep</button>
+      <a href="PostDetail.dc.html" class="mini" style="text-decoration: none">View post</a>
+    </div>
+  </div>
+
+  <div style="padding: 13px 16px 8px">
+    <span class="lbl">Recently actioned</span>
+  </div>
+  <div style="padding: 0 16px 12px; display: flex; flex-direction: column; gap: 7px">
+    <div style="display: flex; gap: 9px; align-items: center; font-size: 12px; color: #6E6B64">
+      <span class="tag">removed</span>
+      <span style="flex-grow: 1">player name · not footbag</span>
+      <span>by G · 2d</span>
+    </div>
+    <div style="display: flex; gap: 9px; align-items: center; font-size: 12px; color: #6E6B64">
+      <span class="tag">kept</span>
+      <span style="flex-grow: 1">player name · spam</span>
+      <span>by Ivan · 3d</span>
+    </div>
+  </div>
+
+  <div style="flex-grow: 1"></div>
+
+  <div style="margin: 0 16px 16px; padding: 10px 11px; background: #E9E7E1; border: 1px dashed #B9B6AE; font-size: 12px; color: #55524C; line-height: 1.5">
+    <strong>Remove hides a post; it does not delete it.</strong> Reversible, and session and trick tags stay intact. This queue also holds <strong>suggested dictionary entries</strong> awaiting approval — same moderators, same place to look. Every action is attributed.
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

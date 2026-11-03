@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Post detail</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+  <style>
+    body { margin: 0; }
+    .wf { font-family: "IBM Plex Sans", "Helvetica Neue", sans-serif; }
+    .box { background: #E4E3DF; border: 1px solid #C2C0BA; }
+    .lbl { color: #6E6B64; font-size: 11px; letter-spacing: .04em; text-transform: uppercase; }
+    .tag { font-size: 11px; padding: 3px 8px; border-radius: 4px; background: #E4E3DF; border: 1px solid #C2C0BA; }
+  </style>
+</helmet>
+
+<div class="wf" style="width: 390px; height: 844px; box-sizing: border-box; background: #F4F3EF; color: #2E2C28; display: flex; flex-direction: column; overflow: hidden">
+
+  <div style="padding: 14px 16px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #DAD8D2">
+    <a href="Main.dc.html" aria-label="Back" style="font-size: 16px; color: #2E2C28; text-decoration: none">‹</a>
+    <strong style="font-size: 15px; font-weight: 600">Post</strong>
+  </div>
+
+  <div class="box" style="height: 230px; margin: 0; border-left: 0; border-right: 0; display: flex; align-items: center; justify-content: center">
+    <span class="lbl">clip · playing</span>
+  </div>
+
+  <div style="padding: 12px 16px; display: flex; flex-direction: column; gap: 9px">
+    <div style="display: flex; align-items: center; gap: 8px">
+      <div class="box" style="width: 28px; height: 28px; border-radius: 50%"></div>
+      <span style="font-size: 13px; font-weight: 500">player name</span>
+      <span style="font-size: 12px; color: #8A867D">· 2h</span>
+    </div>
+    <div style="font-size: 13px; line-height: 1.5">caption text, a sentence or two about the clip</div>
+    <div style="display: flex; gap: 6px; flex-wrap: wrap">
+      <span class="tag">Brooklyn Footbag</span>
+      <span class="tag">Thu session</span>
+      <span class="tag">McCarren Park</span>
+      <span class="tag">stepped mirage</span>
+    </div>
+    <div style="display: flex; gap: 14px; align-items: center; padding-top: 3px">
+      <button type="button" style="font: inherit; font-size: 13px; padding: 5px 12px; border-radius: 999px; border: 1px solid #C2C0BA; background: transparent">♦ react</button>
+      <span style="font-size: 12px; color: #6E6B64">12 reactions</span>
+    </div>
+  </div>
+
+  <div style="border-top: 1px solid #DAD8D2; padding: 12px 16px 6px">
+    <span class="lbl">3 comments · flat, no threads</span>
+  </div>
+
+  <div style="flex-grow: 1; padding: 6px 16px; display: flex; flex-direction: column; gap: 13px; overflow: hidden">
+    <div style="display: flex; gap: 9px">
+      <div class="box" style="width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0"></div>
+      <div style="font-size: 13px; line-height: 1.45"><strong style="font-weight: 500">player</strong> a comment goes here</div>
+    </div>
+    <div style="display: flex; gap: 9px">
+      <div class="box" style="width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0"></div>
+      <div style="font-size: 13px; line-height: 1.45"><strong style="font-weight: 500">player</strong> replies sit in the same flat list</div>
+    </div>
+    <div style="display: flex; gap: 9px">
+      <div class="box" style="width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0"></div>
+      <div style="font-size: 13px; line-height: 1.45"><strong style="font-weight: 500">player</strong> another one</div>
+    </div>
+  </div>
+
+  <div style="border-top: 1px solid #DAD8D2; padding: 11px 16px 16px; display: flex; gap: 9px; align-items: center">
+    <div class="box" style="flex-grow: 1; height: 38px; display: flex; align-items: center; padding: 0 12px; font-size: 13px; color: #8A867D">Add a comment…</div>
+    <a href="ReportPost.dc.html" style="font: inherit; font-size: 13px; text-decoration: none; color: #6E6B64">Report</a>
+  </div>
+
+  <div style="border-top: 1px solid #DAD8D2; padding: 10px 16px 14px; display: flex; align-items: center; justify-content: space-between; gap: 10px; background: #E9E7E1">
+    <div style="min-width: 0">
+      <div style="font-size: 10px; letter-spacing: .04em; text-transform: uppercase; color: #6E6B64">Moderators only</div>
+      <div style="font-size: 12px; color: #55524C; margin-top: 2px">Hides it from the feed, reversibly</div>
+    </div>
+    <a href="ModQueue.dc.html" style="font: inherit; font-size: 12px; font-weight: 500; padding: 6px 13px; border-radius: 999px; border: 1px solid #2E2C28; background: #2E2C28; color: #F4F3EF; text-decoration: none; white-space: nowrap">Remove post</a>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

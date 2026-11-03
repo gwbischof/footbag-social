@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Report post</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+  <style>
+    body { margin: 0; }
+    .wf { font-family: "IBM Plex Sans", "Helvetica Neue", sans-serif; }
+    .box { background: #E4E3DF; border: 1px solid #C2C0BA; }
+    .lbl { color: #6E6B64; font-size: 11px; letter-spacing: .04em; text-transform: uppercase; }
+    .opt { display: flex; gap: 12px; align-items: center; padding: 13px 16px; border-bottom: 1px solid #DAD8D2; }
+    .radio { width: 20px; height: 20px; border-radius: 50%; border: 1px solid #C2C0BA; background: #E4E3DF; flex-shrink: 0; }
+    .radio.on { border: 6px solid #2E2C28; background: #F4F3EF; }
+  </style>
+</helmet>
+
+<div class="wf" style="width: 390px; height: 844px; box-sizing: border-box; background: #F4F3EF; color: #2E2C28; display: flex; flex-direction: column; overflow: hidden">
+
+  <div style="padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #DAD8D2">
+    <a href="PostDetail.dc.html" style="font-size: 14px; color: #6E6B64; text-decoration: none">Cancel</a>
+    <strong style="font-size: 15px; font-weight: 600">Report post</strong>
+    <button type="button" style="font: inherit; font-size: 14px; font-weight: 500; border: 0; background: none; color: #2E2C28">Send</button>
+  </div>
+
+  <div style="padding: 12px 16px; display: flex; gap: 11px; align-items: center; border-bottom: 1px solid #DAD8D2">
+    <div class="box" style="width: 40px; height: 40px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 9px; color: #8A867D">clip</div>
+    <div style="flex-grow: 1; min-width: 0">
+      <div style="font-size: 13px; font-weight: 500">player name</div>
+      <div style="font-size: 12px; color: #6E6B64">caption text sits here</div>
+    </div>
+  </div>
+
+  <div style="padding: 14px 16px 6px">
+    <span class="lbl">What's wrong with it</span>
+  </div>
+
+  <div class="opt"><div class="radio on"></div><span style="font-size: 14px">Spam or advertising</span></div>
+  <div class="opt"><div class="radio"></div><span style="font-size: 14px">Harassment or abuse</span></div>
+  <div class="opt"><div class="radio"></div><span style="font-size: 14px">Not footbag</span></div>
+  <div class="opt"><div class="radio"></div><span style="font-size: 14px">Someone else's clip</span></div>
+  <div class="opt"><div class="radio"></div>
+    <div>
+      <div style="font-size: 14px">Illegal, or someone at risk</div>
+      <div style="font-size: 11px; color: #6E6B64">Goes straight to the top of the queue</div>
+    </div>
+  </div>
+
+  <div style="padding: 14px 16px 8px">
+    <span class="lbl">Anything to add</span>
+  </div>
+  <div style="padding: 0 16px">
+    <div class="box" style="height: 60px; padding: 10px; box-sizing: border-box; font-size: 13px; color: #8A867D; line-height: 1.5">optional — what a mod should know</div>
+  </div>
+
+  <div style="flex-grow: 1"></div>
+
+  <div style="margin: 0 16px 16px; padding: 10px 11px; background: #E9E7E1; border: 1px dashed #B9B6AE; font-size: 12px; color: #55524C; line-height: 1.5">
+    Nothing in the app could be reported before this screen existed, so mods would have had to find bad posts by scrolling. Reports are the input side of moderation — without them the queue is empty and useless.
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

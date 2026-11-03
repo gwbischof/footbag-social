@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Session results</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+  <style>
+    body { margin: 0; }
+    .wf { font-family: "IBM Plex Sans", "Helvetica Neue", sans-serif; }
+    .box { background: #E4E3DF; border: 1px solid #C2C0BA; }
+    .lbl { color: #6E6B64; font-size: 11px; letter-spacing: .04em; text-transform: uppercase; }
+    .num { font-variant-numeric: tabular-nums; }
+    .player { display: flex; gap: 11px; align-items: flex-start; padding: 12px 16px; border-bottom: 1px solid #DAD8D2; }
+  </style>
+</helmet>
+
+<div class="wf" style="width: 390px; height: 844px; box-sizing: border-box; background: #F4F3EF; color: #2E2C28; display: flex; flex-direction: column; overflow: hidden">
+
+  <div style="padding: 14px 16px 10px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #DAD8D2">
+    <div style="display: flex; align-items: center; gap: 10px">
+      <a href="SessionDetail.dc.html" style="font-size: 17px; color: #6E6B64; text-decoration: none">‹</a>
+      <strong style="font-size: 17px; font-weight: 600">Results</strong>
+    </div>
+    <span style="font-size: 12px; color: #6E6B64">shared</span>
+  </div>
+
+  <div style="padding: 12px 16px 11px; border-bottom: 1px solid #DAD8D2">
+    <div style="font-size: 15px; font-weight: 600">Washington Square Park Meetup</div>
+    <div style="font-size: 12px; color: #6E6B64; margin-top: 3px">Thu 23 Oct · 4 players reported</div>
+  </div>
+
+  <div style="padding: 13px 16px 4px">
+    <span class="lbl">Host's note</span>
+  </div>
+  <div style="padding: 0 16px 13px; border-bottom: 1px solid #DAD8D2">
+    <div style="font-size: 13px; line-height: 1.55; padding-left: 10px; border-left: 2px solid #C2C0BA">Cold and windy but a good turnout. Spent most of it on drills; two people landed something new.</div>
+  </div>
+
+  <div style="padding: 13px 16px 9px">
+    <span class="lbl">Session bests</span>
+  </div>
+  <div style="padding: 0 16px 13px; display: flex; gap: 20px; border-bottom: 1px solid #DAD8D2">
+    <div>
+      <div class="num" style="font-size: 22px; font-weight: 600">112</div>
+      <div class="lbl">most kicks</div>
+    </div>
+    <div>
+      <div class="num" style="font-size: 22px; font-weight: 600">7</div>
+      <div class="lbl">new tricks</div>
+    </div>
+    <div>
+      <div class="num" style="font-size: 22px; font-weight: 600">96</div>
+      <div class="lbl">drill reps</div>
+    </div>
+  </div>
+
+  <div style="padding: 13px 16px 4px">
+    <span class="lbl">Who reported</span>
+  </div>
+
+  <div class="player">
+    <a href="Profile.dc.html" class="box" style="width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0; text-decoration: none"></a>
+    <div style="flex-grow: 1">
+      <div style="font-size: 14px; font-weight: 500">player name</div>
+      <div style="font-size: 12px; color: #6E6B64; line-height: 1.5; margin-top: 2px">3 tricks · 1 string · 112 consecutive kicks</div>
+      <div style="font-size: 12px; line-height: 1.5; margin-top: 5px; padding-left: 9px; border-left: 2px solid #C2C0BA">finally got the timing on the stepped mirage</div>
+    </div>
+  </div>
+  <div class="player">
+    <div class="box" style="width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0"></div>
+    <div style="flex-grow: 1">
+      <div style="font-size: 14px; font-weight: 500">player name</div>
+      <div style="font-size: 12px; color: #6E6B64; line-height: 1.5; margin-top: 2px">string name × 24 reps · 58 consecutive kicks</div>
+      <div style="font-size: 12px; line-height: 1.5; margin-top: 5px; padding-left: 9px; border-left: 2px solid #C2C0BA">legs were gone after the drills</div>
+    </div>
+  </div>
+  <div class="player">
+    <div class="box" style="width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0"></div>
+    <div style="flex-grow: 1">
+      <div style="font-size: 14px; font-weight: 500">player name</div>
+      <div style="font-size: 12px; color: #6E6B64; line-height: 1.5; margin-top: 2px">2 tricks, both new</div>
+    </div>
+  </div>
+
+  <div style="padding: 13px 16px 8px; display: flex; align-items: baseline; justify-content: space-between">
+    <span class="lbl">Clips from this session</span>
+    <a href="Main.dc.html" style="font-size: 12px; color: #6E6B64; text-decoration: none">See all ›</a>
+  </div>
+  <div style="padding: 0 16px 12px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 7px">
+    <a href="PostDetail.dc.html" class="box" style="aspect-ratio: 1; display: flex; align-items: center; justify-content: center; text-decoration: none"><span class="lbl">clip</span></a>
+    <div class="box" style="aspect-ratio: 1"></div>
+    <div class="box" style="aspect-ratio: 1"></div>
+  </div>
+
+  <div style="flex-grow: 1"></div>
+
+  <div style="margin: 0 16px 16px; padding: 10px 11px; background: #E9E7E1; border: 1px dashed #B9B6AE; font-size: 12px; color: #55524C; line-height: 1.45">
+    Notes are the only free text here, so they are the part that needs moderation — the numbers can't be abusive. <strong>A public session is itself the feed post</strong>, so this screen is that post's detail view, not a second thing to publish. The post carries the clips; the reports carry the goals and results. Three switches, one verb each: <em>Open / Invite only</em> to join, <em>Public / Private</em> for the feed, <em>Share results</em> here.
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

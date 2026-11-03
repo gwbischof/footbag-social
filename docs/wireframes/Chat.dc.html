@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Chat</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+  <style>
+    body { margin: 0; }
+    .wf { font-family: "IBM Plex Sans", "Helvetica Neue", sans-serif; }
+    .box { background: #E4E3DF; border: 1px solid #C2C0BA; }
+    .lbl { color: #6E6B64; font-size: 11px; letter-spacing: .04em; text-transform: uppercase; }
+    .row { display: flex; gap: 11px; align-items: center; padding: 11px 16px; border-bottom: 1px solid #DAD8D2; }
+  </style>
+</helmet>
+
+<div class="wf" style="width: 390px; height: 844px; box-sizing: border-box; background: #F4F3EF; color: #2E2C28; display: flex; flex-direction: column; overflow: hidden">
+
+  <div style="padding: 14px 16px 10px; border-bottom: 1px solid #DAD8D2; display: flex; align-items: center; justify-content: space-between">
+    <strong style="font-size: 17px; font-weight: 600">Chat</strong>
+    <span style="font-size: 20px; color: #6E6B64">✎</span>
+  </div>
+
+  <div style="margin: 11px 16px 4px; padding: 9px 11px; background: #E9E7E1; border: 1px dashed #B9B6AE; font-size: 12px; color: #55524C; line-height: 1.45">
+    This screen is the FluffyChat fork's own UI — not something we design. Shown here only to place it in the nav.
+  </div>
+
+  <div style="padding: 14px 16px 6px">
+    <span class="lbl">Community</span>
+  </div>
+
+  <div class="row">
+    <div class="box" style="width: 38px; height: 38px; border-radius: 8px; flex-shrink: 0"></div>
+    <div style="flex-grow: 1">
+      <div style="font-size: 14px; font-weight: 500">#general</div>
+      <div style="font-size: 12px; color: #6E6B64">latest message preview…</div>
+    </div>
+    <span style="font-size: 11px; color: #8A867D">2m</span>
+  </div>
+  <div class="row">
+    <div class="box" style="width: 38px; height: 38px; border-radius: 8px; flex-shrink: 0"></div>
+    <div style="flex-grow: 1">
+      <div style="font-size: 14px; font-weight: 500">#freestyle</div>
+      <div style="font-size: 12px; color: #6E6B64">latest message preview…</div>
+    </div>
+    <span style="font-size: 11px; color: #8A867D">1h</span>
+  </div>
+  <div class="row">
+    <div class="box" style="width: 38px; height: 38px; border-radius: 8px; flex-shrink: 0"></div>
+    <div style="flex-grow: 1">
+      <div style="font-size: 14px; font-weight: 500">#stitching</div>
+      <div style="font-size: 12px; color: #6E6B64">latest message preview…</div>
+    </div>
+    <span style="font-size: 11px; color: #8A867D">3h</span>
+  </div>
+
+  <div class="row">
+    <div class="box" style="width: 38px; height: 38px; border-radius: 8px; flex-shrink: 0"></div>
+    <div style="flex-grow: 1; min-width: 0">
+      <div style="display: flex; align-items: center; gap: 7px">
+        <span style="font-size: 14px; font-weight: 500">#mods</span>
+        <span style="font-size: 10px; letter-spacing: .04em; text-transform: uppercase; color: #6E6B64; background: #E4E3DF; border: 1px solid #C2C0BA; padding: 2px 6px; border-radius: 3px">members only</span>
+      </div>
+      <div style="font-size: 12px; color: #6E6B64">latest message preview…</div>
+    </div>
+    <span style="font-size: 11px; color: #8A867D">20m</span>
+  </div>
+
+  <div style="padding: 16px 16px 6px">
+    <span class="lbl">Direct &amp; groups</span>
+  </div>
+
+  <div class="row">
+    <div class="box" style="width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0"></div>
+    <div style="flex-grow: 1">
+      <div style="font-size: 14px; font-weight: 500">Brooklyn Footbag</div>
+      <div style="font-size: 12px; color: #6E6B64">group chat · 6 people · encrypted</div>
+    </div>
+    <span style="font-size: 11px; color: #8A867D">5m</span>
+  </div>
+  <div class="row">
+    <div class="box" style="width: 38px; height: 38px; border-radius: 8px; flex-shrink: 0"></div>
+    <div style="flex-grow: 1">
+      <div style="font-size: 14px; font-weight: 500">Washington Square Park Meetup</div>
+      <div style="font-size: 12px; color: #6E6B64">group chat · 4 people · encrypted</div>
+    </div>
+    <span style="font-size: 11px; color: #8A867D">12m</span>
+  </div>
+  <div class="row">
+    <div class="box" style="width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0"></div>
+    <div style="flex-grow: 1">
+      <div style="font-size: 14px; font-weight: 500">player name</div>
+      <div style="font-size: 12px; color: #6E6B64">latest message preview…</div>
+    </div>
+    <span style="font-size: 11px; color: #8A867D">1d</span>
+  </div>
+
+  <div style="padding: 12px 16px; font-size: 12px; color: #6E6B64; line-height: 1.5">
+    The split is <strong>who runs it</strong>, not open-vs-closed. <strong>Channels we run</strong> are cleartext and moderated, whether open or <em>members only</em> — so an admin can read them. <strong>Anything users make</strong> is encrypted and nobody can read it, us included. "Members only" is not the same promise as "encrypted", and the labels have to say so.
+  </div>
+
+  <div style="flex-grow: 1"></div>
+
+  <nav style="border-top: 1px solid #DAD8D2; padding: 10px 16px 16px; display: flex; justify-content: space-between; align-items: center">
+    <a href="Dash.dc.html" style="font-size: 12px; color: #8A867D; text-decoration: none">Dash</a>
+    <a href="Main.dc.html" style="font-size: 12px; color: #8A867D; text-decoration: none">Feed</a>
+    <a href="NewSession.dc.html" aria-label="New session" style="width: 34px; height: 34px; border-radius: 50%; background: #2E2C28; color: #F4F3EF; display: flex; align-items: center; justify-content: center; font-size: 18px; text-decoration: none">+</a>
+    <a href="Discover.dc.html" style="font-size: 12px; color: #8A867D; text-decoration: none">Discover</a>
+    <a href="Chat.dc.html" style="font-size: 12px; color: #2E2C28; font-weight: 600; text-decoration: none">Chat</a>
+  </nav>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

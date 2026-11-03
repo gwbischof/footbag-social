@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Club members</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+  <style>
+    body { margin: 0; }
+    .wf { font-family: "IBM Plex Sans", "Helvetica Neue", sans-serif; }
+    .box { background: #E4E3DF; border: 1px solid #C2C0BA; }
+    .lbl { color: #6E6B64; font-size: 11px; letter-spacing: .04em; text-transform: uppercase; }
+    .row { display: flex; gap: 11px; align-items: center; padding: 10px 16px; border-bottom: 1px solid #DAD8D2; }
+    .pill { font-size: 10px; letter-spacing: .04em; text-transform: uppercase; color: #6E6B64; background: #E4E3DF; border: 1px solid #C2C0BA; padding: 2px 6px; border-radius: 3px; }
+    .mini { font: inherit; font-size: 12px; padding: 5px 11px; border-radius: 999px; border: 1px solid #C2C0BA; background: transparent; color: #2E2C28; }
+  </style>
+</helmet>
+
+<div class="wf" style="width: 390px; height: 844px; box-sizing: border-box; background: #F4F3EF; color: #2E2C28; display: flex; flex-direction: column; overflow: hidden">
+
+  <div style="padding: 14px 16px 10px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #DAD8D2">
+    <div style="display: flex; align-items: center; gap: 10px">
+      <a href="Club.dc.html" style="font-size: 17px; color: #6E6B64; text-decoration: none">‹</a>
+      <strong style="font-size: 17px; font-weight: 600">Members</strong>
+    </div>
+    <button type="button" style="font: inherit; font-size: 13px; font-weight: 500; border: 0; background: none; color: #2E2C28">Invite</button>
+  </div>
+
+  <div style="padding: 13px 16px 7px; display: flex; align-items: baseline; justify-content: space-between">
+    <span class="lbl">Requests to join</span>
+    <span style="font-size: 12px; color: #8A867D">2 waiting</span>
+  </div>
+
+  <div class="row">
+    <div class="box" style="width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0"></div>
+    <div style="flex-grow: 1; min-width: 0">
+      <div style="font-size: 14px; font-weight: 500">player name</div>
+      <div style="font-size: 12px; color: #6E6B64">asked 2 days ago</div>
+    </div>
+    <button type="button" class="mini" style="border-color: #2E2C28; background: #2E2C28; color: #F4F3EF; font-weight: 500">Accept</button>
+    <button type="button" class="mini">Decline</button>
+  </div>
+  <div class="row">
+    <div class="box" style="width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0"></div>
+    <div style="flex-grow: 1; min-width: 0">
+      <div style="font-size: 14px; font-weight: 500">player name</div>
+      <div style="font-size: 12px; color: #6E6B64">asked 5 days ago</div>
+    </div>
+    <button type="button" class="mini" style="border-color: #2E2C28; background: #2E2C28; color: #F4F3EF; font-weight: 500">Accept</button>
+    <button type="button" class="mini">Decline</button>
+  </div>
+
+  <div style="padding: 11px 16px 13px; font-size: 12px; color: #6E6B64; line-height: 1.5; border-bottom: 1px solid #DAD8D2">
+    Accepting adds them to the roster. Chat is entirely separate — members run their own group chat.
+  </div>
+
+  <div style="padding: 14px 16px 7px; display: flex; align-items: baseline; justify-content: space-between">
+    <span class="lbl">Invited · not joined yet</span>
+    <span style="font-size: 12px; color: #8A867D">1</span>
+  </div>
+  <div class="row">
+    <div class="box" style="width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0"></div>
+    <div style="flex-grow: 1; min-width: 0">
+      <div style="font-size: 14px; font-weight: 500">player name</div>
+      <div style="font-size: 12px; color: #6E6B64">invited 1 day ago</div>
+    </div>
+    <button type="button" class="mini">Cancel</button>
+  </div>
+
+  <div style="padding: 14px 16px 7px">
+    <span class="lbl">Members · 24</span>
+  </div>
+
+  <div class="row">
+    <a href="Profile.dc.html" class="box" style="width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0; text-decoration: none"></a>
+    <div style="flex-grow: 1; min-width: 0">
+      <div style="font-size: 14px; font-weight: 500">player name</div>
+    </div>
+    <span class="pill">organiser</span>
+    <span style="font-size: 13px; color: #8A867D">›</span>
+  </div>
+  <div class="row">
+    <div class="box" style="width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0"></div>
+    <div style="flex-grow: 1; min-width: 0">
+      <div style="font-size: 14px; font-weight: 500">player name</div>
+    </div>
+    <span class="pill">organiser</span>
+    <span style="font-size: 13px; color: #8A867D">›</span>
+  </div>
+  <div class="row">
+    <div class="box" style="width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0"></div>
+    <div style="flex-grow: 1; min-width: 0">
+      <div style="font-size: 14px; font-weight: 500">player name</div>
+    </div>
+    <span style="font-size: 13px; color: #8A867D">›</span>
+  </div>
+
+  <div style="flex-grow: 1"></div>
+
+  <div style="margin: 12px 16px 16px; padding: 10px 11px; background: #E9E7E1; border: 1px dashed #B9B6AE; font-size: 12px; color: #55524C; line-height: 1.45">
+    The roster is ours alone and the app creates no club room at all. No bridge, no sync, nothing to reconcile. Cost: a club's chat is invisible to the app, and being encrypted, unmoderatable.
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

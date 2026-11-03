@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Login</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+  <style>
+    body { margin: 0; }
+    .wf { font-family: "IBM Plex Sans", "Helvetica Neue", sans-serif; }
+    .box { background: #E4E3DF; border: 1px solid #C2C0BA; }
+    .lbl { color: #6E6B64; font-size: 11px; letter-spacing: .04em; text-transform: uppercase; }
+    .btn { font: inherit; font-size: 15px; height: 48px; width: 100%; border-radius: 999px; display: flex; align-items: center; justify-content: center; gap: 9px; text-decoration: none; box-sizing: border-box; }
+  </style>
+</helmet>
+
+<div class="wf" style="width: 390px; height: 844px; box-sizing: border-box; background: #F4F3EF; color: #2E2C28; display: flex; flex-direction: column; overflow: hidden">
+
+  <div style="padding: 72px 16px 0; display: flex; flex-direction: column; align-items: center; gap: 14px">
+    <div class="box" style="width: 64px; height: 64px; border-radius: 14px; display: flex; align-items: center; justify-content: center">
+      <span class="lbl">logo</span>
+    </div>
+    <strong style="font-size: 22px; font-weight: 600">Footbag Social</strong>
+    <div style="font-size: 14px; color: #6E6B64; text-align: center; line-height: 1.5; max-width: 270px">
+      Find a session near you, meet the people who play, and keep a record of what you land.
+    </div>
+  </div>
+
+  <div style="flex-grow: 1"></div>
+
+  <div style="padding: 0 24px; display: flex; flex-direction: column; gap: 11px">
+    <a href="Dash.dc.html" class="btn" style="background: #2E2C28; border: 1px solid #2E2C28; color: #F4F3EF; font-weight: 500">
+      <span aria-hidden="true" style="width: 18px; height: 18px; border-radius: 50%; border: 1px solid #F4F3EF; display: inline-block"></span>
+      Continue with Apple
+    </a>
+    <a href="Dash.dc.html" class="btn" style="background: transparent; border: 1px solid #C2C0BA; color: #2E2C28; font-weight: 500">
+      <span aria-hidden="true" style="width: 18px; height: 18px; border-radius: 50%; border: 1px solid #8A867D; display: inline-block"></span>
+      Continue with Google
+    </a>
+  </div>
+
+  <div style="padding: 15px 24px 0; font-size: 12px; color: #6E6B64; text-align: center; line-height: 1.5">
+    Two ways in, nothing else. No password, no email form, and no homeserver field — the server is fixed at build time. Signing in the first time creates the account.
+  </div>
+
+  <div style="padding: 16px 24px 0; font-size: 11px; color: #8A867D; text-align: center; line-height: 1.5">
+    By continuing you agree to the <span style="color: #2E2C28">Terms</span> and <span style="color: #2E2C28">Acceptable Use Policy</span>.
+  </div>
+
+  <div style="flex-grow: 1"></div>
+
+  <div style="margin: 0 16px 20px; padding: 11px 12px; background: #E9E7E1; border: 1px dashed #B9B6AE; font-size: 12px; color: #55524C; line-height: 1.5">
+    Apple is listed first because the App Store requires offering it wherever another social sign-in is offered. Both run through Dex, so Synapse still sees one OIDC provider. Apple can withhold the name and give a relay email, so we cannot count on getting a display name — a first-run screen to pick handle and name is now very likely needed.
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

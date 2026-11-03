@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Edit session</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+  <style>
+    body { margin: 0; }
+    .wf { font-family: "IBM Plex Sans", "Helvetica Neue", sans-serif; }
+    .box { background: #E4E3DF; border: 1px solid #C2C0BA; }
+    .lbl { color: #6E6B64; font-size: 11px; letter-spacing: .04em; text-transform: uppercase; display: block; margin-bottom: 5px; }
+    .fld { background: #E4E3DF; border: 1px solid #C2C0BA; height: 38px; display: flex; align-items: center; padding: 0 11px; font-size: 13px; }
+    .grp { padding: 0 16px 14px; }
+  </style>
+</helmet>
+
+<div class="wf" style="width: 390px; height: 844px; box-sizing: border-box; background: #F4F3EF; color: #2E2C28; display: flex; flex-direction: column; overflow: hidden">
+
+  <div style="padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #DAD8D2">
+    <a href="SessionDetail.dc.html" style="font-size: 14px; color: #6E6B64; text-decoration: none">Cancel</a>
+    <strong style="font-size: 15px; font-weight: 600">Edit session</strong>
+    <button type="button" style="font: inherit; font-size: 14px; font-weight: 500; border: 0; background: none; color: #2E2C28">Save</button>
+  </div>
+
+  <div class="grp" style="padding-top: 16px">
+    <span class="lbl">Name</span>
+    <div class="fld">Washington Square Park Meetup</div>
+    <div style="font-size: 11px; color: #6E6B64; margin-top: 5px">Shown everywhere the session is listed.</div>
+  </div>
+
+  <div class="grp">
+    <span class="lbl">Type</span>
+    <div style="display: flex; gap: 8px">
+      <button type="button" style="font: inherit; font-size: 13px; padding: 7px 14px; border-radius: 999px; border: 1px solid #C2C0BA; background: transparent; color: #2E2C28">Casual</button>
+      <button type="button" style="font: inherit; font-size: 13px; padding: 7px 14px; border-radius: 999px; border: 1px solid #C2C0BA; background: transparent; color: #2E2C28">Kicking</button>
+      <button type="button" style="font: inherit; font-size: 13px; font-weight: 500; padding: 7px 14px; border-radius: 999px; border: 1px solid #2E2C28; background: #2E2C28; color: #F4F3EF">Freestyle</button>
+      <button type="button" style="font: inherit; font-size: 13px; padding: 7px 14px; border-radius: 999px; border: 1px solid #C2C0BA; background: transparent; color: #2E2C28">Net</button>
+      <button type="button" style="font: inherit; font-size: 13px; padding: 7px 14px; border-radius: 999px; border: 1px solid #C2C0BA; background: transparent; color: #2E2C28">Stitching</button>
+    </div>
+  </div>
+
+  <div class="grp">
+    <span class="lbl">When</span>
+    <div style="display: flex; gap: 8px">
+      <div class="fld" style="flex-grow: 1">Thu 23 Oct</div>
+      <div class="fld" style="width: 108px">6:00 pm</div>
+    </div>
+  </div>
+
+  <div class="grp">
+    <span class="lbl">Where</span>
+    <div class="box" style="height: 48px; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #6E6B64; text-transform: uppercase; letter-spacing: .04em">map · move the pin</div>
+    <div class="fld" style="margin-top: 7px">Washington Square Park</div>
+    <div style="margin-top: 9px">
+      <span class="lbl" style="margin-bottom: 6px">Map precision</span>
+      <div style="display: flex; gap: 6px">
+        <button type="button" style="font: inherit; font-size: 12px; padding: 5px 11px; border-radius: 999px; border: 1px solid #C2C0BA; background: transparent; color: #2E2C28">1 mi</button>
+        <button type="button" style="font: inherit; font-size: 12px; font-weight: 500; padding: 5px 11px; border-radius: 999px; border: 1px solid #2E2C28; background: #2E2C28; color: #F4F3EF">3 mi</button>
+        <button type="button" style="font: inherit; font-size: 12px; padding: 5px 11px; border-radius: 999px; border: 1px solid #C2C0BA; background: transparent; color: #2E2C28">10 mi</button>
+        <button type="button" style="font: inherit; font-size: 12px; padding: 5px 11px; border-radius: 999px; border: 1px solid #C2C0BA; background: transparent; color: #2E2C28">25 mi</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="grp">
+    <span class="lbl">Who can join</span>
+    <div style="display: flex; gap: 8px">
+      <button type="button" style="font: inherit; font-size: 13px; font-weight: 500; padding: 7px 16px; border-radius: 999px; border: 1px solid #2E2C28; background: #2E2C28; color: #F4F3EF">Open</button>
+      <button type="button" style="font: inherit; font-size: 13px; padding: 7px 16px; border-radius: 999px; border: 1px solid #C2C0BA; background: transparent; color: #2E2C28">Invite only</button>
+    </div>
+    <div style="font-size: 11px; color: #6E6B64; line-height: 1.45; margin-top: 7px">Open means anyone nearby can request; you still approve each one.</div>
+  </div>
+
+  <div class="grp">
+    <span class="lbl">On the feed</span>
+    <div style="display: flex; gap: 8px">
+      <button type="button" style="font: inherit; font-size: 13px; font-weight: 500; padding: 7px 16px; border-radius: 999px; border: 1px solid #2E2C28; background: #2E2C28; color: #F4F3EF">Public</button>
+      <button type="button" style="font: inherit; font-size: 13px; padding: 7px 16px; border-radius: 999px; border: 1px solid #C2C0BA; background: transparent; color: #2E2C28">Private</button>
+    </div>
+    <div style="font-size: 11px; color: #6E6B64; line-height: 1.45; margin-top: 7px">A public session <em>is</em> a feed post. Separate from joining: an invite-only club night can still be public, and an open session can stay off the feed.</div>
+  </div>
+
+  <div class="grp">
+    <span class="lbl">Club</span>
+    <div class="fld" style="justify-content: space-between"><span>Brooklyn Footbag</span><span style="color: #8A867D">›</span></div>
+  </div>
+
+  <div class="grp" style="padding-bottom: 10px">
+    <span class="lbl">What to know</span>
+    <div class="box" style="height: 38px; padding: 9px 10px; box-sizing: border-box; font-size: 13px">bring a spare bag</div>
+  </div>
+
+  <div style="border-top: 1px solid #DAD8D2; padding: 12px 16px 6px; display: flex; align-items: baseline; justify-content: space-between">
+    <span class="lbl" style="margin-bottom: 0">Join requests</span>
+    <span style="font-size: 12px; color: #8A867D">2 waiting</span>
+  </div>
+  <div style="padding: 0 16px 10px; display: flex; flex-direction: column; gap: 8px">
+    <div style="display: flex; gap: 9px; align-items: center">
+      <div class="box" style="width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0"></div>
+      <span style="flex-grow: 1; font-size: 13px; font-weight: 500">player name</span>
+      <button type="button" style="font: inherit; font-size: 12px; font-weight: 500; padding: 5px 11px; border-radius: 999px; border: 1px solid #2E2C28; background: #2E2C28; color: #F4F3EF">Approve</button>
+      <button type="button" style="font: inherit; font-size: 12px; padding: 5px 11px; border-radius: 999px; border: 1px solid #C2C0BA; background: transparent; color: #2E2C28">No</button>
+    </div>
+    <div style="font-size: 11px; color: #6E6B64; line-height: 1.45">Approving reveals the exact location and adds them to the session room.</div>
+  </div>
+
+  <div style="border-top: 1px solid #DAD8D2; padding: 13px 16px; display: flex; align-items: center; justify-content: space-between">
+    <span style="font-size: 14px">Going</span>
+    <span style="font-size: 13px; color: #8A867D">4 ›</span>
+  </div>
+
+  <div style="border-top: 1px solid #DAD8D2; border-bottom: 1px solid #DAD8D2; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px">
+    <div>
+      <div style="font-size: 13px; font-weight: 500">Tell everyone going</div>
+      <div style="font-size: 11px; color: #6E6B64">Notify the 4 people who said yes</div>
+    </div>
+    <div class="box" style="width: 42px; height: 24px; border-radius: 999px; flex-shrink: 0; position: relative; background: #2E2C28; border-color: #2E2C28">
+      <div style="position: absolute; top: 3px; right: 3px; width: 18px; height: 18px; border-radius: 50%; background: #F4F3EF"></div>
+    </div>
+  </div>
+
+  <div style="flex-grow: 1"></div>
+
+  <div style="padding: 14px 16px 10px">
+    <button type="button" style="font: inherit; font-size: 13px; padding: 8px 16px; border-radius: 999px; border: 1px solid #C2C0BA; background: transparent; color: #8A3A3A">Cancel session</button>
+  </div>
+
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

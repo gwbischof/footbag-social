@@ -42,6 +42,9 @@ tricks; it's finding someone to play with. Footbag Social is built around that.
 In active development and live at [footbagsocial.com](https://footbagsocial.com)
 on the web. iOS and Android builds come next.
 
+The screens were designed first as [wireframes](docs/wireframes/README.md),
+with the reasoning behind each one.
+
 Part of the footbag ecosystem alongside [New York Footbag](https://newyorkfootbag.com)
 and the [Modified forum](https://modified.in).
 
@@ -61,7 +64,7 @@ AGPL-3.0-or-later. See [LICENSE](LICENSE).
 The source for this app, including all modifications, is at
 https://github.com/gwbischof/footbag-social.
 
-**Trademarks.** The names "Footbag Social", "Footbag Network" and "NYFA", and their logos, are
+**Trademarks.** The names "Footbag Social" and "NYFA", and their logos, are
 trademarks of the New York Footbag Association. The AGPL grants you rights to the
 code, not to the branding — if you distribute a derivative, use your own name and
 logo.

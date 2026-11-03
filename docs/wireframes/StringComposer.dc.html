@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Compose a string</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+  <style>
+    body { margin: 0; }
+    .wf { font-family: "IBM Plex Sans", "Helvetica Neue", sans-serif; }
+    .box { background: #E4E3DF; border: 1px solid #C2C0BA; }
+    .lbl { color: #6E6B64; font-size: 11px; letter-spacing: .04em; text-transform: uppercase; }
+    .num { font-variant-numeric: tabular-nums; }
+    .fld { background: #E4E3DF; border: 1px solid #C2C0BA; height: 38px; display: flex; align-items: center; padding: 0 11px; font-size: 13px; }
+    .step { display: flex; gap: 11px; align-items: center; padding: 10px 16px; border-bottom: 1px solid #DAD8D2; }
+    .ord { font-variant-numeric: tabular-nums; font-size: 12px; color: #8A867D; width: 14px; flex-shrink: 0; }
+  </style>
+</helmet>
+
+<div class="wf" style="width: 390px; height: 844px; box-sizing: border-box; background: #F4F3EF; color: #2E2C28; display: flex; flex-direction: column; overflow: hidden">
+
+  <div style="padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #DAD8D2">
+    <a href="Tricks.dc.html" style="font-size: 14px; color: #6E6B64; text-decoration: none">Cancel</a>
+    <strong style="font-size: 15px; font-weight: 600">New string</strong>
+    <button type="button" style="font: inherit; font-size: 14px; font-weight: 500; border: 0; background: none; color: #2E2C28">Save</button>
+  </div>
+
+  <div style="padding: 14px 16px 12px">
+    <span class="lbl" style="display: block; margin-bottom: 5px">Name</span>
+    <div class="fld" style="color: #8A867D">optional — named from the sequence if blank</div>
+  </div>
+
+  <div style="padding: 0 16px 7px; display: flex; align-items: baseline; justify-content: space-between">
+    <span class="lbl">Sequence</span>
+    <span class="num" style="font-size: 12px; color: #8A867D">4 tricks · 14 adds</span>
+  </div>
+
+  <div class="step">
+    <span class="ord">1</span>
+    <span style="flex-grow: 1; font-size: 14px; font-weight: 500">trick name</span>
+    <span class="num" style="font-size: 12px; color: #8A867D">3</span>
+    <span style="font-size: 15px; color: #8A867D">⋮⋮</span>
+  </div>
+  <div class="step">
+    <span class="ord">2</span>
+    <span style="flex-grow: 1; font-size: 14px; font-weight: 500">trick name</span>
+    <span class="num" style="font-size: 12px; color: #8A867D">4</span>
+    <span style="font-size: 15px; color: #8A867D">⋮⋮</span>
+  </div>
+  <div class="step">
+    <span class="ord">3</span>
+    <span style="flex-grow: 1; font-size: 14px; font-weight: 500">trick name</span>
+    <span class="num" style="font-size: 12px; color: #8A867D">2</span>
+    <span style="font-size: 15px; color: #8A867D">⋮⋮</span>
+  </div>
+  <div class="step">
+    <span class="ord">4</span>
+    <span style="flex-grow: 1; font-size: 14px; font-weight: 500">trick name</span>
+    <span class="num" style="font-size: 12px; color: #8A867D">5</span>
+    <span style="font-size: 15px; color: #8A867D">⋮⋮</span>
+  </div>
+
+  <div style="padding: 12px 16px">
+    <a href="Tricks.dc.html" style="font: inherit; font-size: 13px; padding: 9px 16px; border-radius: 999px; border: 1px dashed #B9B6AE; text-decoration: none; color: #2E2C28; display: inline-block">+ Add a trick</a>
+  </div>
+
+  <div style="border-top: 1px solid #DAD8D2; padding: 13px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px">
+    <div>
+      <div style="font-size: 13px; font-weight: 500">Add to your favourites</div>
+      <div style="font-size: 11px; color: #6E6B64">Favourites are what the session report offers you</div>
+    </div>
+    <div class="box" style="width: 42px; height: 24px; border-radius: 999px; flex-shrink: 0; position: relative; background: #2E2C28; border-color: #2E2C28">
+      <div style="position: absolute; top: 3px; right: 3px; width: 18px; height: 18px; border-radius: 50%; background: #F4F3EF"></div>
+    </div>
+  </div>
+
+  <div style="border-top: 1px solid #DAD8D2; padding: 13px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px">
+    <div>
+      <div style="font-size: 13px; font-weight: 500">Share it</div>
+      <div style="font-size: 11px; color: #6E6B64">Others can favourite it and work on it too</div>
+    </div>
+    <div class="box" style="width: 42px; height: 24px; border-radius: 999px; flex-shrink: 0; position: relative">
+      <div style="position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: #F4F3EF; border: 1px solid #C2C0BA; box-sizing: border-box"></div>
+    </div>
+  </div>
+
+  <div style="flex-grow: 1"></div>
+
+  <div style="margin: 0 16px 16px; padding: 10px 11px; background: #E9E7E1; border: 1px dashed #B9B6AE; font-size: 12px; color: #55524C; line-height: 1.5">
+    Strings become <strong>user-composed</strong>, not just a curated list. That is what makes favourites work: your few are the ones you built. Open: shared strings need de-duplicating, or the same sequence appears under six names.
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Notifications</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+  <style>
+    body { margin: 0; }
+    .wf { font-family: "IBM Plex Sans", "Helvetica Neue", sans-serif; }
+    .box { background: #E4E3DF; border: 1px solid #C2C0BA; }
+    .lbl { color: #6E6B64; font-size: 11px; letter-spacing: .04em; text-transform: uppercase; }
+    .n { display: flex; gap: 11px; align-items: flex-start; padding: 12px 16px; border-bottom: 1px solid #DAD8D2; text-decoration: none; color: inherit; }
+    .unread { background: #EDEBE5; }
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: #2E2C28; flex-shrink: 0; margin-top: 6px; }
+    .nodot { width: 7px; flex-shrink: 0; }
+    .kind { font-size: 10px; letter-spacing: .04em; text-transform: uppercase; color: #6E6B64; background: #E4E3DF; border: 1px solid #C2C0BA; padding: 2px 6px; border-radius: 3px; flex-shrink: 0; }
+    .t { font-size: 13px; line-height: 1.45; }
+    .when { font-size: 11px; color: #8A867D; white-space: nowrap; }
+  </style>
+</helmet>
+
+<div class="wf" style="width: 390px; height: 844px; box-sizing: border-box; background: #F4F3EF; color: #2E2C28; display: flex; flex-direction: column; overflow: hidden">
+
+  <div style="padding: 14px 16px 10px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #DAD8D2">
+    <div style="display: flex; align-items: center; gap: 10px">
+      <a href="Dash.dc.html" style="font-size: 17px; color: #6E6B64; text-decoration: none">‹</a>
+      <strong style="font-size: 17px; font-weight: 600">Notifications</strong>
+    </div>
+    <button type="button" style="font: inherit; font-size: 12px; border: 0; background: none; color: #6E6B64">Mark all read</button>
+  </div>
+
+  <div style="padding: 12px 16px 6px"><span class="lbl">Unread · 5</span></div>
+
+  <a href="Chat.dc.html" class="n unread">
+    <div class="dot"></div>
+    <span class="kind">chat</span>
+    <div style="flex-grow: 1; min-width: 0">
+      <div class="t"><strong style="font-weight: 600">player name</strong> sent you a message</div>
+    </div>
+    <span class="when">12m</span>
+  </a>
+
+  <a href="ModQueue.dc.html" class="n unread">
+    <div class="dot"></div>
+    <span class="kind" style="background: #2E2C28; color: #F4F3EF; border-color: #2E2C28">mod</span>
+    <div style="flex-grow: 1; min-width: 0">
+      <div class="t"><strong style="font-weight: 600">3 posts reported</strong> and waiting in the queue</div>
+    </div>
+    <span class="when">1h</span>
+  </a>
+
+  <a href="SessionDetail.dc.html" class="n unread">
+    <div class="dot"></div>
+    <span class="kind">session</span>
+    <div style="flex-grow: 1; min-width: 0">
+      <div class="t">Your request to join <strong style="font-weight: 600">Washington Square Park Meetup</strong> was approved</div>
+    </div>
+    <span class="when">2h</span>
+  </a>
+
+  <a href="PostDetail.dc.html" class="n unread">
+    <div class="dot"></div>
+    <span class="kind">post</span>
+    <div style="flex-grow: 1; min-width: 0">
+      <div class="t"><strong style="font-weight: 600">player name</strong> commented on your clip</div>
+    </div>
+    <span class="when">4h</span>
+  </a>
+
+  <a href="ClubMembers.dc.html" class="n unread">
+    <div class="dot"></div>
+    <span class="kind">club</span>
+    <div style="flex-grow: 1; min-width: 0">
+      <div class="t"><strong style="font-weight: 600">2 people</strong> asked to join Brooklyn Footbag</div>
+    </div>
+    <span class="when">6h</span>
+  </a>
+
+  <div style="padding: 14px 16px 6px"><span class="lbl">Earlier</span></div>
+
+  <a href="SessionResults.dc.html" class="n">
+    <div class="nodot"></div>
+    <span class="kind">session</span>
+    <div style="flex-grow: 1; min-width: 0">
+      <div class="t">Results shared for <strong style="font-weight: 600">Saturday shred</strong></div>
+    </div>
+    <span class="when">1d</span>
+  </a>
+
+  <a href="SessionActive.dc.html" class="n">
+    <div class="nodot"></div>
+    <span class="kind">session</span>
+    <div style="flex-grow: 1; min-width: 0">
+      <div class="t">Your session auto-stopped — no reply to the check-in</div>
+    </div>
+    <span class="when">3d</span>
+  </a>
+
+  <a href="Chat.dc.html" class="n">
+    <div class="nodot"></div>
+    <span class="kind">chat</span>
+    <div style="flex-grow: 1; min-width: 0">
+      <div class="t">You were mentioned in <strong style="font-weight: 600">#freestyle</strong></div>
+    </div>
+    <span class="when">2d</span>
+  </a>
+
+  <div style="padding: 12px 16px; font-size: 12px; color: #6E6B64; line-height: 1.5">
+    One inbox for everything — feed, sessions, clubs, chat and moderation. The bell counts all of it; the Chat tab keeps its own count for messages alone.
+  </div>
+
+  <div style="flex-grow: 1"></div>
+
+  <div style="margin: 0 16px 16px; padding: 10px 11px; background: #E9E7E1; border: 1px dashed #B9B6AE; font-size: 12px; color: #55524C; line-height: 1.5">
+    The in-app record, separate from what gets <em>pushed</em> — mute push for reactions and still find them here. <strong>Mod items sit in the same list</strong>, marked. Chat items come from Matrix, everything else from our API, so the inbox merges two sources and has to sort them by one clock.
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

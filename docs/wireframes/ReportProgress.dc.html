@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Report progress</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+  <style>
+    body { margin: 0; }
+    .wf { font-family: "IBM Plex Sans", "Helvetica Neue", sans-serif; }
+    .box { background: #E4E3DF; border: 1px solid #C2C0BA; }
+    .lbl { color: #6E6B64; font-size: 11px; letter-spacing: .04em; text-transform: uppercase; }
+    .num { font-variant-numeric: tabular-nums; }
+    .kind { font-size: 10px; letter-spacing: .04em; text-transform: uppercase; color: #6E6B64; background: #E4E3DF; border: 1px solid #C2C0BA; padding: 2px 6px; border-radius: 3px; flex-shrink: 0; }
+    .entry { padding: 11px 16px; border-bottom: 1px solid #DAD8D2; }
+    .ladder { display: flex; margin-top: 8px; border: 1px solid #C2C0BA; }
+    .rung { flex: 1 1 0; text-align: center; font-size: 11px; padding: 6px 0; color: #55524C; border-right: 1px solid #C2C0BA; }
+    .rung:last-child { border-right: 0; }
+    .rung.on { background: #2E2C28; color: #F4F3EF; font-weight: 500; }
+  </style>
+</helmet>
+
+<div class="wf" style="width: 390px; height: 844px; box-sizing: border-box; background: #F4F3EF; color: #2E2C28; display: flex; flex-direction: column; overflow: hidden">
+
+  <div style="padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #DAD8D2">
+    <a href="SessionDetail.dc.html" style="font-size: 14px; color: #6E6B64; text-decoration: none">Cancel</a>
+    <strong style="font-size: 15px; font-weight: 600">How did it go?</strong>
+    <button type="button" style="font: inherit; font-size: 14px; font-weight: 500; border: 0; background: none; color: #2E2C28">Save</button>
+  </div>
+
+  <div style="padding: 10px 16px; font-size: 12px; color: #6E6B64; border-bottom: 1px solid #DAD8D2">
+    Saturday shred · 47 min · McCarren Park
+  </div>
+
+  <div style="padding: 12px 16px 6px; display: flex; align-items: baseline; justify-content: space-between">
+    <span class="lbl">Your favourites</span>
+    <a href="Tricks.dc.html" style="font-size: 12px; color: #6E6B64; text-decoration: none">Edit list ›</a>
+  </div>
+
+  <div class="entry">
+    <div style="display: flex; gap: 9px; align-items: center">
+      <span class="kind">string</span>
+      <span style="flex-grow: 1; font-size: 14px; font-weight: 500">string name</span>
+      <span class="num" style="font-size: 12px; color: #8A867D">× 24</span>
+    </div>
+    <div class="ladder">
+      <div class="rung">tried</div><div class="rung">footing</div><div class="rung on">hitting</div><div class="rung">consistent</div>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div style="display: flex; gap: 9px; align-items: center">
+      <span class="kind">trick</span>
+      <span style="flex-grow: 1; font-size: 14px; font-weight: 500">trick name</span>
+      <span style="font-size: 11px; color: #8A867D">first time ★</span>
+    </div>
+    <div class="ladder">
+      <div class="rung">tried</div><div class="rung">footing</div><div class="rung on">hitting</div><div class="rung">consistent</div>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div style="display: flex; gap: 9px; align-items: center">
+      <span class="kind">trick</span>
+      <span style="flex-grow: 1; font-size: 14px; font-weight: 500">trick name</span>
+    </div>
+    <div class="ladder">
+      <div class="rung">tried</div><div class="rung on">footing</div><div class="rung">hitting</div><div class="rung">consistent</div>
+    </div>
+  </div>
+
+  <div style="padding: 10px 16px 12px; display: flex; gap: 7px; flex-wrap: wrap; border-bottom: 1px solid #DAD8D2">
+    <a href="Tricks.dc.html" style="font: inherit; font-size: 12px; padding: 6px 12px; border-radius: 999px; border: 1px dashed #B9B6AE; text-decoration: none; color: #2E2C28">+ something else</a>
+    <button type="button" style="font: inherit; font-size: 12px; padding: 6px 12px; border-radius: 999px; border: 1px solid #C2C0BA; background: transparent; color: #2E2C28">+ kicks</button>
+  </div>
+
+  <div style="padding: 12px 16px 7px"><span class="lbl">Comment</span></div>
+  <div style="padding: 0 16px 12px">
+    <div class="box" style="height: 56px; padding: 10px; box-sizing: border-box; font-size: 13px; color: #8A867D; line-height: 1.5">windy, close on the mirage a few times…</div>
+  </div>
+
+  <div style="border-top: 1px solid #DAD8D2; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px">
+    <div style="min-width: 0">
+      <div style="font-size: 13px; font-weight: 500">Include my report in the session post</div>
+      <div style="font-size: 11px; color: #6E6B64; line-height: 1.45">This session is public, so it is already on the feed — your numbers are opt-in</div>
+    </div>
+    <div class="box" style="width: 42px; height: 24px; border-radius: 999px; flex-shrink: 0; position: relative">
+      <div style="position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: #F4F3EF; border: 1px solid #C2C0BA; box-sizing: border-box"></div>
+    </div>
+  </div>
+
+  <div style="flex-grow: 1"></div>
+
+  <div style="margin: 10px 16px 16px; padding: 10px 11px; background: #E9E7E1; border: 1px dashed #B9B6AE; font-size: 12px; color: #55524C; line-height: 1.5">
+    The ladder replaces a tick box because <strong>footing it</strong> is the state people spend most of their time in — 3,003 posts in the Footblogs archive say so. A first gets a ★, which is what that community actually celebrates, 30 to 1 over personal bests.
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Notifications</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+  <style>
+    body { margin: 0; }
+    .wf { font-family: "IBM Plex Sans", "Helvetica Neue", sans-serif; }
+    .box { background: #E4E3DF; border: 1px solid #C2C0BA; }
+    .lbl { color: #6E6B64; font-size: 11px; letter-spacing: .04em; text-transform: uppercase; }
+    .row { display: flex; gap: 12px; align-items: center; padding: 10px 16px; border-bottom: 1px solid #DAD8D2; }
+    .sw { width: 42px; height: 24px; border-radius: 999px; flex-shrink: 0; position: relative; border: 1px solid #C2C0BA; background: #E4E3DF; }
+    .sw.on { background: #2E2C28; border-color: #2E2C28; }
+    .knob { position: absolute; top: 3px; width: 18px; height: 18px; border-radius: 50%; background: #F4F3EF; }
+    .sec { padding: 15px 16px 6px; }
+  </style>
+</helmet>
+
+<div class="wf" style="width: 390px; height: 844px; box-sizing: border-box; background: #F4F3EF; color: #2E2C28; display: flex; flex-direction: column; overflow: hidden">
+
+  <div style="padding: 14px 16px 10px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #DAD8D2">
+    <a href="EditProfile.dc.html" style="font-size: 17px; color: #6E6B64; text-decoration: none">‹</a>
+    <strong style="font-size: 17px; font-weight: 600">Notifications</strong>
+  </div>
+
+  <div class="sec"><span class="lbl">Sessions</span></div>
+  <div class="row">
+    <div style="flex-grow: 1">
+      <div style="font-size: 14px">Still playing? check</div>
+      <div style="font-size: 11px; color: #6E6B64">Every 30 min while a session runs</div>
+    </div>
+    <div class="sw on"><div class="knob" style="right: 3px"></div></div>
+  </div>
+  <div class="row">
+    <div style="flex-grow: 1">
+      <div style="font-size: 14px">Join request approved</div>
+    </div>
+    <div class="sw on"><div class="knob" style="right: 3px"></div></div>
+  </div>
+  <div class="row">
+    <div style="flex-grow: 1">
+      <div style="font-size: 14px">Session starting soon, or cancelled</div>
+    </div>
+    <div class="sw on"><div class="knob" style="right: 3px"></div></div>
+  </div>
+
+  <div class="sec"><span class="lbl">Chat</span></div>
+  <div class="row">
+    <div style="flex-grow: 1">
+      <div style="font-size: 14px">DMs and mentions</div>
+      <div style="font-size: 11px; color: #6E6B64">Encrypted DMs show only "New message"</div>
+    </div>
+    <div class="sw on"><div class="knob" style="right: 3px"></div></div>
+  </div>
+  <div class="row">
+    <div style="flex-grow: 1">
+      <div style="font-size: 14px">Every message in club rooms</div>
+    </div>
+    <div class="sw"><div class="knob" style="left: 3px"></div></div>
+  </div>
+
+  <div class="sec"><span class="lbl">Your posts and clubs</span></div>
+  <div class="row">
+    <div style="flex-grow: 1"><div style="font-size: 14px">Comments on your posts</div></div>
+    <div class="sw on"><div class="knob" style="right: 3px"></div></div>
+  </div>
+  <div class="row">
+    <div style="flex-grow: 1"><div style="font-size: 14px">Reactions</div></div>
+    <div class="sw"><div class="knob" style="left: 3px"></div></div>
+  </div>
+  <div class="row">
+    <div style="flex-grow: 1">
+      <div style="font-size: 14px">Join requests to your club</div>
+      <div style="font-size: 11px; color: #6E6B64">Organisers only</div>
+    </div>
+    <div class="sw on"><div class="knob" style="right: 3px"></div></div>
+  </div>
+
+  <div class="row" style="border-top: 1px solid #DAD8D2">
+    <div style="flex-grow: 1"><div style="font-size: 14px">Quiet hours</div></div>
+    <span style="font-size: 13px; color: #8A867D">10pm – 8am ›</span>
+  </div>
+
+  <div style="flex-grow: 1"></div>
+
+  <div style="margin: 12px 16px 16px; padding: 10px 11px; background: #E9E7E1; border: 1px dashed #B9B6AE; font-size: 12px; color: #55524C; line-height: 1.45">
+    Two senders, one list: chat comes from Synapse through a push gateway, everything else from our API. Reactions default off — the check-in defaults on, because session timing depends on it.
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
