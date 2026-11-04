@@ -445,7 +445,7 @@ class _Scoreboard extends StatelessWidget {
               constraints: const BoxConstraints(minHeight: 40),
               child: Row(
                 children: [
-                  const Icon(Icons.flag_outlined, size: 18, color: Nyfa.green),
+                  const Icon(Icons.flag_outlined, size: 18, color: Nyfa.paper),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(

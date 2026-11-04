@@ -239,19 +239,22 @@ class Nyfa {
       ),
     ),
     hintStyle: const TextStyle(fontFamily: body, color: faint),
-    isDense: true,
     filled: true,
     fillColor: raised,
-    contentPadding: const EdgeInsets.fromLTRB(14, 14, 14, 12),
-    enabledBorder: const OutlineInputBorder(
+    contentPadding: const EdgeInsets.fromLTRB(14, 10, 14, 10),
+    // Underline borders, not outline: an outline floats the label up onto
+    // the border's line, and with no visible border that left the label
+    // straddling the edge of the fill like a rendering fault. Underline
+    // floats it inside the field, where it reads as a caption.
+    enabledBorder: const UnderlineInputBorder(
       borderRadius: BorderRadius.all(Radius.circular(radius)),
       borderSide: BorderSide.none,
     ),
-    focusedBorder: const OutlineInputBorder(
+    focusedBorder: const UnderlineInputBorder(
       borderRadius: BorderRadius.all(Radius.circular(radius)),
       borderSide: BorderSide(color: edge, width: 1.5),
     ),
-    border: const OutlineInputBorder(
+    border: const UnderlineInputBorder(
       borderRadius: BorderRadius.all(Radius.circular(radius)),
       borderSide: BorderSide.none,
     ),

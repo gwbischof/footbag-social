@@ -750,7 +750,7 @@ class _Where extends StatelessWidget {
                     ? Icons.place_outlined
                     : Icons.blur_circular_outlined,
                 size: 18,
-                color: place != null ? Nyfa.green : Nyfa.muted,
+                color: place != null ? Nyfa.paper : Nyfa.muted,
               ),
               const SizedBox(width: 8),
               Expanded(
@@ -805,7 +805,7 @@ class _Goals extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(20, 4, 12, 4),
             child: Row(
               children: [
-                const Icon(Icons.flag_outlined, size: 18, color: Nyfa.green),
+                const Icon(Icons.flag_outlined, size: 18, color: Nyfa.paper),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
