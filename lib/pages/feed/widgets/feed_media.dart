@@ -87,8 +87,12 @@ class _MediaCarouselState extends State<MediaCarousel>
     final media = widget.media;
     final l10n = L10n.of(context);
 
+    final kind = media[_page].isVideo ? l10n.clip : l10n.photo;
     return Semantics(
-      label: l10n.photoOrClip,
+      // "Photo 2 of 3": what it is and where you are, as the dots show.
+      label: media.length > 1
+          ? l10n.mediaPosition(kind, _page + 1, media.length)
+          : kind,
       child: AspectRatio(
         aspectRatio: mediaBoxRatio(media),
         child: MouseRegion(

@@ -380,7 +380,25 @@ class ComposeController extends State<Compose> {
         lat: addArea ? area?.lat : null,
         lng: addArea ? area?.lng : null,
       );
-      messenger.showSnackBar(SnackBar(content: Text(l10n.posted)));
+      // Said for what it was: an entry, a landing, or just a post.
+      final entered = challenges
+          .where((c) => c.id == challengeId)
+          .firstOrNull
+          ?.title;
+      final trick = landed == null ? null : (tagNames[landed] ?? landed!);
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text(
+            entered != null
+                ? l10n.postedEntry(entered)
+                : trick != null
+                ? (landedFirst
+                      ? l10n.postedFirst(trick)
+                      : l10n.postedLanded(trick))
+                : l10n.posted,
+          ),
+        ),
+      );
       leaving = true;
       if (router.canPop()) {
         router.pop(post);
