@@ -708,7 +708,12 @@ class _Where extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(20, 18, 8, 0),
           child: Row(
             children: [
-              Expanded(child: Text(l10n.where, style: Nyfa.eyebrow)),
+              Expanded(
+                child: Text(
+                  l10n.where,
+                  style: Nyfa.heading.copyWith(fontSize: 16),
+                ),
+              ),
               if (s.isHost)
                 TextButton(
                   key: const Key('SetWhere'),

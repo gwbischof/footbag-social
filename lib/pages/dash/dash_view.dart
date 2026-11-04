@@ -562,10 +562,7 @@ class _SectionLabel extends StatelessWidget {
   const _SectionLabel(this.text);
 
   @override
-  Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.fromLTRB(20, 26, 20, 10),
-    child: Text(text, style: Nyfa.eyebrow),
-  );
+  Widget build(BuildContext context) => NyfaForm.section(text);
 }
 
 class _SessionRow extends StatelessWidget {

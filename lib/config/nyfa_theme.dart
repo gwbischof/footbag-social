@@ -300,6 +300,9 @@ class NyfaForm {
   const NyfaForm._();
 
   /// A section heading.
+  /// A section's title. One style app-wide -- paper, 16 semibold, more
+  /// space above than below so it belongs to what follows -- where there had
+  /// been two (muted 13 on some screens, paper 16 on others).
   static Widget section(String label) => Padding(
     padding: const EdgeInsets.fromLTRB(20, 28, 20, 10),
     child: Text(label, style: Nyfa.heading.copyWith(fontSize: 16)),
