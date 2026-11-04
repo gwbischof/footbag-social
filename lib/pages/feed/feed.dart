@@ -7,6 +7,7 @@ import 'dart:async';
 import 'package:footbag_network/l10n/l10n.dart';
 import 'package:footbag_network/pages/feed/feed_actions.dart';
 import 'package:footbag_network/pages/feed/feed_view.dart';
+import 'package:footbag_network/pages/feed/post_events.dart';
 import 'package:footbag_network/pages/feed/widgets/post_card.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
 import 'package:footbag_network/widgets/matrix.dart';
@@ -151,6 +152,7 @@ class FeedController extends State<Feed> {
   @override
   void initState() {
     super.initState();
+    _published = PostEvents.published.listen(_onPublished);
     unawaited(checkWelcome());
     final snap = _memory[memoryKey];
     if (snap != null && DateTime.now().difference(snap.at) < _stale) {
@@ -188,6 +190,7 @@ class FeedController extends State<Feed> {
         offset: _offset,
       );
     }
+    unawaited(_published?.cancel());
     scroll.dispose();
     super.dispose();
   }
@@ -329,12 +332,23 @@ class FeedController extends State<Feed> {
     }
   }
 
-  Future<void> compose() async {
-    final posted = await context.push<FootbagPost>('/rooms/feed/new');
-    if (posted == null || !mounted) return;
-    // The new post goes straight to the top, rather than waiting on a
-    // refresh: under Top it would otherwise be nowhere to be seen.
-    setState(() => posts = [posted, ...?posts]);
+  Future<void> compose() => context.push<FootbagPost>('/rooms/feed/new');
+
+  StreamSubscription<FootbagPost>? _published;
+
+  /// A post published from anywhere on this device: straight to the top if
+  /// it belongs on this feed, rather than waiting on a refresh -- under Top
+  /// it would otherwise be nowhere to be seen.
+  void _onPublished(FootbagPost post) {
+    final belongs = switch (widget) {
+      Feed(:final challengeSlug?) => post.challenge?.slug == challengeSlug,
+      Feed(:final entrySlug?) => post.tags.any((t) => t.slug == entrySlug),
+      _ => true,
+    };
+    if (!belongs || !mounted || (posts?.any((p) => p.id == post.id) ?? false)) {
+      return;
+    }
+    setState(() => posts = [post, ...?posts]);
   }
 
   @override

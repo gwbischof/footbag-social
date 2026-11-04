@@ -6,6 +6,7 @@ import 'dart:async';
 
 import 'package:footbag_network/config/nyfa_theme.dart';
 import 'package:footbag_network/l10n/l10n.dart';
+import 'package:footbag_network/pages/feed/post_events.dart';
 import 'package:footbag_network/pages/feed/widgets/face_stack.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
 import 'package:footbag_network/widgets/matrix.dart';
@@ -37,9 +38,23 @@ class _TrickHeaderState extends State<TrickHeader> {
   bool? favourite;
   bool saving = false;
 
+  StreamSubscription<FootbagPost>? _published;
+
+  @override
+  void dispose() {
+    unawaited(_published?.cancel());
+    super.dispose();
+  }
+
   @override
   void initState() {
     super.initState();
+    // You just said you landed it: the count and faces include you now.
+    _published = PostEvents.published.listen((p) {
+      if (p.landed?.slug == widget.slug && TrickHeader.preview == null) {
+        unawaited(_load());
+      }
+    });
     final canned = TrickHeader.preview;
     if (canned != null) {
       detail = canned;

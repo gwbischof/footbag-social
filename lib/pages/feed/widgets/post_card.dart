@@ -333,7 +333,9 @@ class _LandedBanner extends StatelessWidget {
     final l10n = L10n.of(context);
     return Semantics(
       button: true,
-      label: first ? '${l10n.landedTrick(name)}. ${l10n.firstTime}' : l10n.landedTrick(name),
+      label: first
+          ? '${l10n.landedTrick(name)}. ${l10n.firstTime}'
+          : l10n.landedTrick(name),
       excludeSemantics: true,
       child: InkWell(
         onTap: onTap,
