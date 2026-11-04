@@ -272,11 +272,13 @@ class _Row extends StatelessWidget {
           const SizedBox(width: 10),
           Text(
             _value(),
+            // The body face with tabular figures, not capitals in the
+            // display face: "11h 0m" sits beside a name; "11H 0M" shouted.
             style: const TextStyle(
-              fontFamily: Nyfa.display,
+              fontFamily: Nyfa.body,
               color: Nyfa.paper,
-              fontSize: 19,
-              letterSpacing: 0.8,
+              fontSize: 15,
+              fontWeight: FontWeight.w600,
               fontFeatures: [FontFeature.tabularFigures()],
             ),
           ),
@@ -289,8 +291,8 @@ class _Row extends StatelessWidget {
     if (metric != 'play_time') return '${row.value}';
     final d = Duration(seconds: row.value);
     return d.inHours > 0
-        ? '${d.inHours}H ${d.inMinutes % 60}M'
-        : '${d.inMinutes} MIN';
+        ? '${d.inHours}h ${d.inMinutes % 60}m'
+        : '${d.inMinutes} min';
   }
 }
 

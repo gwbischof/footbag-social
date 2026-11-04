@@ -227,8 +227,11 @@ class _Pill extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-    padding: const EdgeInsets.fromLTRB(8, 4, 8, 2),
-    color: Nyfa.ground,
+    padding: const EdgeInsets.fromLTRB(8, 4, 8, 3),
+    decoration: const BoxDecoration(
+      color: Nyfa.ground,
+      borderRadius: BorderRadius.all(Radius.circular(6)),
+    ),
     child: Text(
       text,
       style: const TextStyle(

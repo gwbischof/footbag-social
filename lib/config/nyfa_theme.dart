@@ -361,7 +361,9 @@ class NyfaForm {
     activeThumbColor: Nyfa.ground,
     activeTrackColor: Nyfa.green,
     inactiveThumbColor: Nyfa.muted,
-    inactiveTrackColor: Nyfa.raised,
+    inactiveTrackColor: Nyfa.tonal,
+    // No outline on the off track: one switch look across the app.
+    trackOutlineColor: const WidgetStatePropertyAll(Colors.transparent),
     contentPadding: const EdgeInsets.symmetric(horizontal: 20),
     title: Text(
       label,

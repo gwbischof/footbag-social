@@ -645,7 +645,10 @@ class _SwitchRow extends StatelessWidget {
               activeThumbColor: Nyfa.ground,
               activeTrackColor: Nyfa.green,
               inactiveThumbColor: Nyfa.muted,
-              inactiveTrackColor: Nyfa.raised,
+              inactiveTrackColor: Nyfa.tonal,
+              trackOutlineColor: const WidgetStatePropertyAll(
+                Colors.transparent,
+              ),
             ),
           ],
         ),
