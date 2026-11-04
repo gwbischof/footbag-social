@@ -13,6 +13,7 @@ import 'package:footbag_network/pages/feed/widgets/feed_states.dart';
 import 'package:footbag_network/pages/feed/widgets/post_card.dart';
 import 'package:footbag_network/pages/feed/widgets/trick_header.dart';
 import 'package:footbag_network/pages/inbox/inbox_bell.dart';
+import 'package:footbag_network/utils/app_share.dart';
 import 'package:footbag_network/widgets/edge_fade.dart';
 import 'package:footbag_network/widgets/footbag_nav_bar.dart';
 import 'package:go_router/go_router.dart';
@@ -205,6 +206,9 @@ class FeedView extends StatelessWidget {
                         failed: controller.moreFailed,
                         atEnd: !controller.hasMore,
                         onRetry: controller.retryMore,
+                        onInvite: sub || controller.isFiltered
+                            ? null
+                            : () => AppShare.shareInviteLink(context),
                       ),
                     ),
                   ],

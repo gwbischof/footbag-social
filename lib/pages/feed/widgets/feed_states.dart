@@ -151,11 +151,16 @@ class FeedFooter extends StatelessWidget {
   final bool atEnd;
   final VoidCallback onRetry;
 
+  /// The main feed's end: caught up, and a way to bring someone in. A small
+  /// community runs out of feed quickly, and that is the moment to grow it.
+  final VoidCallback? onInvite;
+
   const FeedFooter({
     required this.loading,
     required this.failed,
     required this.atEnd,
     required this.onRetry,
+    this.onInvite,
     super.key,
   });
 
@@ -186,8 +191,33 @@ class FeedFooter extends StatelessWidget {
         ),
       );
     }
-    // The end is marked with the club's diamond on a rule, rather than a
-    // sentence: there is nothing to say, only that there is no more.
+    if (atEnd && onInvite != null) {
+      return Padding(
+        padding: const EdgeInsets.fromLTRB(20, 28, 20, 48),
+        child: Column(
+          children: [
+            const Diamond(size: 14, color: Nyfa.green),
+            const SizedBox(height: 12),
+            Text(l10n.allCaughtUp, style: Nyfa.heading.copyWith(fontSize: 17)),
+            const SizedBox(height: 4),
+            Text(
+              l10n.inviteNudge,
+              textAlign: TextAlign.center,
+              style: Nyfa.bodyMuted,
+            ),
+            const SizedBox(height: 16),
+            NyfaForm.action(
+              key: const Key('FeedInvite'),
+              label: l10n.inviteAFriend,
+              filled: false,
+              onPressed: onInvite,
+            ),
+          ],
+        ),
+      );
+    }
+    // Elsewhere the end is marked with the club's diamond on a rule, rather
+    // than a sentence: there is nothing to say, only that there is no more.
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 40),
       child: atEnd
