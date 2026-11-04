@@ -5809,5 +5809,17 @@
                 "type": "int"
             }
         }
+    },
+    "yourFavourites": "Your favourites",
+    "@yourFavourites": {
+        "type": "String",
+        "description": "Trick picker: heading above the player's favourite tricks, shown first.",
+        "placeholders": {}
+    },
+    "allTricks": "All tricks",
+    "@allTricks": {
+        "type": "String",
+        "description": "Trick picker: heading above the rest of the dictionary.",
+        "placeholders": {}
     }
 }

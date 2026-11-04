@@ -29,6 +29,33 @@ class TrickPickerController extends State<TrickPicker> {
   List<FootbagEntry>? entries;
   Object? error;
 
+  /// Your favourites, in your order: what you are working on is what you are
+  /// most likely to tag or have just landed, so with no search they lead the
+  /// list instead of sitting somewhere in 277 alphabetical rows.
+  List<String> favourites = const [];
+
+  bool get searching => searchController.text.trim().isNotEmpty;
+
+  /// Entries in display order: favourites first when not searching.
+  List<FootbagEntry> get ordered {
+    final all = entries ?? const <FootbagEntry>[];
+    if (searching || favourites.isEmpty) return all;
+    final bySlug = {for (final e in all) e.slug: e};
+    final first = [
+      for (final s in favourites)
+        if (bySlug[s] != null) bySlug[s]!,
+    ];
+    final pinned = {for (final e in first) e.slug};
+    return [...first, ...all.where((e) => !pinned.contains(e.slug))];
+  }
+
+  /// How many of [ordered] are pinned favourites.
+  int get pinnedCount => searching
+      ? 0
+      : favourites
+            .where((s) => entries?.any((e) => e.slug == s) ?? false)
+            .length;
+
   final searchController = TextEditingController();
   final Set<String> chosen = {};
 
@@ -39,6 +66,17 @@ class TrickPickerController extends State<TrickPicker> {
   void initState() {
     super.initState();
     unawaited(load());
+    unawaited(_loadFavourites());
+  }
+
+  Future<void> _loadFavourites() async {
+    try {
+      final f = await Matrix.of(context).client.fetchFavourites();
+      if (!mounted) return;
+      setState(() => favourites = [for (final x in f) x.entrySlug]);
+    } catch (_) {
+      // The full list still works; it just is not reordered.
+    }
   }
 
   @override

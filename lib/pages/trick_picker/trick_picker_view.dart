@@ -136,13 +136,28 @@ class TrickPickerView extends StatelessWidget {
       );
     }
 
+    final ordered = controller.ordered;
+    final pinned = controller.pinnedCount;
+    // Two section titles when favourites lead: "Your favourites", "All tricks".
+    final headers = pinned > 0 ? 2 : 0;
+    Widget heading(String text) => Padding(
+      padding: const EdgeInsets.fromLTRB(20, 18, 20, 8),
+      child: Text(text, style: Nyfa.label.copyWith(color: Nyfa.muted)),
+    );
     return ListView.builder(
       key: const Key('TrickList'),
       padding: const EdgeInsets.only(bottom: 32),
       // One more row at the end: the way out when the list has not got it.
-      itemCount: controller.entries!.length + 1,
-      itemBuilder: (context, i) {
-        if (i == controller.entries!.length) {
+      itemCount: ordered.length + headers + 1,
+      itemBuilder: (context, row) {
+        if (headers > 0 && row == 0) return heading(l10n.yourFavourites);
+        if (headers > 0 && row == pinned + 1) return heading(l10n.allTricks);
+        final i = headers == 0
+            ? row
+            : row <= pinned
+            ? row - 1
+            : row - 2;
+        if (i == ordered.length) {
           return InkWell(
             key: const Key('SuggestTrickRow'),
             onTap: controller.suggest,
@@ -165,7 +180,7 @@ class TrickPickerView extends StatelessWidget {
             ),
           );
         }
-        final e = controller.entries![i];
+        final e = ordered[i];
         final have = controller.widget.alreadyHave.contains(e.slug);
         final chosen = controller.isChosen(e.slug);
         return _EntryRow(
