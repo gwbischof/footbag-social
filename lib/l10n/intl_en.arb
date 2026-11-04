@@ -5715,5 +5715,63 @@
                 "type": "String"
             }
         }
+    },
+    "postedEntry": "You're in {challenge}!",
+    "@postedEntry": {
+        "type": "String",
+        "description": "Snackbar after posting a challenge entry.",
+        "placeholders": {
+            "challenge": {
+                "type": "String"
+            }
+        }
+    },
+    "postedFirst": "First {trick}, posted!",
+    "@postedFirst": {
+        "type": "String",
+        "description": "Snackbar after posting a trick landed for the first time.",
+        "placeholders": {
+            "trick": {
+                "type": "String"
+            }
+        }
+    },
+    "postedLanded": "Posted your {trick}",
+    "@postedLanded": {
+        "type": "String",
+        "description": "Snackbar after posting a landed trick that was not a first.",
+        "placeholders": {
+            "trick": {
+                "type": "String"
+            }
+        }
+    },
+    "photo": "Photo",
+    "@photo": {
+        "type": "String",
+        "description": "Screen-reader name for a photo in a post.",
+        "placeholders": {}
+    },
+    "clip": "Clip",
+    "@clip": {
+        "type": "String",
+        "description": "Screen-reader name for a video clip in a post.",
+        "placeholders": {}
+    },
+    "mediaPosition": "{kind} {index} of {total}",
+    "@mediaPosition": {
+        "type": "String",
+        "description": "Screen-reader label for one item in a post's carousel, e.g. 'Photo 2 of 3'.",
+        "placeholders": {
+            "kind": {
+                "type": "String"
+            },
+            "index": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
+        }
     }
 }
