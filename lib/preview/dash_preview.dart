@@ -264,10 +264,6 @@ class _SchedulePreview extends StatelessWidget {
           ),
         ),
         NyfaForm.section(l10n.sessionTypeLabel),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(20, 0, 20, 12),
-          child: Text(l10n.sessionTypeHelp, style: Nyfa.bodyMuted),
-        ),
         NyfaForm.chips(
           options: [
             (value: 'casual', label: l10n.sessionTypeCasual),

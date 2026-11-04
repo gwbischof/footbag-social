@@ -2003,7 +2003,7 @@
         "description": "The player's working set of tricks.",
         "placeholders": {}
     },
-    "favouritesHelp": "The tricks you're working on. These are what you grade after a session, so keep the list short.",
+    "favouritesHelp": "What you're working on. You grade these after each session.",
     "@favouritesHelp": {
         "type": "String",
         "description": "Explains the purpose and implicitly why a short list is better.",
@@ -2051,16 +2051,10 @@
         "description": "Title of the browse/search screen.",
         "placeholders": {}
     },
-    "searchTricks": "Search tricks",
+    "searchTricks": "Search tricks or nicknames",
     "@searchTricks": {
         "type": "String",
         "description": "Search field label.",
-        "placeholders": {}
-    },
-    "searchTricksHelp": "Searches nicknames too.",
-    "@searchTricksHelp": {
-        "type": "String",
-        "description": "Worth saying -- the dictionary carries 94 nicknames.",
         "placeholders": {}
     },
     "noTricksFound": "Nothing matches",
@@ -2129,7 +2123,7 @@
         "description": "Optional name for a session.",
         "placeholders": {}
     },
-    "sessionNameHelp": "Optional. Left blank, it's named after the type and day.",
+    "sessionNameHelp": "Optional.",
     "@sessionNameHelp": {
         "type": "String",
         "description": "Says exactly what happens if you skip it, so skipping feels safe.",
@@ -2139,12 +2133,6 @@
     "@sessionTypeLabel": {
         "type": "String",
         "description": "Heading over the session type chips.",
-        "placeholders": {}
-    },
-    "sessionTypeHelp": "This is what people filter on when looking for a session.",
-    "@sessionTypeHelp": {
-        "type": "String",
-        "description": "Explains why the type matters -- it drives Discover.",
         "placeholders": {}
     },
     "whoCanJoin": "Who can join",
@@ -4603,7 +4591,7 @@
         "description": "Composer/session: not for a club.",
         "placeholders": {}
     },
-    "clubSessionExplain": "Club members are let in without asking.",
+    "clubSessionExplain": "Members join without asking.",
     "@clubSessionExplain": {
         "type": "String",
         "description": "Explains a club session in the scheduling form.",
@@ -5130,7 +5118,7 @@
         "description": "Screen title: add a trick, composite or string to the dictionary.",
         "placeholders": {}
     },
-    "suggestTrickExplain": "You can use it straight away. Everyone else sees it once a moderator adds it to the dictionary.",
+    "suggestTrickExplain": "You can use it now. Others see it once a moderator approves it.",
     "@suggestTrickExplain": {
         "type": "String",
         "description": "How a suggestion becomes public.",
@@ -5270,7 +5258,7 @@
             }
         }
     },
-    "keepPrivateExplain": "Approve adds it to everyone's dictionary. Keep private leaves it with its author: their reports may already use it.",
+    "keepPrivateExplain": "Approve adds it for everyone. Keep private leaves it with its author.",
     "@keepPrivateExplain": {
         "type": "String",
         "description": "Explains the moderator's two answers.",
