@@ -48,7 +48,10 @@ class Compose extends StatefulWidget {
   /// Prefill a trick you landed -- arriving from "I landed it" on its page.
   final ({String slug, String name})? landed;
 
-  const Compose({this.sessionId, this.landed, super.key});
+  /// Prefill the words -- arriving from the welcome, as an introduction.
+  final String? caption;
+
+  const Compose({this.sessionId, this.landed, this.caption, super.key});
 
   @override
   ComposeController createState() => ComposeController();
@@ -103,6 +106,7 @@ class ComposeController extends State<Compose> {
   void initState() {
     super.initState();
     sessionId = widget.sessionId;
+    if (widget.caption case final text?) caption.text = text;
     if (widget.landed case final l?) {
       tags.add(l.slug);
       tagNames[l.slug] = l.name;

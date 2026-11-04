@@ -316,6 +316,8 @@ abstract class AppRoutes {
                         ),
                         _ => null,
                       },
+                      // The welcome's "introduce yourself": ?caption=...
+                      caption: state.uri.queryParameters['caption'],
                     ),
                   ),
                   redirect: loggedOutRedirect,

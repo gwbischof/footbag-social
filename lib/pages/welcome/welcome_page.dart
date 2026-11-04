@@ -16,6 +16,11 @@ import 'package:material_ui/material_ui.dart';
 /// questions, all optional but the name, and Skip is always there: a welcome
 /// that blocks the app is a form, not a welcome. Finishing or skipping both
 /// mark it done, on the server, so it is shown once per account.
+///
+/// Continue ends on a drafted introduction rather than an empty feed. On the
+/// Modified forum, newcomers whose first post got a reply came back 85% of
+/// the time against 41%, and an introduction is the easiest first post to
+/// answer -- the moderators are emailed about any that sit unanswered.
 class WelcomePage extends StatefulWidget {
   final FootbagPlayer me;
 
@@ -61,7 +66,21 @@ class _WelcomePageState extends State<WelcomePage> {
               onboarded: true,
             )
           : client.updateMe(onboarded: true));
-      if (router.canPop()) {
+      if (save) {
+        router.go(
+          Uri(
+            path: '/rooms/feed/new',
+            queryParameters: {
+              'caption': draftIntroduction(
+                l10n,
+                name: name.text,
+                city: city.text,
+                styles: styles,
+              ),
+            },
+          ).toString(),
+        );
+      } else if (router.canPop()) {
         router.pop();
       } else {
         router.go('/rooms/feed');
@@ -186,4 +205,35 @@ class _WelcomePageState extends State<WelcomePage> {
       ),
     );
   }
+}
+
+/// "Hi, I'm Kenji, from Brooklyn. I play freestyle and net." -- a first post
+/// written from what the welcome was just told, theirs to change or delete.
+String draftIntroduction(
+  L10n l10n, {
+  required String name,
+  required String city,
+  required Set<String> styles,
+}) {
+  final who = name.trim();
+  final where = city.trim();
+  final plays = [
+    for (final s in const ['kicking', 'freestyle', 'net', 'stitching'])
+      if (styles.contains(s))
+        switch (s) {
+          'kicking' => l10n.sessionTypeKicking,
+          'freestyle' => l10n.sessionTypeFreestyle,
+          'net' => l10n.sessionTypeNet,
+          _ => l10n.sessionTypeStitching,
+        }.toLowerCase(),
+  ];
+  return [
+    where.isEmpty ? l10n.introHi(who) : l10n.introHiFrom(who, where),
+    if (plays.isNotEmpty)
+      l10n.introPlays(
+        plays.length == 1
+            ? plays.single
+            : '${plays.sublist(0, plays.length - 1).join(', ')} ${l10n.and} ${plays.last}',
+      ),
+  ].join(' ');
 }

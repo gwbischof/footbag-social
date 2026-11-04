@@ -5496,5 +5496,44 @@
         "type": "String",
         "description": "On a trick's page when no one has posted that they landed it.",
         "placeholders": {}
+    },
+    "introHi": "Hi, I'm {name}.",
+    "@introHi": {
+        "type": "String",
+        "description": "First sentence of the introduction post drafted after the welcome screen, when no city was given.",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "introHiFrom": "Hi, I'm {name}, from {city}.",
+    "@introHiFrom": {
+        "type": "String",
+        "description": "First sentence of the drafted introduction post, with the city the player gave.",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            },
+            "city": {
+                "type": "String"
+            }
+        }
+    },
+    "introPlays": "I play {styles}.",
+    "@introPlays": {
+        "type": "String",
+        "description": "Second sentence of the drafted introduction post, e.g. 'I play freestyle and net.'",
+        "placeholders": {
+            "styles": {
+                "type": "String"
+            }
+        }
+    },
+    "and": "and",
+    "@and": {
+        "type": "String",
+        "description": "Joins the last two items of a short list, e.g. 'freestyle and net'.",
+        "placeholders": {}
     }
 }
