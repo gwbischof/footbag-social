@@ -154,7 +154,16 @@ class _DashBar extends StatelessWidget implements PreferredSizeWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(l10n.dash, style: Nyfa.heading.copyWith(fontSize: 26)),
-          Text(l10n.dashGreeting, style: Nyfa.meta),
+          // The question the Dash asks, answered once it can be: how many
+          // sessions are running near you right now.
+          switch (controller.nearby) {
+            null => Text(l10n.dashGreeting, style: Nyfa.meta),
+            [] => Text(l10n.nobodyPlayingNearby, style: Nyfa.meta),
+            final near => Text(
+              l10n.sessionsRunningNearby(near.length),
+              style: Nyfa.meta.copyWith(color: Nyfa.green),
+            ),
+          },
         ],
       ),
       bottom: const PreferredSize(
