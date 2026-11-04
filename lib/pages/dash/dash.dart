@@ -78,6 +78,36 @@ class DashController extends State<Dash> with WidgetsBindingObserver {
   FootbagSession? get running =>
       sessions?.where((s) => s.isRunning && s.isHost).firstOrNull;
 
+  /// The session that lapsed on a missed check-in and can still be answered:
+  /// paused, not over. People play with the phone in a bag.
+  FootbagSession? get paused => sessions
+      ?.where(
+        (s) =>
+            s.isHost &&
+            s.recoverUntil != null &&
+            DateTime.now().isBefore(s.recoverUntil!),
+      )
+      .firstOrNull;
+
+  Future<void> resumeAction(int id) async {
+    if (await _run(() => Matrix.of(context).client.resumeSession(id))) {
+      unawaited(HapticFeedback.lightImpact());
+    }
+  }
+
+  /// Finished: now, or at the last check-in. Then report, as after Stop.
+  Future<void> finishAction(int id, {bool atLastCheckin = false}) async {
+    final ok = await _run(
+      () => Matrix.of(
+        context,
+      ).client.finishSession(id, atLastCheckin: atLastCheckin),
+    );
+    if (!ok || !mounted) return;
+    unawaited(HapticFeedback.mediumImpact());
+    await context.push<bool>('/rooms/dash/$id/report');
+    if (mounted) await load();
+  }
+
   List<FootbagSession> get upcoming =>
       sessions?.where((s) => s.isUpcoming).toList() ?? const [];
 

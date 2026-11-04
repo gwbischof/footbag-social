@@ -88,6 +88,8 @@ class DashView extends StatelessWidget {
 
         if (running != null)
           _Scoreboard(controller: controller, session: running)
+        else if (controller.paused case final paused?)
+          _PausedCard(controller: controller, session: paused)
         else
           _EmptyInvitation(controller: controller),
 
@@ -328,6 +330,67 @@ class _EmptyInvitation extends StatelessWidget {
 }
 
 /// The running session: the one loud thing on the screen.
+/// A session that lapsed on a missed check-in, asked about instead of
+/// silently ended: still playing, finished just now, or finished back then.
+class _PausedCard extends StatelessWidget {
+  final DashController controller;
+  final FootbagSession session;
+
+  const _PausedCard({required this.controller, required this.session});
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = L10n.of(context);
+    final at = TimeOfDay.fromDateTime(
+      session.endedAt ?? session.lastCheckinAt ?? DateTime.now(),
+    ).format(context);
+    final busy = controller.busy;
+    return Container(
+      key: const Key('PausedSessionCard'),
+      margin: const EdgeInsets.fromLTRB(20, 20, 20, 4),
+      decoration: const BoxDecoration(
+        color: Nyfa.raised,
+        borderRadius: Nyfa.roundedLarge,
+      ),
+      padding: const EdgeInsets.fromLTRB(20, 18, 20, 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(l10n.sessionPausedAt(at), style: Nyfa.heading),
+          const SizedBox(height: 4),
+          Text(l10n.sessionPausedWhy, style: Nyfa.bodyMuted),
+          const SizedBox(height: 16),
+          NyfaForm.action(
+            key: const Key('PausedStillPlaying'),
+            label: l10n.stillPlaying,
+            onPressed: busy ? null : () => controller.resumeAction(session.id),
+          ),
+          const SizedBox(height: 10),
+          NyfaForm.action(
+            key: const Key('PausedFinishedNow'),
+            label: l10n.finishedJustNow,
+            filled: false,
+            onPressed: busy ? null : () => controller.finishAction(session.id),
+          ),
+          const SizedBox(height: 4),
+          TextButton(
+            key: const Key('PausedFinishedThen'),
+            onPressed: busy
+                ? null
+                : () =>
+                      controller.finishAction(session.id, atLastCheckin: true),
+            style: TextButton.styleFrom(
+              foregroundColor: Nyfa.muted,
+              minimumSize: const Size(48, 48),
+            ),
+            child: Text(l10n.finishedAt(at)),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class _Scoreboard extends StatelessWidget {
   final DashController controller;
   final FootbagSession session;

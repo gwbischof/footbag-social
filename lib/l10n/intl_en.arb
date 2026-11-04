@@ -5852,5 +5852,43 @@
         "type": "String",
         "description": "Button at the end of the feed: share an invite to the app.",
         "placeholders": {}
+    },
+    "sessionPausedAt": "Session paused at {time}",
+    "@sessionPausedAt": {
+        "type": "String",
+        "description": "Dash: a session stopped counting because nobody checked in. {time} is when.",
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "sessionPausedWhy": "No check-in for 30 minutes. Were you still playing?",
+    "@sessionPausedWhy": {
+        "type": "String",
+        "description": "Under 'Session paused at …' on the Dash.",
+        "placeholders": {}
+    },
+    "stillPlaying": "Still playing",
+    "@stillPlaying": {
+        "type": "String",
+        "description": "Button: resume a paused session, counting the time since.",
+        "placeholders": {}
+    },
+    "finishedJustNow": "Finished just now",
+    "@finishedJustNow": {
+        "type": "String",
+        "description": "Button: end a paused session now.",
+        "placeholders": {}
+    },
+    "finishedAt": "I stopped at {time}",
+    "@finishedAt": {
+        "type": "String",
+        "description": "Button: end a paused session at its last check-in.",
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
     }
 }

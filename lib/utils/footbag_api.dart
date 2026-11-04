@@ -81,6 +81,22 @@ extension FootbagApi on Client {
   Future<FootbagSession> stopSession(int id) async =>
       FootbagSession.fromJson(await _apiPostObject('sessions/$id/stop', null));
 
+  /// A session that lapsed on a missed check-in: still playing.
+  Future<FootbagSession> resumeSession(int id) async => FootbagSession.fromJson(
+    await _apiPostObject('sessions/$id/resume', null),
+  );
+
+  /// A session that lapsed: finished now, or at the last check-in.
+  Future<FootbagSession> finishSession(
+    int id, {
+    bool atLastCheckin = false,
+  }) async => FootbagSession.fromJson(
+    await _apiPostObject(
+      'sessions/$id/finish${atLastCheckin ? '?at_last_checkin=true' : ''}',
+      null,
+    ),
+  );
+
   /// Edit your own profile.
   ///
   /// PATCH semantics: anything left null is untouched, so a screen that edits
@@ -1037,6 +1053,10 @@ class FootbagSession {
 
   final bool isRunning;
 
+  /// Set while a session that lapsed on a missed check-in can still be
+  /// resumed or finished now. Host only.
+  final DateTime? recoverUntil;
+
   /// Counted to the last check-in, never to now. A session left running
   /// overnight reports the play that was confirmed, not the hours that passed.
   final Duration? duration;
@@ -1087,6 +1107,7 @@ class FootbagSession {
     required this.endedAt,
     required this.lastCheckinAt,
     required this.isRunning,
+    this.recoverUntil,
     required this.duration,
     this.hostName,
     this.club,
@@ -1124,6 +1145,7 @@ class FootbagSession {
     endedAt: _parse(json['ended_at']),
     lastCheckinAt: _parse(json['last_checkin_at']),
     isRunning: json['is_running'] as bool? ?? false,
+    recoverUntil: _parse(json['recover_until']),
     duration: json['duration_seconds'] == null
         ? null
         : Duration(seconds: json['duration_seconds'] as int),
