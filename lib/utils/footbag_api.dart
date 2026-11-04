@@ -1834,6 +1834,9 @@ class FootbagInboxItem {
   final int? sessionId;
   final String? sessionName;
   final FootbagClubRef? club;
+
+  /// The challenge a challenge_started line is about.
+  final ({String slug, String title})? challenge;
   final String? outcome;
   final DateTime at;
   final bool unread;
@@ -1849,6 +1852,7 @@ class FootbagInboxItem {
     required this.sessionId,
     required this.sessionName,
     this.club,
+    this.challenge,
     required this.outcome,
     required this.at,
     required this.unread,
@@ -1874,6 +1878,13 @@ class FootbagInboxItem {
       sessionId: session?['id'] as int?,
       sessionName: session?['name'] as String?,
       club: FootbagClubRef.maybe(json['club']),
+      challenge: switch (json['challenge']) {
+        final Map<String, dynamic> c => (
+          slug: c['slug'] as String,
+          title: c['title'] as String,
+        ),
+        _ => null,
+      },
       outcome: json['outcome'] as String?,
       at: _time(json['at']),
       unread: json['unread'] as bool? ?? false,
@@ -1936,8 +1947,9 @@ class FootbagChallenge {
         entryCount: json['entry_count'] as int? ?? 0,
         entrantCount: json['entrant_count'] as int? ?? 0,
         entrants: [
-          for (final a in (json['entrants'] as List? ?? const [])
-              .cast<Map<String, dynamic>>())
+          for (final a
+              in (json['entrants'] as List? ?? const [])
+                  .cast<Map<String, dynamic>>())
             (userId: a['user_id'] as String, name: a['display_name'] as String),
         ],
         myEntries: json['my_entries'] as int? ?? 0,
@@ -2236,8 +2248,9 @@ class FootbagTrickDetail {
       favourite: mine['favourite'] as bool? ?? false,
       landedCount: json['landed_count'] as int? ?? 0,
       landedBy: [
-        for (final a in (json['landed_by'] as List? ?? const [])
-            .cast<Map<String, dynamic>>())
+        for (final a
+            in (json['landed_by'] as List? ?? const [])
+                .cast<Map<String, dynamic>>())
           (userId: a['user_id'] as String, name: a['display_name'] as String),
       ],
     );

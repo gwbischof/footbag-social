@@ -16,9 +16,11 @@ import 'package:material_ui/material_ui.dart';
 /// unread chats.
 ///
 /// Self-contained, so whichever screen is the front door can carry it. The
-/// inbox count is asked for when the bell appears and cleared when the inbox
-/// is opened (opening it marks everything read). Chat's half is read live
-/// from Matrix on every sync, so a new message lights it without a request.
+/// inbox count is asked for when the bell appears, every minute while it is
+/// on screen, and whenever the app comes back to the front -- a reply that
+/// arrives while you scroll should light it then, not on the next visit. It
+/// is cleared when the inbox is opened (opening it marks everything read).
+/// Chat's half is read live from Matrix on every sync.
 class InboxBell extends StatefulWidget {
   const InboxBell({super.key});
 
@@ -30,13 +32,31 @@ class InboxBell extends StatefulWidget {
   State<InboxBell> createState() => _InboxBellState();
 }
 
-class _InboxBellState extends State<InboxBell> {
+class _InboxBellState extends State<InboxBell> with WidgetsBindingObserver {
   int _inbox = 0;
+  Timer? _poll;
+
+  static const _every = Duration(minutes: 1);
 
   @override
   void initState() {
     super.initState();
-    if (InboxBell.previewCount == null) unawaited(_refresh());
+    if (InboxBell.previewCount != null) return;
+    unawaited(_refresh());
+    _poll = Timer.periodic(_every, (_) => unawaited(_refresh()));
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) unawaited(_refresh());
+  }
+
+  @override
+  void dispose() {
+    _poll?.cancel();
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
   }
 
   Future<void> _refresh() async {

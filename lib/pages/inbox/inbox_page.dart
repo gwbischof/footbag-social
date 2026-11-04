@@ -72,6 +72,17 @@ class InboxPageState extends State<InboxPage> {
         context.push('/rooms/session/${item.sessionId}');
       case 'club_request' || 'club_approved' when item.club != null:
         context.push('/rooms/club/${item.club!.id}');
+      case 'challenge_started' when item.challenge != null:
+        context.push(
+          '/rooms/feed/challenge/${Uri.encodeComponent(item.challenge!.slug)}',
+          extra: item.challenge!.title,
+        );
+      // Someone new: their profile, where "Send a message" is the hello.
+      case 'new_member' when item.actors.isNotEmpty:
+        context.push(
+          '/rooms/feed/player/${Uri.encodeComponent(item.actors.first.userId)}',
+          extra: item.actors.first.name,
+        );
       case _ when item.postId != null && item.outcome != 'removed':
         context.push('/rooms/feed/post/${item.postId}');
     }
@@ -106,7 +117,7 @@ class InboxPageState extends State<InboxPage> {
                   FeedEmpty(title: l10n.inboxEmpty)
                 else
                   for (final item in list)
-                    _InboxRow(
+                    InboxRow(
                       key: ValueKey(item.key),
                       item: item,
                       resolve: resolveMedia,
@@ -170,12 +181,13 @@ class _ChatRow extends StatelessWidget {
   }
 }
 
-class _InboxRow extends StatelessWidget {
+/// One line of the inbox. Public so tests can draw a line on its own.
+class InboxRow extends StatelessWidget {
   final FootbagInboxItem item;
   final Uri Function(String) resolve;
   final VoidCallback onTap;
 
-  const _InboxRow({
+  const InboxRow({
     required this.item,
     required this.resolve,
     required this.onTap,
@@ -243,6 +255,11 @@ class _InboxRow extends StatelessWidget {
       'club_request' => l10n.inboxClubRequest(names, item.club?.name ?? ''),
       'club_approved' => l10n.inboxClubApproved(names, item.club?.name ?? ''),
       'results_shared' => l10n.inboxResultsShared(names, session),
+      'also_commented' => l10n.inboxAlsoCommented(names),
+      'new_member' => l10n.inboxNewMember(names),
+      'challenge_started' => l10n.inboxChallengeStarted(
+        item.challenge?.title ?? '',
+      ),
       'post_removed' => l10n.inboxPostRemoved,
       'report_resolved' =>
         item.outcome == 'removed'
@@ -267,11 +284,18 @@ class _InboxRow extends StatelessWidget {
               color: Nyfa.raised,
               shape: BoxShape.circle,
             ),
-            child: const Icon(
-              Icons.shield_outlined,
-              size: 20,
-              color: Nyfa.muted,
-            ),
+            // No person behind it: a challenge starting, or the moderators.
+            child: item.kind == 'challenge_started'
+                ? const Icon(
+                    Icons.emoji_events_outlined,
+                    size: 20,
+                    color: Nyfa.green,
+                  )
+                : const Icon(
+                    Icons.shield_outlined,
+                    size: 20,
+                    color: Nyfa.muted,
+                  ),
           );
 
     Widget? trail;
@@ -298,7 +322,10 @@ class _InboxRow extends StatelessWidget {
         ),
         child: const Icon(Icons.notes_rounded, size: 20, color: Nyfa.muted),
       );
-    } else if (item.sessionId != null || item.club != null) {
+    } else if (item.sessionId != null ||
+        item.club != null ||
+        item.challenge != null ||
+        item.kind == 'new_member') {
       trail = const Icon(Icons.chevron_right_rounded, color: Nyfa.faint);
     }
 

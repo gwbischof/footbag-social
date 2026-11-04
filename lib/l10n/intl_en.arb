@@ -5697,5 +5697,35 @@
         "type": "String",
         "description": "Button: post the first you just reported.",
         "placeholders": {}
+    },
+    "inboxAlsoCommented": "{names} also commented on a post you commented on",
+    "@inboxAlsoCommented": {
+        "type": "String",
+        "description": "Inbox: someone replied in a comment thread you are part of. {names} is one or more people.",
+        "placeholders": {
+            "names": {
+                "type": "String"
+            }
+        }
+    },
+    "inboxNewMember": "{names} just joined. Say hi!",
+    "@inboxNewMember": {
+        "type": "String",
+        "description": "Inbox: a new player finished signing up. Tapping opens their profile.",
+        "placeholders": {
+            "names": {
+                "type": "String"
+            }
+        }
+    },
+    "inboxChallengeStarted": "{challenge} has started. Enter by posting a clip.",
+    "@inboxChallengeStarted": {
+        "type": "String",
+        "description": "Inbox: a challenge just went live. {challenge} is its title.",
+        "placeholders": {
+            "challenge": {
+                "type": "String"
+            }
+        }
     }
 }
