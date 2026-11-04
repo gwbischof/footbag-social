@@ -51,7 +51,16 @@ class Compose extends StatefulWidget {
   /// Prefill the words -- arriving from the welcome, as an introduction.
   final String? caption;
 
-  const Compose({this.sessionId, this.landed, this.caption, super.key});
+  /// Prefill a challenge entry -- arriving from a challenge's Enter button.
+  final String? challengeSlug;
+
+  const Compose({
+    this.sessionId,
+    this.landed,
+    this.caption,
+    this.challengeSlug,
+    super.key,
+  });
 
   @override
   ComposeController createState() => ComposeController();
@@ -78,6 +87,14 @@ class ComposeController extends State<Compose> {
   List<FootbagClub> clubs = const [];
   int? clubId;
 
+  /// Running challenges you still have entries left in; the picker is hidden
+  /// when there are none.
+  List<FootbagChallenge> challenges = const [];
+  int? challengeId;
+
+  /// An entry is a clip or a photo: picked but empty, Share waits for one.
+  bool get needsMediaForChallenge => challengeId != null && drafts.isEmpty;
+
   /// Sessions this post could come from: yours, public, started.
   List<FootbagSession>? sessions;
 
@@ -100,7 +117,11 @@ class ComposeController extends State<Compose> {
   /// Share needs something to post and nothing still in flight. A failed
   /// upload blocks it too, rather than being silently dropped from the post.
   bool get canShare =>
-      hasContent && !uploading && !sharing && !drafts.any((d) => d.failed);
+      hasContent &&
+      !needsMediaForChallenge &&
+      !uploading &&
+      !sharing &&
+      !drafts.any((d) => d.failed);
 
   @override
   void initState() {
@@ -115,6 +136,7 @@ class ComposeController extends State<Compose> {
     caption.addListener(() => setState(() {}));
     unawaited(loadSessions());
     unawaited(loadClubs());
+    unawaited(loadChallenges());
   }
 
   @override
@@ -207,6 +229,24 @@ class ComposeController extends State<Compose> {
   }
 
   void setClub(int? id) => setState(() => clubId = id);
+
+  Future<void> loadChallenges() async {
+    try {
+      final all = await _client.fetchChallenges();
+      if (!mounted) return;
+      setState(() {
+        challenges = all.where((c) => c.canEnter).toList();
+        challengeId ??= challenges
+            .where((c) => c.slug == widget.challengeSlug)
+            .firstOrNull
+            ?.id;
+      });
+    } catch (e) {
+      Logs().w('Could not list challenges for the composer', e);
+    }
+  }
+
+  void setChallenge(int? id) => setState(() => challengeId = id);
 
   Uri resolveMedia(String path) => _client.footbagMediaUri(path);
 
@@ -336,6 +376,7 @@ class ComposeController extends State<Compose> {
         isTutorial: tutorial,
         landed: landed,
         landedFirst: landedFirst,
+        challengeId: challengeId,
         sessionId: sessionId,
         shareResults: canShareResults && shareResults,
         clubId: clubId,

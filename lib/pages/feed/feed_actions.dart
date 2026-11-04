@@ -78,6 +78,14 @@ class AppPostActions implements PostActions {
       unawaited(context.push('/rooms/club/${club.id}'));
 
   @override
+  void openChallenge(String slug, String title) => unawaited(
+    context.push(
+      '/rooms/feed/challenge/${Uri.encodeComponent(slug)}',
+      extra: title,
+    ),
+  );
+
+  @override
   void openMenu(FootbagPost post) => unawaited(_menu(post));
 
   Future<void> _menu(FootbagPost post) async {

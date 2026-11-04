@@ -66,7 +66,32 @@ class ComposeView extends StatelessWidget {
                   maxLines: 10,
                   maxLength: 2200,
                 ),
-                // First, above the tags: the forum's biggest thread ever was
+                // Above everything else when there is one running: it is why
+                // the clip is being posted, and it decides whether one is
+                // needed at all.
+                if (c.challenges.isNotEmpty) ...[
+                  NyfaForm.section(l10n.enterAChallenge),
+                  NyfaForm.chips(
+                    keyPrefix: 'ComposeChallenge',
+                    options: [
+                      (value: 'none', label: l10n.notEntering),
+                      for (final ch in c.challenges)
+                        (value: '${ch.id}', label: ch.title),
+                    ],
+                    selected: {c.challengeId?.toString() ?? 'none'},
+                    onToggle: (v) =>
+                        c.setChallenge(v == 'none' ? null : int.parse(v)),
+                  ),
+                  if (c.needsMediaForChallenge)
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+                      child: Text(
+                        l10n.challengeNeedsMedia,
+                        style: Nyfa.bodyMuted,
+                      ),
+                    ),
+                ],
+                // Then, above the tags: the forum's biggest thread ever was
                 // people saying they had just landed something.
                 NyfaForm.section(l10n.landedIt),
                 if (c.tags.isEmpty)

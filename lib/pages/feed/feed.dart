@@ -26,9 +26,25 @@ class Feed extends StatefulWidget {
   final String? entrySlug;
   final String? entryName;
 
-  const Feed({this.entrySlug, this.entryName, super.key});
+  /// Show only entries in this challenge, titled [challengeTitle]: the
+  /// challenge's page.
+  final String? challengeSlug;
+  final String? challengeTitle;
+
+  const Feed({
+    this.entrySlug,
+    this.entryName,
+    this.challengeSlug,
+    this.challengeTitle,
+    super.key,
+  });
 
   bool get isTrickPage => entrySlug != null;
+  bool get isChallengePage => challengeSlug != null;
+
+  /// A page reached from the feed rather than the feed itself: no masthead,
+  /// no tab bar, a back button.
+  bool get isSubPage => isTrickPage || isChallengePage;
 
   @override
   FeedController createState() => FeedController();
@@ -76,7 +92,7 @@ class FeedController extends State<Feed> {
   /// Which snapshot this screen resumes. Overridden by the preview harness,
   /// which has no Matrix client.
   String get memoryKey =>
-      '${Matrix.of(context).client.userID}|${widget.entrySlug ?? ''}';
+      '${Matrix.of(context).client.userID}|${widget.entrySlug ?? ''}|${widget.challengeSlug ?? ''}';
 
   /// `null` until the first page arrives, so the view can tell "loading" from
   /// "nothing here".
@@ -120,7 +136,7 @@ class FeedController extends State<Feed> {
   /// The first run: if this account has not seen the welcome, show it over
   /// the feed. The feed loads underneath, so finishing lands on content.
   Future<void> checkWelcome() async {
-    if (_welcomeChecked || widget.isTrickPage) return;
+    if (_welcomeChecked || widget.isSubPage) return;
     _welcomeChecked = true;
     try {
       final me = await Matrix.of(context).client.fetchMe();
@@ -195,6 +211,7 @@ class FeedController extends State<Feed> {
         sort: sort,
         window: window,
         entry: widget.entrySlug,
+        challenge: widget.challengeSlug,
         tutorial: tutorialsOnly,
         lat: near?.lat,
         lng: near?.lng,

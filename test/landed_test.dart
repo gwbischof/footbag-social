@@ -68,6 +68,9 @@ class _Actions implements PostActions {
   void openClub(FootbagClubRef club) {}
 
   @override
+  void openChallenge(String slug, String title) => opened.add('challenge:$slug');
+
+  @override
   void openMenu(FootbagPost post) {}
 }
 

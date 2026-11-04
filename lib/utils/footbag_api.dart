@@ -317,6 +317,17 @@ extension FootbagApi on Client {
       _apiSend('POST', 'mod/tricks/${Uri.encodeComponent(slug)}/keep-private');
 
   /// Everything a trick's page shows above its clips.
+  /// Running and upcoming challenges, soonest first.
+  Future<List<FootbagChallenge>> fetchChallenges() async => [
+    for (final c in await _apiGetList('challenges'))
+      FootbagChallenge.fromJson(c as Map<String, dynamic>),
+  ];
+
+  Future<FootbagChallenge> fetchChallenge(String slug) async =>
+      FootbagChallenge.fromJson(
+        await _apiGetObject('challenges/${Uri.encodeComponent(slug)}'),
+      );
+
   Future<FootbagTrickDetail> fetchTrickDetail(String slug) async =>
       FootbagTrickDetail.fromJson(
         await _apiGetObject('tricks/${Uri.encodeComponent(slug)}/detail'),
@@ -600,6 +611,7 @@ extension FootbagApi on Client {
     String? author,
     int? club,
     String? entry,
+    String? challenge,
     bool tutorial = false,
     double? lat,
     double? lng,
@@ -613,6 +625,7 @@ extension FootbagApi on Client {
       if (author != null) 'author=${Uri.encodeQueryComponent(author)}',
       if (club != null) 'club=$club',
       if (entry != null) 'entry=${Uri.encodeQueryComponent(entry)}',
+      if (challenge != null) 'challenge=${Uri.encodeQueryComponent(challenge)}',
       if (tutorial) 'tutorial=true',
       if (lat != null && lng != null) ...[
         'lat=$lat',
@@ -712,6 +725,7 @@ extension FootbagApi on Client {
     bool isTutorial = false,
     String? landed,
     bool landedFirst = false,
+    int? challengeId,
     int? sessionId,
     bool shareResults = false,
     int? clubId,
@@ -727,6 +741,7 @@ extension FootbagApi on Client {
       'is_tutorial': isTutorial,
       'landed': ?landed,
       if (landed != null && landedFirst) 'landed_first': true,
+      'challenge_id': ?challengeId,
       'session_id': ?sessionId,
       'club_id': ?clubId,
       'place_name': ?placeName,
@@ -1659,6 +1674,9 @@ class FootbagPost {
   final String? placeName;
   final FootbagSessionSummary? session;
   final FootbagClubRef? club;
+
+  /// The challenge this post was entered in, for the card's label.
+  final ({String slug, String title})? challenge;
   int reactionCount;
   bool reacted;
   int commentCount;
@@ -1680,6 +1698,7 @@ class FootbagPost {
     required this.placeName,
     required this.session,
     this.club,
+    this.challenge,
     required this.reactionCount,
     required this.reacted,
     required this.commentCount,
@@ -1716,6 +1735,13 @@ class FootbagPost {
       },
       placeName: json['place_name'] as String?,
       club: FootbagClubRef.maybe(json['club']),
+      challenge: switch (json['challenge']) {
+        final Map<String, dynamic> c => (
+          slug: c['slug'] as String,
+          title: c['title'] as String,
+        ),
+        _ => null,
+      },
       session: json['session'] == null
           ? null
           : FootbagSessionSummary.fromJson(
@@ -1856,6 +1882,68 @@ class FootbagInboxItem {
 }
 
 /// A club, named where something belongs to one.
+/// A dated event players enter by posting a clip: NoPlantNovember, the
+/// December calendar. Its entries are ordinary posts.
+class FootbagChallenge {
+  final int id;
+  final String slug;
+  final String title;
+
+  /// The rules, in the organiser's words.
+  final String body;
+  final DateTime startsAt;
+  final DateTime endsAt;
+  final int maxEntries;
+
+  /// `upcoming`, `active` or `ended`, as the server saw it.
+  final String state;
+  final int entryCount;
+  final int entrantCount;
+  final List<({String userId, String name})> entrants;
+  final int myEntries;
+
+  const FootbagChallenge({
+    required this.id,
+    required this.slug,
+    required this.title,
+    required this.body,
+    required this.startsAt,
+    required this.endsAt,
+    required this.maxEntries,
+    required this.state,
+    required this.entryCount,
+    required this.entrantCount,
+    required this.entrants,
+    required this.myEntries,
+  });
+
+  bool get isActive => state == 'active';
+  bool get isUpcoming => state == 'upcoming';
+
+  /// Running, and you have entries left.
+  bool get canEnter => isActive && myEntries < maxEntries;
+
+  factory FootbagChallenge.fromJson(Map<String, dynamic> json) =>
+      FootbagChallenge(
+        id: json['id'] as int,
+        slug: json['slug'] as String,
+        title: json['title'] as String,
+        body: json['body'] as String? ?? '',
+        startsAt: _time(json['starts_at']),
+        endsAt: _time(json['ends_at']),
+        maxEntries: json['max_entries'] as int? ?? 1,
+        state: json['state'] as String? ?? 'active',
+        entryCount: json['entry_count'] as int? ?? 0,
+        entrantCount: json['entrant_count'] as int? ?? 0,
+        entrants: [
+          for (final a in (json['entrants'] as List? ?? const [])
+              .cast<Map<String, dynamic>>())
+            (userId: a['user_id'] as String, name: a['display_name'] as String),
+        ],
+        myEntries: json['my_entries'] as int? ?? 0,
+      );
+}
+
 class FootbagClubRef {
   final int id;
   final String name;

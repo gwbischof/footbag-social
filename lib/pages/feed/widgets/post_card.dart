@@ -38,6 +38,9 @@ abstract class PostActions {
 
   void openClub(FootbagClubRef club);
 
+  /// The challenge a post was entered in: its page, with every entry.
+  void openChallenge(String slug, String title);
+
   /// The ⋯ menu: edit and delete for the author, report for everyone else.
   void openMenu(FootbagPost post);
 }
@@ -182,12 +185,19 @@ class _PostCardState extends State<PostCard> {
               onAuthor: () =>
                   widget.actions.openAuthor(post.authorId, post.authorName),
             ),
-          if (post.tags.isNotEmpty || post.club != null)
+          if (post.tags.isNotEmpty ||
+              post.club != null ||
+              post.challenge != null)
             _Tags(
               tags: post.tags,
               club: post.club,
+              challenge: post.challenge,
               onTap: widget.actions.openTag,
               onClub: widget.actions.openClub,
+              onChallenge: () => widget.actions.openChallenge(
+                post.challenge!.slug,
+                post.challenge!.title,
+              ),
             ),
           if (hasMedia && post.session != null)
             SessionResults(summary: post.session!, authorName: post.authorName),
@@ -760,14 +770,18 @@ class _Caption extends StatelessWidget {
 class _Tags extends StatelessWidget {
   final List<FootbagTag> tags;
   final FootbagClubRef? club;
+  final ({String slug, String title})? challenge;
   final ValueChanged<FootbagTag> onTap;
   final ValueChanged<FootbagClubRef> onClub;
+  final VoidCallback onChallenge;
 
   const _Tags({
     required this.tags,
     required this.club,
+    required this.challenge,
     required this.onTap,
     required this.onClub,
+    required this.onChallenge,
   });
 
   @override
@@ -777,7 +791,42 @@ class _Tags extends StatelessWidget {
       spacing: 8,
       runSpacing: 8,
       children: [
-        // The club first, as where the post belongs; then what it is about.
+        // The challenge first -- it is why the clip exists -- then the club,
+        // as where the post belongs, then what it is about.
+        if (challenge != null)
+          InkWell(
+            key: Key('ChallengeTag_${challenge!.slug}'),
+            onTap: onChallenge,
+            child: Container(
+              constraints: const BoxConstraints(minHeight: 32),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              decoration: const BoxDecoration(
+                color: Nyfa.tonal,
+                borderRadius: BorderRadius.all(Radius.circular(6)),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(
+                    Icons.emoji_events_outlined,
+                    size: 15,
+                    color: Nyfa.green,
+                  ),
+                  const SizedBox(width: 7),
+                  Text(
+                    challenge!.title,
+                    style: const TextStyle(
+                      fontFamily: Nyfa.body,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 13,
+                      color: Nyfa.paper,
+                      height: 1.6,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
         if (club != null)
           InkWell(
             key: Key('ClubTag_${club!.id}'),

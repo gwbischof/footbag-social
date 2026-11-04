@@ -308,6 +308,9 @@ class PreviewActions implements PostActions {
 
   @override
   void openClub(FootbagClubRef club) {}
+
+  @override
+  void openChallenge(String slug, String title) {}
 }
 
 /// The real session page with a canned session, one per standing.

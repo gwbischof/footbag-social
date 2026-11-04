@@ -8,6 +8,7 @@ import 'package:footbag_network/config/nyfa_theme.dart';
 import 'package:footbag_network/l10n/l10n.dart';
 import 'package:footbag_network/pages/feed/feed.dart';
 import 'package:footbag_network/pages/feed/feed_actions.dart';
+import 'package:footbag_network/pages/feed/widgets/challenge_card.dart';
 import 'package:footbag_network/pages/feed/widgets/feed_states.dart';
 import 'package:footbag_network/pages/feed/widgets/post_card.dart';
 import 'package:footbag_network/pages/feed/widgets/trick_header.dart';
@@ -30,12 +31,14 @@ class FeedView extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = L10n.of(context);
     final trick = controller.widget.isTrickPage;
+    final challenge = controller.widget.isChallengePage;
+    final sub = controller.widget.isSubPage;
     final posts = controller.posts;
 
     return Scaffold(
       key: const Key('FeedScaffold'),
       backgroundColor: Nyfa.ground,
-      bottomNavigationBar: trick
+      bottomNavigationBar: sub
           ? null
           : FootbagNavBar(
               current: FootbagTab.feed,
@@ -68,19 +71,21 @@ class FeedView extends StatelessWidget {
                     surfaceTintColor: Nyfa.ground,
                     elevation: 0,
                     scrolledUnderElevation: 0,
-                    automaticallyImplyLeading: trick,
-                    leading: trick
+                    automaticallyImplyLeading: sub,
+                    leading: sub
                         ? const Center(child: BackButton(color: Nyfa.paper))
                         : null,
                     centerTitle: false,
-                    titleSpacing: trick ? 0 : 20,
+                    titleSpacing: sub ? 0 : 20,
                     // Home carries the masthead, as the front door; a trick's
                     // page carries the trick's name.
                     title: Text(
                       trick
                           ? (controller.widget.entryName ?? '')
+                          : challenge
+                          ? (controller.widget.challengeTitle ?? '')
                           : 'FOOTBAG SOCIAL',
-                      style: trick
+                      style: sub
                           ? Nyfa.heading.copyWith(fontSize: 20)
                           : const TextStyle(
                               fontFamily: Nyfa.display,
@@ -94,7 +99,7 @@ class FeedView extends StatelessWidget {
                     // home screen is read. A labelled POST button beside the
                     // masthead, bell and avatar did not fit at phone width.
                     actions: [
-                      if (!trick) ...[
+                      if (!sub) ...[
                         IconButton(
                           key: const Key('FeedPost'),
                           tooltip: l10n.newPost,
@@ -133,6 +138,14 @@ class FeedView extends StatelessWidget {
                     SliverToBoxAdapter(
                       child: TrickHeader(slug: controller.widget.entrySlug!),
                     ),
+                  if (challenge)
+                    SliverToBoxAdapter(
+                      child: ChallengeHeader(
+                        slug: controller.widget.challengeSlug!,
+                      ),
+                    ),
+                  if (!sub)
+                    const SliverToBoxAdapter(child: ChallengeBanner()),
                   if (controller.error != null && posts == null)
                     SliverFillRemaining(
                       hasScrollBody: false,
@@ -157,12 +170,16 @@ class FeedView extends StatelessWidget {
                           : FeedEmpty(
                               title: trick
                                   ? l10n.trickNoClipsTitle
+                                  : challenge
+                                  ? l10n.challengeNoEntriesTitle
                                   : l10n.feedEmptyTitle,
                               body: trick
                                   ? l10n.trickNoClipsBody
+                                  : challenge
+                                  ? l10n.challengeNoEntriesBody
                                   : l10n.feedEmptyBody,
-                              actionLabel: trick ? null : l10n.postSomething,
-                              onAction: trick ? null : controller.compose,
+                              actionLabel: sub ? null : l10n.postSomething,
+                              onAction: sub ? null : controller.compose,
                             ),
                     )
                   else ...[

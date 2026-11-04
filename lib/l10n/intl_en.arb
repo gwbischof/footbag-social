@@ -5547,5 +5547,141 @@
         "type": "String",
         "description": "Welcome screen, after a profile photo was picked.",
         "placeholders": {}
+    },
+    "challenge": "Challenge",
+    "@challenge": {
+        "type": "String",
+        "description": "Label above a challenge's title, e.g. 'Challenge · 12 days left'.",
+        "placeholders": {}
+    },
+    "challengeDaysLeft": "{count, plural, =1{1 day left} other{{count} days left}}",
+    "@challengeDaysLeft": {
+        "type": "String",
+        "description": "How long a running challenge has left.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "challengeHoursLeft": "{count, plural, =1{1 hour left} other{{count} hours left}}",
+    "@challengeHoursLeft": {
+        "type": "String",
+        "description": "How long a running challenge has left, on its last day.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "challengeStartsInDays": "{count, plural, =0{Starts today} =1{Starts tomorrow} other{Starts in {count} days}}",
+    "@challengeStartsInDays": {
+        "type": "String",
+        "description": "When an upcoming challenge starts.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "challengeEnded": "Ended",
+    "@challengeEnded": {
+        "type": "String",
+        "description": "A challenge that is over.",
+        "placeholders": {}
+    },
+    "challengeNoEntriesYet": "No entries yet",
+    "@challengeNoEntriesYet": {
+        "type": "String",
+        "description": "A challenge nobody has entered.",
+        "placeholders": {}
+    },
+    "challengeEntryCount": "{count, plural, =1{1 entry} other{{count} entries}}",
+    "@challengeEntryCount": {
+        "type": "String",
+        "description": "How many clips have been entered in a challenge.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "challengePlayerCount": "{count, plural, =1{1 player} other{{count} players}}",
+    "@challengePlayerCount": {
+        "type": "String",
+        "description": "How many different players have entered a challenge.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "enterChallenge": "Enter",
+    "@enterChallenge": {
+        "type": "String",
+        "description": "Button: post a clip as an entry in a challenge.",
+        "placeholders": {}
+    },
+    "enterAgain": "Enter again ({count} of {max})",
+    "@enterAgain": {
+        "type": "String",
+        "description": "Button on a challenge page for someone who has entered but has entries left.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            },
+            "max": {
+                "type": "int"
+            }
+        }
+    },
+    "challengeEnteredAll": "You've entered {count} of {max}",
+    "@challengeEnteredAll": {
+        "type": "String",
+        "description": "On a challenge page when you have used all your entries.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            },
+            "max": {
+                "type": "int"
+            }
+        }
+    },
+    "challengeEntries": "Entries",
+    "@challengeEntries": {
+        "type": "String",
+        "description": "Section title above a challenge's entries.",
+        "placeholders": {}
+    },
+    "challengeNoEntriesTitle": "No entries yet",
+    "@challengeNoEntriesTitle": {
+        "type": "String",
+        "description": "Empty challenge page title.",
+        "placeholders": {}
+    },
+    "challengeNoEntriesBody": "Post a clip to be the first.",
+    "@challengeNoEntriesBody": {
+        "type": "String",
+        "description": "Empty challenge page body.",
+        "placeholders": {}
+    },
+    "enterAChallenge": "Challenge",
+    "@enterAChallenge": {
+        "type": "String",
+        "description": "Section title on the new post screen for entering a challenge.",
+        "placeholders": {}
+    },
+    "notEntering": "Not entering",
+    "@notEntering": {
+        "type": "String",
+        "description": "Chip on the new post screen: the post is not a challenge entry.",
+        "placeholders": {}
+    },
+    "challengeNeedsMedia": "Add a clip or photo to enter.",
+    "@challengeNeedsMedia": {
+        "type": "String",
+        "description": "On the new post screen when a challenge is picked but nothing is attached.",
+        "placeholders": {}
     }
 }

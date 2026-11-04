@@ -318,6 +318,8 @@ abstract class AppRoutes {
                       },
                       // The welcome's "introduce yourself": ?caption=...
                       caption: state.uri.queryParameters['caption'],
+                      // A challenge's Enter button: ?challenge=slug
+                      challengeSlug: state.uri.queryParameters['challenge'],
                     ),
                   ),
                   redirect: loggedOutRedirect,
@@ -381,6 +383,23 @@ abstract class AppRoutes {
                     PlayerPage(
                       userId: state.pathParameters['userid']!,
                       name: state.extra is String
+                          ? state.extra as String
+                          : null,
+                    ),
+                  ),
+                  redirect: loggedOutRedirect,
+                ),
+                GoRoute(
+                  path: 'challenge/:slug',
+                  pageBuilder: (context, state) => defaultPageBuilder(
+                    context,
+                    state,
+                    Feed(
+                      key: ValueKey(
+                        'challenge-${state.pathParameters['slug']}',
+                      ),
+                      challengeSlug: state.pathParameters['slug'],
+                      challengeTitle: state.extra is String
                           ? state.extra as String
                           : null,
                     ),
