@@ -10,6 +10,7 @@ import 'package:footbag_network/pages/feed/post_events.dart';
 import 'package:footbag_network/pages/feed/widgets/face_stack.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
 import 'package:footbag_network/widgets/matrix.dart';
+import 'package:footbag_network/widgets/skeleton.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:matrix/matrix.dart' show Logs;
@@ -61,7 +62,12 @@ class ChallengeBanner extends StatefulWidget {
 }
 
 class _ChallengeBannerState extends State<ChallengeBanner> {
-  FootbagChallenge? challenge;
+  /// The last one shown, kept for the app run: after the first visit the
+  /// banner is drawn at once rather than arriving late and pushing the feed
+  /// down under someone already reading it.
+  static FootbagChallenge? _last;
+
+  FootbagChallenge? challenge = _last;
   StreamSubscription<FootbagPost>? _published;
 
   @override
@@ -87,7 +93,7 @@ class _ChallengeBannerState extends State<ChallengeBanner> {
           await Matrix.of(context).client.fetchChallenges();
       if (!mounted) return;
       setState(
-        () => challenge =
+        () => challenge = _last =
             all.where((c) => c.isActive).firstOrNull ?? all.firstOrNull,
       );
     } catch (e) {
@@ -264,7 +270,7 @@ class _ChallengeHeaderState extends State<ChallengeHeader> {
   @override
   Widget build(BuildContext context) {
     final c = challenge;
-    if (c == null) return const SizedBox(height: 8);
+    if (c == null) return const _HeaderSkeleton();
     final l10n = L10n.of(context);
 
     final status = c.canEnter
@@ -338,4 +344,39 @@ class _ChallengeHeaderState extends State<ChallengeHeader> {
       ],
     );
   }
+}
+
+/// The header's shape while it loads -- label, title, rules, button -- so the
+/// entries below do not jump when it arrives.
+class _HeaderSkeleton extends StatelessWidget {
+  const _HeaderSkeleton();
+
+  @override
+  Widget build(BuildContext context) => SkeletonPulse(
+    builder: (context, c) {
+      Widget bar(double w, double h) => Container(
+        width: w,
+        height: h,
+        decoration: BoxDecoration(color: c, borderRadius: Nyfa.rounded),
+      );
+      return Padding(
+        padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            bar(140, 12),
+            const SizedBox(height: 14),
+            bar(260, 40),
+            const SizedBox(height: 18),
+            bar(double.infinity, 12),
+            const SizedBox(height: 8),
+            bar(220, 12),
+            const SizedBox(height: 22),
+            bar(double.infinity, 48),
+            const SizedBox(height: 28),
+          ],
+        ),
+      );
+    },
+  );
 }
