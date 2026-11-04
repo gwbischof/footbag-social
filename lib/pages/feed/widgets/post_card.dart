@@ -246,7 +246,7 @@ class _Header extends StatelessWidget {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: Nyfa.bodyText.copyWith(
-                            fontWeight: FontWeight.w700,
+                            fontWeight: FontWeight.w600,
                             height: 1.2,
                           ),
                         ),

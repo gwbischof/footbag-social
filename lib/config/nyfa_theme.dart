@@ -127,9 +127,22 @@ class Nyfa {
     fontFamily: body,
     color: paper,
     fontSize: 17,
-    fontWeight: FontWeight.w700,
+    // w600, not w700: with every name and label in bold the app read as
+    // large print. Bold is kept for titles.
+    fontWeight: FontWeight.w600,
     letterSpacing: -0.1,
     height: 1.25,
+  );
+
+  /// The name on a list row: a person, a session, a trick. 15 semibold, the
+  /// size dense social apps use, so a list reads as a list and not a stack
+  /// of headings.
+  static const rowTitle = TextStyle(
+    fontFamily: body,
+    color: paper,
+    fontSize: 15,
+    fontWeight: FontWeight.w600,
+    height: 1.3,
   );
 
   /// Small labels: a count, a state, a tag. Sentence case and weight, not

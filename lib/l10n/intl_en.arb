@@ -5890,5 +5890,11 @@
                 "type": "String"
             }
         }
+    },
+    "tomorrow": "Tomorrow",
+    "@tomorrow": {
+        "type": "String",
+        "description": "A day, before a time: 'Tomorrow 6:00 PM'.",
+        "placeholders": {}
     }
 }

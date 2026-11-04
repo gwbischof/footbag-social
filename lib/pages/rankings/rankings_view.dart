@@ -251,7 +251,7 @@ class _Row extends StatelessWidget {
                 Flexible(
                   child: Text(
                     row.displayName,
-                    style: Nyfa.heading.copyWith(fontSize: 17),
+                    style: Nyfa.rowTitle,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),

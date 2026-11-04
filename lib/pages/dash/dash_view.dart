@@ -595,7 +595,7 @@ class _SessionRow extends StatelessWidget {
                   children: [
                     Text(
                       session.name,
-                      style: Nyfa.heading.copyWith(fontSize: 17),
+                      style: Nyfa.rowTitle,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),

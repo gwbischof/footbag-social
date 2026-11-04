@@ -163,7 +163,7 @@ class FavouritesView extends StatelessWidget {
                       Expanded(
                         child: Text(
                           f.name,
-                          style: Nyfa.heading.copyWith(fontSize: 17),
+                          style: Nyfa.rowTitle,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),

@@ -372,7 +372,7 @@ class _Sessions extends StatelessWidget {
                           s.name,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: Nyfa.heading.copyWith(fontSize: 17),
+                          style: Nyfa.rowTitle,
                         ),
                         const SizedBox(height: 3),
                         Text(

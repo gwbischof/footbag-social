@@ -15,6 +15,7 @@ import 'package:footbag_network/widgets/layouts/max_width_body.dart';
 import 'package:footbag_network/widgets/people.dart';
 import 'package:footbag_network/widgets/skeleton.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
 
 class DiscoverView extends StatelessWidget {
@@ -236,7 +237,7 @@ class _SessionsTab extends StatelessWidget {
                         children: [
                           Text(
                             s.name,
-                            style: Nyfa.heading.copyWith(fontSize: 17),
+                            style: Nyfa.rowTitle,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -246,10 +247,17 @@ class _SessionsTab extends StatelessWidget {
                           Text.rich(
                             TextSpan(
                               children: [
+                                // When leads: it is most of whether you can go.
                                 if (s.isRunning)
                                   TextSpan(
                                     text: '${l10n.runningNow}  ·  ',
                                     style: const TextStyle(color: Nyfa.green),
+                                  )
+                                else if (s.scheduledAt != null)
+                                  TextSpan(
+                                    text:
+                                        '${_when(context, s.scheduledAt!)}  ·  ',
+                                    style: const TextStyle(color: Nyfa.paper),
                                   ),
                                 TextSpan(
                                   // The host's name and how many are going --
@@ -492,7 +500,7 @@ class _ClubsTab extends StatelessWidget {
                               c.name,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: Nyfa.heading.copyWith(fontSize: 17),
+                              style: Nyfa.rowTitle,
                             ),
                             const SizedBox(height: 3),
                             Text(
@@ -537,4 +545,26 @@ class _ClubsTab extends StatelessWidget {
       ),
     );
   }
+}
+
+/// "Today 6:00 PM", "Tomorrow 6:00 PM", "Thu 6:00 PM", or a date further out.
+String _when(BuildContext context, DateTime at) {
+  final l10n = L10n.of(context);
+  final local = at.toLocal();
+  final time = MaterialLocalizations.of(
+    context,
+  ).formatTimeOfDay(TimeOfDay.fromDateTime(local));
+  final today = DateTime.now();
+  final days = DateTime(
+    local.year,
+    local.month,
+    local.day,
+  ).difference(DateTime(today.year, today.month, today.day)).inDays;
+  final day = switch (days) {
+    0 => l10n.today,
+    1 => l10n.tomorrow,
+    > 1 && < 7 => DateFormat.E(l10n.localeName).format(local),
+    _ => DateFormat.MMMd(l10n.localeName).format(local),
+  };
+  return '$day $time';
 }
