@@ -40,6 +40,20 @@ class PlayerPage extends StatefulWidget {
 class PlayerPageState extends State<PlayerPage> {
   FootbagPlayerProfile? profile;
   List<FootbagPost>? posts;
+
+  /// Under this many posts the profile shows them whole, as the feed does: a
+  /// grid of one or two tiles is a postage stamp on a black page.
+  static const _gridFrom = 4;
+
+  late final PostActions actions = AppPostActions(
+    context,
+    onRemoved: (post) =>
+        setState(() => posts?.removeWhere((p) => p.id == post.id)),
+    onReplaced: (updated) => setState(() {
+      final i = posts?.indexWhere((p) => p.id == updated.id) ?? -1;
+      if (i >= 0) posts![i] = updated;
+    }),
+  );
   String? _next;
   bool loadingMore = false;
   Object? error;
@@ -370,6 +384,15 @@ class PlayerPageState extends State<PlayerPage> {
                                 textAlign: TextAlign.center,
                                 style: Nyfa.bodyMuted,
                               ),
+                            ),
+                          )
+                        else if (list.length < _gridFrom)
+                          SliverList.builder(
+                            itemCount: list.length,
+                            itemBuilder: (context, i) => PostCard(
+                              key: ValueKey('ProfilePost${list[i].id}'),
+                              post: list[i],
+                              actions: actions,
                             ),
                           )
                         else
