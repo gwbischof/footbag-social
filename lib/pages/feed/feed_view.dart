@@ -144,8 +144,7 @@ class FeedView extends StatelessWidget {
                         slug: controller.widget.challengeSlug!,
                       ),
                     ),
-                  if (!sub)
-                    const SliverToBoxAdapter(child: ChallengeBanner()),
+                  if (!sub) const SliverToBoxAdapter(child: ChallengeBanner()),
                   if (controller.error != null && posts == null)
                     SliverFillRemaining(
                       hasScrollBody: false,

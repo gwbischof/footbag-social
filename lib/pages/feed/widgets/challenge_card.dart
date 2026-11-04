@@ -6,6 +6,7 @@ import 'dart:async';
 
 import 'package:footbag_network/config/nyfa_theme.dart';
 import 'package:footbag_network/l10n/l10n.dart';
+import 'package:footbag_network/pages/feed/post_events.dart';
 import 'package:footbag_network/pages/feed/widgets/face_stack.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
 import 'package:footbag_network/widgets/matrix.dart';
@@ -61,11 +62,22 @@ class ChallengeBanner extends StatefulWidget {
 
 class _ChallengeBannerState extends State<ChallengeBanner> {
   FootbagChallenge? challenge;
+  StreamSubscription<FootbagPost>? _published;
 
   @override
   void initState() {
     super.initState();
     unawaited(_load());
+    // An entry just posted: fresh counts, faces and entries left.
+    _published = PostEvents.published.listen((p) {
+      if (p.challenge != null) unawaited(_load());
+    });
+  }
+
+  @override
+  void dispose() {
+    unawaited(_published?.cancel());
+    super.dispose();
   }
 
   Future<void> _load() async {
@@ -219,11 +231,21 @@ class ChallengeHeader extends StatefulWidget {
 
 class _ChallengeHeaderState extends State<ChallengeHeader> {
   FootbagChallenge? challenge;
+  StreamSubscription<FootbagPost>? _published;
 
   @override
   void initState() {
     super.initState();
     unawaited(_load());
+    _published = PostEvents.published.listen((p) {
+      if (p.challenge?.slug == widget.slug) unawaited(_load());
+    });
+  }
+
+  @override
+  void dispose() {
+    unawaited(_published?.cancel());
+    super.dispose();
   }
 
   Future<void> _load() async {

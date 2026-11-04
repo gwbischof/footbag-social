@@ -9,6 +9,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:footbag_network/l10n/l10n.dart';
 import 'package:footbag_network/l10n/l10n_en.dart';
 import 'package:footbag_network/pages/feed/feed_actions.dart';
+import 'package:footbag_network/pages/feed/post_events.dart';
 import 'package:footbag_network/pages/feed/widgets/challenge_card.dart';
 import 'package:footbag_network/pages/feed/widgets/post_card.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
@@ -214,5 +215,44 @@ void main() {
       find.byKey(const Key('ChallengeTag_noplantnovember-2026')),
     );
     expect(actions.opened, ['noplantnovember-2026']);
+  });
+
+  testWidgets('posting an entry updates the open challenge page', (
+    tester,
+  ) async {
+    ChallengeHeader.preview = _challenge(entries: 12, players: 7);
+    await tester.pumpWidget(
+      _app(const ChallengeHeader(slug: 'noplantnovember-2026')),
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('12 entries  ·  7 players'), findsOneWidget);
+
+    // The server now counts yours too; the composer announces the post.
+    ChallengeHeader.preview = _challenge(entries: 13, players: 8, mine: 1);
+    PostEvents.announce(
+      FootbagPost.fromJson({
+        'id': 99,
+        'author': {'user_id': '@me:x', 'display_name': 'Me'},
+        'caption': '',
+        'is_tutorial': false,
+        'created_at': _now.toUtc().toIso8601String(),
+        'media': <Object>[],
+        'tags': <Object>[],
+        'challenge': {
+          'id': 1,
+          'slug': 'noplantnovember-2026',
+          'title': 'NoPlantNovember',
+        },
+        'reaction_count': 0,
+        'reacted': false,
+        'comment_count': 0,
+        'comments_preview': <Object>[],
+        'is_mine': true,
+        'removed': false,
+      }),
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('13 entries  ·  8 players'), findsOneWidget);
+    expect(find.text('Enter again (1 of 3)'), findsOneWidget);
   });
 }

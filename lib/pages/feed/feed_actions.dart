@@ -425,7 +425,6 @@ class PlayerAvatar extends StatelessWidget {
   }
 }
 
-
 /// Ask, then block. True once they are blocked.
 ///
 /// The dialog says what a block does before it happens -- both ways, chat

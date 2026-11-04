@@ -7,6 +7,7 @@ import 'dart:typed_data';
 
 import 'package:footbag_network/l10n/l10n.dart';
 import 'package:footbag_network/pages/feed/compose_view.dart';
+import 'package:footbag_network/pages/feed/post_events.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
 import 'package:footbag_network/widgets/adaptive_dialogs/show_ok_cancel_alert_dialog.dart';
 import 'package:footbag_network/widgets/matrix.dart';
@@ -399,6 +400,7 @@ class ComposeController extends State<Compose> {
           ),
         ),
       );
+      PostEvents.announce(post);
       leaving = true;
       if (router.canPop()) {
         router.pop(post);
