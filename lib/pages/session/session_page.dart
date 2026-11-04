@@ -394,7 +394,7 @@ class _Host extends StatelessWidget {
               icon: const Icon(
                 Icons.chat_bubble_outline,
                 size: 18,
-                color: Nyfa.green,
+                color: Nyfa.paper,
               ),
               label: Text(
                 l10n.messageHost,
@@ -402,7 +402,7 @@ class _Host extends StatelessWidget {
                   fontFamily: Nyfa.body,
                   fontWeight: FontWeight.w600,
                   fontSize: 14,
-                  color: Nyfa.green,
+                  color: Nyfa.paper,
                 ),
               ),
             ),
