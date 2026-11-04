@@ -1485,10 +1485,19 @@ class FootbagPlayerProfile {
   /// You blocked them.
   final bool blocked;
 
+  /// Distinct tricks they have posted landing, how many were firsts, and the
+  /// newest landings.
+  final int landedCount;
+  final int firstCount;
+  final List<FootbagTag> landed;
+
   const FootbagPlayerProfile({
     required this.player,
     required this.postCount,
     this.blocked = false,
+    this.landedCount = 0,
+    this.firstCount = 0,
+    this.landed = const [],
   });
 
   factory FootbagPlayerProfile.fromJson(Map<String, dynamic> json) =>
@@ -1496,6 +1505,12 @@ class FootbagPlayerProfile {
         player: FootbagPlayer.fromJson(json),
         postCount: json['post_count'] as int? ?? 0,
         blocked: json['blocked'] as bool? ?? false,
+        landedCount: json['landed_count'] as int? ?? 0,
+        firstCount: json['first_count'] as int? ?? 0,
+        landed: [
+          for (final t in (json['landed'] as List? ?? const []))
+            FootbagTag.fromJson(t as Map<String, dynamic>),
+        ],
       );
 }
 

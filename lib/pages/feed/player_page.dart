@@ -9,6 +9,7 @@ import 'package:footbag_network/l10n/l10n.dart';
 import 'package:footbag_network/pages/feed/feed_actions.dart';
 import 'package:footbag_network/pages/feed/feed_view.dart';
 import 'package:footbag_network/pages/feed/widgets/feed_states.dart';
+import 'package:footbag_network/pages/feed/widgets/post_card.dart';
 import 'package:footbag_network/pages/feed/widgets/post_grid.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
 import 'package:footbag_network/widgets/future_loading_dialog.dart';
@@ -214,9 +215,19 @@ class PlayerPageState extends State<PlayerPage> {
                                                 top: 4,
                                               ),
                                               child: Text(
-                                                l10n.postCount(
-                                                  profile!.postCount,
-                                                ),
+                                                [
+                                                  l10n.postCount(
+                                                    profile!.postCount,
+                                                  ),
+                                                  if (profile!.landedCount > 0)
+                                                    l10n.tricksLandedCount(
+                                                      profile!.landedCount,
+                                                    ),
+                                                  if (profile!.firstCount > 0)
+                                                    l10n.firstsCount(
+                                                      profile!.firstCount,
+                                                    ),
+                                                ].join('  ·  '),
                                                 style: Nyfa.meta,
                                               ),
                                             ),
@@ -258,6 +269,58 @@ class PlayerPageState extends State<PlayerPage> {
                                 if (p != null && p.bio.isNotEmpty) ...[
                                   const SizedBox(height: 14),
                                   Text(p.bio, style: Nyfa.bodyText),
+                                ],
+                                // What they have landed: the collection a
+                                // profile is for, each a way into the trick.
+                                if (profile?.landed.isNotEmpty ?? false) ...[
+                                  const SizedBox(height: 16),
+                                  Text(l10n.landed, style: Nyfa.label),
+                                  const SizedBox(height: 8),
+                                  Wrap(
+                                    spacing: 6,
+                                    runSpacing: 6,
+                                    children: [
+                                      for (final t in profile!.landed)
+                                        InkWell(
+                                          key: Key('PlayerLanded_${t.slug}'),
+                                          onTap: () => context.push(
+                                            '/rooms/feed/trick/${t.slug}',
+                                            extra: t.name,
+                                          ),
+                                          child: Container(
+                                            constraints: const BoxConstraints(
+                                              minHeight: 36,
+                                            ),
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 10,
+                                            ),
+                                            decoration: const BoxDecoration(
+                                              color: Nyfa.tonal,
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(6),
+                                              ),
+                                            ),
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                const Diamond(
+                                                  size: 10,
+                                                  color: Nyfa.green,
+                                                ),
+                                                const SizedBox(width: 7),
+                                                Text(
+                                                  t.name,
+                                                  style: Nyfa.bodyText.copyWith(
+                                                    fontSize: 13,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                    ],
+                                  ),
                                 ],
                                 const SizedBox(height: 18),
                                 SizedBox(
