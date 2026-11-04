@@ -5821,5 +5821,36 @@
         "type": "String",
         "description": "Trick picker: heading above the rest of the dictionary.",
         "placeholders": {}
+    },
+    "inviteToFootbagSocial": "{name} invited you to Footbag Social, the app for footbag players. Join at {link}",
+    "@inviteToFootbagSocial": {
+        "type": "String",
+        "description": "Text shared when inviting someone to the app. {link} is the website.",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            },
+            "link": {
+                "type": "String"
+            }
+        }
+    },
+    "allCaughtUp": "You're all caught up",
+    "@allCaughtUp": {
+        "type": "String",
+        "description": "End of the main feed.",
+        "placeholders": {}
+    },
+    "inviteNudge": "Know someone who plays? Bring them in.",
+    "@inviteNudge": {
+        "type": "String",
+        "description": "Under 'You're all caught up' at the end of the feed.",
+        "placeholders": {}
+    },
+    "inviteAFriend": "Invite a friend",
+    "@inviteAFriend": {
+        "type": "String",
+        "description": "Button at the end of the feed: share an invite to the app.",
+        "placeholders": {}
     }
 }
