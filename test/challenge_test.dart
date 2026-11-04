@@ -149,7 +149,7 @@ void main() {
     Future<void> pump(WidgetTester tester, FootbagChallenge c) async {
       ChallengeHeader.preview = c;
       await tester.pumpWidget(
-        _app(const ChallengeHeader(slug: 'noplantnovember-2026')),
+        _app(ChallengeHeader(key: UniqueKey(), slug: 'noplantnovember-2026')),
       );
       await tester.pumpAndSettle();
     }
