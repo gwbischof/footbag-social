@@ -2,12 +2,19 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+import 'dart:typed_data';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:footbag_network/config/nyfa_theme.dart';
 import 'package:footbag_network/l10n/l10n.dart';
+import 'package:footbag_network/utils/file_selector.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
+import 'package:footbag_network/utils/platform_infos.dart';
 import 'package:footbag_network/widgets/matrix.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:matrix/matrix.dart' show MatrixFile;
 
 /// The first run: who you are, before the feed.
 ///
@@ -36,6 +43,52 @@ class _WelcomePageState extends State<WelcomePage> {
   late final Set<String> styles = {...widget.me.playStyles};
   late bool discoverable = widget.me.discoverable;
   bool saving = false;
+
+  /// The photo just chosen, shown while it uploads and after.
+  Uint8List? photo;
+  bool uploadingPhoto = false;
+
+  /// A face, asked for up front: in a feed of strangers, a coloured letter
+  /// says nothing about who someone is. Uploaded at once, so Skip keeps it.
+  Future<void> _pickPhoto() async {
+    final messenger = ScaffoldMessenger.of(context);
+    final l10n = L10n.of(context);
+    final client = Matrix.of(context).client;
+    MatrixFile? file;
+    if (PlatformInfos.isMobile) {
+      final picked = await ImagePicker().pickImage(
+        source: ImageSource.gallery,
+        imageQuality: 70,
+      );
+      if (picked != null) {
+        file = MatrixFile(bytes: await picked.readAsBytes(), name: picked.path);
+      }
+    } else {
+      final picked = (await selectFiles(
+        context,
+        type: FileType.image,
+      )).firstOrNull;
+      if (picked != null) {
+        file = MatrixFile(bytes: await picked.readAsBytes(), name: picked.name);
+      }
+    }
+    if (file == null || !mounted) return;
+    setState(() {
+      photo = file!.bytes;
+      uploadingPhoto = true;
+    });
+    try {
+      await client.setAvatar(file);
+    } catch (_) {
+      if (!mounted) return;
+      setState(() => photo = null);
+      messenger.showSnackBar(
+        SnackBar(content: Text(l10n.oopsSomethingWentWrong)),
+      );
+    } finally {
+      if (mounted) setState(() => uploadingPhoto = false);
+    }
+  }
 
   @override
   void initState() {
@@ -154,8 +207,60 @@ class _WelcomePageState extends State<WelcomePage> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
                 child: Text(l10n.welcomeBody, style: Nyfa.bodyMuted),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
+                child: Row(
+                  children: [
+                    Semantics(
+                      button: true,
+                      label: l10n.addAPhoto,
+                      child: InkWell(
+                        key: const Key('WelcomePhoto'),
+                        customBorder: const CircleBorder(),
+                        onTap: uploadingPhoto ? null : _pickPhoto,
+                        child: CircleAvatar(
+                          radius: 36,
+                          backgroundColor: Nyfa.tonal,
+                          foregroundImage: photo == null
+                              ? null
+                              : MemoryImage(photo!),
+                          child: uploadingPhoto
+                              ? const SizedBox(
+                                  width: 22,
+                                  height: 22,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                              : const Icon(
+                                  Icons.add_a_photo_outlined,
+                                  color: Nyfa.paper,
+                                ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: TextButton(
+                        onPressed: uploadingPhoto ? null : _pickPhoto,
+                        style: TextButton.styleFrom(
+                          alignment: Alignment.centerLeft,
+                          foregroundColor: Nyfa.paper,
+                          minimumSize: const Size(48, 48),
+                        ),
+                        child: Text(
+                          photo == null ? l10n.addAPhoto : l10n.changePhoto,
+                          style: Nyfa.bodyText.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
               NyfaForm.field(
                 key: const Key('WelcomeName'),

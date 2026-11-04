@@ -9,6 +9,7 @@ import 'package:footbag_network/pages/goals/goals_page.dart';
 import 'package:footbag_network/utils/date_time_extension.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
 import 'package:footbag_network/utils/localized_exception_extension.dart';
+import 'package:footbag_network/widgets/edge_fade.dart';
 import 'package:footbag_network/widgets/footbag_map.dart';
 import 'package:footbag_network/widgets/footbag_nav_bar.dart';
 import 'package:footbag_network/widgets/layouts/max_width_body.dart';
@@ -180,71 +181,73 @@ class _Shortcuts extends StatelessWidget {
     final l10n = L10n.of(context);
     return SizedBox(
       height: 44,
-      child: ListView(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-        children: [
-          for (final s
-              in <({String key, String label, IconData icon, String path})>[
-                (
-                  key: 'DashFavouritesButton',
-                  label: l10n.favourites,
-                  icon: Icons.star_outline_rounded,
-                  path: '/rooms/dash/favourites',
-                ),
-                (
-                  key: 'DashScheduleButton',
-                  label: l10n.scheduleSession,
-                  icon: Icons.calendar_today_outlined,
-                  path: '/rooms/dash/schedule',
-                ),
-                (
-                  key: 'DashRankingsButton',
-                  label: l10n.rankings,
-                  icon: Icons.leaderboard_outlined,
-                  path: '/rooms/dash/rankings',
-                ),
-                if (canModerate)
+      child: EdgeFade(
+        child: ListView(
+          scrollDirection: Axis.horizontal,
+          padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+          children: [
+            for (final s
+                in <({String key, String label, IconData icon, String path})>[
                   (
-                    key: 'DashModQueueButton',
-                    label: l10n.modQueue,
-                    icon: Icons.shield_outlined,
-                    path: '/rooms/dash/mod',
+                    key: 'DashFavouritesButton',
+                    label: l10n.favourites,
+                    icon: Icons.star_outline_rounded,
+                    path: '/rooms/dash/favourites',
                   ),
-              ])
-            Padding(
-              padding: const EdgeInsets.only(right: 8),
-              child: InkWell(
-                key: Key(s.key),
-                onTap: () => context.push(s.path),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 14),
-                  decoration: const BoxDecoration(
-                    color: Nyfa.tonal,
-                    borderRadius: Nyfa.rounded,
+                  (
+                    key: 'DashScheduleButton',
+                    label: l10n.scheduleSession,
+                    icon: Icons.calendar_today_outlined,
+                    path: '/rooms/dash/schedule',
                   ),
-                  child: Center(
-                    widthFactor: 1,
-                    child: Row(
-                      children: [
-                        Icon(s.icon, size: 16, color: Nyfa.muted),
-                        const SizedBox(width: 7),
-                        Text(
-                          s.label,
-                          style: const TextStyle(
-                            fontFamily: Nyfa.body,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 14,
-                            color: Nyfa.paper,
+                  (
+                    key: 'DashRankingsButton',
+                    label: l10n.rankings,
+                    icon: Icons.leaderboard_outlined,
+                    path: '/rooms/dash/rankings',
+                  ),
+                  if (canModerate)
+                    (
+                      key: 'DashModQueueButton',
+                      label: l10n.modQueue,
+                      icon: Icons.shield_outlined,
+                      path: '/rooms/dash/mod',
+                    ),
+                ])
+              Padding(
+                padding: const EdgeInsets.only(right: 8),
+                child: InkWell(
+                  key: Key(s.key),
+                  onTap: () => context.push(s.path),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 14),
+                    decoration: const BoxDecoration(
+                      color: Nyfa.tonal,
+                      borderRadius: Nyfa.rounded,
+                    ),
+                    child: Center(
+                      widthFactor: 1,
+                      child: Row(
+                        children: [
+                          Icon(s.icon, size: 16, color: Nyfa.muted),
+                          const SizedBox(width: 7),
+                          Text(
+                            s.label,
+                            style: const TextStyle(
+                              fontFamily: Nyfa.body,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 14,
+                              color: Nyfa.paper,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-        ],
+          ],
+        ),
       ),
     );
   }

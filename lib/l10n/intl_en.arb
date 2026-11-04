@@ -1741,7 +1741,7 @@
         "description": "Whether this report's counts may appear in shared totals.",
         "placeholders": {}
     },
-    "includeMyNumbersBody": "Your grades stay in your own log either way. This only controls whether your counts appear in shared totals.",
+    "includeMyNumbersBody": "Your grades stay in your log either way.",
     "@includeMyNumbersBody": {
         "type": "String",
         "description": "Explains exactly what the numbers toggle governs, so it is not mistaken for hiding the whole session.",
@@ -1753,7 +1753,7 @@
         "description": "Empty state when a player has no favourites to grade.",
         "placeholders": {}
     },
-    "noFavouritesYetBody": "Pick the tricks you're working on and they'll show up here, ready to grade.",
+    "noFavouritesYetBody": "Pick the tricks you're working on to grade them here.",
     "@noFavouritesYetBody": {
         "type": "String",
         "description": "Empty state body -- an invitation to act.",
@@ -1889,7 +1889,7 @@
         "description": "Primary action on an empty Dash. Framed as recording your own session first, putting a pin on the map second -- one person can use this app.",
         "placeholders": {}
     },
-    "dashStartYourOwnBody": "Start a session to time your practice and record what you hit. You don't need anyone else.",
+    "dashStartYourOwnBody": "Time your practice and log what you hit.",
     "@dashStartYourOwnBody": {
         "type": "String",
         "description": "Explains that the core loop works solo, which is the common case at launch.",
@@ -1931,7 +1931,7 @@
         "description": "Free text on a player's profile.",
         "placeholders": {}
     },
-    "bioHelp": "How long you've played, what you're working on, where you usually are.",
+    "bioHelp": "What you're working on and where you play.",
     "@bioHelp": {
         "type": "String",
         "description": "Prompts useful content rather than leaving the field blank and mysterious.",
@@ -1943,7 +1943,7 @@
         "description": "Optional city on a player's profile.",
         "placeholders": {}
     },
-    "cityHelp": "Optional. Leave empty to remove it.",
+    "cityHelp": "Optional.",
     "@cityHelp": {
         "type": "String",
         "description": "Says explicitly how to clear the field, since that is not obvious.",
@@ -1955,7 +1955,7 @@
         "description": "Heading over the play-style chips.",
         "placeholders": {}
     },
-    "playStylesHelp": "Used to match you with the right sessions and players.",
+    "playStylesHelp": "Helps match you with sessions and players.",
     "@playStylesHelp": {
         "type": "String",
         "description": "Explains why the app asks, which is the only reason to answer.",
@@ -1967,7 +1967,7 @@
         "description": "Whether a player appears in Discover.",
         "placeholders": {}
     },
-    "discoverableExplain": "Other players can find you and invite you to sessions. Turn this off and you can still use everything, you just won't appear in searches.",
+    "discoverableExplain": "Let players find you and invite you to sessions.",
     "@discoverableExplain": {
         "type": "String",
         "description": "Makes clear that turning it off costs nothing functionally.",
@@ -1979,7 +1979,7 @@
         "description": "Whether others can see this player's logged sessions.",
         "placeholders": {}
     },
-    "showMySessionsExplain": "Others can see the sessions you log and what you hit. This also controls whether you appear in rankings.",
+    "showMySessionsExplain": "Your sessions show on your profile and in rankings.",
     "@showMySessionsExplain": {
         "type": "String",
         "description": "Names the second consequence, which is not obvious from the label.",
@@ -2219,7 +2219,7 @@
         "description": "A count with no trick attached -- the whole of a kicking session. The community's own term.",
         "placeholders": {}
     },
-    "consecutiveKicksHelp": "Your best run this session. Leave it empty if you weren't counting.",
+    "consecutiveKicksHelp": "Your best run. Leave empty if you weren't counting.",
     "@consecutiveKicksHelp": {
         "type": "String",
         "description": "Says the number is a personal best for the session and that skipping it is fine.",
@@ -2261,7 +2261,7 @@
         "description": "Empty state for the players tab.",
         "placeholders": {}
     },
-    "noPlayersYetBody": "Players appear here once they turn on Discoverable. Early on, that's nobody \u2014 it isn't broken.",
+    "noPlayersYetBody": "Players show up here once they turn on Discoverable.",
     "@noPlayersYetBody": {
         "type": "String",
         "description": "Names the real cause so an empty screen does not read as a bug.",
@@ -2273,7 +2273,7 @@
         "description": "Empty state for the sessions tab.",
         "placeholders": {}
     },
-    "noSessionsToJoinBody": "Sessions show up here while they're running or scheduled. Start one and you'll be the first.",
+    "noSessionsToJoinBody": "Running and scheduled sessions show up here. Start one.",
     "@noSessionsToJoinBody": {
         "type": "String",
         "description": "Turns an empty list into an invitation.",
@@ -2345,7 +2345,7 @@
         "description": "Opens the explanation of unranked metrics.",
         "placeholders": {}
     },
-    "whyNotRankedBody": "Only numbers someone else can vouch for are ranked: time on the clock, sessions, days played. Kick counts and tricks landed are yours alone to report, so they stay on your profile \u2014 a leaderboard built on them would just reward inflating them.",
+    "whyNotRankedBody": "Only what others can vouch for is ranked: time, sessions and days played. Kick counts and tricks stay on your profile, so nobody is rewarded for inflating them.",
     "@whyNotRankedBody": {
         "type": "String",
         "description": "The doc's data-integrity reasoning, said plainly to players.",
@@ -2357,7 +2357,7 @@
         "description": "Empty leaderboard.",
         "placeholders": {}
     },
-    "noRankingsYetBody": "Log a session and you'll be on the board. With few players, that's a short climb.",
+    "noRankingsYetBody": "Log a session to get on the board.",
     "@noRankingsYetBody": {
         "type": "String",
         "description": "Turns an empty leaderboard into an invitation rather than a dead end.",
@@ -2423,7 +2423,7 @@
         "description": "Confirms the player is still playing, which moves the instant the duration is counted to.",
         "placeholders": {}
     },
-    "checkInExplainer": "Checking in keeps the clock going. Miss it and the session stops on its own, counting only up to your last check-in \u2014 so a forgotten session can't invent hours.",
+    "checkInExplainer": "Check in to keep the clock running. Miss it and the session stops at your last check-in.",
     "@checkInExplainer": {
         "type": "String",
         "description": "Explains why the check-in exists, under the running session card.",
@@ -3753,7 +3753,7 @@
         "description": "The feed has no posts at all.",
         "placeholders": {}
     },
-    "feedEmptyBody": "Clips, photos and sessions from players everywhere land here. Yours can be the first.",
+    "feedEmptyBody": "Clips, photos and sessions from players everywhere show up here. Post the first.",
     "@feedEmptyBody": {
         "type": "String",
         "description": "Body of the empty feed.",
@@ -3847,7 +3847,7 @@
         "description": "Opens the dictionary to tag what a clip is about.",
         "placeholders": {}
     },
-    "tagTrickExplain": "Tagged clips appear on the trick's page, so anyone looking it up finds yours.",
+    "tagTrickExplain": "Your clip shows on the trick's page.",
     "@tagTrickExplain": {
         "type": "String",
         "description": "Why tagging a post matters.",
@@ -3859,7 +3859,7 @@
         "description": "Switch label in the composer.",
         "placeholders": {}
     },
-    "markTutorialExplain": "It teaches the trick rather than just showing it landed. Tutorials lead a trick's page.",
+    "markTutorialExplain": "It teaches the trick. Tutorials lead the trick's page.",
     "@markTutorialExplain": {
         "type": "String",
         "description": "Explains the tutorial switch.",
@@ -3871,7 +3871,7 @@
         "description": "Composer section: link the post to one of your sessions.",
         "placeholders": {}
     },
-    "fromSessionExplain": "Its results go on the post: what you worked on, and any firsts.",
+    "fromSessionExplain": "Adds what you worked on and any firsts.",
     "@fromSessionExplain": {
         "type": "String",
         "description": "Explains linking a session to a post.",
@@ -3889,7 +3889,7 @@
         "description": "Composer switch: attach a coarse location.",
         "placeholders": {}
     },
-    "addAreaExplain": "Rounded to about a kilometre, so it shows the neighbourhood and never the spot. Lets players nearby find this.",
+    "addAreaExplain": "Rounded to about a kilometre, never the exact spot.",
     "@addAreaExplain": {
         "type": "String",
         "description": "Explains what location is stored and why.",
@@ -4461,7 +4461,7 @@
         "description": "Creates a new club. A name is enough.",
         "placeholders": {}
     },
-    "startAClubExplain": "A club is two people who play. Start one for the people you already kick with.",
+    "startAClubExplain": "Start one for the people you already play with.",
     "@startAClubExplain": {
         "type": "String",
         "description": "Encouragement under the start-a-club button; from the design doc.",
@@ -4705,7 +4705,7 @@
         "description": "First-run screen heading.",
         "placeholders": {}
     },
-    "welcomeBody": "Tell other players who you are. All of it can be changed later from your profile.",
+    "welcomeBody": "You can change all of this later.",
     "@welcomeBody": {
         "type": "String",
         "description": "First-run screen intro.",
@@ -4759,7 +4759,7 @@
         "description": "Use your area rather than a known place.",
         "placeholders": {}
     },
-    "somewhereElseExplain": "Shown as an area only. Message the people you let in with the exact spot.",
+    "somewhereElseExplain": "Shown as an area. Share the exact spot with people you let in.",
     "@somewhereElseExplain": {
         "type": "String",
         "description": "Explains 'somewhere else'.",
@@ -4795,7 +4795,7 @@
         "description": "Heading over the radius choice.",
         "placeholders": {}
     },
-    "radiusExplain": "Strangers see a circle this size, never the spot. Smaller is easier to find, larger is more private.",
+    "radiusExplain": "Strangers see this circle, never the spot.",
     "@radiusExplain": {
         "type": "String",
         "description": "Explains the radius choice, from the design doc.",
@@ -4883,13 +4883,13 @@
         "description": "Discover filter: sessions whose area is near you.",
         "placeholders": {}
     },
-    "noSessionsNearBody": "Nothing coming up near you yet. That's normal early on: schedule one and people nearby will find it here.",
+    "noSessionsNearBody": "Nothing near you yet. Schedule one and nearby players will find it.",
     "@noSessionsNearBody": {
         "type": "String",
         "description": "Discover near-me empty state.",
         "placeholders": {}
     },
-    "nearbySessionsExplain": "Circles are areas, not spots. The host shares the exact place with people they let in.",
+    "nearbySessionsExplain": "Circles are areas. Hosts share the exact spot with people they let in.",
     "@nearbySessionsExplain": {
         "type": "String",
         "description": "Caption under the near-me map.",
@@ -4923,7 +4923,7 @@
         "description": "Heading over the goals chosen for this session.",
         "placeholders": {}
     },
-    "goalsExplain": "Pick a few things to work on. You'll grade them when you stop. Three is plenty.",
+    "goalsExplain": "Pick up to three things to work on. You'll grade them at the end.",
     "@goalsExplain": {
         "type": "String",
         "description": "Explains the goal step, shown after Start.",
@@ -5001,7 +5001,7 @@
         "description": "After adding a favourite from Try next.",
         "placeholders": {}
     },
-    "goalsReportHint": "Leave one ungraded and it counts as not today. That's worth knowing too.",
+    "goalsReportHint": "Leave one ungraded if you didn't get to it.",
     "@goalsReportHint": {
         "type": "String",
         "description": "Under the goals in a report: an unticked goal is a real answer.",
@@ -5317,7 +5317,7 @@
         "description": "Host's switch when posting a finished session.",
         "placeholders": {}
     },
-    "includeEveryonesResultsBody": "Their firsts and grades go on your post. Numbers only for those who share them, and nobody who keeps their sessions hidden.",
+    "includeEveryonesResultsBody": "Adds everyone's firsts and grades, except anyone who keeps their sessions private.",
     "@includeEveryonesResultsBody": {
         "type": "String",
         "description": "Explains what sharing results shows.",
@@ -5534,6 +5534,18 @@
     "@and": {
         "type": "String",
         "description": "Joins the last two items of a short list, e.g. 'freestyle and net'.",
+        "placeholders": {}
+    },
+    "addAPhoto": "Add a photo",
+    "@addAPhoto": {
+        "type": "String",
+        "description": "Welcome screen: pick a profile photo.",
+        "placeholders": {}
+    },
+    "changePhoto": "Change photo",
+    "@changePhoto": {
+        "type": "String",
+        "description": "Welcome screen, after a profile photo was picked.",
         "placeholders": {}
     }
 }

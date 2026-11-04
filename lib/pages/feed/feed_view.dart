@@ -12,6 +12,7 @@ import 'package:footbag_network/pages/feed/widgets/feed_states.dart';
 import 'package:footbag_network/pages/feed/widgets/post_card.dart';
 import 'package:footbag_network/pages/feed/widgets/trick_header.dart';
 import 'package:footbag_network/pages/inbox/inbox_bell.dart';
+import 'package:footbag_network/widgets/edge_fade.dart';
 import 'package:footbag_network/widgets/footbag_nav_bar.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
@@ -221,37 +222,39 @@ class _Filters extends StatelessWidget {
         children: [
           SizedBox(
             height: 48,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.fromLTRB(16, 6, 16, 10),
-              children: [
-                FeedChip(
-                  key: const Key('SortRecent'),
-                  label: l10n.feedRecent,
-                  selected: c.sort == 'recent',
-                  onTap: () => c.setSort('recent'),
-                ),
-                _TopChip(controller: c),
-                // A gap rather than a divider: sort is one choice, filters
-                // are independent switches, and the space says so.
-                const SizedBox(width: 12),
-                FeedChip(
-                  key: const Key('FilterTutorials'),
-                  label: l10n.feedTutorials,
-                  selected: c.tutorialsOnly,
-                  outlinedWhenOn: true,
-                  onTap: c.toggleTutorials,
-                ),
-                FeedChip(
-                  key: const Key('FilterNear'),
-                  label: l10n.feedNearMe,
-                  icon: Icons.near_me_outlined,
-                  busy: c.locating,
-                  selected: c.near != null,
-                  outlinedWhenOn: true,
-                  onTap: c.toggleNear,
-                ),
-              ],
+            child: EdgeFade(
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.fromLTRB(16, 6, 16, 10),
+                children: [
+                  FeedChip(
+                    key: const Key('SortRecent'),
+                    label: l10n.feedRecent,
+                    selected: c.sort == 'recent',
+                    onTap: () => c.setSort('recent'),
+                  ),
+                  _TopChip(controller: c),
+                  // A gap rather than a divider: sort is one choice, filters
+                  // are independent switches, and the space says so.
+                  const SizedBox(width: 12),
+                  FeedChip(
+                    key: const Key('FilterTutorials'),
+                    label: l10n.feedTutorials,
+                    selected: c.tutorialsOnly,
+                    outlinedWhenOn: true,
+                    onTap: c.toggleTutorials,
+                  ),
+                  FeedChip(
+                    key: const Key('FilterNear'),
+                    label: l10n.feedNearMe,
+                    icon: Icons.near_me_outlined,
+                    busy: c.locating,
+                    selected: c.near != null,
+                    outlinedWhenOn: true,
+                    onTap: c.toggleNear,
+                  ),
+                ],
+              ),
             ),
           ),
         ],

@@ -7,6 +7,7 @@ import 'package:footbag_network/l10n/l10n.dart';
 import 'package:footbag_network/pages/discover/discover.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
 import 'package:footbag_network/utils/localized_exception_extension.dart';
+import 'package:footbag_network/widgets/edge_fade.dart';
 import 'package:footbag_network/widgets/footbag_map.dart';
 import 'package:footbag_network/widgets/footbag_nav_bar.dart';
 import 'package:footbag_network/widgets/layouts/max_width_body.dart';
@@ -102,38 +103,40 @@ class _Filters extends StatelessWidget {
         // a play style, which is the point of using one vocabulary for both.
         SizedBox(
           height: 48,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            children: [
-              if (nearMe)
-                Padding(
-                  padding: const EdgeInsets.only(right: 8),
-                  child: NyfaChip(
-                    key: const Key('Filter_near'),
-                    label: l10n.nearMe,
-                    icon: Icons.near_me_outlined,
-                    selected: controller.near != null,
-                    onTap: controller.locating ? null : controller.toggleNear,
+          child: EdgeFade(
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              children: [
+                if (nearMe)
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: NyfaChip(
+                      key: const Key('Filter_near'),
+                      label: l10n.nearMe,
+                      icon: Icons.near_me_outlined,
+                      selected: controller.near != null,
+                      onTap: controller.locating ? null : controller.toggleNear,
+                    ),
                   ),
-                ),
-              for (final o in <({String? value, String label})>[
-                (value: null, label: l10n.anyStyle),
-                (value: 'kicking', label: l10n.sessionTypeKicking),
-                (value: 'freestyle', label: l10n.sessionTypeFreestyle),
-                (value: 'net', label: l10n.sessionTypeNet),
-                (value: 'stitching', label: l10n.sessionTypeStitching),
-              ])
-                Padding(
-                  padding: const EdgeInsets.only(right: 8),
-                  child: NyfaChip(
-                    key: Key('Filter_${o.value ?? 'all'}'),
-                    label: o.label,
-                    selected: controller.style == o.value,
-                    onTap: () => controller.setStyle(o.value),
+                for (final o in <({String? value, String label})>[
+                  (value: null, label: l10n.anyStyle),
+                  (value: 'kicking', label: l10n.sessionTypeKicking),
+                  (value: 'freestyle', label: l10n.sessionTypeFreestyle),
+                  (value: 'net', label: l10n.sessionTypeNet),
+                  (value: 'stitching', label: l10n.sessionTypeStitching),
+                ])
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: NyfaChip(
+                      key: Key('Filter_${o.value ?? 'all'}'),
+                      label: o.label,
+                      selected: controller.style == o.value,
+                      onTap: () => controller.setStyle(o.value),
+                    ),
                   ),
-                ),
-            ],
+              ],
+            ),
           ),
         ),
         const SizedBox(height: 12),
