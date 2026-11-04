@@ -5773,5 +5773,25 @@
                 "type": "int"
             }
         }
+    },
+    "tricksLandedCount": "{count, plural, =1{1 trick landed} other{{count} tricks landed}}",
+    "@tricksLandedCount": {
+        "type": "String",
+        "description": "On a profile: how many different tricks this player has posted landing.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "firstsCount": "{count, plural, =1{1 first} other{{count} firsts}}",
+    "@firstsCount": {
+        "type": "String",
+        "description": "On a profile: how many of their landed tricks were firsts.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
     }
 }
