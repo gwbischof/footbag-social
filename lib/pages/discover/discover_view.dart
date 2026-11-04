@@ -41,7 +41,11 @@ class DiscoverView extends StatelessWidget {
           automaticallyImplyLeading: false,
           centerTitle: false,
           titleSpacing: 20,
-          title: Text(l10n.discover, style: Nyfa.heading),
+          // The same title as Dash: one header for every tab but the front door.
+          title: Text(
+            l10n.discover,
+            style: Nyfa.heading.copyWith(fontSize: 26),
+          ),
           bottom: TabBar(
             labelColor: Nyfa.paper,
             unselectedLabelColor: Nyfa.muted,

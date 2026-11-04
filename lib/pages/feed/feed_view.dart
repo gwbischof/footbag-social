@@ -130,10 +130,15 @@ class FeedView extends StatelessWidget {
                         ),
                       ],
                     ],
-                    bottom: PreferredSize(
-                      preferredSize: const Size.fromHeight(48),
-                      child: _Filters(controller: controller),
-                    ),
+                    // On the feed the filters ride in the bar. On a trick's
+                    // or a challenge's page they sit under its header, so
+                    // the page opens on what it is about, not on chips.
+                    bottom: sub
+                        ? null
+                        : PreferredSize(
+                            preferredSize: const Size.fromHeight(48),
+                            child: _Filters(controller: controller),
+                          ),
                   ),
                   if (trick)
                     SliverToBoxAdapter(
@@ -146,6 +151,8 @@ class FeedView extends StatelessWidget {
                       ),
                     ),
                   if (!sub) const SliverToBoxAdapter(child: ChallengeBanner()),
+                  if (sub)
+                    SliverToBoxAdapter(child: _Filters(controller: controller)),
                   if (controller.error != null && posts == null)
                     SliverFillRemaining(
                       hasScrollBody: false,

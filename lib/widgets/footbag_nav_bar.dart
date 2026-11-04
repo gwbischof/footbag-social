@@ -171,9 +171,11 @@ class _StartButton extends StatelessWidget {
       radius: 28,
       child: SizedBox(
         width: 64,
+        // A play mark, not a +: the feed's + makes a post, and one icon
+        // meaning two different things was a trap.
         child: Icon(
-          Icons.add_box_outlined,
-          size: 29,
+          Icons.play_circle_outline_rounded,
+          size: 30,
           color: onPressed != null ? Nyfa.paper : Nyfa.faint,
         ),
       ),
