@@ -157,13 +157,13 @@ class _ChatRow extends StatelessWidget {
               height: 40,
               alignment: Alignment.center,
               decoration: const BoxDecoration(
-                color: Nyfa.green,
+                color: Nyfa.tonal,
                 shape: BoxShape.circle,
               ),
               child: const Icon(
                 Icons.forum_outlined,
                 size: 20,
-                color: Nyfa.ground,
+                color: Nyfa.paper,
               ),
             ),
             const SizedBox(width: 14),
@@ -333,8 +333,8 @@ class InboxRow extends StatelessWidget {
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.fromLTRB(20, 12, 16, 12),
-        // New this visit: a lift off the ground and a green dot -- solid
-        // colours, as everywhere, rather than a tint.
+        // New this visit: a lift off the ground -- one signal, not two, and a
+        // solid colour, as everywhere, rather than a tint.
         color: item.unread ? Nyfa.raised : Nyfa.ground,
         child: Row(
           children: [
@@ -354,16 +354,6 @@ class InboxRow extends StatelessWidget {
                 style: Nyfa.bodyText,
               ),
             ),
-            if (item.unread)
-              Container(
-                width: 8,
-                height: 8,
-                margin: const EdgeInsets.only(left: 10),
-                decoration: const BoxDecoration(
-                  color: Nyfa.green,
-                  shape: BoxShape.circle,
-                ),
-              ),
             if (trail != null) ...[const SizedBox(width: 12), trail],
           ],
         ),

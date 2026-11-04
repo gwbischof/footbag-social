@@ -237,7 +237,7 @@ class _Row extends StatelessWidget {
               style: TextStyle(
                 fontFamily: Nyfa.display,
                 fontSize: 20,
-                color: row.position <= 3 ? Nyfa.green : Nyfa.muted,
+                color: row.position <= 3 ? Nyfa.paper : Nyfa.muted,
                 fontFeatures: const [FontFeature.tabularFigures()],
               ),
             ),
@@ -261,7 +261,7 @@ class _Row extends StatelessWidget {
                   Text(
                     youLabel,
                     style: Nyfa.eyebrow.copyWith(
-                      color: Nyfa.green,
+                      color: Nyfa.muted,
                       fontSize: 13,
                     ),
                   ),

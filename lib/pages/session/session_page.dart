@@ -336,7 +336,7 @@ class _Status extends StatelessWidget {
               Text(
                 l10n.goingCount(s.attendeeCount),
                 style: Nyfa.eyebrow.copyWith(
-                  color: s.attendeeCount > 0 ? Nyfa.green : Nyfa.muted,
+                  color: s.attendeeCount > 0 ? Nyfa.paper : Nyfa.muted,
                 ),
               ),
             ],
@@ -719,7 +719,7 @@ class _Where extends StatelessWidget {
                   ),
                   child: Text(
                     (area == null ? l10n.setLocation : l10n.changeLocation),
-                    style: Nyfa.eyebrow.copyWith(color: Nyfa.green),
+                    style: Nyfa.eyebrow.copyWith(color: Nyfa.paper),
                   ),
                 ),
             ],
@@ -813,7 +813,7 @@ class _Goals extends StatelessWidget {
                         ? l10n.setGoals
                         : goals.map((g) => g.name).join(', '),
                     style: Nyfa.bodyText.copyWith(
-                      color: goals.isEmpty ? Nyfa.green : Nyfa.paper,
+                      color: Nyfa.paper,
                     ),
                   ),
                 ),

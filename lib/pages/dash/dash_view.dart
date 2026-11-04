@@ -767,7 +767,10 @@ class _Nearby extends StatelessWidget {
             icon: const Icon(Icons.near_me_outlined, size: 18),
             label: Text(
               l10n.showNearMe,
-              style: Nyfa.bodyText.copyWith(color: Nyfa.green),
+              style: Nyfa.bodyText.copyWith(
+                color: Nyfa.paper,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
         ),

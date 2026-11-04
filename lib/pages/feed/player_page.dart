@@ -305,7 +305,7 @@ class PlayerPageState extends State<PlayerPage> {
                                               children: [
                                                 const Diamond(
                                                   size: 10,
-                                                  color: Nyfa.green,
+                                                  color: Nyfa.muted,
                                                 ),
                                                 const SizedBox(width: 7),
                                                 Text(

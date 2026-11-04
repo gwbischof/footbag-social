@@ -484,7 +484,7 @@ class _TagChip extends StatelessWidget {
     child: Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Diamond(size: 10, color: Nyfa.green),
+        const Diamond(size: 10, color: Nyfa.muted,),
         const SizedBox(width: 8),
         Text(
           label,

@@ -95,7 +95,12 @@ class Avatar extends StatelessWidget {
                       decoration: BoxDecoration(
                         // The app's six avatar tones, so a person reads the
                         // same in chat as in the feed.
-                        color: backgroundColor ?? Nyfa.toneFor(name ?? ''),
+                        // Keyed by the user ID when there is one, as PlayerAvatar is,
+                        // so a person has one colour on every screen; a room
+                        // has no ID here and falls back to its name.
+                        color:
+                            backgroundColor ??
+                            Nyfa.toneFor(presenceUserId ?? name ?? ''),
                       ),
                       alignment: Alignment.center,
                       child: Text(

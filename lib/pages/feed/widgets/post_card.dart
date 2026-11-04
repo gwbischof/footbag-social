@@ -610,8 +610,8 @@ class PageDots extends StatelessWidget {
           margin: const EdgeInsets.symmetric(horizontal: 2.5),
           width: i == current ? 14 : 5,
           height: 5,
-          // Solid colours, as everywhere: rule for the rest, green for here.
-          color: i == current ? Nyfa.green : Nyfa.muted,
+          // Solid colours, as everywhere: muted for the rest, paper for here.
+          color: i == current ? Nyfa.paper : Nyfa.edge,
         ),
     ],
   );
@@ -812,7 +812,7 @@ class _Tags extends StatelessWidget {
                   const Icon(
                     Icons.emoji_events_outlined,
                     size: 15,
-                    color: Nyfa.green,
+                    color: Nyfa.muted,
                   ),
                   const SizedBox(width: 7),
                   Text(
@@ -846,7 +846,7 @@ class _Tags extends StatelessWidget {
                   const Icon(
                     Icons.groups_outlined,
                     size: 15,
-                    color: Nyfa.green,
+                    color: Nyfa.muted,
                   ),
                   const SizedBox(width: 7),
                   Text(
@@ -878,7 +878,7 @@ class _Tags extends StatelessWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Diamond(size: 9, color: Nyfa.green),
+                  const Diamond(size: 9, color: Nyfa.muted,),
                   const SizedBox(width: 7),
                   Text(
                     t.name,
