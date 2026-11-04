@@ -310,10 +310,8 @@ abstract class AppRoutes {
                       sessionId: state.extra as int?,
                       // "I landed it" on a trick's page: ?landed=slug&name=Name
                       landed: switch (state.uri.queryParameters) {
-                        {'landed': final slug, 'name': final name} => (
-                          slug: slug,
-                          name: name,
-                        ),
+                        {'landed': final slug, 'name': final name} && final q =>
+                          (slug: slug, name: name, first: q['first'] == '1'),
                         _ => null,
                       },
                       // The welcome's "introduce yourself": ?caption=...

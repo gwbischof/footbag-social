@@ -5665,5 +5665,37 @@
         "type": "String",
         "description": "Section title on the new post screen above the tricks tagged in the post.",
         "placeholders": {}
+    },
+    "firstTrickTitle": "First {trick}!",
+    "@firstTrickTitle": {
+        "type": "String",
+        "description": "Title of the sheet after saving a session report that marks a first, e.g. 'First Paradox Mirage!'",
+        "placeholders": {
+            "trick": {
+                "type": "String"
+            }
+        }
+    },
+    "andMoreFirsts": "{count, plural, =1{And 1 more first this session.} other{And {count} more firsts this session.}}",
+    "@andMoreFirsts": {
+        "type": "String",
+        "description": "Under the first-trick title when a report marks several firsts.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "postYourFirstPrompt": "Post it so people can see it.",
+    "@postYourFirstPrompt": {
+        "type": "String",
+        "description": "Under the first-trick title after saving a report.",
+        "placeholders": {}
+    },
+    "postIt": "Post it",
+    "@postIt": {
+        "type": "String",
+        "description": "Button: post the first you just reported.",
+        "placeholders": {}
     }
 }

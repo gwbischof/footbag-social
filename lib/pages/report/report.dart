@@ -270,17 +270,31 @@ class ReportController extends State<Report> {
     }
     if (!mounted) return;
     setState(() => saving = false);
-    // A public session is a feed post, per the doc -- but posting is the
-    // player's choice, so it is offered rather than done. Asked in a sheet,
-    // not a snackbar: this is the moment the session becomes something to
-    // show, and an eight-second toast is easy to miss.
+
+    // The moment after a session is the moment there is something to show.
+    // A first is the best of it -- "I just landed this" was the Modified
+    // forum's biggest thread ever -- so a first leads, and posting it is one
+    // tap: the composer opens with the trick marked landed, first time. A
+    // first can be posted even from a private session; the session simply
+    // stays off the card. With no first, a public session is offered to the
+    // feed as before, and a private one just saves.
     final router = GoRouter.of(context);
     final s = session;
-    if (s?.onFeed != 'public') {
+    final public = s?.onFeed == 'public';
+    final names = {
+      for (final f in [...?favourites, ...goals]) f.entrySlug: f.name,
+    };
+    final firsts = [
+      for (final e in _entries.values)
+        if (e.isFirst && e.entrySlug != null)
+          (slug: e.entrySlug!, name: names[e.entrySlug] ?? e.entrySlug!),
+    ];
+    if (firsts.isEmpty && !public) {
       messenger.showSnackBar(SnackBar(content: Text(l10n.reportSaved)));
       navigator.pop(true);
       return;
     }
+    final first = firsts.firstOrNull;
     final share = await showModalBottomSheet<bool>(
       context: context,
       backgroundColor: Nyfa.ground,
@@ -292,18 +306,39 @@ class ReportController extends State<Report> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(l10n.reportSavedTitle, style: Nyfa.heading),
-              const SizedBox(height: 8),
-              Text(
-                s!.isHost
-                    ? l10n.shareSessionPromptHost
-                    : l10n.shareSessionPrompt,
-                style: Nyfa.bodyMuted,
-              ),
+              if (first != null) ...[
+                Text(
+                  l10n.firstTrickTitle(first.name).toUpperCase(),
+                  style: const TextStyle(
+                    fontFamily: Nyfa.display,
+                    fontSize: 40,
+                    height: 0.95,
+                    color: Nyfa.paper,
+                  ),
+                ),
+                if (firsts.length > 1) ...[
+                  const SizedBox(height: 8),
+                  Text(
+                    l10n.andMoreFirsts(firsts.length - 1),
+                    style: Nyfa.bodyMuted,
+                  ),
+                ],
+                const SizedBox(height: 8),
+                Text(l10n.postYourFirstPrompt, style: Nyfa.bodyMuted),
+              ] else ...[
+                Text(l10n.reportSavedTitle, style: Nyfa.heading),
+                const SizedBox(height: 8),
+                Text(
+                  s!.isHost
+                      ? l10n.shareSessionPromptHost
+                      : l10n.shareSessionPrompt,
+                  style: Nyfa.bodyMuted,
+                ),
+              ],
               const SizedBox(height: 20),
               NyfaForm.action(
                 key: const Key('ReportShareToFeed'),
-                label: l10n.shareToFeed,
+                label: first != null ? l10n.postIt : l10n.shareToFeed,
                 onPressed: () => Navigator.of(context).pop(true),
               ),
               const SizedBox(height: 10),
@@ -320,9 +355,22 @@ class ReportController extends State<Report> {
     );
     if (!mounted) return;
     navigator.pop(true);
-    if (share == true) {
-      unawaited(router.push('/rooms/feed/new', extra: widget.sessionId));
-    }
+    if (share != true) return;
+    unawaited(
+      router.push(
+        Uri(
+          path: '/rooms/feed/new',
+          queryParameters: {
+            if (first != null) ...{
+              'landed': first.slug,
+              'name': first.name,
+              'first': '1',
+            },
+          },
+        ).toString(),
+        extra: public ? widget.sessionId : null,
+      ),
+    );
   }
 
   @override

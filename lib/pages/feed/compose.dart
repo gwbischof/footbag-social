@@ -45,8 +45,9 @@ class Compose extends StatefulWidget {
   /// Prefill the session -- arriving from "Share to feed" after a report.
   final int? sessionId;
 
-  /// Prefill a trick you landed -- arriving from "I landed it" on its page.
-  final ({String slug, String name})? landed;
+  /// Prefill a trick you landed -- from "I landed it" on its page, or from
+  /// a first in a session report, which arrives already marked [first].
+  final ({String slug, String name, bool first})? landed;
 
   /// Prefill the words -- arriving from the welcome, as an introduction.
   final String? caption;
@@ -132,6 +133,7 @@ class ComposeController extends State<Compose> {
       tags.add(l.slug);
       tagNames[l.slug] = l.name;
       landed = l.slug;
+      landedFirst = l.first;
     }
     caption.addListener(() => setState(() {}));
     unawaited(loadSessions());
