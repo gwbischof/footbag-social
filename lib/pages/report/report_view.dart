@@ -41,24 +41,24 @@ class ReportView extends StatelessWidget {
       appBar: Nyfa.appBar(
         title: l10n.reportProgress,
         subtitle: controller.sessionLabel,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 12),
-            child: TextButton(
+      ),
+      // Save where every other form saves: full width at the bottom, under
+      // the thumb that just did the grading -- not a word in the top corner.
+      bottomNavigationBar: DecoratedBox(
+        decoration: const BoxDecoration(
+          border: Border(top: BorderSide(color: Nyfa.rule)),
+        ),
+        child: SafeArea(
+          top: false,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
+            child: NyfaForm.action(
               key: const Key('SaveReportButton'),
+              label: controller.saving ? l10n.saving : l10n.save,
               onPressed: controller.saving ? null : controller.saveAction,
-              child: Text(
-                (controller.saving ? l10n.saving : l10n.save),
-                style: TextStyle(
-                  fontFamily: Nyfa.body,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16,
-                  color: controller.saving ? Nyfa.muted : Nyfa.paper,
-                ),
-              ),
             ),
           ),
-        ],
+        ),
       ),
       body: MaxWidthBody(withScrolling: false, child: _body(context)),
     );
