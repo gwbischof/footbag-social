@@ -22,8 +22,10 @@ class Nyfa {
   /// The page.
   static const ground = Color(0xFF0A0A0A);
 
-  /// Sheets, inputs and placeholders: a lift off the ground.
-  static const raised = Color(0xFF181818);
+  /// Sheets, inputs, cards and tiles: a lift off the ground. #1C1C1C, up
+  /// from #181818, so a card reads as a card -- a design review found the
+  /// old step barely visible next to the ground.
+  static const raised = Color(0xFF1C1C1C);
 
   /// The fill of a secondary control -- a chip, a quiet button, an input.
   ///

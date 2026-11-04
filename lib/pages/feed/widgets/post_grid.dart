@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 import 'package:footbag_network/config/nyfa_theme.dart';
+import 'package:footbag_network/l10n/l10n.dart';
 import 'package:footbag_network/pages/feed/widgets/feed_media.dart';
 import 'package:footbag_network/pages/feed/widgets/post_card.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
@@ -31,26 +32,55 @@ class PostGridTile extends StatelessWidget {
     Widget body;
     if (first != null) {
       body = FeedImage(media: first, resolve: resolve, thumb: true);
+    } else if (post.landed case final landed?) {
+      // A landing with no clip: the trick itself, set like a trophy. A
+      // profile of these reads as a collection, not a grid of grey squares.
+      body = Container(
+        color: Nyfa.raised,
+        padding: const EdgeInsets.fromLTRB(10, 12, 10, 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Diamond(size: 12, color: Nyfa.green),
+            const Spacer(),
+            Text(
+              landed.name.toUpperCase(),
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontFamily: Nyfa.display,
+                fontSize: 22,
+                height: 0.95,
+                color: Nyfa.paper,
+              ),
+            ),
+            if (landed.first)
+              Padding(
+                padding: const EdgeInsets.only(top: 4),
+                child: Text(L10n.of(context).firstLanded, style: Nyfa.meta),
+              ),
+          ],
+        ),
+      );
     } else {
       // Designed as a tile of its own rather than a photo that failed to
-      // load: centred words on a tonal ground, marked in the corner the way
-      // a video or an album is.
+      // load: the words on the card surface, top-left like a note, marked in
+      // the corner the way a video or an album is.
       final words = post.caption.isNotEmpty
           ? post.caption
           : (post.session?.name ?? '');
       body = Container(
-        color: Nyfa.tonal,
-        padding: const EdgeInsets.all(12),
-        alignment: Alignment.center,
+        color: Nyfa.raised,
+        padding: const EdgeInsets.fromLTRB(10, 12, 26, 10),
+        alignment: Alignment.topLeft,
         child: Text(
           words,
-          maxLines: 5,
+          maxLines: 4,
           overflow: TextOverflow.ellipsis,
-          textAlign: TextAlign.center,
           style: Nyfa.bodyText.copyWith(
             fontSize: 13,
             height: 1.35,
-            fontWeight: post.caption.isEmpty ? FontWeight.w700 : null,
+            fontWeight: post.caption.isEmpty ? FontWeight.w600 : null,
           ),
         ),
       );
@@ -62,7 +92,8 @@ class PostGridTile extends StatelessWidget {
         fit: StackFit.expand,
         children: [
           body,
-          if (first == null || post.media.length > 1 || first.isVideo)
+          if ((first == null && post.landed == null) ||
+              (first != null && (post.media.length > 1 || first.isVideo)))
             Positioned(
               top: 6,
               right: 6,
@@ -83,7 +114,7 @@ class PostGridTile extends StatelessWidget {
             const Positioned(
               left: 6,
               bottom: 6,
-              child: Diamond(size: 12, color: Nyfa.green),
+              child: Diamond(size: 12, color: Nyfa.paper),
             ),
         ],
       ),
