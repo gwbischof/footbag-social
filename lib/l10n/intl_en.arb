@@ -5896,5 +5896,11 @@
         "type": "String",
         "description": "A day, before a time: 'Tomorrow 6:00 PM'.",
         "placeholders": {}
+    },
+    "noneThatWorks": "Nothing that works for you?",
+    "@noneThatWorks": {
+        "type": "String",
+        "description": "End of the Discover sessions list, above 'Schedule a session'.",
+        "placeholders": {}
     }
 }

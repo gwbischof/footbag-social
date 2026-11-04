@@ -6,6 +6,7 @@ import 'package:footbag_network/config/nyfa_theme.dart';
 import 'package:footbag_network/l10n/l10n.dart';
 import 'package:footbag_network/pages/discover/discover.dart';
 import 'package:footbag_network/pages/feed/feed_actions.dart';
+import 'package:footbag_network/utils/app_share.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
 import 'package:footbag_network/utils/localized_exception_extension.dart';
 import 'package:footbag_network/widgets/edge_fade.dart';
@@ -206,9 +207,18 @@ class _SessionsTab extends StatelessWidget {
       child: ListView.builder(
         key: const Key('DiscoverSessionsList'),
         physics: const AlwaysScrollableScrollPhysics(),
-        itemCount: rows.length + (map == null ? 0 : 1),
+        // One more at the end: a short list ends on what to do about it,
+        // rather than on blank screen.
+        itemCount: rows.length + (map == null ? 0 : 1) + 1,
         itemBuilder: (context, index) {
           if (map != null && index == 0) return map;
+          if (index == rows.length + (map == null ? 0 : 1)) {
+            return _ListEnd(
+              text: l10n.noneThatWorks,
+              action: l10n.scheduleSession,
+              onTap: () => context.push('/rooms/dash/schedule'),
+            );
+          }
           final s = rows[index - (map == null ? 0 : 1)];
           return DecoratedBox(
             decoration: const BoxDecoration(
@@ -342,13 +352,48 @@ class _PlayersTab extends StatelessWidget {
               title: l10n.noPlayersYet,
               body: l10n.noPlayersYetBody,
             )
-          else
+          else ...[
             for (final p in rows)
               _PlayerRow(key: ValueKey(p.userId), player: p),
+            _ListEnd(
+              text: l10n.inviteNudge,
+              action: l10n.inviteAFriend,
+              onTap: () => AppShare.shareInviteLink(context),
+            ),
+          ],
         ],
       ),
     );
   }
+}
+
+/// The end of a short list: a line and the next step, quiet, so a list of
+/// three people or sessions ends on something to do instead of empty black.
+class _ListEnd extends StatelessWidget {
+  final String text;
+  final String action;
+  final VoidCallback onTap;
+
+  const _ListEnd({
+    required this.text,
+    required this.action,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) => Container(
+    padding: const EdgeInsets.fromLTRB(20, 28, 20, 32),
+    decoration: const BoxDecoration(
+      border: Border(top: BorderSide(color: Nyfa.rule)),
+    ),
+    child: Column(
+      children: [
+        Text(text, textAlign: TextAlign.center, style: Nyfa.bodyMuted),
+        const SizedBox(height: 12),
+        NyfaForm.action(label: action, filled: false, onPressed: onTap),
+      ],
+    ),
+  );
 }
 
 class _PlayerRow extends StatelessWidget {
