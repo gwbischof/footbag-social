@@ -54,13 +54,6 @@ abstract class AppConfig {
     path: '/gwbischof/footbag-social/issues/new',
   );
 
-  static final Uri homeserverList = Uri(
-    scheme: 'https',
-    host: 'raw.githubusercontent.com',
-    path:
-        'gwbischof/footbag-social/refs/heads/main/recommended_homeservers.json',
-  );
-
   static const String mainIsolatePortName = 'main_isolate';
   static const String pushIsolatePortName = 'push_isolate';
   static const String pushHelperCrashReportKey = 'push_helper_crash_report';

@@ -68,16 +68,15 @@ HOMESERVER_WS = HOMESERVER.replace("https://", "wss://", 1)
 # connect-src to POST events; without both the analytics silently do nothing.
 ANALYTICS = "https://stats.korroni.com"
 
-# CanvasKit's font system fetches Roboto and the Noto fallback chain from
-# Google at runtime, for glyphs outside the bundled font. --no-web-resources-cdn
-# bundles CanvasKit and a local Roboto but does NOT stop this; the engine still
-# reaches for fonts.gstatic.com. Blocking it leaves the app with no font data at
-# all, so it renders its layout and images and draws no text whatsoever.
+# CanvasKit fetches Roboto and the Noto fallback chain at runtime, for glyphs
+# outside the bundled fonts. It used to reach fonts.gstatic.com directly; now
+# web/index.html sets fontFallbackBaseUrl to /gstatic/s/, which nginx.conf
+# proxies, so fonts are same-origin and Google never sees a visitor's IP.
 #
-# This was shipped broken once. It passed review because the browser doing the
-# checking had the fonts cached from earlier builds -- warm cache rendered fine,
-# cold cache showed a textless page. Verify font changes in a cold context.
-FONTS = "https://fonts.gstatic.com"
+# If that proxy breaks, the app draws no text at all -- layout and images, but
+# blank where every word should be. This shipped broken once (with the fonts
+# blocked by CSP) and passed review because the checking browser had them
+# cached. Verify font changes in a cold context.
 
 # OpenStreetMap's tile server, for the session maps. Images, but CanvasKit
 # fetches them over fetch(), so it needs connect-src as well as img-src --
@@ -89,7 +88,7 @@ TILES = "https://tile.openstreetmap.org"
 
 # Everything is same-origin except the homeserver and our own API: media and
 # avatars come from the first, sessions and reports from the second, and those
-# two are the only hosts the app may talk to, besides the map tiles and fonts. connect-src is
+# two are the only hosts the app may talk to, besides the map tiles. connect-src is
 # the directive that matters here -- the access token and E2EE keys live in
 # IndexedDB, and the build pulls third-party JS (native_imaging) into this
 # origin, so this is what stops either being posted elsewhere.
@@ -117,7 +116,7 @@ def policy(script_hashes: list[str]) -> str:
             f"script-src {sources}",
             "worker-src 'self' blob:",
             "style-src 'self' 'unsafe-inline'",
-            f"font-src 'self' data: {FONTS}",
+            f"font-src 'self' data:",
             # The API serves the feed's photos and clips on signed URLs. A
             # <video> element is governed by media-src, not connect-src, so
             # without the API here every clip is blocked before it is asked
@@ -125,7 +124,7 @@ def policy(script_hashes: list[str]) -> str:
             f"img-src 'self' data: blob: {HOMESERVER} {API} {TILES}",
             f"media-src 'self' data: blob: {HOMESERVER} {API}",
             f"connect-src 'self' {HOMESERVER} {HOMESERVER_WS} {API} "
-            f"{ANALYTICS} {FONTS} {TILES}",
+            f"{ANALYTICS} {TILES}",
             "base-uri 'self'",
             "form-action 'self'",
             "object-src 'none'",
