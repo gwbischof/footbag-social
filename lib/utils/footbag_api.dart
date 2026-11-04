@@ -710,6 +710,8 @@ extension FootbagApi on Client {
     List<int> mediaIds = const [],
     List<String> tags = const [],
     bool isTutorial = false,
+    String? landed,
+    bool landedFirst = false,
     int? sessionId,
     bool shareResults = false,
     int? clubId,
@@ -723,6 +725,8 @@ extension FootbagApi on Client {
       'media_ids': mediaIds,
       'tags': tags,
       'is_tutorial': isTutorial,
+      'landed': ?landed,
+      if (landed != null && landedFirst) 'landed_first': true,
       'session_id': ?sessionId,
       'club_id': ?clubId,
       'place_name': ?placeName,
@@ -1649,6 +1653,9 @@ class FootbagPost {
   final DateTime? editedAt;
   final List<FootbagMedia> media;
   final List<FootbagTag> tags;
+
+  /// Set when the post says its author landed a trick: the card leads with it.
+  final ({String slug, String name, bool first})? landed;
   final String? placeName;
   final FootbagSessionSummary? session;
   final FootbagClubRef? club;
@@ -1669,6 +1676,7 @@ class FootbagPost {
     required this.editedAt,
     required this.media,
     required this.tags,
+    this.landed,
     required this.placeName,
     required this.session,
     this.club,
@@ -1698,6 +1706,14 @@ class FootbagPost {
         for (final t in (json['tags'] as List? ?? const []))
           FootbagTag.fromJson(t as Map<String, dynamic>),
       ],
+      landed: switch (json['landed']) {
+        final Map<String, dynamic> l => (
+          slug: l['slug'] as String,
+          name: l['name'] as String,
+          first: l['first'] as bool? ?? false,
+        ),
+        _ => null,
+      },
       placeName: json['place_name'] as String?,
       club: FootbagClubRef.maybe(json['club']),
       session: json['session'] == null
@@ -2097,6 +2113,10 @@ class FootbagTrickDetail {
   final bool reported;
   final bool favourite;
 
+  /// How many players have posted that they landed it, and the latest few.
+  final int landedCount;
+  final List<({String userId, String name})> landedBy;
+
   const FootbagTrickDetail({
     required this.entry,
     required this.builtOn,
@@ -2106,6 +2126,8 @@ class FootbagTrickDetail {
     required this.hitSessions,
     required this.reported,
     required this.favourite,
+    this.landedCount = 0,
+    this.landedBy = const [],
   });
 
   static List<({String slug, String name})> _refs(Object? list) => [
@@ -2124,6 +2146,12 @@ class FootbagTrickDetail {
       hitSessions: mine['hit_sessions'] as int? ?? 0,
       reported: mine['last_reported'] != null,
       favourite: mine['favourite'] as bool? ?? false,
+      landedCount: json['landed_count'] as int? ?? 0,
+      landedBy: [
+        for (final a in (json['landed_by'] as List? ?? const [])
+            .cast<Map<String, dynamic>>())
+          (userId: a['user_id'] as String, name: a['display_name'] as String),
+      ],
     );
   }
 }

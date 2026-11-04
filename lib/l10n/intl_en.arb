@@ -5440,5 +5440,61 @@
         "type": "String",
         "description": "Link to the privacy policy, on the sign-in screen.",
         "placeholders": {}
+    },
+    "landed": "Landed",
+    "@landed": {
+        "type": "String",
+        "description": "Word before a trick's name on a 'landed it' post card, e.g. LANDED PARADOX MIRAGE.",
+        "placeholders": {}
+    },
+    "landedTrick": "Landed {trick}",
+    "@landedTrick": {
+        "type": "String",
+        "description": "Screen-reader label for a 'landed it' post card.",
+        "placeholders": {
+            "trick": {
+                "type": "String"
+            }
+        }
+    },
+    "landedIt": "Landed it",
+    "@landedIt": {
+        "type": "String",
+        "description": "Section title on the new post screen: say you landed a trick.",
+        "placeholders": {}
+    },
+    "pickTrickYouLanded": "Pick the trick you landed",
+    "@pickTrickYouLanded": {
+        "type": "String",
+        "description": "Button on the new post screen when no trick is tagged yet.",
+        "placeholders": {}
+    },
+    "notThisTime": "Not this time",
+    "@notThisTime": {
+        "type": "String",
+        "description": "Chip on the new post screen meaning the post is not about landing a trick.",
+        "placeholders": {}
+    },
+    "iLandedIt": "I landed it",
+    "@iLandedIt": {
+        "type": "String",
+        "description": "Button on a trick's page that starts a 'landed it' post for that trick.",
+        "placeholders": {}
+    },
+    "landedByCount": "{count, plural, =1{1 player has landed it} other{{count} players have landed it}}",
+    "@landedByCount": {
+        "type": "String",
+        "description": "On a trick's page, above the avatars of people who posted that they landed it.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "beFirstToLandIt": "Nobody has posted landing it yet",
+    "@beFirstToLandIt": {
+        "type": "String",
+        "description": "On a trick's page when no one has posted that they landed it.",
+        "placeholders": {}
     }
 }

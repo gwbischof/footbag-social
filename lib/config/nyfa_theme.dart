@@ -333,7 +333,7 @@ class NyfaForm {
   static Widget toggle({
     Key? key,
     required String label,
-    required String explain,
+    String? explain,
     required bool value,
     required ValueChanged<bool> onChanged,
   }) => SwitchListTile(
@@ -349,7 +349,7 @@ class NyfaForm {
       label,
       style: Nyfa.bodyText.copyWith(fontWeight: FontWeight.w600),
     ),
-    subtitle: Text(explain, style: Nyfa.meta),
+    subtitle: explain == null ? null : Text(explain, style: Nyfa.meta),
   );
 
   /// A row of selectable chips. Wraps, so a long set never clips at 360px.

@@ -6,6 +6,7 @@ import 'dart:async';
 
 import 'package:footbag_network/config/nyfa_theme.dart';
 import 'package:footbag_network/l10n/l10n.dart';
+import 'package:footbag_network/pages/feed/feed_actions.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
 import 'package:footbag_network/widgets/matrix.dart';
 import 'package:footbag_network/widgets/people.dart';
@@ -223,11 +224,96 @@ class _TrickHeaderState extends State<TrickHeader> {
             ],
           ),
         ),
+        _LandedBy(
+          count: d.landedCount,
+          players: d.landedBy,
+          onLanded: () => context.push(
+            Uri(
+              path: '/rooms/feed/new',
+              queryParameters: {'landed': e.slug, 'name': e.name},
+            ).toString(),
+          ),
+        ),
         if (d.steps.isNotEmpty) links(l10n.trickSteps, d.steps),
         if (d.builtOn.isNotEmpty) links(l10n.builtOn, d.builtOn),
         if (d.buildsInto.isNotEmpty) links(l10n.buildsInto, d.buildsInto),
         NyfaForm.section(l10n.clips),
       ],
+    );
+  }
+}
+
+/// Who has posted that they landed it, and the button to join them.
+///
+/// Social proof is what makes a trick feel reachable -- "eight people near
+/// your level have this" -- and the button is the shortest path to the post
+/// the forum's biggest thread was made of.
+class _LandedBy extends StatelessWidget {
+  final int count;
+  final List<({String userId, String name})> players;
+  final VoidCallback onLanded;
+
+  const _LandedBy({
+    required this.count,
+    required this.players,
+    required this.onLanded,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = L10n.of(context);
+    const size = 32.0;
+    final shown = players.take(6).toList();
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+      child: Row(
+        children: [
+          if (shown.isNotEmpty) ...[
+            SizedBox(
+              width: size + (shown.length - 1) * size * 0.6,
+              height: size,
+              child: Stack(
+                children: [
+                  for (var i = 0; i < shown.length; i++)
+                    Positioned(
+                      left: i * size * 0.6,
+                      child: DecoratedBox(
+                        // A ground-coloured ring so overlapping faces read as
+                        // separate people rather than one blob.
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Nyfa.ground,
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(2),
+                          child: PlayerAvatar(
+                            userId: shown[i].userId,
+                            name: shown[i].name,
+                            size: size - 4,
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 12),
+          ],
+          Expanded(
+            child: Text(
+              count == 0 ? l10n.beFirstToLandIt : l10n.landedByCount(count),
+              style: count == 0 ? Nyfa.bodyMuted : Nyfa.bodyText,
+            ),
+          ),
+          const SizedBox(width: 12),
+          SmallButton(
+            key: const Key('TrickLanded'),
+            label: l10n.iLandedIt,
+            filled: true,
+            onPressed: onLanded,
+          ),
+        ],
+      ),
     );
   }
 }

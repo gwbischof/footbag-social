@@ -45,7 +45,10 @@ class Compose extends StatefulWidget {
   /// Prefill the session -- arriving from "Share to feed" after a report.
   final int? sessionId;
 
-  const Compose({this.sessionId, super.key});
+  /// Prefill a trick you landed -- arriving from "I landed it" on its page.
+  final ({String slug, String name})? landed;
+
+  const Compose({this.sessionId, this.landed, super.key});
 
   @override
   ComposeController createState() => ComposeController();
@@ -62,6 +65,11 @@ class ComposeController extends State<Compose> {
 
   bool tutorial = false;
   int? sessionId;
+
+  /// The tagged trick this post says you landed, if any, and whether it was
+  /// your first. Always one of [tags]: untagging it clears it.
+  String? landed;
+  bool landedFirst = false;
 
   /// Clubs you can post to; the picker is hidden when there are none.
   List<FootbagClub> clubs = const [];
@@ -81,7 +89,10 @@ class ComposeController extends State<Compose> {
   bool get uploading => drafts.any((d) => !d.done && !d.failed);
 
   bool get hasContent =>
-      drafts.isNotEmpty || caption.text.trim().isNotEmpty || sessionId != null;
+      drafts.isNotEmpty ||
+      caption.text.trim().isNotEmpty ||
+      sessionId != null ||
+      landed != null;
 
   /// Share needs something to post and nothing still in flight. A failed
   /// upload blocks it too, rather than being silently dropped from the post.
@@ -92,6 +103,11 @@ class ComposeController extends State<Compose> {
   void initState() {
     super.initState();
     sessionId = widget.sessionId;
+    if (widget.landed case final l?) {
+      tags.add(l.slug);
+      tagNames[l.slug] = l.name;
+      landed = l.slug;
+    }
     caption.addListener(() => setState(() {}));
     unawaited(loadSessions());
     unawaited(loadClubs());
@@ -200,6 +216,21 @@ class ComposeController extends State<Compose> {
     drafts.insert(newIndex, moved);
   });
 
+  /// Pick the trick you landed: tag it if it is not tagged yet, then mark it.
+  Future<void> pickLanded() async {
+    final before = tags.length;
+    await tagTricks();
+    if (!mounted || tags.length == before) return;
+    setState(() => landed = tags[before]);
+  }
+
+  void setLanded(String? slug) => setState(() {
+    landed = slug;
+    if (slug == null) landedFirst = false;
+  });
+
+  void setLandedFirst(bool v) => setState(() => landedFirst = v);
+
   Future<void> tagTricks() async {
     final added = await context.push<List<String>>(
       '/rooms/feed/new/tag',
@@ -226,7 +257,13 @@ class ComposeController extends State<Compose> {
     }
   }
 
-  void untag(String slug) => setState(() => tags.remove(slug));
+  void untag(String slug) => setState(() {
+    tags.remove(slug);
+    if (landed == slug) {
+      landed = null;
+      landedFirst = false;
+    }
+  });
 
   void setTutorial(bool v) => setState(() => tutorial = v);
 
@@ -293,6 +330,8 @@ class ComposeController extends State<Compose> {
         mediaIds: [for (final d in drafts) d.media!.id],
         tags: tags,
         isTutorial: tutorial,
+        landed: landed,
+        landedFirst: landedFirst,
         sessionId: sessionId,
         shareResults: canShareResults && shareResults,
         clubId: clubId,

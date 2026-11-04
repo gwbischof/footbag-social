@@ -306,7 +306,17 @@ abstract class AppRoutes {
                   pageBuilder: (context, state) => defaultPageBuilder(
                     context,
                     state,
-                    Compose(sessionId: state.extra as int?),
+                    Compose(
+                      sessionId: state.extra as int?,
+                      // "I landed it" on a trick's page: ?landed=slug&name=Name
+                      landed: switch (state.uri.queryParameters) {
+                        {'landed': final slug, 'name': final name} => (
+                          slug: slug,
+                          name: name,
+                        ),
+                        _ => null,
+                      },
+                    ),
                   ),
                   redirect: loggedOutRedirect,
                   routes: [

@@ -127,6 +127,14 @@ class _PostCardState extends State<PostCard> {
         children: [
           _Header(post: post, actions: widget.actions),
           if (post.removed) _RemovedBanner(text: l10n.removedNotice),
+          if (post.landed case final landed?)
+            _LandedBanner(
+              name: landed.name,
+              first: landed.first,
+              onTap: () => widget.actions.openTag(
+                FootbagTag(slug: landed.slug, name: landed.name),
+              ),
+            ),
           if (hasMedia)
             MediaCarousel(
               media: post.media,
@@ -290,6 +298,93 @@ class _Badge extends StatelessWidget {
       ),
     ),
   );
+}
+
+/// "Landed Paradox Mirage" -- the moment the post is about, above the clip.
+///
+/// The Modified forum's biggest thread ever was people saying exactly this, so
+/// it is not left to a caption: the trick is set large in the display face,
+/// with the club green for the ◆ and for a first, the one time this card is
+/// allowed to celebrate. Tapping it opens the trick, where everyone who has
+/// landed it is listed.
+class _LandedBanner extends StatelessWidget {
+  final String name;
+  final bool first;
+  final VoidCallback onTap;
+
+  const _LandedBanner({
+    required this.name,
+    required this.first,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = L10n.of(context);
+    return Semantics(
+      button: true,
+      label: first ? '${l10n.landedTrick(name)}. ${l10n.firstTime}' : l10n.landedTrick(name),
+      excludeSemantics: true,
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 0, 20, 12),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Text(
+                '♦',
+                style: TextStyle(color: Nyfa.green, fontSize: 22, height: 1),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(
+                        text: '${l10n.landed.toUpperCase()} ',
+                        style: const TextStyle(color: Nyfa.muted),
+                      ),
+                      TextSpan(text: name.toUpperCase()),
+                    ],
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontFamily: Nyfa.display,
+                    fontSize: 28,
+                    height: 1.0,
+                    letterSpacing: 0.5,
+                    color: Nyfa.paper,
+                  ),
+                ),
+              ),
+              if (first) ...[
+                const SizedBox(width: 10),
+                Container(
+                  padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
+                  decoration: const BoxDecoration(
+                    color: Nyfa.green,
+                    borderRadius: BorderRadius.all(Radius.circular(6)),
+                  ),
+                  child: Text(
+                    l10n.firstLanded,
+                    style: const TextStyle(
+                      fontFamily: Nyfa.body,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 12,
+                      color: Nyfa.ground,
+                      height: 1.1,
+                    ),
+                  ),
+                ),
+              ],
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class _RemovedBanner extends StatelessWidget {

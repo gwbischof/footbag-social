@@ -66,11 +66,42 @@ class ComposeView extends StatelessWidget {
                   maxLines: 10,
                   maxLength: 2200,
                 ),
+                // First, above the tags: the forum's biggest thread ever was
+                // people saying they had just landed something.
+                NyfaForm.section(l10n.landedIt),
+                if (c.tags.isEmpty)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: _AddChip(
+                        key: const Key('ComposeLanded'),
+                        label: l10n.pickTrickYouLanded,
+                        onTap: c.pickLanded,
+                      ),
+                    ),
+                  )
+                else
+                  NyfaForm.chips(
+                    keyPrefix: 'ComposeLanded',
+                    options: [
+                      (value: '', label: l10n.notThisTime),
+                      for (final slug in c.tags)
+                        (value: slug, label: c.tagNames[slug] ?? slug),
+                    ],
+                    selected: {c.landed ?? ''},
+                    onToggle: (v) => c.setLanded(v.isEmpty ? null : v),
+                  ),
+                if (c.landed != null) ...[
+                  const SizedBox(height: 8),
+                  NyfaForm.toggle(
+                    key: const Key('ComposeLandedFirst'),
+                    label: l10n.firstTime,
+                    value: c.landedFirst,
+                    onChanged: c.setLandedFirst,
+                  ),
+                ],
                 NyfaForm.section(l10n.tagTrick),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 12),
-                  child: Text(l10n.tagTrickExplain, style: Nyfa.bodyMuted),
-                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Wrap(
