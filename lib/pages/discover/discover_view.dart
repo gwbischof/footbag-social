@@ -5,6 +5,7 @@
 import 'package:footbag_network/config/nyfa_theme.dart';
 import 'package:footbag_network/l10n/l10n.dart';
 import 'package:footbag_network/pages/discover/discover.dart';
+import 'package:footbag_network/pages/feed/feed_actions.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
 import 'package:footbag_network/utils/localized_exception_extension.dart';
 import 'package:footbag_network/widgets/edge_fade.dart';
@@ -221,6 +222,14 @@ class _SessionsTab extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
+                    // The host's face: who you would be playing with is
+                    // most of the decision.
+                    PlayerAvatar(
+                      userId: s.hostId,
+                      name: s.hostName ?? s.hostId,
+                      size: 40,
+                    ),
+                    const SizedBox(width: 14),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -232,15 +241,30 @@ class _SessionsTab extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                           const SizedBox(height: 3),
-                          Text(
-                            // The host's name and how many are going -- not the
-                            // MXID, which is how the first version read.
-                            [
-                              l10n.hostedBy(s.hostName ?? s.hostId),
-                              l10n.goingCount(s.attendeeCount),
-                              if (s.myState == 'requested') l10n.requestSent,
-                              if (s.myState == 'approved') l10n.youreGoing,
-                            ].join('  ·  '),
+                          // Running now leads the line, in green, rather than
+                          // sitting beside the name and squeezing it.
+                          Text.rich(
+                            TextSpan(
+                              children: [
+                                if (s.isRunning)
+                                  TextSpan(
+                                    text: '${l10n.runningNow}  ·  ',
+                                    style: const TextStyle(color: Nyfa.green),
+                                  ),
+                                TextSpan(
+                                  // The host's name and how many are going --
+                                  // not the MXID, as the first version read.
+                                  text: [
+                                    l10n.hostedBy(s.hostName ?? s.hostId),
+                                    l10n.goingCount(s.attendeeCount),
+                                    if (s.myState == 'requested')
+                                      l10n.requestSent,
+                                    if (s.myState == 'approved')
+                                      l10n.youreGoing,
+                                  ].join('  ·  '),
+                                ),
+                              ],
+                            ),
                             style: Nyfa.meta,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -248,13 +272,6 @@ class _SessionsTab extends StatelessWidget {
                         ],
                       ),
                     ),
-                    if (s.isRunning) ...[
-                      const SizedBox(width: 10),
-                      Text(
-                        l10n.runningNow,
-                        style: Nyfa.eyebrow.copyWith(color: Nyfa.green),
-                      ),
-                    ],
                     const SizedBox(width: 6),
                     const Icon(Icons.chevron_right_rounded, color: Nyfa.faint),
                   ],

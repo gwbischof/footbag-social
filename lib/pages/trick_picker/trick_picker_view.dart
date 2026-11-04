@@ -68,13 +68,7 @@ class TrickPickerView extends StatelessWidget {
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Text(l10n.searchTricksHelp, style: Nyfa.meta),
-          ),
-        ),
+        const SizedBox(height: 8),
         Expanded(child: _list(context, l10n)),
       ],
     );

@@ -4,6 +4,7 @@
 
 import 'package:footbag_network/config/nyfa_theme.dart';
 import 'package:footbag_network/l10n/l10n.dart';
+import 'package:footbag_network/pages/feed/feed_actions.dart';
 import 'package:footbag_network/pages/rankings/rankings.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
 import 'package:footbag_network/utils/localized_exception_extension.dart';
@@ -241,6 +242,9 @@ class _Row extends StatelessWidget {
               ),
             ),
           ),
+          // A face beside the name: a board of people, not of strings.
+          PlayerAvatar(userId: row.userId, name: row.displayName, size: 32),
+          const SizedBox(width: 12),
           Expanded(
             child: Row(
               children: [
