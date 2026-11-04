@@ -8,6 +8,7 @@ import 'package:footbag_network/config/nyfa_theme.dart';
 import 'package:footbag_network/l10n/l10n.dart';
 import 'package:footbag_network/pages/feed/post_events.dart';
 import 'package:footbag_network/pages/feed/widgets/face_stack.dart';
+import 'package:footbag_network/pages/feed/widgets/post_card.dart';
 import 'package:footbag_network/utils/footbag_api.dart';
 import 'package:footbag_network/widgets/matrix.dart';
 import 'package:footbag_network/widgets/people.dart';
@@ -120,48 +121,37 @@ class _TrickHeaderState extends State<TrickHeader> {
     if (d == null) return const SizedBox(height: 8);
     final e = d.entry;
 
+    // Where it sits, as rows: they are ways to go, and every other way to go
+    // in the app is a row with a chevron, not a stack of chips.
     Widget links(String title, List<({String slug, String name})> refs) =>
         Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             NyfaForm.section(title),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: [
-                  for (final r in refs)
-                    InkWell(
-                      key: Key('TrickLink_${r.slug}'),
-                      onTap: () => context.push(
-                        '/rooms/feed/trick/${r.slug}',
-                        extra: r.name,
+            for (final r in refs)
+              InkWell(
+                key: Key('TrickLink_${r.slug}'),
+                onTap: () =>
+                    context.push('/rooms/feed/trick/${r.slug}', extra: r.name),
+                child: Container(
+                  constraints: const BoxConstraints(minHeight: 48),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  decoration: const BoxDecoration(
+                    border: Border(top: BorderSide(color: Nyfa.rule)),
+                  ),
+                  child: Row(
+                    children: [
+                      const Diamond(size: 10, color: Nyfa.muted),
+                      const SizedBox(width: 12),
+                      Expanded(child: Text(r.name, style: Nyfa.rowTitle)),
+                      const Icon(
+                        Icons.chevron_right_rounded,
+                        color: Nyfa.faint,
                       ),
-                      child: Container(
-                        constraints: const BoxConstraints(minHeight: 40),
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
-                        decoration: const BoxDecoration(
-                          color: Nyfa.tonal,
-                          borderRadius: Nyfa.rounded,
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(r.name, style: Nyfa.bodyText),
-                            const SizedBox(width: 4),
-                            const Icon(
-                              Icons.chevron_right_rounded,
-                              size: 18,
-                              color: Nyfa.muted,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                ],
+                    ],
+                  ),
+                ),
               ),
-            ),
           ],
         );
 
