@@ -198,6 +198,33 @@ class _Content extends StatelessWidget {
                           height: 1.5,
                         ),
                       ),
+                      const SizedBox(height: 12),
+                      // Before the click, as with approval above. The links are
+                      // buttons rather than spans inside the sentence so each
+                      // gets a full-size tap target.
+                      Text(
+                        l10n.byContinuingYouAgree,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          color: Nyfa.muted,
+                          fontFamily: Nyfa.body,
+                          fontSize: 12.5,
+                          height: 1.5,
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: .center,
+                        children: [
+                          _LegalLink(
+                            label: l10n.termsOfService,
+                            url: AppSettings.tos.value,
+                          ),
+                          _LegalLink(
+                            label: l10n.privacyPolicy,
+                            url: AppSettings.privacyPolicy.value,
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),
@@ -208,6 +235,27 @@ class _Content extends StatelessWidget {
       },
     );
   }
+}
+
+class _LegalLink extends StatelessWidget {
+  final String label, url;
+  const _LegalLink({required this.label, required this.url});
+
+  @override
+  Widget build(BuildContext context) => TextButton(
+    onPressed: () => launchUrlString(url),
+    style: TextButton.styleFrom(
+      foregroundColor: Nyfa.paper,
+      minimumSize: const Size(48, 48),
+      textStyle: const TextStyle(
+        fontFamily: Nyfa.body,
+        fontSize: 12.5,
+        fontWeight: FontWeight.w500,
+        decoration: TextDecoration.underline,
+      ),
+    ),
+    child: Text(label),
+  );
 }
 
 /// The name, stacked and lit from behind.

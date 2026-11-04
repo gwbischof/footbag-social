@@ -5422,5 +5422,23 @@
         "type": "String",
         "description": "Says what deleting an account removes, before it happens.",
         "placeholders": {}
+    },
+    "byContinuingYouAgree": "By continuing, you agree to the Terms of Service and Privacy Policy.",
+    "@byContinuingYouAgree": {
+        "type": "String",
+        "description": "Shown under the sign-in button, above links to both documents. Sign-up also asks for explicit agreement; this tells people before they start.",
+        "placeholders": {}
+    },
+    "termsOfService": "Terms of Service",
+    "@termsOfService": {
+        "type": "String",
+        "description": "Link to the terms page, on the sign-in screen and in settings.",
+        "placeholders": {}
+    },
+    "privacyPolicy": "Privacy Policy",
+    "@privacyPolicy": {
+        "type": "String",
+        "description": "Link to the privacy policy, on the sign-in screen.",
+        "placeholders": {}
     }
 }

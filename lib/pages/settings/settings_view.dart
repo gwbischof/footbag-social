@@ -201,6 +201,11 @@ class SettingsView extends StatelessWidget {
               onTap: () => launchUrlString(AppSettings.privacyPolicy.value),
             ),
             ListTile(
+              leading: const Icon(Icons.gavel_outlined),
+              title: Text(L10n.of(context).termsOfService),
+              onTap: () => launchUrlString(AppSettings.tos.value),
+            ),
+            ListTile(
               leading: const Icon(Icons.info_outline_rounded),
               title: Text(L10n.of(context).about),
               onTap: () => PlatformInfos.showDialog(context),

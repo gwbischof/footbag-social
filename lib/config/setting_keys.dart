@@ -118,9 +118,9 @@ enum AppSettings<T> {
   ),
   privacyPolicy<String>(
     'com.footbagnetwork.privacy_policy_url',
-    'https://newyorkfootbag.com/privacy',
+    'https://footbagsocial.com/privacy',
   ),
-  tos<String>('com.footbagnetwork.tos_url', 'https://newyorkfootbag.com/terms'),
+  tos<String>('com.footbagnetwork.tos_url', 'https://footbagsocial.com/terms'),
   sendTimelineEventTimeout<int>(
     'com.footbagnetwork.send_timeline_event_timeout',
     15,
