@@ -3847,12 +3847,6 @@
         "description": "Opens the dictionary to tag what a clip is about.",
         "placeholders": {}
     },
-    "tagTrickExplain": "Your clip shows on the trick's page.",
-    "@tagTrickExplain": {
-        "type": "String",
-        "description": "Why tagging a post matters.",
-        "placeholders": {}
-    },
     "markTutorial": "Tutorial",
     "@markTutorial": {
         "type": "String",
@@ -3865,16 +3859,10 @@
         "description": "Explains the tutorial switch.",
         "placeholders": {}
     },
-    "fromSession": "From a session",
+    "fromSession": "Session",
     "@fromSession": {
         "type": "String",
         "description": "Composer section: link the post to one of your sessions.",
-        "placeholders": {}
-    },
-    "fromSessionExplain": "Adds what you worked on and any firsts.",
-    "@fromSessionExplain": {
-        "type": "String",
-        "description": "Explains linking a session to a post.",
         "placeholders": {}
     },
     "noSession": "None",
@@ -5463,18 +5451,6 @@
         "description": "Section title on the new post screen: say you landed a trick.",
         "placeholders": {}
     },
-    "pickTrickYouLanded": "Pick the trick you landed",
-    "@pickTrickYouLanded": {
-        "type": "String",
-        "description": "Button on the new post screen when no trick is tagged yet.",
-        "placeholders": {}
-    },
-    "notThisTime": "Not this time",
-    "@notThisTime": {
-        "type": "String",
-        "description": "Chip on the new post screen meaning the post is not about landing a trick.",
-        "placeholders": {}
-    },
     "iLandedIt": "I landed it",
     "@iLandedIt": {
         "type": "String",
@@ -5672,7 +5648,7 @@
         "description": "Section title on the new post screen for entering a challenge.",
         "placeholders": {}
     },
-    "notEntering": "Not entering",
+    "notEntering": "None",
     "@notEntering": {
         "type": "String",
         "description": "Chip on the new post screen: the post is not a challenge entry.",
@@ -5682,6 +5658,12 @@
     "@challengeNeedsMedia": {
         "type": "String",
         "description": "On the new post screen when a challenge is picked but nothing is attached.",
+        "placeholders": {}
+    },
+    "tricks": "Tricks",
+    "@tricks": {
+        "type": "String",
+        "description": "Section title on the new post screen above the tricks tagged in the post.",
         "placeholders": {}
     }
 }

@@ -260,14 +260,6 @@ class ComposeController extends State<Compose> {
     drafts.insert(newIndex, moved);
   });
 
-  /// Pick the trick you landed: tag it if it is not tagged yet, then mark it.
-  Future<void> pickLanded() async {
-    final before = tags.length;
-    await tagTricks();
-    if (!mounted || tags.length == before) return;
-    setState(() => landed = tags[before]);
-  }
-
   void setLanded(String? slug) => setState(() {
     landed = slug;
     if (slug == null) landedFirst = false;

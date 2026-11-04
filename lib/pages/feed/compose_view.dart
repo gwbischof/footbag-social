@@ -66,67 +66,9 @@ class ComposeView extends StatelessWidget {
                   maxLines: 10,
                   maxLength: 2200,
                 ),
-                // Above everything else when there is one running: it is why
-                // the clip is being posted, and it decides whether one is
-                // needed at all.
-                if (c.challenges.isNotEmpty) ...[
-                  NyfaForm.section(l10n.enterAChallenge),
-                  NyfaForm.chips(
-                    keyPrefix: 'ComposeChallenge',
-                    options: [
-                      (value: 'none', label: l10n.notEntering),
-                      for (final ch in c.challenges)
-                        (value: '${ch.id}', label: ch.title),
-                    ],
-                    selected: {c.challengeId?.toString() ?? 'none'},
-                    onToggle: (v) =>
-                        c.setChallenge(v == 'none' ? null : int.parse(v)),
-                  ),
-                  if (c.needsMediaForChallenge)
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
-                      child: Text(
-                        l10n.challengeNeedsMedia,
-                        style: Nyfa.bodyMuted,
-                      ),
-                    ),
-                ],
-                // Then, above the tags: the forum's biggest thread ever was
-                // people saying they had just landed something.
-                NyfaForm.section(l10n.landedIt),
-                if (c.tags.isEmpty)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: _AddChip(
-                        key: const Key('ComposeLanded'),
-                        label: l10n.pickTrickYouLanded,
-                        onTap: c.pickLanded,
-                      ),
-                    ),
-                  )
-                else
-                  NyfaForm.chips(
-                    keyPrefix: 'ComposeLanded',
-                    options: [
-                      (value: '', label: l10n.notThisTime),
-                      for (final slug in c.tags)
-                        (value: slug, label: c.tagNames[slug] ?? slug),
-                    ],
-                    selected: {c.landed ?? ''},
-                    onToggle: (v) => c.setLanded(v.isEmpty ? null : v),
-                  ),
-                if (c.landed != null) ...[
-                  const SizedBox(height: 8),
-                  NyfaForm.toggle(
-                    key: const Key('ComposeLandedFirst'),
-                    label: l10n.firstTime,
-                    value: c.landedFirst,
-                    onChanged: c.setLandedFirst,
-                  ),
-                ],
-                NyfaForm.section(l10n.tagTrick),
+                // Tricks first: what the clip is of is what makes it findable,
+                // and saying you landed one is the post the forum was built on.
+                NyfaForm.section(l10n.tricks),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Wrap(
@@ -147,61 +89,152 @@ class ComposeView extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 12),
-                NyfaForm.toggle(
+                if (c.tags.isNotEmpty) ...[
+                  const SizedBox(height: 4),
+                  _SwitchRow(
+                    key: const Key('ComposeLandedSwitch'),
+                    icon: Icons.check_circle_outline,
+                    label: c.tags.length == 1 || c.landed == null
+                        ? l10n.landedIt
+                        : l10n.landedTrick(c.tagNames[c.landed] ?? c.landed!),
+                    value: c.landed != null,
+                    onChanged: (on) => c.setLanded(on ? c.tags.first : null),
+                  ),
+                  // Which one, only when there is a choice to make.
+                  if (c.landed != null && c.tags.length > 1)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 4),
+                      child: NyfaForm.chips(
+                        keyPrefix: 'ComposeLanded',
+                        options: [
+                          for (final slug in c.tags)
+                            (value: slug, label: c.tagNames[slug] ?? slug),
+                        ],
+                        selected: {c.landed!},
+                        onToggle: c.setLanded,
+                      ),
+                    ),
+                  if (c.landed != null)
+                    _SwitchRow(
+                      key: const Key('ComposeLandedFirst'),
+                      icon: Icons.star_outline_rounded,
+                      label: l10n.firstTime,
+                      value: c.landedFirst,
+                      onChanged: c.setLandedFirst,
+                    ),
+                ],
+                // The trick rows end on their own rule; with none, the
+                // options still need a line to start under.
+                if (c.tags.isEmpty) ...[
+                  const SizedBox(height: 16),
+                  const Divider(height: 1, color: Nyfa.rule),
+                ],
+                if (c.challenges.isNotEmpty)
+                  _OptionRow(
+                    key: const Key('ComposeChallenge'),
+                    icon: Icons.emoji_events_outlined,
+                    label: l10n.enterAChallenge,
+                    value:
+                        c.challenges
+                            .where((x) => x.id == c.challengeId)
+                            .firstOrNull
+                            ?.title ??
+                        l10n.notEntering,
+                    highlighted: c.challengeId != null,
+                    onTap: () async {
+                      final v = await _pick(
+                        context,
+                        title: l10n.enterAChallenge,
+                        options: [
+                          (value: null, label: l10n.notEntering),
+                          for (final x in c.challenges)
+                            (value: x.id, label: x.title),
+                        ],
+                        selected: c.challengeId,
+                      );
+                      if (v != null) c.setChallenge(v.value);
+                    },
+                  ),
+                if (c.needsMediaForChallenge)
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(56, 0, 20, 12),
+                    child: Text(
+                      l10n.challengeNeedsMedia,
+                      style: Nyfa.bodyMuted,
+                    ),
+                  ),
+                if (c.sessions?.isNotEmpty ?? false)
+                  _OptionRow(
+                    key: const Key('ComposeSession'),
+                    icon: Icons.timer_outlined,
+                    label: l10n.fromSession,
+                    value:
+                        c.sessions!
+                            .where((x) => x.id == c.sessionId)
+                            .firstOrNull
+                            ?.name ??
+                        l10n.noSession,
+                    highlighted: c.sessionId != null,
+                    onTap: () async {
+                      final v = await _pick(
+                        context,
+                        title: l10n.fromSession,
+                        options: [
+                          (value: null, label: l10n.noSession),
+                          for (final x in c.sessions!)
+                            (value: x.id, label: x.name),
+                        ],
+                        selected: c.sessionId,
+                      );
+                      if (v != null) c.setSession(v.value);
+                    },
+                  ),
+                if (c.canShareResults)
+                  _SwitchRow(
+                    key: const Key('ComposeShareResults'),
+                    icon: Icons.groups_outlined,
+                    label: l10n.includeEveryonesResults,
+                    value: c.shareResults,
+                    onChanged: c.setShareResults,
+                  ),
+                if (c.clubs.isNotEmpty)
+                  _OptionRow(
+                    key: const Key('ComposeClub'),
+                    icon: Icons.groups_2_outlined,
+                    label: l10n.postToClub,
+                    value:
+                        c.clubs
+                            .where((x) => x.id == c.clubId)
+                            .firstOrNull
+                            ?.name ??
+                        l10n.noClub,
+                    highlighted: c.clubId != null,
+                    onTap: () async {
+                      final v = await _pick(
+                        context,
+                        title: l10n.postToClub,
+                        options: [
+                          (value: null, label: l10n.noClub),
+                          for (final x in c.clubs) (value: x.id, label: x.name),
+                        ],
+                        selected: c.clubId,
+                      );
+                      if (v != null) c.setClub(v.value);
+                    },
+                  ),
+                _SwitchRow(
                   key: const Key('ComposeTutorial'),
+                  icon: Icons.school_outlined,
                   label: l10n.markTutorial,
-                  explain: l10n.markTutorialExplain,
                   value: c.tutorial,
                   onChanged: c.setTutorial,
                 ),
-                if (c.sessions?.isNotEmpty ?? false) ...[
-                  NyfaForm.section(l10n.fromSession),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 12),
-                    child: Text(l10n.fromSessionExplain, style: Nyfa.bodyMuted),
-                  ),
-                  NyfaForm.chips(
-                    keyPrefix: 'ComposeSession',
-                    options: [
-                      (value: 'none', label: l10n.noSession),
-                      for (final s in c.sessions!)
-                        (value: '${s.id}', label: s.name),
-                    ],
-                    selected: {c.sessionId?.toString() ?? 'none'},
-                    onToggle: (v) =>
-                        c.setSession(v == 'none' ? null : int.parse(v)),
-                  ),
-                  if (c.canShareResults) ...[
-                    const SizedBox(height: 8),
-                    NyfaForm.toggle(
-                      key: const Key('ComposeShareResults'),
-                      label: l10n.includeEveryonesResults,
-                      explain: l10n.includeEveryonesResultsBody,
-                      value: c.shareResults,
-                      onChanged: c.setShareResults,
-                    ),
-                  ],
-                ],
-                if (c.clubs.isNotEmpty) ...[
-                  NyfaForm.section(l10n.postToClub),
-                  NyfaForm.chips(
-                    keyPrefix: 'ComposeClub',
-                    options: [
-                      (value: 'none', label: l10n.noClub),
-                      for (final club in c.clubs)
-                        (value: '${club.id}', label: club.name),
-                    ],
-                    selected: {c.clubId?.toString() ?? 'none'},
-                    onToggle: (v) =>
-                        c.setClub(v == 'none' ? null : int.parse(v)),
-                  ),
-                ],
-                const SizedBox(height: 16),
-                NyfaForm.toggle(
+                _SwitchRow(
                   key: const Key('ComposeArea'),
+                  icon: Icons.place_outlined,
                   label: l10n.addArea,
-                  explain: l10n.addAreaExplain,
+                  // Said once, small, because it is the privacy promise.
+                  detail: c.addArea ? l10n.addAreaExplain : null,
                   value: c.addArea,
                   onChanged: c.locating ? (_) {} : c.setAddArea,
                 ),
@@ -507,3 +540,158 @@ class _AddChip extends StatelessWidget {
     ),
   );
 }
+
+/// One option on the composer: an icon, what it is, its current value, and
+/// a chevron -- the shape every phone's settings and every big app's
+/// composer uses, so it needs no explaining.
+class _OptionRow extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final String value;
+  final bool highlighted;
+  final VoidCallback onTap;
+
+  const _OptionRow({
+    required this.icon,
+    required this.label,
+    required this.value,
+    required this.onTap,
+    this.highlighted = false,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) => InkWell(
+    onTap: onTap,
+    child: Container(
+      constraints: const BoxConstraints(minHeight: 56),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      decoration: const BoxDecoration(
+        border: Border(bottom: BorderSide(color: Nyfa.rule)),
+      ),
+      child: Row(
+        children: [
+          Icon(icon, size: 22, color: Nyfa.paper),
+          const SizedBox(width: 14),
+          Text(
+            label,
+            style: Nyfa.bodyText.copyWith(fontWeight: FontWeight.w600),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              value,
+              textAlign: TextAlign.end,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: highlighted ? Nyfa.bodyText : Nyfa.bodyMuted,
+            ),
+          ),
+          const SizedBox(width: 4),
+          const Icon(Icons.chevron_right_rounded, color: Nyfa.muted),
+        ],
+      ),
+    ),
+  );
+}
+
+/// An on/off option, the same height and shape as [_OptionRow].
+class _SwitchRow extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final String? detail;
+  final bool value;
+  final ValueChanged<bool> onChanged;
+
+  const _SwitchRow({
+    required this.icon,
+    required this.label,
+    required this.value,
+    required this.onChanged,
+    this.detail,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) => MergeSemantics(
+    child: InkWell(
+      onTap: () => onChanged(!value),
+      child: Container(
+        constraints: const BoxConstraints(minHeight: 56),
+        padding: const EdgeInsets.fromLTRB(20, 6, 12, 6),
+        decoration: const BoxDecoration(
+          border: Border(bottom: BorderSide(color: Nyfa.rule)),
+        ),
+        child: Row(
+          children: [
+            Icon(icon, size: 22, color: Nyfa.paper),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    label,
+                    style: Nyfa.bodyText.copyWith(fontWeight: FontWeight.w600),
+                  ),
+                  if (detail != null) Text(detail!, style: Nyfa.meta),
+                ],
+              ),
+            ),
+            Switch(
+              value: value,
+              onChanged: onChanged,
+              activeThumbColor: Nyfa.ground,
+              activeTrackColor: Nyfa.green,
+              inactiveThumbColor: Nyfa.muted,
+              inactiveTrackColor: Nyfa.raised,
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
+/// A one-of-several choice in a sheet. Returns the picked value wrapped, so
+/// "none" (null) can be told apart from dismissing the sheet.
+Future<({int? value})?> _pick(
+  BuildContext context, {
+  required String title,
+  required List<({int? value, String label})> options,
+  required int? selected,
+}) => showModalBottomSheet<({int? value})>(
+  context: context,
+  backgroundColor: Nyfa.raised,
+  shape: Nyfa.sheetShape,
+  showDragHandle: true,
+  builder: (context) => SafeArea(
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
+          child: Text(title, style: Nyfa.heading),
+        ),
+        for (final o in options)
+          InkWell(
+            onTap: () => Navigator.of(context).pop((value: o.value)),
+            child: Container(
+              constraints: const BoxConstraints(minHeight: 52),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                children: [
+                  Expanded(child: Text(o.label, style: Nyfa.bodyText)),
+                  if (o.value == selected)
+                    const Icon(Icons.check_rounded, color: Nyfa.green),
+                ],
+              ),
+            ),
+          ),
+        const SizedBox(height: 8),
+      ],
+    ),
+  ),
+);
