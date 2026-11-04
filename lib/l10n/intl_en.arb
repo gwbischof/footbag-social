@@ -5902,5 +5902,17 @@
         "type": "String",
         "description": "End of the Discover sessions list, above 'Schedule a session'.",
         "placeholders": {}
+    },
+    "rankBy": "Rank by",
+    "@rankBy": {
+        "type": "String",
+        "description": "Rankings picker: section title above play time / sessions / days played.",
+        "placeholders": {}
+    },
+    "over": "Over",
+    "@over": {
+        "type": "String",
+        "description": "Rankings picker: section title above week / month / year / all time.",
+        "placeholders": {}
     }
 }

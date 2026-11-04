@@ -90,28 +90,9 @@ class RankingsView extends StatelessWidget {
           ),
           const SizedBox(height: 10),
         ],
-        _Chips(
-          keyPrefix: 'Metric',
-          options: [
-            (value: 'play_time', label: l10n.metricPlayTime),
-            (value: 'sessions', label: l10n.metricSessions),
-            (value: 'days', label: l10n.metricDays),
-          ],
-          selected: controller.metric,
-          onTap: controller.setMetric,
-        ),
-        const SizedBox(height: 10),
-        _Chips(
-          keyPrefix: 'Window',
-          options: [
-            (value: 'week', label: l10n.windowWeek),
-            (value: 'month', label: l10n.windowMonth),
-            (value: 'year', label: l10n.windowYear),
-            (value: 'all', label: l10n.windowAll),
-          ],
-          selected: controller.window,
-          onTap: controller.setWindow,
-        ),
+        // What is ranked and over when, as one line that opens a picker:
+        // two more rows of chips made this the busiest screen in the app.
+        _MeasureLine(controller: controller),
         const SizedBox(height: 18),
 
         if (controller.rows!.isEmpty)
@@ -405,6 +386,87 @@ class _Cell extends StatelessWidget {
         height: 13,
         margin: const EdgeInsets.only(bottom: 3),
         decoration: BoxDecoration(color: fills[step]),
+      ),
+    );
+  }
+}
+
+class _MeasureLine extends StatelessWidget {
+  final RankingsController controller;
+
+  const _MeasureLine({required this.controller});
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = L10n.of(context);
+    final metrics = [
+      (value: 'play_time', label: l10n.metricPlayTime),
+      (value: 'sessions', label: l10n.metricSessions),
+      (value: 'days', label: l10n.metricDays),
+    ];
+    final windows = [
+      (value: 'week', label: l10n.windowWeek),
+      (value: 'month', label: l10n.windowMonth),
+      (value: 'year', label: l10n.windowYear),
+      (value: 'all', label: l10n.windowAll),
+    ];
+    String labelOf(List<({String value, String label})> o, String v) =>
+        o.firstWhere((x) => x.value == v, orElse: () => o.first).label;
+
+    return InkWell(
+      key: const Key('RankingsMeasure'),
+      onTap: () => showModalBottomSheet<void>(
+        context: context,
+        backgroundColor: Nyfa.raised,
+        shape: Nyfa.sheetShape,
+        showDragHandle: true,
+        builder: (context) => StatefulBuilder(
+          builder: (context, redraw) => SafeArea(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                NyfaForm.section(l10n.rankBy),
+                NyfaForm.chips(
+                  keyPrefix: 'Metric',
+                  options: metrics,
+                  selected: {controller.metric},
+                  onToggle: (v) {
+                    controller.setMetric(v);
+                    redraw(() {});
+                  },
+                ),
+                NyfaForm.section(l10n.over),
+                NyfaForm.chips(
+                  keyPrefix: 'Window',
+                  options: windows,
+                  selected: {controller.window},
+                  onToggle: (v) {
+                    controller.setWindow(v);
+                    redraw(() {});
+                  },
+                ),
+                const SizedBox(height: 24),
+              ],
+            ),
+          ),
+        ),
+      ),
+      child: Container(
+        constraints: const BoxConstraints(minHeight: 48),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        alignment: Alignment.centerLeft,
+        child: Row(
+          children: [
+            Text(
+              '${labelOf(metrics, controller.metric)}  ·  '
+              '${labelOf(windows, controller.window)}',
+              style: Nyfa.rowTitle,
+            ),
+            const SizedBox(width: 4),
+            const Icon(Icons.arrow_drop_down_rounded, color: Nyfa.paper),
+          ],
+        ),
       ),
     );
   }
