@@ -5793,5 +5793,21 @@
                 "type": "int"
             }
         }
+    },
+    "nobodyPlayingNearby": "Nobody's playing near you right now",
+    "@nobodyPlayingNearby": {
+        "type": "String",
+        "description": "Dash subtitle when no sessions are running nearby.",
+        "placeholders": {}
+    },
+    "sessionsRunningNearby": "{count, plural, =1{1 session running near you} other{{count} sessions running near you}}",
+    "@sessionsRunningNearby": {
+        "type": "String",
+        "description": "Dash subtitle: sessions running near the player right now.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
     }
 }
